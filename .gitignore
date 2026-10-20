@@ -14,3 +14,7 @@ local.properties
 *.jks
 *.keystore
 keystore.properties
+
+# Private notes kept only locally
+DESIGN.md
+play/RELEASE.md
