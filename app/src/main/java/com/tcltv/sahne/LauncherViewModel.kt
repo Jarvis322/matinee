@@ -254,50 +254,55 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     init {
         viewModelScope.launch { runWeatherLoop() }
-        viewModelScope.launch {
-            while (isActive) {
-                updateMemory(memoryStatus.snapshot())
-                delay(MEMORY_POLL_MILLIS)
-            }
-        }
         viewModelScope.launch { watchForNewDevices() }
     }
 
+    // Polled only while the home screen is visible; nothing shows the value while another app is in front.
+    private var memoryPollJob: Job? = null
+
+    // Re-armed only after usage falls clearly below the threshold, so hovering around it doesn't repeat the notice.
+    private var memoryAlertArmed = true
+
     private fun updateMemory(snapshot: MemorySnapshot) {
         val threshold = settings.value.memoryThresholdPercent
-        val previous = _memory.value.usedPercent
         _memory.value = snapshot
-        if (snapshot.usedPercent >= threshold && previous < threshold) {
-            val now = System.currentTimeMillis()
-            localNotices.value = localNotices.value.filterNot { it is Notice.MemoryHigh } +
-                Notice.MemoryHigh(id = "memory@$now", time = now, percent = snapshot.usedPercent, threshold = threshold)
+        when {
+            snapshot.usedPercent >= threshold && memoryAlertArmed -> {
+                memoryAlertArmed = false
+                val now = System.currentTimeMillis()
+                localNotices.value = localNotices.value.filterNot { it is Notice.MemoryHigh } +
+                    Notice.MemoryHigh(id = "memory@$now", time = now, percent = snapshot.usedPercent, threshold = threshold)
+            }
+            snapshot.usedPercent < threshold - MEMORY_ALERT_REARM_PERCENT -> memoryAlertArmed = true
         }
     }
 
     private suspend fun watchForNewDevices() {
-        var known: Map<String, String?>? = null
+        // Every (port, device name) seen this session. A device whose CEC entry drops while it sleeps and returns on
+        // wake is the same device, so it is announced once, not on every power cycle.
+        var announced: Set<Pair<String, String>>? = null
         // Raw CEC names, so toggling "auto-detect" in settings doesn't look like devices arriving.
         rawInputs.collect { raw ->
-            if (raw.isEmpty() && known == null) return@collect
-            val current = raw.associate { it.id to it.cecDeviceName?.takeIf { _ -> it.connected } }
-            val previous = known
+            if (raw.isEmpty() && announced == null) return@collect
+            val present = raw.mapNotNull { input -> input.cecDeviceName?.takeIf { input.connected }?.let { input.id to it } }.toSet()
+            val previous = announced
             if (previous != null) {
-                inputs.value.forEach { input ->
-                    val name = current[input.id] ?: return@forEach
-                    if (previous[input.id] != name) {
-                        val now = System.currentTimeMillis()
-                        localNotices.value = localNotices.value + Notice.NewDevice(
-                            id = "device:${input.id}@$now",
-                            time = now,
-                            inputId = input.id,
-                            deviceName = name,
-                            portLabel = input.portLabel,
-                            logo = input.logo,
-                        )
-                    }
+                // Resolved from this emission, not inputs.value, which still holds the previous list at this point.
+                val resolved = InputCatalog.resolve(raw, settings.value).associateBy { it.id }
+                (present - previous).forEach { (inputId, name) ->
+                    val input = resolved[inputId] ?: return@forEach
+                    val now = System.currentTimeMillis()
+                    localNotices.value = (localNotices.value + Notice.NewDevice(
+                        id = "device:$inputId@$now",
+                        time = now,
+                        inputId = inputId,
+                        deviceName = name,
+                        portLabel = input.portLabel,
+                        logo = input.logo,
+                    )).takeLast(MAX_LOCAL_NOTICES)
                 }
             }
-            known = current
+            announced = previous.orEmpty() + present
         }
     }
 
@@ -412,12 +417,24 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     fun onHomeResumed() {
         receiverRefresh.value++
         updateMemory(memoryStatus.snapshot())
+        memoryPollJob?.cancel()
+        memoryPollJob = viewModelScope.launch {
+            while (isActive) {
+                delay(MEMORY_POLL_MILLIS)
+                updateMemory(memoryStatus.snapshot())
+            }
+        }
         viewModelScope.launch {
             _avatar.value = profilePhoto.load()
             profilePhoto.consumePendingName()?.let { settingsStore.setProfileName(it) }
         }
         val s = settings.value
         if (s.autoCleanMemory && _memory.value.usedPercent >= s.memoryThresholdPercent) cleanMemory()
+    }
+
+    fun onHomePaused() {
+        memoryPollJob?.cancel()
+        memoryPollJob = null
     }
 
     fun cleanMemory() {
@@ -558,5 +575,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         const val SPEED_CACHE_MILLIS = 5 * 60_000L
         const val ARTWORK_CACHE_BYTES = 6 * 1024 * 1024
         const val WEATHER_RETRY_MILLIS = 60_000L
+        const val MEMORY_ALERT_REARM_PERCENT = 5
+        const val MAX_LOCAL_NOTICES = 20
     }
 }

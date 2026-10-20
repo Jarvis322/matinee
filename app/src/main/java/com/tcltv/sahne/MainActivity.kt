@@ -29,4 +29,9 @@ class MainActivity : ComponentActivity() {
         viewModel.onHomeResumed()
         resumeTick.intValue++
     }
+
+    override fun onPause() {
+        viewModel.onHomePaused()
+        super.onPause()
+    }
 }
