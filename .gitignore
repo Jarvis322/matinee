@@ -1,0 +1,16 @@
+# Gradle and Kotlin
+.gradle/
+.kotlin/
+build/
+**/build/
+
+# Local machine settings
+local.properties
+.idea/
+*.iml
+.DS_Store
+
+# Signing material never lives in the repo
+*.jks
+*.keystore
+keystore.properties

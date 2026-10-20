@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Home -->
+    <string name="greeting_morning">Günaydın</string>
+    <string name="greeting_day">İyi günler</string>
+    <string name="greeting_evening">İyi akşamlar</string>
+    <string name="greeting_night">İyi geceler</string>
+    <string name="greeting_morning_name">Günaydın, %1$s</string>
+    <string name="greeting_day_name">İyi günler, %1$s</string>
+    <string name="greeting_evening_name">İyi akşamlar, %1$s</string>
+    <string name="greeting_night_name">İyi geceler, %1$s</string>
+    <string name="key_ok">OK</string>
+    <string name="key_back">Geri</string>
+    <string name="open_with_ok_suffix">ile aç</string>
+    <string name="app_info">Uygulama bilgisi</string>
+    <string name="section_apps">Uygulamalar</string>
+    <string name="section_inputs">Girişler</string>
+    <string name="hint_navigate">gez</string>
+    <string name="hint_open">aç</string>
+    <string name="hint_back">Geri</string>
+    <string name="hint_select">seç</string>
+    <string name="airplay">AirPlay</string>
+    <string name="percent_value">%%%1$d</string>
+    <string name="memory_clean">Boşalt</string>
+    <string name="memory_cleaning">Boşaltılıyor…</string>
+    <string name="memory_freed_mb">%1$d MB boşaldı</string>
+    <string name="weather_unavailable">Hava yok</string>
+    <string name="a11y_open_launcher_settings">Saat ve hava durumu. Launcher ayarlarını açar</string>
+
+    <!-- App taglines -->
+    <string name="tagline_netflix">Film ve dizi izle</string>
+    <string name="tagline_youtube">Video izle</string>
+    <string name="tagline_youtube_music">Müzik dinle</string>
+    <string name="tagline_google_tv">Film ve dizilerine göz at</string>
+    <string name="tagline_spotify">Müzik ve podcast dinle</string>
+    <string name="tagline_play_store">Uygulama yükle ve güncelle</string>
+    <string name="tagline_settings">TV ayarlarını düzenle</string>
+    <string name="tagline_prime_video">Film ve dizi izle</string>
+    <string name="tagline_default">Açmak için OK\'a bas</string>
+
+    <!-- Edit mode -->
+    <string name="edit_mode">Düzenleme modu</string>
+    <string name="edit_apps_subtitle">Uygulamaları düzenle</string>
+    <string name="edit_hint_move">taşı</string>
+    <string name="edit_hint_drop">bırak</string>
+    <string name="edit_hint_remove">✕ ile kaldır</string>
+    <string name="edit_hint_done">bitti</string>
+    <string name="edit_row_hint">sürükle ve yeniden sırala</string>
+    <string name="edit_drop_at">%1$d. sıraya bırak</string>
+    <string name="edit_pick_up">ile tut</string>
+    <string name="add_app">Uygulama ekle</string>
+    <string name="no_hidden_apps">Tüm uygulamalar zaten ana ekranda.</string>
+
+    <!-- Settings navigation -->
+    <string name="settings_title">Ayarlar</string>
+    <string name="settings_network">Ağ ve İnternet</string>
+    <string name="settings_network_sub">Wi‑Fi ve bağlantı</string>
+    <string name="settings_display_sound">Ekran ve Ses</string>
+    <string name="settings_display_sound_sub">Görüntü ve ses</string>
+    <string name="settings_apps">Uygulamalar</string>
+    <string name="settings_apps_sub">Yüklü uygulamalar</string>
+    <string name="settings_inputs">Girişler / HDMI</string>
+    <string name="settings_inputs_sub">Bağlı cihazlar</string>
+    <string name="settings_home">Ana Ekran</string>
+    <string name="settings_home_sub">Görünüm ve düzen</string>
+    <string name="settings_device">Cihaz / Depolama ve RAM</string>
+    <string name="settings_device_sub">Bellek ve depolama</string>
+    <string name="settings_bluetooth">Bluetooth ve Kumanda</string>
+    <string name="settings_bluetooth_sub">Kumanda ve aksesuarlar</string>
+    <string name="settings_about">Hakkında</string>
+    <string name="settings_about_sub">Sürüm ve lisanslar</string>
+
+    <!-- System links -->
+    <string name="open_in_tv_settings">Aç</string>
+    <string name="system_network">Ağ ayarları</string>
+    <string name="system_network_sub">Wi‑Fi, Ethernet ve proxy</string>
+    <string name="system_display">Ekran ayarları</string>
+    <string name="system_display_sub">Çözünürlük ve görüntü</string>
+    <string name="system_sound">Ses ayarları</string>
+    <string name="system_sound_sub">Ses çıkışı ve efektler</string>
+    <string name="system_apps">Uygulamaları yönet</string>
+    <string name="system_apps_sub">İzinler, depolama ve güncellemeler</string>
+    <string name="system_bluetooth">Kumanda ve aksesuarlar</string>
+    <string name="system_bluetooth_sub">Kumanda, oyun kolu veya kulaklık eşleştir</string>
+    <string name="note_system_settings">Bunlar TV\'nin kendi ayar ekranlarını açar.</string>
+    <string name="note_system_settings_missing">Bu TV\'de o ekran doğrudan açılamadı, ana TV ayarları açıldı.</string>
+
+    <!-- Home screen settings -->
+    <string name="setting_adaptive_background">Arka plan rengi uygulamaya uysun</string>
+    <string name="setting_adaptive_background_sub">Odaktaki uygulamanın rengini kullan</string>
+    <string name="setting_clock_format">Saat formatı</string>
+    <string name="clock_24">24 saat</string>
+    <string name="clock_12">12 saat</string>
+    <string name="setting_city">Hava durumu şehri</string>
+    <string name="setting_app_order">Uygulama sırasını düzenle</string>
+    <string name="setting_app_order_sub">Kartı basılı tutarak da düzenleyebilirsin</string>
+    <string name="setting_widget_inputs">Girişleri göster</string>
+    <string name="setting_widget_inputs_sub">HDMI cihazları satırı</string>
+    <string name="setting_memory_warning">Bellek uyarısı</string>
+    <string name="setting_memory_warning_sub">RAM bu seviyeyi geçince uyar</string>
+    <string name="setting_show_seconds">Saniyeleri göster</string>
+    <string name="setting_greeting">Selamlama</string>
+    <string name="setting_widget_clock">Saat ve tarih</string>
+    <string name="setting_widget_weather">Hava durumu</string>
+    <string name="setting_unit">Sıcaklık birimi</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+    <string name="setting_refresh">Hava durumu güncelleme</string>
+    <string name="every_minutes">%1$d dakikada bir</string>
+    <string name="setting_widget_airplay">AirPlay durumu</string>
+    <string name="setting_widget_airplay_sub_full">AirPlay ile oynatma olunca gösterir</string>
+    <string name="setting_widget_airplay_sub_limited">AirPlay\'in kullanılabilir olup olmadığını gösterir</string>
+    <string name="setting_widget_memory">RAM göstergesi</string>
+    <string name="setting_reduce_motion">Hareketi azalt</string>
+    <string name="setting_phone_bridge">Telefon bildirimleri</string>
+    <string name="setting_phone_bridge_sub">Yalnızca Android telefonlar. iPhone buna izin vermiyor.</string>
+    <string name="coming_soon">Yakında</string>
+
+    <!-- Inputs -->
+    <string name="setting_auto_detect">Bağlı cihazı otomatik tanı</string>
+    <string name="setting_auto_detect_sub">Cihazın HDMI‑CEC ile gönderdiği adı kullanır</string>
+    <string name="setting_hide_disconnected">Boş girişleri gizle</string>
+    <string name="note_inputs">Konsollar, Apple TV ve çoğu uydu alıcısı adını gönderir. PC ve Mac\'ler genelde göndermez; onlar için logo seç.</string>
+    <string name="note_no_inputs">TV hiçbir HDMI girişi bildirmedi.</string>
+    <string name="badge_auto">Otomatik</string>
+    <string name="badge_manual">Elle</string>
+    <string name="badge_tv_name">TV adı</string>
+    <string name="badge_not_detected">Algılanamadı</string>
+    <string name="edit_input">Girişi düzenle</string>
+    <string name="detected_as">%1$s · algılanan cihaz: %2$s</string>
+    <string name="tv_named_as">%1$s · TV ayarlarındaki adı: \"%2$s\"</string>
+    <string name="not_detected_long">%1$s · cihaz adı gelmedi. Bir logo seç, ad da ona göre değişsin.</string>
+    <string name="field_name">Ad</string>
+    <string name="field_logo">Logo</string>
+    <string name="reset_detected">Otomatik algılanana dön</string>
+    <string name="logo_satellite">Uydu alıcısı</string>
+    <string name="logo_playstation">PlayStation</string>
+    <string name="logo_xbox">Xbox</string>
+    <string name="logo_nintendo">Nintendo Switch</string>
+    <string name="logo_pc">PC</string>
+    <string name="logo_mac">Mac</string>
+    <string name="logo_apple_tv">Apple TV</string>
+    <string name="logo_fire_tv">Fire TV</string>
+    <string name="logo_tv_box">TV Box</string>
+    <string name="logo_soundbar">Soundbar</string>
+    <string name="logo_console">Oyun konsolu</string>
+    <string name="logo_other">Diğer</string>
+
+    <!-- Device -->
+    <string name="setting_ram_usage">Kullanılan RAM</string>
+    <string name="memory_usage">%%%1$d · %2$s boş</string>
+    <string name="setting_clean_now">RAM\'i şimdi boşalt</string>
+    <string name="setting_clean_now_sub">Arka planda bekleyen uygulamaları kapatır</string>
+    <string name="setting_auto_clean">Otomatik boşalt</string>
+    <string name="setting_auto_clean_sub">Bellek uyarı seviyesi geçilince</string>
+    <string name="setting_exclusions">Asla kapatma</string>
+    <string name="none">Yok</string>
+    <string name="app_count">%1$d uygulama</string>
+    <string name="setting_storage">Depolama</string>
+    <string name="storage_value">%1$s boş / %2$s</string>
+    <string name="note_memory">Yalnızca uygulama listesindeki uygulamalar kapatılır; girişler ve kumanda gibi TV servislerine dokunulmaz. Android bazılarını yeniden başlatabilir, kazanç geçicidir.</string>
+    <string name="note_exclusions">Burada açık olan uygulamalar RAM boşaltılırken asla kapatılmaz.</string>
+
+    <!-- Weather search -->
+    <string name="city_placeholder">Ankara</string>
+    <string name="note_city_search">En az iki harf yaz. Konum izni kullanılmaz.</string>
+    <string name="searching">Aranıyor…</string>
+    <string name="search_failed">Hava durumu servisine ulaşılamadı. Bağlantıyı kontrol edip tekrar dene.</string>
+    <string name="no_results">Eşleşen şehir yok.</string>
+
+    <!-- About -->
+    <string name="setting_version">Sürüm</string>
+    <string name="setting_default_home">Varsayılan ana ekran</string>
+    <string name="setting_default_home_sub">Home tuşuna basınca Matinee açılsın</string>
+    <string name="note_home_settings_missing">Bu TV\'de ana ekran seçici yok. Home tuşuna bir kez bas ve sorulduğunda Matinee\'yi seç.</string>
+    <string name="setting_reset">Launcher ayarlarını sıfırla</string>
+    <string name="reset_action">Sıfırla</string>
+    <string name="reset_confirm">Onaylamak için tekrar bas</string>
+
+    <!-- Profile menu -->
+    <string name="a11y_profile_menu">Profil menüsü</string>
+    <string name="profile_default_name">Profil</string>
+    <string name="chromecast">Chromecast</string>
+    <string name="receiver_off">Kapalı</string>
+    <string name="airplay_ready_long">Hazır</string>
+    <string name="airplay_playing_long">Oynatıyor</string>
+    <string name="cast_ready">Yayın için hazır</string>
+    <string name="cast_playing">Yayın alıyor</string>
+    <string name="memory_title">RAM %%%1$d</string>
+    <string name="setting_chromecast">Chromecast durumu</string>
+    <string name="setting_chromecast_sub">TV\'nin Google Cast yayını almaya hazır olup olmadığını gösterir</string>
+    <string name="setting_profile_name">Profil adı</string>
+    <string name="not_set">Ayarlanmadı</string>
+    <string name="setting_profile_color">Profil rengi</string>
+    <string name="color_number">Renk %1$d</string>
+    <string name="setting_profile_photo">Profil fotoğrafı</string>
+    <string name="setting_profile_photo_sub">Bilgisayardan eklenir; yoksa baş harflerin görünür</string>
+    <string name="photo_present">Eklendi</string>
+    <string name="photo_missing">Yok</string>
+    <string name="profile_name_placeholder">Adın</string>
+    <string name="note_profile_name">Profil fotoğrafı yoksa adının baş harfleri kullanılır.</string>
+
+    <string name="setting_show_system_apps">Sistem uygulamalarını göster</string>
+    <string name="setting_show_system_apps_sub">TV üreticisinin yerleşik bileşenleri; varsayılan olarak gizli</string>
+
+    <string name="setting_default_home_sub_set">Home tuşuna basınca Matinee açılır</string>
+    <string name="default_home_self">Matinee</string>
+    <string name="default_home_other">Başka launcher</string>
+
+    <!-- Last played -->
+    <string name="continue_with_ok_suffix">ile devam et</string>
+    <string name="last_played_badge">Son izlenen · %1$s</string>
+    <string name="just_now">Az önce</string>
+    <string name="setting_last_played">Son izlenenleri göster</string>
+    <string name="setting_last_played_sub">Uygulamaların son oynattığı içerik; yalnızca bu TV\'de saklanır</string>
+    <string name="setting_clear_history">Son izlenenleri temizle</string>
+    <string name="history_cleared">Temizlendi</string>
+    <string name="a11y_remove_app">%1$s uygulamasını ana ekrandan kaldır</string>
+
+    <string name="network_wifi">Wi‑Fi bağlı. Ağ ayarlarını açar</string>
+    <string name="network_ethernet">Kablolu bağlantı. Ağ ayarlarını açar</string>
+    <string name="network_no_internet">Bağlı ama internet yok. Ağ ayarlarını açar</string>
+    <string name="network_offline">Bağlantı yok. Ağ ayarlarını açar</string>
+
+    <string name="setting_notification_access">Bildirim erişimi</string>
+    <string name="setting_notification_access_sub">Yalnızca oynatılan medya bilgisi ve Play Store güncelleme bildirimleri okunur. Hiçbiri TV\'den çıkmaz.</string>
+
+    <string name="home_key_service_label">Matinee Home tuşu</string>
+    <string name="home_key_service_description">Kumandanın Home tuşunun Matinee\'yi açmasını sağlar. Matinee yalnızca Home tuşunu dinler, ekranda ne olduğunu asla okumaz.</string>
+    <string name="setting_home_key">Home tuşu Matinee\'yi açsın</string>
+    <string name="setting_home_key_sub">Yalnızca Home tuşunu dinleyen bir erişilebilirlik izni kullanır. Ekrandaki hiçbir şey okunmaz.</string>
+
+    <string name="setting_wifi_name">Wi‑Fi ağ adını göster</string>
+    <string name="setting_wifi_name_sub">Android ağ adını yalnızca konum izni olan uygulamalara verir. Matinee bu izni başka hiçbir şey için kullanmaz.</string>
+    <string name="network_details_offline">Bağlantı yok</string>
+    <string name="network_details_no_internet">İnternet yok</string>
+    <string name="network_details_ethernet">Kablolu bağlantı</string>
+    <string name="network_details_wifi">Wi‑Fi</string>
+    <string name="network_speed_measuring">Hız ölçülüyor…</string>
+    <string name="network_speed_value">İndirme %1$d Mbps</string>
+    <string name="network_speed_failed">Hız ölçülemedi</string>
+    <string name="network_link_value">Bağlantı hızı %1$d Mbps</string>
+
+    <string name="all_apps">Tümü</string>
+    <string name="all_apps_title">Tüm uygulamalar (%1$d)</string>
+    <string name="minutes_left">%1$d dk kaldı</string>
+    <string name="setting_home_layout">Düzen</string>
+    <string name="setting_home_layout_sub">Sıra: büyük başlıkla tek uygulama sırası. Izgara: üstte favori rafı, altında tüm uygulamaların.</string>
+    <string name="home_layout_row">Sıra</string>
+    <string name="home_layout_grid">Izgara</string>
+    <string name="grid_favorites_hint">Bir uygulamayı üst rafa taşımak için OK\'a basılı tut</string>
+    <string name="setting_card_theme">Kart görünümü</string>
+    <string name="card_theme_dark">Koyu</string>
+    <string name="card_theme_light">Açık</string>
+
+    <string name="last_played_other_apps">Diğer uygulamalarda</string>
+
+    <string name="input_power_on">açık</string>
+    <string name="input_power_standby">beklemede</string>
+
+    <string name="settings_tv">TV ayarları</string>
+    <string name="settings_tv_sub">TV\'nin kendi ayarları</string>
+    <string name="system_tv_settings">TV ayarlarını aç</string>
+    <string name="system_tv_settings_sub">Görüntü, ses, ağ, uygulamalar ve TV\'nin sunduğu diğer her şey</string>
+    <string name="setting_language">Dil</string>
+    <string name="language_system">Sistem</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_english">English</string>
+    <string name="setting_licenses">Lisanslar</string>
+    <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.</string>
+    <string name="credits_made_by">%1$s tarafından geliştirildi</string>
+
+    <string name="minutes_ago">%1$d dk önce</string>
+    <string name="hours_ago">%1$d sa önce</string>
+    <string name="days_ago">%1$d gün önce</string>
+    <string name="cancel">Vazgeç</string>
+    <string name="home_key_disclosure_title">Home tuşu Matinee\'yi açsın mı?</string>
+    <string name="home_key_disclosure_body">Bazı TV\'ler Home tuşunu kendi yerleşik ana ekranına ayırır. Bunun yerine Matinee\'nin açılması için Matinee bir Android erişilebilirlik izni kullanır.\n\nYalnızca kumandanın Home tuşunu dinler. Ekranda ne olduğunu, ne yazdığını ya da başka bir tuşu okumaz; hiçbir şey hiçbir yere gönderilmez.\n\nSonraki ekranda “Matinee Home tuşu” seçeneğini seçip aç. İstediğin zaman oradan kapatabilirsin.</string>
+    <string name="home_key_disclosure_accept">Kabul et ve devam et</string>
+    <string name="home_key_restricted_title">Önce Matinee\'yi Google Play\'den kur</string>
+    <string name="home_key_restricted_body">Bu TV, APK dosyasından kurulan uygulamaların erişilebilirlik izni kullanmasına izin vermiyor; bu yüzden anahtar kendiliğinden kapanıyor.\n\nMatinee\'yi kaldır, Google Play\'den kur, sonra bunu tekrar aç.</string>
+    <string name="home_key_restricted_try">Yine de dene</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Bildirimler</string>
+    <string name="notifications_clear_all">Tümünü temizle</string>
+    <string name="notifications_empty">Yeni bildirim yok.</string>
+    <string name="notifications_access_needed">Play Store güncellemeleri, Matinee\'ye bildirim erişimi verilince burada görünür.</string>
+    <string name="notice_play_source">Play Store</string>
+    <string name="notice_new_device">Yeni cihaz: %1$s</string>
+    <string name="notice_new_device_sub">%1$s girişine bağlandı</string>
+    <string name="notice_memory_high">RAM kullanımı: %%%1$d</string>
+    <string name="notice_memory_high_sub">Uyarı seviyen %%%1$d</string>
+    <string name="notice_action_play">Play Store\'da aç</string>
+    <string name="notice_action_device">Girişe geç</string>
+    <string name="notice_action_memory">RAM\'i boşalt</string>
+    <plurals name="a11y_notifications">
+        <item quantity="one">Bildirimler, %1$d yeni</item>
+        <item quantity="other">Bildirimler, %1$d yeni</item>
+    </plurals>
+    <string name="setting_notifications">Bildirim zili</string>
+    <string name="setting_notifications_sub">Uygulama güncellemeleri, yeni cihazlar ve RAM uyarıları</string>
+    <string name="setting_play_updates">Play Store güncellemeleri</string>
+    <string name="setting_play_updates_sub_ok">Play Store\'un kendi güncelleme bildirimlerini gösterir</string>
+    <string name="setting_play_updates_sub_missing">Matinee için bildirim erişimi gerekiyor</string>
+
+    <string name="switch_on">Açık</string>
+    <string name="switch_off">Kapalı</string>
+</resources>

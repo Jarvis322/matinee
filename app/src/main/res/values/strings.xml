@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Matinee</string>
+
+    <!-- Home -->
+    <string name="greeting_morning">Good morning</string>
+    <string name="greeting_day">Good afternoon</string>
+    <string name="greeting_evening">Good evening</string>
+    <string name="greeting_night">Good night</string>
+    <string name="greeting_morning_name">Good morning, %1$s</string>
+    <string name="greeting_day_name">Good afternoon, %1$s</string>
+    <string name="greeting_evening_name">Good evening, %1$s</string>
+    <string name="greeting_night_name">Good night, %1$s</string>
+    <string name="key_ok">OK</string>
+    <string name="key_back">Back</string>
+    <string name="open_with_ok_suffix">to open</string>
+    <string name="app_info">App info</string>
+    <string name="section_apps">Apps</string>
+    <string name="section_inputs">Inputs</string>
+    <string name="hint_navigate">move</string>
+    <string name="hint_open">open</string>
+    <string name="hint_back">Back</string>
+    <string name="hint_select">select</string>
+    <string name="airplay">AirPlay</string>
+    <string name="percent_value">%1$d%%</string>
+    <string name="memory_clean">Free up</string>
+    <string name="memory_cleaning">Freeing…</string>
+    <string name="memory_freed_mb">%1$d MB freed</string>
+    <string name="weather_unavailable">No weather</string>
+    <string name="a11y_open_launcher_settings">Clock and weather. Opens launcher settings</string>
+
+    <!-- App taglines -->
+    <string name="tagline_netflix">Watch movies and shows</string>
+    <string name="tagline_youtube">Watch videos</string>
+    <string name="tagline_youtube_music">Listen to music</string>
+    <string name="tagline_google_tv">Browse your movies and shows</string>
+    <string name="tagline_spotify">Listen to music and podcasts</string>
+    <string name="tagline_play_store">Install and update apps</string>
+    <string name="tagline_settings">Adjust your TV settings</string>
+    <string name="tagline_prime_video">Watch movies and shows</string>
+    <string name="tagline_default">Press OK to open</string>
+
+    <!-- Edit mode -->
+    <string name="edit_mode">Edit mode</string>
+    <string name="edit_apps_subtitle">Arrange your apps</string>
+    <string name="edit_hint_move">move</string>
+    <string name="edit_hint_drop">drop</string>
+    <string name="edit_hint_remove">remove with ✕</string>
+    <string name="edit_hint_done">done</string>
+    <string name="edit_row_hint">pick up and reorder</string>
+    <string name="edit_drop_at">drop at position %1$d</string>
+    <string name="edit_pick_up">to pick up</string>
+    <string name="add_app">Add app</string>
+    <string name="no_hidden_apps">Every app is already on the home screen.</string>
+
+    <!-- Settings navigation -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_network">Network and internet</string>
+    <string name="settings_network_sub">Wi‑Fi and connection</string>
+    <string name="settings_display_sound">Display and sound</string>
+    <string name="settings_display_sound_sub">Picture and audio</string>
+    <string name="settings_apps">Apps</string>
+    <string name="settings_apps_sub">Installed apps</string>
+    <string name="settings_inputs">Inputs / HDMI</string>
+    <string name="settings_inputs_sub">Connected devices</string>
+    <string name="settings_home">Home screen</string>
+    <string name="settings_home_sub">Look and layout</string>
+    <string name="settings_device">Device / Storage and RAM</string>
+    <string name="settings_device_sub">Memory and storage</string>
+    <string name="settings_bluetooth">Bluetooth and remote</string>
+    <string name="settings_bluetooth_sub">Remote and accessories</string>
+    <string name="settings_about">About</string>
+    <string name="settings_about_sub">Version and licenses</string>
+
+    <!-- System links -->
+    <string name="open_in_tv_settings">Open</string>
+    <string name="system_network">Network settings</string>
+    <string name="system_network_sub">Wi‑Fi, Ethernet and proxy</string>
+    <string name="system_display">Display settings</string>
+    <string name="system_display_sub">Resolution and picture</string>
+    <string name="system_sound">Sound settings</string>
+    <string name="system_sound_sub">Audio output and effects</string>
+    <string name="system_apps">Manage apps</string>
+    <string name="system_apps_sub">Permissions, storage and updates</string>
+    <string name="system_bluetooth">Remote and accessories</string>
+    <string name="system_bluetooth_sub">Pair a remote, gamepad or headphones</string>
+    <string name="note_system_settings">These open the TV\'s own settings screens.</string>
+    <string name="note_system_settings_missing">This TV has no direct screen for that, so the main TV settings opened instead.</string>
+
+    <!-- Home screen settings -->
+    <string name="setting_adaptive_background">Match background to app</string>
+    <string name="setting_adaptive_background_sub">Use the focused app\'s color</string>
+    <string name="setting_clock_format">Clock format</string>
+    <string name="clock_24">24‑hour</string>
+    <string name="clock_12">12‑hour</string>
+    <string name="setting_city">Weather city</string>
+    <string name="setting_app_order">Arrange apps</string>
+    <string name="setting_app_order_sub">You can also hold OK on a card</string>
+    <string name="setting_widget_inputs">Show inputs</string>
+    <string name="setting_widget_inputs_sub">Row of HDMI devices</string>
+    <string name="setting_memory_warning">Memory warning</string>
+    <string name="setting_memory_warning_sub">Warn when RAM use passes this level</string>
+    <string name="setting_show_seconds">Show seconds</string>
+    <string name="setting_greeting">Greeting</string>
+    <string name="setting_widget_clock">Clock and date</string>
+    <string name="setting_widget_weather">Weather</string>
+    <string name="setting_unit">Temperature unit</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+    <string name="setting_refresh">Weather updates</string>
+    <string name="every_minutes">Every %1$d min</string>
+    <string name="setting_widget_airplay">AirPlay status</string>
+    <string name="setting_widget_airplay_sub_full">Shows when something is playing over AirPlay</string>
+    <string name="setting_widget_airplay_sub_limited">Shows whether AirPlay is available</string>
+    <string name="setting_widget_memory">RAM meter</string>
+    <string name="setting_reduce_motion">Reduce motion</string>
+    <string name="setting_phone_bridge">Phone notifications</string>
+    <string name="setting_phone_bridge_sub">Android phones only. iPhone doesn\'t allow this.</string>
+    <string name="coming_soon">Coming soon</string>
+
+    <!-- Inputs -->
+    <string name="setting_auto_detect">Recognize connected devices</string>
+    <string name="setting_auto_detect_sub">Uses the name the device sends over HDMI‑CEC</string>
+    <string name="setting_hide_disconnected">Hide empty inputs</string>
+    <string name="note_inputs">Consoles, Apple TV and most set‑top boxes send their name. PCs and Macs usually don\'t, so pick a logo for them.</string>
+    <string name="note_no_inputs">No HDMI inputs were reported by the TV.</string>
+    <string name="badge_auto">Automatic</string>
+    <string name="badge_manual">Manual</string>
+    <string name="badge_tv_name">TV name</string>
+    <string name="badge_not_detected">Not detected</string>
+    <string name="edit_input">Edit input</string>
+    <string name="detected_as">%1$s · detected device: %2$s</string>
+    <string name="tv_named_as">%1$s · named \"%2$s\" in TV settings</string>
+    <string name="not_detected_long">%1$s · no device name received. Pick a logo and the name follows it.</string>
+    <string name="field_name">Name</string>
+    <string name="field_logo">Logo</string>
+    <string name="reset_detected">Return to detected</string>
+    <string name="logo_satellite">Set‑top box</string>
+    <string name="logo_playstation">PlayStation</string>
+    <string name="logo_xbox">Xbox</string>
+    <string name="logo_nintendo">Nintendo Switch</string>
+    <string name="logo_pc">PC</string>
+    <string name="logo_mac">Mac</string>
+    <string name="logo_apple_tv">Apple TV</string>
+    <string name="logo_fire_tv">Fire TV</string>
+    <string name="logo_tv_box">TV Box</string>
+    <string name="logo_soundbar">Soundbar</string>
+    <string name="logo_console">Game console</string>
+    <string name="logo_other">Other</string>
+
+    <!-- Device -->
+    <string name="setting_ram_usage">RAM in use</string>
+    <string name="memory_usage">%1$d%% · %2$s free</string>
+    <string name="setting_clean_now">Free up RAM now</string>
+    <string name="setting_clean_now_sub">Closes apps waiting in the background</string>
+    <string name="setting_auto_clean">Free up automatically</string>
+    <string name="setting_auto_clean_sub">When the memory warning level is passed</string>
+    <string name="setting_exclusions">Never close</string>
+    <string name="none">None</string>
+    <string name="app_count">Apps: %1$d</string>
+    <string name="setting_storage">Storage</string>
+    <string name="storage_value">%1$s free of %2$s</string>
+    <string name="note_memory">Only apps from the app list are closed; TV services such as inputs and the remote are never touched. Android may restart some apps, so the gain is temporary.</string>
+    <string name="note_exclusions">Apps turned on here are never closed when freeing up RAM.</string>
+
+    <!-- Weather search -->
+    <string name="city_placeholder">Ankara</string>
+    <string name="note_city_search">Type at least two letters. No location permission is used.</string>
+    <string name="searching">Searching…</string>
+    <string name="search_failed">Couldn\'t reach the weather service. Check the connection and try again.</string>
+    <string name="no_results">No matching city.</string>
+
+    <!-- About -->
+    <string name="setting_version">Version</string>
+    <string name="setting_default_home">Default home screen</string>
+    <string name="setting_default_home_sub">Make Matinee open when you press Home</string>
+    <string name="note_home_settings_missing">This TV has no home app picker. Press Home once and choose Matinee when asked.</string>
+    <string name="setting_reset">Reset launcher settings</string>
+    <string name="reset_action">Reset</string>
+    <string name="reset_confirm">Press again to confirm</string>
+
+    <!-- Profile menu -->
+    <string name="a11y_profile_menu">Profile menu</string>
+    <string name="profile_default_name">Profile</string>
+    <string name="chromecast">Chromecast</string>
+    <string name="receiver_off">Off</string>
+    <string name="airplay_ready_long">Ready</string>
+    <string name="airplay_playing_long">Playing</string>
+    <string name="cast_ready">Ready to cast</string>
+    <string name="cast_playing">Receiving a cast</string>
+    <string name="memory_title">RAM %1$d%%</string>
+    <string name="setting_chromecast">Chromecast status</string>
+    <string name="setting_chromecast_sub">Shows whether the TV is ready to receive a Google Cast stream</string>
+    <string name="setting_profile_name">Profile name</string>
+    <string name="not_set">Not set</string>
+    <string name="setting_profile_color">Profile color</string>
+    <string name="color_number">Color %1$d</string>
+    <string name="setting_profile_photo">Profile photo</string>
+    <string name="setting_profile_photo_sub">Added from a computer; initials are shown otherwise</string>
+    <string name="photo_present">Added</string>
+    <string name="photo_missing">None</string>
+    <string name="profile_name_placeholder">Your name</string>
+    <string name="note_profile_name">Your initials are used when there\'s no profile photo.</string>
+
+    <string name="setting_show_system_apps">Show system apps</string>
+    <string name="setting_show_system_apps_sub">Built-in components from the TV maker; hidden by default</string>
+
+    <string name="setting_default_home_sub_set">Matinee opens when you press Home</string>
+    <string name="default_home_self">Matinee</string>
+    <string name="default_home_other">Another launcher</string>
+
+    <!-- Last played -->
+    <string name="continue_with_ok_suffix">to continue</string>
+    <string name="last_played_badge">Last played · %1$s</string>
+    <string name="just_now">Just now</string>
+    <string name="setting_last_played">Show last played</string>
+    <string name="setting_last_played_sub">What each app last played; kept only on this TV</string>
+    <string name="setting_clear_history">Clear last played</string>
+    <string name="history_cleared">Cleared</string>
+    <string name="a11y_remove_app">Remove %1$s from the home screen</string>
+
+    <string name="network_wifi">Wi‑Fi connected. Opens network settings</string>
+    <string name="network_ethernet">Wired connection. Opens network settings</string>
+    <string name="network_no_internet">Connected, no internet. Opens network settings</string>
+    <string name="network_offline">Not connected. Opens network settings</string>
+
+    <string name="setting_notification_access">Notification access</string>
+    <string name="setting_notification_access_sub">Reads only media playback info and Play Store update notifications. Nothing leaves the TV.</string>
+
+    <string name="home_key_service_label">Matinee Home button</string>
+    <string name="home_key_service_description">Lets the remote\'s Home button open Matinee. Matinee listens only for the Home button and never reads what is on the screen.</string>
+    <string name="setting_home_key">Home button opens Matinee</string>
+    <string name="setting_home_key_sub">Uses an accessibility permission that listens only for the Home button. Nothing on screen is read.</string>
+
+    <string name="setting_wifi_name">Show Wi‑Fi network name</string>
+    <string name="setting_wifi_name_sub">Android shares the network name only with apps that have location permission. Matinee uses it for nothing else.</string>
+    <string name="network_details_offline">Not connected</string>
+    <string name="network_details_no_internet">No internet</string>
+    <string name="network_details_ethernet">Wired connection</string>
+    <string name="network_details_wifi">Wi‑Fi</string>
+    <string name="network_speed_measuring">Measuring speed…</string>
+    <string name="network_speed_value">Download %1$d Mbps</string>
+    <string name="network_speed_failed">Couldn\'t measure speed</string>
+    <string name="network_link_value">Link rate %1$d Mbps</string>
+
+    <string name="all_apps">All</string>
+    <string name="all_apps_title">All apps (%1$d)</string>
+    <string name="minutes_left">%1$d min left</string>
+    <string name="setting_home_layout">Layout</string>
+    <string name="setting_home_layout_sub">Row: one app row with a large title. Grid: favorites shelf above all your apps.</string>
+    <string name="home_layout_row">Row</string>
+    <string name="home_layout_grid">Grid</string>
+    <string name="grid_favorites_hint">Hold OK on an app to move it into the top shelf</string>
+    <string name="setting_card_theme">Card style</string>
+    <string name="card_theme_dark">Dark</string>
+    <string name="card_theme_light">Light</string>
+
+    <string name="last_played_other_apps">In your other apps</string>
+
+    <string name="input_power_on">on</string>
+    <string name="input_power_standby">in standby</string>
+
+    <string name="settings_tv">TV settings</string>
+    <string name="settings_tv_sub">The TV\'s own settings</string>
+    <string name="system_tv_settings">Open TV settings</string>
+    <string name="system_tv_settings_sub">Picture, sound, network, apps and everything else the TV offers</string>
+    <string name="setting_language">Language</string>
+    <string name="language_system">System</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="language_english">English</string>
+    <string name="setting_licenses">Licenses</string>
+    <string name="license_text">Weather data by Open‑Meteo.com, licensed under CC BY 4.0.\nIcons: Tabler Icons, MIT License.\nTypeface: Inter, SIL Open Font License 1.1.\nApp icons and banners belong to their apps.</string>
+    <string name="credits_made_by">Made by %1$s</string>
+
+    <string name="minutes_ago">%1$d min ago</string>
+    <string name="hours_ago">%1$d h ago</string>
+    <string name="days_ago">%1$d d ago</string>
+    <string name="cancel">Cancel</string>
+    <string name="home_key_disclosure_title">Let the Home button open Matinee?</string>
+    <string name="home_key_disclosure_body">Some TVs keep the Home button for their built‑in launcher. To open Matinee instead, Matinee uses an Android accessibility permission.\n\nIt listens only for the remote\'s Home button. It does not read what is on the screen, what you type, or any other key, and nothing is sent anywhere.\n\nOn the next screen, choose “Matinee Home button” and turn it on. You can turn it off there at any time.</string>
+    <string name="home_key_disclosure_accept">Agree and continue</string>
+    <string name="home_key_restricted_title">Install Matinee from Google Play first</string>
+    <string name="home_key_restricted_body">This TV doesn\'t let apps installed from an APK file use accessibility permissions, so the switch turns itself back off.\n\nUninstall Matinee, install it from Google Play, then turn this on again.</string>
+    <string name="home_key_restricted_try">Try anyway</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_clear_all">Clear all</string>
+    <string name="notifications_empty">You\'re all caught up.</string>
+    <string name="notifications_access_needed">Play Store updates appear here once notification access is granted to Matinee.</string>
+    <string name="notice_play_source">Play Store</string>
+    <string name="notice_new_device">New device: %1$s</string>
+    <string name="notice_new_device_sub">Connected to %1$s</string>
+    <string name="notice_memory_high">RAM reached %1$d%%</string>
+    <string name="notice_memory_high_sub">Your warning level is %1$d%%</string>
+    <string name="notice_action_play">Open in Play Store</string>
+    <string name="notice_action_device">Switch to input</string>
+    <string name="notice_action_memory">Free up RAM</string>
+    <plurals name="a11y_notifications">
+        <item quantity="one">Notifications, %1$d new</item>
+        <item quantity="other">Notifications, %1$d new</item>
+    </plurals>
+    <string name="setting_notifications">Notification bell</string>
+    <string name="setting_notifications_sub">App updates, new devices and RAM warnings</string>
+    <string name="setting_play_updates">Play Store updates</string>
+    <string name="setting_play_updates_sub_ok">Shows Play Store\'s own update notifications</string>
+    <string name="setting_play_updates_sub_missing">Needs notification access for Matinee</string>
+
+    <string name="switch_on">On</string>
+    <string name="switch_off">Off</string>
+</resources>
