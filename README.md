@@ -8,6 +8,7 @@
 
 <p align="center">
   <a href="https://play.google.com/apps/testing/com.yigitcan.matinee">Google Play (beta)</a> ·
+  <a href="https://github.com/Jarvis322/matinee/releases/latest">Download APK</a> ·
   <a href="https://yigitech.dev/apps/matinee">Website</a> ·
   <a href="https://yigitech.dev/apps/matinee/privacy">Privacy</a>
 </p>
@@ -53,7 +54,7 @@ Matinee is in testing on Google Play:
 2. Open the [test link](https://play.google.com/apps/testing/com.yigitcan.matinee) and choose **Become a tester**.
 3. Install Matinee on your TV from the Play Store.
 
-Install from Google Play rather than an APK file: Android 13 and later block accessibility permissions for apps installed from a file, so the Home button option would not stay on.
+To sideload instead, download the APK from the [latest release](https://github.com/Jarvis322/matinee/releases/latest). Prefer Google Play if you want the Home button option: Android 13 and later block accessibility permissions for apps installed from a file, so it would not stay on.
 
 Requires Google TV or Android TV 9 or later.
 
