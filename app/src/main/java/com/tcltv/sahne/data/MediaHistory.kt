@@ -103,7 +103,8 @@ class MediaHistory private constructor(context: Context) {
         dir.mkdirs()
         val scale = minOf(1f, MAX_ARTWORK_WIDTH.toFloat() / source.width)
         val scaled = if (scale < 1f) {
-            Bitmap.createScaledBitmap(source, (source.width * scale).toInt(), (source.height * scale).toInt(), true)
+            // coerceAtLeast: a very wide strip would scale to 0 px high, and createScaledBitmap throws on that.
+            Bitmap.createScaledBitmap(source, (source.width * scale).toInt().coerceAtLeast(1), (source.height * scale).toInt().coerceAtLeast(1), true)
         } else {
             source
         }
@@ -111,6 +112,10 @@ class MediaHistory private constructor(context: Context) {
         file.outputStream().use { scaled.compress(Bitmap.CompressFormat.JPEG, 85, it) }
         file
     } catch (e: IOException) {
+        Log.w(TAG, "Couldn't save artwork", e)
+        null
+    } catch (e: IllegalArgumentException) {
+        // An app-provided bitmap that can't be scaled or compressed must not take the launcher process down.
         Log.w(TAG, "Couldn't save artwork", e)
         null
     }

@@ -41,6 +41,8 @@ class MediaHistoryRecorder(context: Context, private val listener: ComponentName
             started = true
             sync(sessionManager.getActiveSessions(listener))
         } catch (e: SecurityException) {
+            // The listener may already be registered when getActiveSessions throws.
+            runCatching { sessionManager.removeOnActiveSessionsChangedListener(sessionsListener) }
             started = false
         }
     }

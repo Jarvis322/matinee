@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.IntSize
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.Palette
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 /**
@@ -42,7 +43,14 @@ fun CinematicBackground(accent: Color, modifier: Modifier = Modifier) {
     var backdrop by remember { mutableStateOf<ImageBitmap?>(null) }
     LaunchedEffect(accent, size) {
         if (size == IntSize.Zero) return@LaunchedEffect
-        backdrop = cache.get(accent.toArgb()) ?: withContext(Dispatchers.Default) {
+        val cached = cache.get(accent.toArgb())
+        if (cached != null) {
+            backdrop = cached
+            return@LaunchedEffect
+        }
+        // Holding the D-pad changes the accent every few frames; render only once focus settles.
+        delay(RENDER_DEBOUNCE_MS)
+        backdrop = withContext(Dispatchers.Default) {
             renderBackdrop(size, accent.toArgb()).asImageBitmap()
         }.also { cache.put(accent.toArgb(), it) }
     }
@@ -76,12 +84,14 @@ private class BackdropCache {
     }
 
     private companion object {
-        // Each entry is ~3.7 MB at 1280x720; the TV has 1.8 GB of RAM in total.
-        const val MAX_ENTRIES = 4
+        // Each entry is ~230 KB at 320x180, so a few more accents can stay warm.
+        const val MAX_ENTRIES = 8
     }
 }
 
-private const val MAX_RENDER_WIDTH = 1280
+// The backdrop is only soft gradients, so a small bitmap scaled to full screen looks the same (~230 KB instead of 3.7 MB).
+private const val MAX_RENDER_WIDTH = 320
+private const val RENDER_DEBOUNCE_MS = 90L
 
 private fun renderBackdrop(screen: IntSize, accent: Int): Bitmap {
     val scale = minOf(1f, MAX_RENDER_WIDTH.toFloat() / screen.width)

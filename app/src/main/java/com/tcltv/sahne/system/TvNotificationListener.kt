@@ -39,6 +39,8 @@ class TvNotificationListener : NotificationListenerService() {
 
     override fun onListenerConnected() {
         publish()
+        // A reconnect can arrive without a disconnect first; never leave the old session listeners registered.
+        recorder?.stop()
         recorder = MediaHistoryRecorder(this, ComponentName(this, TvNotificationListener::class.java)).also { it.start() }
     }
 
@@ -46,6 +48,12 @@ class TvNotificationListener : NotificationListenerService() {
         PlayStoreUpdates.publish(emptyList())
         recorder?.stop()
         recorder = null
+    }
+
+    override fun onDestroy() {
+        recorder?.stop()
+        recorder = null
+        super.onDestroy()
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {

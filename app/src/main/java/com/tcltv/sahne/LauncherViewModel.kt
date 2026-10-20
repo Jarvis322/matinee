@@ -12,6 +12,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.graphics.BitmapFactory
+import android.util.LruCache
 import androidx.compose.ui.graphics.asImageBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -161,9 +162,18 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     fun clearMediaHistory() = mediaHistory.clear()
 
+    // The panel, its mini items and the grid hero show the same files, and focus moves ask again each time.
+    private val artworkCache = object : LruCache<String, ImageBitmap>(ARTWORK_CACHE_BYTES) {
+        override fun sizeOf(key: String, value: ImageBitmap) = value.width * value.height * 4
+    }
+
     suspend fun loadArtwork(entry: LastPlayed): ImageBitmap? {
         val path = entry.artworkPath ?: return null
+        // The file is rewritten in place when the item changes, so the update time is part of the key.
+        val key = "$path@${entry.updatedAt}"
+        artworkCache.get(key)?.let { return it }
         return withContext(Dispatchers.IO) { BitmapFactory.decodeFile(path)?.asImageBitmap() }
+            ?.also { artworkCache.put(key, it) }
     }
 
     val connection: StateFlow<Connection> = networkStatus.connection
@@ -384,14 +394,17 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
             weatherRefreshRequest,
         ) { config, _ -> config }.collectLatest { (location, unit, refreshMinutes) ->
             while (true) {
-                try {
+                val succeeded = try {
                     _weather.value = WeatherUiState.Ready(weatherClient.current(location, unit))
+                    true
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: IOException) {
                     if (_weather.value !is WeatherUiState.Ready) _weather.value = WeatherUiState.Unavailable
+                    false
                 }
-                delay(refreshMinutes * 60_000L)
+                // The launcher starts before the network after a reboot, so a failed fetch retries soon, not after the full interval.
+                delay(if (succeeded) refreshMinutes * 60_000L else WEATHER_RETRY_MILLIS)
             }
         }
     }
@@ -514,8 +527,10 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
             val current = settings.first()
             val visible = AppCatalog.ordered(allApps.value, current).map { it.packageName }.toMutableList()
             val from = visible.indexOf(packageName)
+            // Checked before coerceIn, which throws on the empty range an empty list gives.
+            if (from < 0) return@withLock
             val to = (from + delta).coerceIn(0, visible.lastIndex)
-            if (from < 0 || from == to) return@withLock
+            if (from == to) return@withLock
             visible.add(to, visible.removeAt(from))
             val hidden = AppCatalog.orderedIncludingHidden(allApps.value, current).map { it.packageName }.filter { it !in visible }
             setAppOrder(visible + hidden)
@@ -541,5 +556,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         const val MEMORY_POLL_MILLIS = 15_000L
         const val SEARCH_DEBOUNCE_MILLIS = 400L
         const val SPEED_CACHE_MILLIS = 5 * 60_000L
+        const val ARTWORK_CACHE_BYTES = 6 * 1024 * 1024
+        const val WEATHER_RETRY_MILLIS = 60_000L
     }
 }

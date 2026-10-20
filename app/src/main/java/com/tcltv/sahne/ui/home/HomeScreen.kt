@@ -62,6 +62,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -71,7 +72,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
@@ -369,14 +369,19 @@ private fun Hero(
 
 
 @Composable
-internal fun focusScale(focused: Boolean, target: Float): Float {
+internal fun focusScale(focused: Boolean, target: Float): State<Float> {
     val reduceMotion = LocalReduceMotion.current
-    val scale by animateFloatAsState(
+    return animateFloatAsState(
         targetValue = if (focused) target else 1f,
         animationSpec = if (reduceMotion) snap() else spring(dampingRatio = 0.62f, stiffness = Spring.StiffnessMediumLow),
         label = "focusScale",
     )
-    return scale
+}
+
+/** Reads the animated scale while drawing, so a focus spring redraws the card instead of recomposing it every frame. */
+internal fun Modifier.scaleBy(scale: State<Float>): Modifier = graphicsLayer {
+    scaleX = scale.value
+    scaleY = scale.value
 }
 
 @Composable
@@ -384,7 +389,7 @@ private fun OpenButton(onClick: () -> Unit) {
     var focused by remember { mutableStateOf(false) }
     Row(
         Modifier
-            .scale(focusScale(focused, 1.06f))
+            .scaleBy(focusScale(focused, 1.06f))
             .height(34.dp)
             .clip(RoundedCornerShape(17.dp))
             .background(Color.White)
@@ -407,7 +412,7 @@ private fun InfoButton(onClick: () -> Unit) {
     var focused by remember { mutableStateOf(false) }
     Row(
         Modifier
-            .scale(focusScale(focused, 1.06f))
+            .scaleBy(focusScale(focused, 1.06f))
             .height(34.dp)
             .clip(RoundedCornerShape(17.dp))
             .background(if (focused) Color.White.copy(alpha = 0.16f) else Palette.Glass)
@@ -536,7 +541,7 @@ private fun AppsRow(
 internal fun KeyEvent.isCenter() = key == Key.DirectionCenter || key == Key.Enter || key == Key.NumPadEnter
 
 /** Right on a row's last item would otherwise send focus to the nearest control further right, such as the top bar. */
-private fun Modifier.blockRightExit(block: Boolean) =
+internal fun Modifier.blockRightExit(block: Boolean) =
     if (block) onPreviewKeyEvent { it.key == Key.DirectionRight && it.type == KeyEventType.KeyDown } else this
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -586,14 +591,14 @@ private fun AppCard(
     val reduceMotion = LocalReduceMotion.current
     val accent = Color(app.accent)
     val shape = RoundedCornerShape(13.dp)
-    val captionAlpha by animateFloatAsState(if (focused) 1f else 0f, tween(if (reduceMotion) 0 else 200), label = "caption")
-    val tilt by animateFloatAsState(
+    val captionAlpha = animateFloatAsState(if (focused) 1f else 0f, tween(if (reduceMotion) 0 else 200), label = "caption")
+    // Kept as State and read in graphicsLayer, so these springs redraw the card without recomposing it.
+    val tilt = animateFloatAsState(
         targetValue = if (editMode && !lifted) (if (index % 2 == 0) -1.4f else 1.1f) else 0f,
         animationSpec = if (reduceMotion) snap() else spring(dampingRatio = 0.55f),
         label = "tilt",
     )
-    val lift by animateDpAsState(if (lifted) (-10).dp else 0.dp, if (reduceMotion) snap() else spring(dampingRatio = 0.6f), label = "lift")
-    val liftPx = with(LocalDensity.current) { lift.toPx() }
+    val lift = animateDpAsState(if (lifted) (-10).dp else 0.dp, if (reduceMotion) snap() else spring(dampingRatio = 0.6f), label = "lift")
 
     Column(
         Modifier
@@ -610,10 +615,10 @@ private fun AppCard(
                         if (focused || lifted) onGlow(app.packageName, FocusGlow(app.packageName, it.boundsInRoot(), accent))
                     }
                     .graphicsLayer {
-                        rotationZ = tilt
-                        translationY = liftPx
+                        rotationZ = tilt.value
+                        translationY = lift.value.toPx()
                     }
-                    .scale(focusScale(focused || lifted, 1.17f))
+                    .scaleBy(focusScale(focused || lifted, 1.17f))
                     .border(2.5.dp, if (focused || lifted) Color.White else Color.Transparent, RoundedCornerShape(17.dp))
                     .padding(4.dp)
                     // Up from a card in edit mode lands on its own remove button, independent of layout geometry.
@@ -672,17 +677,17 @@ private fun AppCard(
                     focusRequester = removeFocus,
                     cardFocus = focusRequester,
                     onRemove = onRemove,
-                    modifier = Modifier.offset(x = (-7).dp, y = (-7).dp).graphicsLayer { rotationZ = tilt },
+                    modifier = Modifier.offset(x = (-7).dp, y = (-7).dp).graphicsLayer { rotationZ = tilt.value },
                 )
             }
             if (lifted) {
-                MoveArrow(R.drawable.ic_chevron_left, Modifier.align(Alignment.CenterStart).offset { IntOffset((-40).dp.roundToPx(), lift.roundToPx()) })
-                MoveArrow(R.drawable.ic_chevron_right, Modifier.align(Alignment.CenterEnd).offset { IntOffset(40.dp.roundToPx(), lift.roundToPx()) })
+                MoveArrow(R.drawable.ic_chevron_left, Modifier.align(Alignment.CenterStart).offset { IntOffset((-40).dp.roundToPx(), lift.value.roundToPx()) })
+                MoveArrow(R.drawable.ic_chevron_right, Modifier.align(Alignment.CenterEnd).offset { IntOffset(40.dp.roundToPx(), lift.value.roundToPx()) })
             }
         }
         Spacer(Modifier.height(11.dp))
         Row(
-            Modifier.overflowWithoutWidth().alpha(if (isSelected || lifted) captionAlpha else 0f),
+            Modifier.overflowWithoutWidth().graphicsLayer { alpha = if (isSelected || lifted) captionAlpha.value else 0f },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BasicText(app.label, style = interStyle(11.sp, 700, if (editMode) Palette.TextPrimary else lerp(accent, Color.White, 0.45f)))
@@ -730,7 +735,7 @@ private fun RemoveButton(
     val description = stringResource(R.string.a11y_remove_app, appLabel)
     Box(
         modifier
-            .scale(focusScale(focused, 1.25f))
+            .scaleBy(focusScale(focused, 1.25f))
             .size(22.dp)
             .background(if (focused) Color.White else Color(0xFF2A2A30), CircleShape)
             .border(1.5.dp, if (focused) Color.White else Color.White.copy(alpha = 0.6f), CircleShape)
@@ -758,7 +763,7 @@ private fun AddCard(onClick: () -> Unit) {
     Column {
         Box(
             Modifier
-                .scale(focusScale(focused, 1.1f))
+                .scaleBy(focusScale(focused, 1.1f))
                 .padding(4.dp)
                 .width(123.dp)
                 .height(75.dp)
@@ -858,7 +863,7 @@ internal fun InputChip(input: HdmiInput, enabled: Boolean, isLast: Boolean, onCl
     val content = if (focused) Palette.Background else Palette.TextPrimary
     Row(
         Modifier
-            .scale(focusScale(focused, 1.08f))
+            .scaleBy(focusScale(focused, 1.08f))
             .height(29.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(if (focused) Color.White else Color.White.copy(alpha = 0.05f))

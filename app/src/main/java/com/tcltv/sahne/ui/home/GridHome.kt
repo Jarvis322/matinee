@@ -29,6 +29,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -36,14 +37,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -98,7 +98,8 @@ internal fun GridHome(
     var showAddDialog by remember { mutableStateOf(false) }
     var shelfFocused by remember { mutableStateOf(true) }
     val listState = rememberLazyListState()
-    val heroAlpha by animateFloatAsState(
+    // Read only in graphicsLayer and a derived flag, so the fade redraws the hero instead of recomposing the grid.
+    val heroAlpha = animateFloatAsState(
         targetValue = if (shelfFocused) 1f else 0f,
         animationSpec = if (LocalReduceMotion.current) snap() else tween(350),
         label = "heroAlpha",
@@ -106,7 +107,8 @@ internal fun GridHome(
 
     val current = apps.firstOrNull { it.packageName == selectedPackage } ?: apps.firstOrNull()
     val accent = if (settings.adaptiveBackground && current != null) Color(current.accent) else NeutralAccent
-    val hiddenApps = allApps.filter { AppCatalog.isHidden(it, settings) }
+    val heroVisible by remember { derivedStateOf { heroAlpha.value > 0f } }
+    val hiddenApps = remember(allApps, settings) { allApps.filter { AppCatalog.isHidden(it, settings) } }
 
     fun requestFocus(packageName: String?) {
         if (packageName != null) focusRequest = GridFocusRequest(packageName, focusRequest.nonce + 1)
@@ -120,8 +122,8 @@ internal fun GridHome(
 
     Box(Modifier.fillMaxSize()) {
         CinematicBackground(accent)
-        if (current != null && heroAlpha > 0f) {
-            GridHero(current, lastPlayed[current.packageName], viewModel, Modifier.alpha(heroAlpha))
+        if (current != null && heroVisible) {
+            GridHero(current, lastPlayed[current.packageName], viewModel, Modifier.graphicsLayer { alpha = heroAlpha.value })
         }
         TopBar(viewModel, onOpenSettings, Modifier.padding(start = GRID_SIDE.dp, end = GRID_SIDE.dp, top = 30.dp))
 
@@ -132,14 +134,15 @@ internal fun GridHome(
             .takeIf { settings.showInputs }.orEmpty()
 
         @Composable
-        fun Cell(app: LaunchableApp?) {
+        fun Cell(app: LaunchableApp?, isRowEnd: Boolean) {
             if (app == null) {
-                AddTile(enabled = liftedPackage == null, onClick = { showAddDialog = true })
+                AddTile(enabled = liftedPackage == null, isRowEnd = isRowEnd, onClick = { showAddDialog = true })
             } else {
                 GridTile(
                     app = app,
                     cardTheme = settings.cardTheme,
                     lifted = app.packageName == liftedPackage,
+                    isRowEnd = isRowEnd,
                     dimmed = liftedPackage != null && app.packageName != liftedPackage,
                     focusRequest = focusRequest,
                     onFocusRequestHandled = { focusRequest = focusRequest.copy(packageName = null) },
@@ -173,7 +176,7 @@ internal fun GridHome(
                             .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(22.dp))
                             .padding(start = ROW_INSET.dp, end = ROW_INSET.dp, top = 14.dp, bottom = 6.dp),
                     ) {
-                        CellRow(shelf) { Cell(it) }
+                        CellRow(shelf) { app, isRowEnd -> Cell(app, isRowEnd) }
                     }
                     Spacer(Modifier.height(8.dp))
                     BasicText(
@@ -184,7 +187,7 @@ internal fun GridHome(
                 }
             }
             itemsIndexed(cells.chunked(COLUMNS), key = { index, _ -> "row$index" }) { _, row ->
-                CellRow(row, Modifier.padding(horizontal = ROW_INSET.dp)) { Cell(it) }
+                CellRow(row, Modifier.padding(horizontal = ROW_INSET.dp)) { app, isRowEnd -> Cell(app, isRowEnd) }
             }
             if (visibleInputs.isNotEmpty()) {
                 item(key = "inputs") {
@@ -223,11 +226,11 @@ internal fun GridHome(
 
 /** Always [COLUMNS] equal slots, so a short last row keeps the same tile size as full rows. */
 @Composable
-private fun CellRow(cells: List<LaunchableApp?>, modifier: Modifier = Modifier, cell: @Composable (LaunchableApp?) -> Unit) {
+private fun CellRow(cells: List<LaunchableApp?>, modifier: Modifier = Modifier, cell: @Composable (LaunchableApp?, Boolean) -> Unit) {
     Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         for (index in 0 until COLUMNS) {
             Box(Modifier.weight(1f)) {
-                if (index < cells.size) key(cells[index]?.packageName ?: "add") { cell(cells[index]) }
+                if (index < cells.size) key(cells[index]?.packageName ?: "add") { cell(cells[index], index == cells.lastIndex) }
             }
         }
     }
@@ -238,6 +241,7 @@ private fun GridTile(
     app: LaunchableApp,
     cardTheme: CardTheme,
     lifted: Boolean,
+    isRowEnd: Boolean,
     dimmed: Boolean,
     focusRequest: GridFocusRequest,
     onFocusRequestHandled: () -> Unit,
@@ -262,7 +266,7 @@ private fun GridTile(
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
-                .scale(focusScale(active, if (lifted) 1.14f else 1.1f))
+                .scaleBy(focusScale(active, if (lifted) 1.14f else 1.1f))
                 .shadow(if (active) 14.dp else 0.dp, shape)
                 .clip(shape)
                 .background(if (cardTheme == CardTheme.LIGHT) CardLight else CardDark)
@@ -273,6 +277,8 @@ private fun GridTile(
                     focused = it.isFocused
                     if (it.isFocused) onFocused()
                 }
+                // A lifted tile still moves right into the next row; only plain focus is kept from escaping to the top bar.
+                .blockRightExit(isRowEnd && !lifted)
                 .onPreviewKeyEvent { event ->
                     when {
                         event.isCenter() && event.type == KeyEventType.KeyDown && event.nativeKeyEvent.repeatCount > 0 -> {
@@ -309,7 +315,7 @@ private fun GridTile(
 }
 
 @Composable
-private fun AddTile(enabled: Boolean, onClick: () -> Unit) {
+private fun AddTile(enabled: Boolean, isRowEnd: Boolean, onClick: () -> Unit) {
     var focused by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(12.dp)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -317,10 +323,11 @@ private fun AddTile(enabled: Boolean, onClick: () -> Unit) {
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
-                .scale(focusScale(focused, 1.1f))
+                .scaleBy(focusScale(focused, 1.1f))
                 .clip(shape)
                 .background(Color.White.copy(alpha = if (focused) 0.14f else 0.05f))
                 .border(if (focused) 2.dp else 1.dp, if (focused) Color.White else Color.White.copy(alpha = 0.16f), shape)
+                .blockRightExit(isRowEnd)
                 .onFocusChanged { focused = it.isFocused }
                 .clickable(enabled = enabled, interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick),
             contentAlignment = Alignment.Center,

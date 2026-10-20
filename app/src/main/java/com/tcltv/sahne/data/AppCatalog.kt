@@ -17,9 +17,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.tcltv.sahne.R
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
@@ -69,10 +72,11 @@ class AppCatalog(context: Context) {
     private val appContext = context.applicationContext
     private val packageManager = appContext.packageManager
 
+    @OptIn(FlowPreview::class)
     val apps: Flow<List<LaunchableApp>> = callbackFlow {
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                trySend(Unit)
+                trySend(false)
             }
         }
         val filter = IntentFilter().apply {
@@ -82,9 +86,15 @@ class AppCatalog(context: Context) {
             addDataScheme("package")
         }
         ContextCompat.registerReceiver(appContext, receiver, filter, ContextCompat.RECEIVER_EXPORTED)
-        trySend(Unit)
+        // true marks the first load, which must not wait.
+        trySend(true)
         awaitClose { appContext.unregisterReceiver(receiver) }
-    }.map { load() }.flowOn(Dispatchers.IO)
+    }
+        // One app update sends REMOVED, ADDED and CHANGED back to back; reload once after the burst, not per broadcast.
+        .debounce { initial -> if (initial) 0L else RELOAD_DEBOUNCE_MS }
+        .conflate()
+        .map { load() }
+        .flowOn(Dispatchers.IO)
 
     private fun load(): List<LaunchableApp> {
         fun query(category: String) =
@@ -98,9 +108,10 @@ class AppCatalog(context: Context) {
             .map { info ->
                 val pkg = info.activityInfo.packageName
                 val known = knownApps[pkg]
-                // The app's own icon, never a bundled brand logo; sized for the large watermark.
-                val iconBitmap = runCatching { info.loadIcon(packageManager).toBitmap(ICON_SIZE_PX, ICON_SIZE_PX) }.getOrNull()
-                val glyph = runCatching { glyphBitmap(info.loadIcon(packageManager)) }.getOrNull()
+                // The app's own icon, never a bundled brand logo; sized for the large watermark. Inflated once for both uses.
+                val iconDrawable = runCatching { info.loadIcon(packageManager) }.getOrNull()
+                val iconBitmap = iconDrawable?.let { runCatching { it.toBitmap(ICON_SIZE_PX, ICON_SIZE_PX) }.getOrNull() }
+                val glyph = iconDrawable?.let { runCatching { glyphBitmap(it) }.getOrNull() }
                 LaunchableApp(
                     packageName = pkg,
                     component = ComponentName(pkg, info.activityInfo.name),
@@ -129,6 +140,7 @@ class AppCatalog(context: Context) {
 
     companion object {
         private const val PLATFORM_PACKAGE = "android"
+        private const val RELOAD_DEBOUNCE_MS = 600L
         private const val ICON_SIZE_PX = 192
         private const val GLYPH_LAYER_PX = 216
         private const val BANNER_WIDTH_PX = 320
