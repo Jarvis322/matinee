@@ -18,3 +18,5 @@ keystore.properties
 # Private notes kept only locally
 DESIGN.md
 play/RELEASE.md
+play/privacy-policy.md
+play/data-safety.md
