@@ -67,7 +67,6 @@ Kotlin and Jetpack Compose. You need JDK 17 or later and the Android SDK (compil
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Release builds are signed only when `~/.matinee-signing/keystore.properties` exists. See [play/RELEASE.md](play/RELEASE.md) for the release process and [DESIGN.md](DESIGN.md) for design decisions.
 
 ## License
 
