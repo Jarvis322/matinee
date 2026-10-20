@@ -182,6 +182,7 @@
     <string name="profile_default_name">Profil</string>
     <string name="chromecast">Chromecast</string>
     <string name="receiver_off">Kapalı</string>
+    <string name="receiver_not_supported">Bu TV\'de mevcut değil</string>
     <string name="airplay_ready_long">Hazır</string>
     <string name="airplay_playing_long">Oynatıyor</string>
     <string name="cast_ready">Yayın için hazır</string>

@@ -12,7 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-enum class ReceiverState { UNAVAILABLE, READY, PLAYING }
+/** NOT_SUPPORTED: the TV has no such receiver at all. UNAVAILABLE: it has one, but it is turned off. */
+enum class ReceiverState { NOT_SUPPORTED, UNAVAILABLE, READY, PLAYING }
 
 data class ReceiverStatus(val state: ReceiverState, val canDetectPlayback: Boolean)
 
@@ -25,7 +26,8 @@ class ReceiverMonitor(context: Context, private val packages: List<String>) {
 
     val status: Flow<ReceiverStatus> = callbackFlow {
         if (!isReceiverEnabled()) {
-            trySend(ReceiverStatus(ReceiverState.UNAVAILABLE, canDetectPlayback = false))
+            val state = if (isReceiverInstalled()) ReceiverState.UNAVAILABLE else ReceiverState.NOT_SUPPORTED
+            trySend(ReceiverStatus(state, canDetectPlayback = false))
             awaitClose { }
             return@callbackFlow
         }
@@ -75,6 +77,10 @@ class ReceiverMonitor(context: Context, private val packages: List<String>) {
         } catch (e: SecurityException) {
             null
         }
+
+    private fun isReceiverInstalled(): Boolean = packages.any { pkg ->
+        runCatching { appContext.packageManager.getApplicationInfo(pkg, 0) }.isSuccess
+    }
 
     private fun isReceiverEnabled(): Boolean = packages.any { pkg ->
         runCatching { appContext.packageManager.getApplicationInfo(pkg, 0).enabled }.getOrDefault(false)

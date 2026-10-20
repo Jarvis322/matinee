@@ -360,10 +360,11 @@ private fun ProfileMenu(viewModel: LauncherViewModel, onOpenSettings: () -> Unit
     }
 }
 
-private data class ReceiverLabels(val off: String, val ready: String, val playing: String)
+private data class ReceiverLabels(val notSupported: String, val off: String, val ready: String, val playing: String)
 
 @Composable
 private fun airPlayLabels() = ReceiverLabels(
+    stringResource(R.string.receiver_not_supported),
     stringResource(R.string.receiver_off),
     stringResource(R.string.airplay_ready_long),
     stringResource(R.string.airplay_playing_long),
@@ -371,6 +372,7 @@ private fun airPlayLabels() = ReceiverLabels(
 
 @Composable
 private fun castLabels() = ReceiverLabels(
+    stringResource(R.string.receiver_not_supported),
     stringResource(R.string.receiver_off),
     stringResource(R.string.cast_ready),
     stringResource(R.string.cast_playing),
@@ -382,6 +384,7 @@ private fun ReceiverRow(icon: Int, title: String, state: ReceiverState, labels: 
         ReceiverState.PLAYING -> labels.playing to Palette.Amber
         ReceiverState.READY -> labels.ready to Palette.Online
         ReceiverState.UNAVAILABLE -> labels.off to Palette.TextMuted
+        ReceiverState.NOT_SUPPORTED -> labels.notSupported to Palette.TextMuted
     }
     MenuRow(
         icon = icon,

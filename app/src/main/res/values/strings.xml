@@ -184,6 +184,7 @@
     <string name="profile_default_name">Profile</string>
     <string name="chromecast">Chromecast</string>
     <string name="receiver_off">Off</string>
+    <string name="receiver_not_supported">Not available on this TV</string>
     <string name="airplay_ready_long">Ready</string>
     <string name="airplay_playing_long">Playing</string>
     <string name="cast_ready">Ready to cast</string>
