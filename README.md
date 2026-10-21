@@ -23,7 +23,7 @@ Stock TV home screens fill most of the screen with promoted shows and ads. Matin
 
 ![Row layout](play/assets/screenshots/1-home.png)
 
-**Grid.** A favorites shelf with every other app below it. While the shelf has focus, the last played show fills the top of the screen.
+**Grid** (the default). A favorites shelf with every other app below it. While the shelf has focus, the last played show appears above it.
 
 | | |
 |---|---|
@@ -35,11 +35,11 @@ Switch between them in **Settings → Home screen → Layout**.
 
 - **Your apps, your order.** Hold OK on a card to move it or remove it. Phone-style apps that some TV boxes ship, such as satellite or IPTV players, can be added from the app list.
 - **Last played.** Title, artwork and progress from apps that share their media session. Stored only on the TV.
-- **HDMI inputs.** Each input shows the connected device's name and whether it is on or in standby (HDMI-CEC). Rename inputs and pick an icon.
+- **Live TV and HDMI inputs.** TVs with a built-in antenna, cable or satellite tuner get a Live TV shortcut that opens the TV's own broadcast. Each HDMI input shows the connected device's name and whether it is on or in standby (HDMI-CEC). Rename inputs and pick an icon.
 - **At a glance.** Clock, weather for a city you choose, network name and a quick download speed test.
 - **One bell.** Play Store updates and new-device alerts in one place.
-- **Home button.** On TVs whose built-in launcher keeps the Home button, an optional accessibility service sends it to Matinee. It listens only for the Home key and never reads the screen.
-- **English and Turkish**, switchable inside the app.
+- **Stays your home screen.** On TVs whose built-in launcher keeps Home, such as Google TV, an optional accessibility service opens Matinee when you press Home and whenever the TV brings back its own home screen. It sees only the Home key and when the built-in home screen opens, and never reads the screen.
+- **Seven languages.** English, Türkçe, Español, Français, Deutsch, 日本語 and 简体中文, switchable inside the app.
 - **No account, no ads, no analytics.**
 
 | Edit mode | Profile menu | Settings |
@@ -57,6 +57,20 @@ Matinee is in testing on Google Play:
 To sideload instead, download the APK from the [latest release](https://github.com/Jarvis322/matinee/releases/latest). Prefer Google Play if you want the Home button option: Android 13 and later block accessibility permissions for apps installed from a file, so it would not stay on.
 
 Requires Google TV or Android TV 9 or later.
+
+## After installing
+
+Open Matinee once, then go to **Settings** (the profile button at the top right, then **Settings**).
+
+1. **Make Matinee the home screen.** Go to **Home screen → Default home screen** and choose Matinee in the TV's dialog.
+   Google TV and some other TVs don't let you change the default home app, so do step 2 as well.
+2. **Turn on the Home button.** Go to **Home screen → Home button opens Matinee** and read the explanation. On the TV's accessibility screen that opens, choose **Matinee Home button** and turn it on.
+   From then on, pressing Home, waking or restarting the TV, and backing out of an app all land on Matinee.
+   This needs the Google Play version on Android 13 and later.
+3. **Allow notification access.** Go to **Home screen → Notification access** and turn it on for Matinee. This powers last played, the AirPlay and Chromecast status, and Play Store update alerts.
+4. **Optional.** Pick your weather city and profile name under **Home screen**. Switch the layout or card style there too. Change the language under **About → Language**.
+
+If the TV's accessibility list ever shows **Matinee Home button** as off while it is on, turn it off and on again.
 
 ## Build
 
