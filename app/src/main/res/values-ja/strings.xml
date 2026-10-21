@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Home -->
+    <string name="greeting_morning">おはようございます</string>
+    <string name="greeting_day">こんにちは</string>
+    <string name="greeting_evening">こんばんは</string>
+    <string name="greeting_night">こんばんは</string>
+    <string name="greeting_morning_name">おはようございます、%1$sさん</string>
+    <string name="greeting_day_name">こんにちは、%1$sさん</string>
+    <string name="greeting_evening_name">こんばんは、%1$sさん</string>
+    <string name="greeting_night_name">こんばんは、%1$sさん</string>
+    <string name="key_ok">OK</string>
+    <string name="key_back">戻る</string>
+    <string name="open_with_ok_suffix">で開く</string>
+    <string name="app_info">アプリ情報</string>
+    <string name="section_apps">アプリ</string>
+    <string name="section_inputs">入力</string>
+    <string name="hint_navigate">移動</string>
+    <string name="hint_open">開く</string>
+    <string name="hint_back">戻る</string>
+    <string name="hint_select">選択</string>
+    <string name="airplay">AirPlay</string>
+    <string name="percent_value">%1$d%%</string>
+    <string name="memory_clean">解放</string>
+    <string name="memory_cleaning">解放中…</string>
+    <string name="memory_freed_mb">%1$d MB 解放しました</string>
+    <string name="weather_unavailable">天気情報なし</string>
+    <string name="a11y_open_launcher_settings">時計と天気。ランチャーの設定を開きます</string>
+
+    <!-- App taglines -->
+    <string name="tagline_netflix">映画や番組を観る</string>
+    <string name="tagline_youtube">動画を観る</string>
+    <string name="tagline_youtube_music">音楽を聴く</string>
+    <string name="tagline_google_tv">映画や番組を探す</string>
+    <string name="tagline_spotify">音楽やポッドキャストを聴く</string>
+    <string name="tagline_play_store">アプリのインストールと更新</string>
+    <string name="tagline_settings">テレビの設定を変更</string>
+    <string name="tagline_prime_video">映画や番組を観る</string>
+    <string name="tagline_default">OK を押して開く</string>
+
+    <!-- Edit mode -->
+    <string name="edit_mode">編集モード</string>
+    <string name="edit_apps_subtitle">アプリを並べ替え</string>
+    <string name="edit_hint_move">移動</string>
+    <string name="edit_hint_drop">配置</string>
+    <string name="edit_hint_remove">✕ で削除</string>
+    <string name="edit_hint_done">完了</string>
+    <string name="edit_row_hint">選んで並べ替え</string>
+    <string name="edit_drop_at">%1$d 番目に配置</string>
+    <string name="edit_pick_up">で選択</string>
+    <string name="add_app">アプリを追加</string>
+    <string name="no_hidden_apps">すべてのアプリがホーム画面にあります。</string>
+
+    <!-- Settings navigation -->
+    <string name="settings_title">設定</string>
+    <string name="settings_network">ネットワークとインターネット</string>
+    <string name="settings_network_sub">Wi‑Fi と接続</string>
+    <string name="settings_display_sound">ディスプレイと音声</string>
+    <string name="settings_display_sound_sub">画質と音声</string>
+    <string name="settings_apps">アプリ</string>
+    <string name="settings_apps_sub">インストール済みアプリ</string>
+    <string name="settings_inputs">入力 / HDMI</string>
+    <string name="settings_inputs_sub">接続されたデバイス</string>
+    <string name="settings_home">ホーム画面</string>
+    <string name="settings_home_sub">外観とレイアウト</string>
+    <string name="settings_device">デバイス / ストレージと RAM</string>
+    <string name="settings_device_sub">メモリとストレージ</string>
+    <string name="settings_bluetooth">Bluetooth とリモコン</string>
+    <string name="settings_bluetooth_sub">リモコンとアクセサリ</string>
+    <string name="settings_about">このアプリについて</string>
+    <string name="settings_about_sub">バージョンとライセンス</string>
+
+    <!-- System links -->
+    <string name="open_in_tv_settings">開く</string>
+    <string name="system_network">ネットワーク設定</string>
+    <string name="system_network_sub">Wi‑Fi、Ethernet、プロキシ</string>
+    <string name="system_display">ディスプレイ設定</string>
+    <string name="system_display_sub">解像度と画質</string>
+    <string name="system_sound">サウンド設定</string>
+    <string name="system_sound_sub">音声出力とエフェクト</string>
+    <string name="system_apps">アプリを管理</string>
+    <string name="system_apps_sub">権限、ストレージ、アップデート</string>
+    <string name="system_bluetooth">リモコンとアクセサリ</string>
+    <string name="system_bluetooth_sub">リモコン、ゲームパッド、ヘッドホンをペア設定</string>
+    <string name="note_system_settings">テレビ本体の設定画面が開きます。</string>
+    <string name="note_system_settings_missing">このテレビには該当する画面がないため、テレビの設定のメイン画面を開きました。</string>
+
+    <!-- Home screen settings -->
+    <string name="setting_adaptive_background">背景をアプリに合わせる</string>
+    <string name="setting_adaptive_background_sub">選択中のアプリの色を使用</string>
+    <string name="setting_clock_format">時刻の表示形式</string>
+    <string name="clock_24">24 時間</string>
+    <string name="clock_12">12 時間</string>
+    <string name="setting_city">天気の地域</string>
+    <string name="setting_app_order">アプリを並べ替え</string>
+    <string name="setting_app_order_sub">カードで OK を長押ししても並べ替えできます</string>
+    <string name="setting_widget_inputs">入力を表示</string>
+    <string name="setting_widget_inputs_sub">HDMI デバイスの列</string>
+    <string name="setting_memory_warning">メモリ警告</string>
+    <string name="setting_memory_warning_sub">RAM 使用率がこのレベルを超えると警告</string>
+    <string name="setting_show_seconds">秒を表示</string>
+    <string name="setting_greeting">あいさつ</string>
+    <string name="setting_widget_clock">時計と日付</string>
+    <string name="setting_widget_weather">天気</string>
+    <string name="setting_unit">温度の単位</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+    <string name="setting_refresh">天気の更新</string>
+    <string name="every_minutes">%1$d 分ごと</string>
+    <string name="setting_widget_airplay">AirPlay の状態</string>
+    <string name="setting_widget_airplay_sub_full">AirPlay で再生中のときに表示</string>
+    <string name="setting_widget_airplay_sub_limited">AirPlay が利用可能かどうかを表示</string>
+    <string name="setting_widget_memory">RAM メーター</string>
+    <string name="setting_reduce_motion">視差効果を減らす</string>
+    <string name="setting_phone_bridge">スマートフォンの通知</string>
+    <string name="setting_phone_bridge_sub">Android スマートフォンのみ。iPhone では利用できません。</string>
+    <string name="coming_soon">近日公開</string>
+
+    <!-- Inputs -->
+    <string name="setting_auto_detect">接続デバイスを認識</string>
+    <string name="setting_auto_detect_sub">デバイスが HDMI‑CEC で送信する名前を使用します</string>
+    <string name="setting_hide_disconnected">空の入力を非表示</string>
+    <string name="note_inputs">ゲーム機、Apple TV、ほとんどのセットトップボックスは名前を送信します。PC や Mac は通常送信しないため、ロゴを選択してください。</string>
+    <string name="note_no_inputs">テレビから HDMI 入力が報告されていません。</string>
+    <string name="badge_auto">自動</string>
+    <string name="badge_manual">手動</string>
+    <string name="badge_tv_name">テレビの名前</string>
+    <string name="badge_not_detected">未検出</string>
+    <string name="edit_input">入力を編集</string>
+    <string name="detected_as">%1$s · 検出されたデバイス: %2$s</string>
+    <string name="tv_named_as">%1$s · テレビの設定での名前「%2$s」</string>
+    <string name="not_detected_long">%1$s · デバイス名を受信していません。ロゴを選ぶと名前も設定されます。</string>
+    <string name="field_name">名前</string>
+    <string name="field_logo">ロゴ</string>
+    <string name="reset_detected">検出された値に戻す</string>
+    <string name="logo_satellite">セットトップボックス</string>
+    <string name="logo_playstation">PlayStation</string>
+    <string name="logo_xbox">Xbox</string>
+    <string name="logo_nintendo">Nintendo Switch</string>
+    <string name="logo_pc">PC</string>
+    <string name="logo_mac">Mac</string>
+    <string name="logo_apple_tv">Apple TV</string>
+    <string name="logo_fire_tv">Fire TV</string>
+    <string name="logo_tv_box">TV ボックス</string>
+    <string name="logo_soundbar">サウンドバー</string>
+    <string name="logo_console">ゲーム機</string>
+    <string name="logo_other">その他</string>
+
+    <!-- Device -->
+    <string name="setting_ram_usage">RAM 使用量</string>
+    <string name="memory_usage">%1$d%% · 空き %2$s</string>
+    <string name="setting_clean_now">今すぐ RAM を解放</string>
+    <string name="setting_clean_now_sub">バックグラウンドで待機中のアプリを終了します</string>
+    <string name="setting_auto_clean">自動で解放</string>
+    <string name="setting_auto_clean_sub">メモリ警告レベルを超えたとき</string>
+    <string name="setting_exclusions">終了しないアプリ</string>
+    <string name="none">なし</string>
+    <string name="app_count">アプリ: %1$d</string>
+    <string name="setting_storage">ストレージ</string>
+    <string name="storage_value">%2$s 中 %1$s 空き</string>
+    <string name="note_memory">終了するのはアプリリストのアプリのみで、入力やリモコンなどのテレビのサービスには影響しません。Android が一部のアプリを再起動することがあるため、効果は一時的です。</string>
+    <string name="note_exclusions">ここでオンにしたアプリは、RAM を解放するときに終了されません。</string>
+
+    <!-- Weather search -->
+    <string name="city_placeholder">東京</string>
+    <string name="note_city_search">2 文字以上入力してください。位置情報の権限は使用しません。</string>
+    <string name="searching">検索中…</string>
+    <string name="search_failed">天気サービスに接続できませんでした。接続を確認して、もう一度お試しください。</string>
+    <string name="no_results">一致する都市はありません。</string>
+
+    <!-- About -->
+    <string name="setting_version">バージョン</string>
+    <string name="setting_default_home">デフォルトのホーム画面</string>
+    <string name="setting_default_home_sub">ホームボタンで Matinee を開くようにします</string>
+    <string name="note_home_settings_missing">このテレビにはホームアプリの選択画面がありません。ホームボタンを一度押し、表示されたら Matinee を選択してください。</string>
+    <string name="setting_reset">ランチャーの設定をリセット</string>
+    <string name="reset_action">リセット</string>
+    <string name="reset_confirm">もう一度押して確定</string>
+
+    <!-- Profile menu -->
+    <string name="a11y_profile_menu">プロフィール メニュー</string>
+    <string name="profile_default_name">プロフィール</string>
+    <string name="chromecast">Chromecast</string>
+    <string name="receiver_off">オフ</string>
+    <string name="receiver_not_supported">このテレビでは利用できません</string>
+    <string name="airplay_ready_long">準備完了</string>
+    <string name="airplay_playing_long">再生中</string>
+    <string name="cast_ready">キャスト可能</string>
+    <string name="cast_playing">キャストを受信中</string>
+    <string name="memory_title">RAM %1$d%%</string>
+    <string name="setting_chromecast">Chromecast の状態</string>
+    <string name="setting_chromecast_sub">テレビが Google Cast のストリームを受信できるかどうかを表示</string>
+    <string name="setting_profile_name">プロフィール名</string>
+    <string name="not_set">未設定</string>
+    <string name="setting_profile_color">プロフィールの色</string>
+    <string name="color_number">色 %1$d</string>
+    <string name="setting_profile_photo">プロフィール写真</string>
+    <string name="setting_profile_photo_sub">パソコンから追加します。未設定の場合はイニシャルを表示</string>
+    <string name="photo_present">追加済み</string>
+    <string name="photo_missing">なし</string>
+    <string name="profile_name_placeholder">お名前</string>
+    <string name="note_profile_name">プロフィール写真がない場合はイニシャルが使われます。</string>
+
+    <string name="setting_show_system_apps">システムアプリを表示</string>
+    <string name="setting_show_system_apps_sub">テレビメーカーの組み込みコンポーネント。デフォルトでは非表示</string>
+
+    <string name="setting_default_home_sub_set">ホームボタンで Matinee が開きます</string>
+    <string name="default_home_self">Matinee</string>
+    <string name="default_home_other">別のランチャー</string>
+
+    <!-- Last played -->
+    <string name="continue_with_ok_suffix">で続きを再生</string>
+    <string name="last_played_badge">最後に再生 · %1$s</string>
+    <string name="just_now">たった今</string>
+    <string name="setting_last_played">最後に再生したものを表示</string>
+    <string name="setting_last_played_sub">各アプリで最後に再生したもの。このテレビにのみ保存されます</string>
+    <string name="setting_clear_history">再生履歴を消去</string>
+    <string name="history_cleared">消去しました</string>
+    <string name="a11y_remove_app">%1$s をホーム画面から削除</string>
+
+    <string name="network_wifi">Wi‑Fi に接続済み。ネットワーク設定を開きます</string>
+    <string name="network_ethernet">有線接続。ネットワーク設定を開きます</string>
+    <string name="network_no_internet">接続済み、インターネットなし。ネットワーク設定を開きます</string>
+    <string name="network_offline">未接続。ネットワーク設定を開きます</string>
+
+    <string name="setting_notification_access">通知へのアクセス</string>
+    <string name="setting_notification_access_sub">メディアの再生情報と Play Store のアップデート通知のみを読み取ります。データがテレビの外に送信されることはありません。</string>
+
+    <string name="home_key_service_label">Matinee ホームボタン</string>
+    <string name="home_key_service_description">リモコンのホームボタンで Matinee を開けるようにします。Matinee はホームボタンのみを検知し、画面の内容を読み取ることはありません。</string>
+    <string name="setting_home_key">ホームボタンで Matinee を開く</string>
+    <string name="setting_home_key_sub">ホームボタンのみを検知するユーザー補助の権限を使用します。画面の内容は読み取りません。</string>
+
+    <string name="setting_wifi_name">Wi‑Fi ネットワーク名を表示</string>
+    <string name="setting_wifi_name_sub">Android は位置情報の権限を持つアプリにのみネットワーク名を共有します。Matinee はそれ以外の目的に使用しません。</string>
+    <string name="network_details_offline">未接続</string>
+    <string name="network_details_no_internet">インターネットなし</string>
+    <string name="network_details_ethernet">有線接続</string>
+    <string name="network_details_wifi">Wi‑Fi</string>
+    <string name="network_speed_measuring">速度を測定中…</string>
+    <string name="network_speed_value">ダウンロード %1$d Mbps</string>
+    <string name="network_speed_failed">速度を測定できませんでした</string>
+    <string name="network_link_value">リンク速度 %1$d Mbps</string>
+
+    <string name="all_apps">すべて</string>
+    <string name="all_apps_title">すべてのアプリ（%1$d）</string>
+    <string name="minutes_left">残り %1$d 分</string>
+    <string name="setting_home_layout">レイアウト</string>
+    <string name="setting_home_layout_sub">列: 大きなタイトル付きのアプリ 1 列。グリッド: すべてのアプリの上にお気に入りの棚。</string>
+    <string name="home_layout_row">列</string>
+    <string name="home_layout_grid">グリッド</string>
+    <string name="grid_favorites_hint">アプリで OK を長押しすると上の棚に移動できます</string>
+    <string name="setting_card_theme">カードのスタイル</string>
+    <string name="card_theme_dark">ダーク</string>
+    <string name="card_theme_light">ライト</string>
+
+    <string name="last_played_other_apps">他のアプリで</string>
+
+    <string name="input_power_on">オン</string>
+    <string name="input_power_standby">スタンバイ中</string>
+
+    <string name="settings_tv">テレビの設定</string>
+    <string name="settings_tv_sub">テレビ本体の設定</string>
+    <string name="system_tv_settings">テレビの設定を開く</string>
+    <string name="system_tv_settings_sub">画質、音声、ネットワーク、アプリなど、テレビのすべての設定</string>
+    <string name="setting_language">言語</string>
+    <string name="language_system">システム</string>
+    <string name="setting_licenses">ライセンス</string>
+    <string name="license_text">天気データ: Open‑Meteo.com（CC BY 4.0 ライセンス）。\nアイコン: Tabler Icons（MIT ライセンス）。\n書体: Inter（SIL Open Font License 1.1）。\nアプリのアイコンとバナーは各アプリに帰属します。</string>
+    <string name="credits_made_by">制作: %1$s</string>
+
+    <string name="minutes_ago">%1$d 分前</string>
+    <string name="hours_ago">%1$d 時間前</string>
+    <string name="days_ago">%1$d 日前</string>
+    <string name="cancel">キャンセル</string>
+    <string name="home_key_disclosure_title">ホームボタンで Matinee を開きますか？</string>
+    <string name="home_key_disclosure_body">一部のテレビでは、ホームボタンが内蔵のランチャー専用になっています。代わりに Matinee を開くため、Matinee は Android のユーザー補助の権限を使用します。\n\n検知するのはリモコンのホームボタンのみです。画面の内容、入力した文字、その他のキーは読み取らず、どこにもデータを送信しません。\n\n次の画面で「Matinee ホームボタン」を選び、オンにしてください。この設定はいつでもそこでオフにできます。</string>
+    <string name="home_key_disclosure_accept">同意して続行</string>
+    <string name="home_key_restricted_title">まず Google Play から Matinee をインストールしてください</string>
+    <string name="home_key_restricted_body">このテレビでは、APK ファイルからインストールしたアプリはユーザー補助の権限を使用できないため、スイッチが自動的にオフに戻ります。\n\nMatinee をアンインストールし、Google Play からインストールしてから、もう一度オンにしてください。</string>
+    <string name="home_key_restricted_try">このまま試す</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">通知</string>
+    <string name="notifications_clear_all">すべて消去</string>
+    <string name="notifications_empty">新しい通知はありません。</string>
+    <string name="notifications_access_needed">Matinee に通知へのアクセスを許可すると、Play Store のアップデートがここに表示されます。</string>
+    <string name="notice_play_source">Play Store</string>
+    <string name="notice_new_device">新しいデバイス: %1$s</string>
+    <string name="notice_new_device_sub">%1$s に接続されました</string>
+    <string name="notice_memory_high">RAM が %1$d%% に達しました</string>
+    <string name="notice_memory_high_sub">警告レベルは %1$d%% です</string>
+    <string name="notice_action_play">Play Store で開く</string>
+    <string name="notice_action_device">入力を切り替え</string>
+    <string name="notice_action_memory">RAM を解放</string>
+    <plurals name="a11y_notifications">
+        <item quantity="other">通知、新着 %1$d 件</item>
+    </plurals>
+    <string name="setting_notifications">通知ベル</string>
+    <string name="setting_notifications_sub">アプリのアップデート、新しいデバイス、RAM の警告</string>
+    <string name="setting_play_updates">Play Store のアップデート</string>
+    <string name="setting_play_updates_sub_ok">Play Store 自体のアップデート通知を表示</string>
+    <string name="setting_play_updates_sub_missing">Matinee に通知へのアクセスが必要です</string>
+
+    <string name="switch_on">オン</string>
+    <string name="switch_off">オフ</string>
+</resources>

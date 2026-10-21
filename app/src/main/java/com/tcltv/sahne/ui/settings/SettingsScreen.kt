@@ -65,6 +65,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.input.ImeAction
@@ -113,6 +114,7 @@ private sealed interface SubPage {
     data object Licenses : SubPage
     data class InputEditor(val inputId: String) : SubPage
     data object CleanExclusions : SubPage
+    data object Language : SubPage
 }
 
 private val RowFocusFill = Color.White.copy(alpha = 0.1f)
@@ -180,6 +182,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                     SubPage.ProfileName -> stringResource(R.string.setting_profile_name)
                     SubPage.Licenses -> stringResource(R.string.setting_licenses)
                     SubPage.CleanExclusions -> stringResource(R.string.setting_exclusions)
+                    SubPage.Language -> stringResource(R.string.setting_language)
                     is SubPage.InputEditor -> stringResource(R.string.edit_input)
                 },
                 subtitle = stringResource(section.subtitle),
@@ -194,6 +197,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                 SubPage.ProfileName -> ProfileNamePage(viewModel, panelRequester)
                 SubPage.Licenses -> LicensesPage(panelRequester)
                 SubPage.CleanExclusions -> CleanExclusionsPage(viewModel, panelRequester)
+                SubPage.Language -> LanguagePage(panelRequester)
             }
         }
 
@@ -542,7 +546,7 @@ private fun AboutPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, o
     var confirmReset by remember { mutableStateOf(false) }
     PanelList {
         InfoRow(R.string.setting_version, null, viewModel.versionName, modifier = Modifier.focusRequester(firstRow))
-        LanguageRow()
+        LanguageRow { open(SubPage.Language) }
         DefaultHomeRow(viewModel, Modifier)
         ValueRow(R.string.setting_reset, null, stringResource(if (confirmReset) R.string.reset_confirm else R.string.reset_action)) {
             if (confirmReset) {
@@ -558,24 +562,31 @@ private fun AboutPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, o
 }
 
 @Composable
-private fun LanguageRow() {
+private fun LanguageRow(onClick: () -> Unit) {
     val context = LocalContext.current
     val current = remember { AppLanguage.current(context) }
-    ValueRow(
-        R.string.setting_language,
-        null,
-        stringResource(
-            when (current) {
-                AppLanguage.SYSTEM -> R.string.language_system
-                AppLanguage.TURKISH -> R.string.language_turkish
-                AppLanguage.ENGLISH -> R.string.language_english
-            },
-        ),
-    ) {
-        val next = AppLanguage.entries[(current.ordinal + 1) % AppLanguage.entries.size]
-        AppLanguage.save(context, next)
-        // Resources are resolved when the activity is created, so the new language needs a fresh one.
-        (context as? Activity)?.recreate()
+    ValueRow(R.string.setting_language, null, stringResource(current.label), onClick = onClick)
+}
+
+@Composable
+private fun LanguagePage(firstRow: FocusRequester) {
+    val context = LocalContext.current
+    val current = remember { AppLanguage.current(context) }
+    LaunchedEffect(Unit) { runCatching { firstRow.requestFocus() } }
+    PanelList {
+        AppLanguage.entries.forEach { language ->
+            ChoiceRow(
+                label = stringResource(language.label),
+                selected = language == current,
+                modifier = if (language == current) Modifier.focusRequester(firstRow) else Modifier,
+            ) {
+                if (language != current) {
+                    AppLanguage.save(context, language)
+                    // Resources are resolved when the activity is created, so the new language needs a fresh one.
+                    (context as? Activity)?.recreate()
+                }
+            }
+        }
     }
 }
 
@@ -851,6 +862,27 @@ private fun ValueRow(label: String, subtitle: String?, value: String?, modifier:
         }
         Spacer(Modifier.width(10.dp))
         TintedIcon(R.drawable.ic_chevron_right, 11.dp, Color.White.copy(alpha = 0.6f))
+    }
+}
+
+/** One option of a single-choice list, marked with a filled ring when selected. */
+@Composable
+private fun ChoiceRow(label: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    FocusRow(
+        onClick = onClick,
+        modifier = modifier.semantics {
+            role = Role.RadioButton
+            this.selected = selected
+        },
+    ) {
+        RowLabel(label, null, Modifier.weight(1f))
+        Spacer(Modifier.width(12.dp))
+        Box(
+            Modifier.size(20.dp).border(2.dp, if (selected) Palette.ToggleOn else Color.White.copy(alpha = 0.4f), CircleShape),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (selected) Box(Modifier.size(10.dp).background(Palette.ToggleOn, CircleShape))
+        }
     }
 }
 

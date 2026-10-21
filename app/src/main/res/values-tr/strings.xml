@@ -265,8 +265,6 @@
     <string name="system_tv_settings_sub">Görüntü, ses, ağ, uygulamalar ve TV\'nin sunduğu diğer her şey</string>
     <string name="setting_language">Dil</string>
     <string name="language_system">Sistem</string>
-    <string name="language_turkish">Türkçe</string>
-    <string name="language_english">English</string>
     <string name="setting_licenses">Lisanslar</string>
     <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.</string>
     <string name="credits_made_by">%1$s tarafından geliştirildi</string>

@@ -1,5 +1,6 @@
 package com.tcltv.sahne.ui.home
 
+import android.text.format.DateFormat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
@@ -134,6 +135,8 @@ private fun ClockWeatherPill(viewModel: LauncherViewModel, onOpenSettings: () ->
     val now = rememberNow(settings.showSeconds)
     var focused by remember { mutableStateOf(false) }
     val locale = Locale.getDefault()
+    // The locale's own order for weekday, day and month ("Mi. 21. Okt.", "10月21日(水)") instead of a fixed English order.
+    val datePattern = remember(locale) { DateTimeFormatter.ofPattern(DateFormat.getBestDateTimePattern(locale, "EEEdMMM"), locale) }
     val timePattern = when {
         settings.use24Hour && settings.showSeconds -> "HH:mm:ss"
         settings.use24Hour -> "HH:mm"
@@ -157,7 +160,7 @@ private fun ClockWeatherPill(viewModel: LauncherViewModel, onOpenSettings: () ->
         if (settings.showClock) {
             BasicText(now.format(DateTimeFormatter.ofPattern(timePattern, locale)), style = interStyle(19.sp, 600, letterSpacing = (-0.3).sp))
             Spacer(Modifier.width(9.dp))
-            BasicText(now.format(DateTimeFormatter.ofPattern("EEE d MMM", locale)), style = interStyle(11.5.sp, 500, Palette.TextSecondary))
+            BasicText(now.format(datePattern), style = interStyle(11.5.sp, 500, Palette.TextSecondary))
         }
         if (settings.showClock && settings.showWeather) {
             Spacer(Modifier.width(10.dp))

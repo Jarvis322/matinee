@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Home -->
+    <string name="greeting_morning">早上好</string>
+    <string name="greeting_day">下午好</string>
+    <string name="greeting_evening">晚上好</string>
+    <string name="greeting_night">晚安</string>
+    <string name="greeting_morning_name">早上好，%1$s</string>
+    <string name="greeting_day_name">下午好，%1$s</string>
+    <string name="greeting_evening_name">晚上好，%1$s</string>
+    <string name="greeting_night_name">晚安，%1$s</string>
+    <string name="key_ok">OK</string>
+    <string name="key_back">返回</string>
+    <string name="open_with_ok_suffix">打开</string>
+    <string name="app_info">应用信息</string>
+    <string name="section_apps">应用</string>
+    <string name="section_inputs">信号源</string>
+    <string name="hint_navigate">移动</string>
+    <string name="hint_open">打开</string>
+    <string name="hint_back">返回</string>
+    <string name="hint_select">选择</string>
+    <string name="airplay">AirPlay</string>
+    <string name="percent_value">%1$d%%</string>
+    <string name="memory_clean">释放</string>
+    <string name="memory_cleaning">正在释放…</string>
+    <string name="memory_freed_mb">已释放 %1$d MB</string>
+    <string name="weather_unavailable">暂无天气</string>
+    <string name="a11y_open_launcher_settings">时钟和天气。打开启动器设置</string>
+
+    <!-- App taglines -->
+    <string name="tagline_netflix">观看电影和剧集</string>
+    <string name="tagline_youtube">观看视频</string>
+    <string name="tagline_youtube_music">收听音乐</string>
+    <string name="tagline_google_tv">浏览你的电影和剧集</string>
+    <string name="tagline_spotify">收听音乐和播客</string>
+    <string name="tagline_play_store">安装和更新应用</string>
+    <string name="tagline_settings">调整电视设置</string>
+    <string name="tagline_prime_video">观看电影和剧集</string>
+    <string name="tagline_default">按 OK 打开</string>
+
+    <!-- Edit mode -->
+    <string name="edit_mode">编辑模式</string>
+    <string name="edit_apps_subtitle">排列你的应用</string>
+    <string name="edit_hint_move">移动</string>
+    <string name="edit_hint_drop">放下</string>
+    <string name="edit_hint_remove">按 ✕ 移除</string>
+    <string name="edit_hint_done">完成</string>
+    <string name="edit_row_hint">拿起并重新排序</string>
+    <string name="edit_drop_at">放到第 %1$d 位</string>
+    <string name="edit_pick_up">拿起</string>
+    <string name="add_app">添加应用</string>
+    <string name="no_hidden_apps">所有应用都已在主屏幕上。</string>
+
+    <!-- Settings navigation -->
+    <string name="settings_title">设置</string>
+    <string name="settings_network">网络和互联网</string>
+    <string name="settings_network_sub">Wi‑Fi 和连接</string>
+    <string name="settings_display_sound">显示和声音</string>
+    <string name="settings_display_sound_sub">画面和音频</string>
+    <string name="settings_apps">应用</string>
+    <string name="settings_apps_sub">已安装的应用</string>
+    <string name="settings_inputs">信号源 / HDMI</string>
+    <string name="settings_inputs_sub">已连接的设备</string>
+    <string name="settings_home">主屏幕</string>
+    <string name="settings_home_sub">外观和布局</string>
+    <string name="settings_device">设备 / 存储和 RAM</string>
+    <string name="settings_device_sub">内存和存储空间</string>
+    <string name="settings_bluetooth">Bluetooth 和遥控器</string>
+    <string name="settings_bluetooth_sub">遥控器和配件</string>
+    <string name="settings_about">关于</string>
+    <string name="settings_about_sub">版本和许可</string>
+
+    <!-- System links -->
+    <string name="open_in_tv_settings">打开</string>
+    <string name="system_network">网络设置</string>
+    <string name="system_network_sub">Wi‑Fi、Ethernet 和代理</string>
+    <string name="system_display">显示设置</string>
+    <string name="system_display_sub">分辨率和画面</string>
+    <string name="system_sound">声音设置</string>
+    <string name="system_sound_sub">音频输出和音效</string>
+    <string name="system_apps">管理应用</string>
+    <string name="system_apps_sub">权限、存储空间和更新</string>
+    <string name="system_bluetooth">遥控器和配件</string>
+    <string name="system_bluetooth_sub">配对遥控器、手柄或耳机</string>
+    <string name="note_system_settings">这些选项会打开电视自带的设置页面。</string>
+    <string name="note_system_settings_missing">这台电视没有对应的设置页面，因此已改为打开电视主设置。</string>
+
+    <!-- Home screen settings -->
+    <string name="setting_adaptive_background">背景跟随应用</string>
+    <string name="setting_adaptive_background_sub">使用当前选中应用的颜色</string>
+    <string name="setting_clock_format">时钟格式</string>
+    <string name="clock_24">24 小时制</string>
+    <string name="clock_12">12 小时制</string>
+    <string name="setting_city">天气城市</string>
+    <string name="setting_app_order">排列应用</string>
+    <string name="setting_app_order_sub">也可以在卡片上长按 OK</string>
+    <string name="setting_widget_inputs">显示信号源</string>
+    <string name="setting_widget_inputs_sub">HDMI 设备行</string>
+    <string name="setting_memory_warning">内存警告</string>
+    <string name="setting_memory_warning_sub">RAM 使用率超过此值时提醒</string>
+    <string name="setting_show_seconds">显示秒</string>
+    <string name="setting_greeting">问候语</string>
+    <string name="setting_widget_clock">时钟和日期</string>
+    <string name="setting_widget_weather">天气</string>
+    <string name="setting_unit">温度单位</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+    <string name="setting_refresh">天气更新</string>
+    <string name="every_minutes">每 %1$d 分钟</string>
+    <string name="setting_widget_airplay">AirPlay 状态</string>
+    <string name="setting_widget_airplay_sub_full">通过 AirPlay 播放内容时显示</string>
+    <string name="setting_widget_airplay_sub_limited">显示 AirPlay 是否可用</string>
+    <string name="setting_widget_memory">RAM 指示</string>
+    <string name="setting_reduce_motion">减少动态效果</string>
+    <string name="setting_phone_bridge">手机通知</string>
+    <string name="setting_phone_bridge_sub">仅限 Android 手机。iPhone 不支持此功能。</string>
+    <string name="coming_soon">即将推出</string>
+
+    <!-- Inputs -->
+    <string name="setting_auto_detect">识别已连接的设备</string>
+    <string name="setting_auto_detect_sub">使用设备通过 HDMI‑CEC 发送的名称</string>
+    <string name="setting_hide_disconnected">隐藏空闲信号源</string>
+    <string name="note_inputs">游戏机、Apple TV 和大多数机顶盒会发送自己的名称。电脑和 Mac 通常不会，请为它们选择一个标志。</string>
+    <string name="note_no_inputs">电视未报告任何 HDMI 信号源。</string>
+    <string name="badge_auto">自动</string>
+    <string name="badge_manual">手动</string>
+    <string name="badge_tv_name">电视名称</string>
+    <string name="badge_not_detected">未检测到</string>
+    <string name="edit_input">编辑信号源</string>
+    <string name="detected_as">%1$s · 检测到的设备：%2$s</string>
+    <string name="tv_named_as">%1$s · 在电视设置中名为“%2$s”</string>
+    <string name="not_detected_long">%1$s · 未收到设备名称。选择一个标志，名称会随之设置。</string>
+    <string name="field_name">名称</string>
+    <string name="field_logo">标志</string>
+    <string name="reset_detected">恢复为检测结果</string>
+    <string name="logo_satellite">机顶盒</string>
+    <string name="logo_playstation">PlayStation</string>
+    <string name="logo_xbox">Xbox</string>
+    <string name="logo_nintendo">Nintendo Switch</string>
+    <string name="logo_pc">PC</string>
+    <string name="logo_mac">Mac</string>
+    <string name="logo_apple_tv">Apple TV</string>
+    <string name="logo_fire_tv">Fire TV</string>
+    <string name="logo_tv_box">电视盒子</string>
+    <string name="logo_soundbar">回音壁</string>
+    <string name="logo_console">游戏机</string>
+    <string name="logo_other">其他</string>
+
+    <!-- Device -->
+    <string name="setting_ram_usage">RAM 使用情况</string>
+    <string name="memory_usage">%1$d%% · 可用 %2$s</string>
+    <string name="setting_clean_now">立即释放 RAM</string>
+    <string name="setting_clean_now_sub">关闭在后台等待的应用</string>
+    <string name="setting_auto_clean">自动释放</string>
+    <string name="setting_auto_clean_sub">超过内存警告值时</string>
+    <string name="setting_exclusions">永不关闭</string>
+    <string name="none">无</string>
+    <string name="app_count">应用：%1$d</string>
+    <string name="setting_storage">存储空间</string>
+    <string name="storage_value">可用 %1$s，共 %2$s</string>
+    <string name="note_memory">只会关闭应用列表中的应用；信号源、遥控器等电视服务绝不会受影响。Android 可能会重新启动部分应用，因此效果是暂时的。</string>
+    <string name="note_exclusions">在此开启的应用在释放 RAM 时绝不会被关闭。</string>
+
+    <!-- Weather search -->
+    <string name="city_placeholder">北京</string>
+    <string name="note_city_search">请至少输入两个字。不使用位置权限。</string>
+    <string name="searching">正在搜索…</string>
+    <string name="search_failed">无法连接天气服务。请检查网络连接后重试。</string>
+    <string name="no_results">没有匹配的城市。</string>
+
+    <!-- About -->
+    <string name="setting_version">版本</string>
+    <string name="setting_default_home">默认主屏幕</string>
+    <string name="setting_default_home_sub">按主页键时打开 Matinee</string>
+    <string name="note_home_settings_missing">这台电视没有主屏幕应用选择器。请按一次主页键，并在询问时选择 Matinee。</string>
+    <string name="setting_reset">重置启动器设置</string>
+    <string name="reset_action">重置</string>
+    <string name="reset_confirm">再按一次以确认</string>
+
+    <!-- Profile menu -->
+    <string name="a11y_profile_menu">个人资料菜单</string>
+    <string name="profile_default_name">个人资料</string>
+    <string name="chromecast">Chromecast</string>
+    <string name="receiver_off">已关闭</string>
+    <string name="receiver_not_supported">此电视不支持</string>
+    <string name="airplay_ready_long">就绪</string>
+    <string name="airplay_playing_long">正在播放</string>
+    <string name="cast_ready">可以投放</string>
+    <string name="cast_playing">正在接收投放</string>
+    <string name="memory_title">RAM %1$d%%</string>
+    <string name="setting_chromecast">Chromecast 状态</string>
+    <string name="setting_chromecast_sub">显示电视是否已准备好接收 Google Cast 投放</string>
+    <string name="setting_profile_name">个人资料名称</string>
+    <string name="not_set">未设置</string>
+    <string name="setting_profile_color">个人资料颜色</string>
+    <string name="color_number">颜色 %1$d</string>
+    <string name="setting_profile_photo">个人资料照片</string>
+    <string name="setting_profile_photo_sub">从电脑添加；未添加时显示姓名首字母</string>
+    <string name="photo_present">已添加</string>
+    <string name="photo_missing">无</string>
+    <string name="profile_name_placeholder">你的名字</string>
+    <string name="note_profile_name">没有个人资料照片时，将使用你的姓名首字母。</string>
+
+    <string name="setting_show_system_apps">显示系统应用</string>
+    <string name="setting_show_system_apps_sub">电视厂商的内置组件；默认隐藏</string>
+
+    <string name="setting_default_home_sub_set">按主页键时会打开 Matinee</string>
+    <string name="default_home_self">Matinee</string>
+    <string name="default_home_other">其他启动器</string>
+
+    <!-- Last played -->
+    <string name="continue_with_ok_suffix">继续</string>
+    <string name="last_played_badge">上次播放 · %1$s</string>
+    <string name="just_now">刚刚</string>
+    <string name="setting_last_played">显示上次播放</string>
+    <string name="setting_last_played_sub">各应用上次播放的内容；仅保存在这台电视上</string>
+    <string name="setting_clear_history">清除上次播放</string>
+    <string name="history_cleared">已清除</string>
+    <string name="a11y_remove_app">从主屏幕移除 %1$s</string>
+
+    <string name="network_wifi">已连接 Wi‑Fi。打开网络设置</string>
+    <string name="network_ethernet">有线连接。打开网络设置</string>
+    <string name="network_no_internet">已连接，但无法访问互联网。打开网络设置</string>
+    <string name="network_offline">未连接。打开网络设置</string>
+
+    <string name="setting_notification_access">通知使用权</string>
+    <string name="setting_notification_access_sub">仅读取媒体播放信息和 Play Store 更新通知。所有数据都不会离开电视。</string>
+
+    <string name="home_key_service_label">Matinee 主页键</string>
+    <string name="home_key_service_description">让遥控器的主页键打开 Matinee。Matinee 只监听主页键，绝不读取屏幕上的内容。</string>
+    <string name="setting_home_key">主页键打开 Matinee</string>
+    <string name="setting_home_key_sub">使用仅监听主页键的无障碍权限。不会读取屏幕上的任何内容。</string>
+
+    <string name="setting_wifi_name">显示 Wi‑Fi 网络名称</string>
+    <string name="setting_wifi_name_sub">Android 只向拥有位置权限的应用提供网络名称。Matinee 不会将其用于其他用途。</string>
+    <string name="network_details_offline">未连接</string>
+    <string name="network_details_no_internet">无法访问互联网</string>
+    <string name="network_details_ethernet">有线连接</string>
+    <string name="network_details_wifi">Wi‑Fi</string>
+    <string name="network_speed_measuring">正在测速…</string>
+    <string name="network_speed_value">下载 %1$d Mbps</string>
+    <string name="network_speed_failed">无法测速</string>
+    <string name="network_link_value">连接速率 %1$d Mbps</string>
+
+    <string name="all_apps">全部</string>
+    <string name="all_apps_title">所有应用 (%1$d)</string>
+    <string name="minutes_left">剩余 %1$d 分钟</string>
+    <string name="setting_home_layout">布局</string>
+    <string name="setting_home_layout_sub">行：一行应用配大标题。网格：收藏栏位于所有应用上方。</string>
+    <string name="home_layout_row">行</string>
+    <string name="home_layout_grid">网格</string>
+    <string name="grid_favorites_hint">在应用上长按 OK，可将其移到顶部收藏栏</string>
+    <string name="setting_card_theme">卡片样式</string>
+    <string name="card_theme_dark">深色</string>
+    <string name="card_theme_light">浅色</string>
+
+    <string name="last_played_other_apps">在你的其他应用中</string>
+
+    <string name="input_power_on">已开启</string>
+    <string name="input_power_standby">待机中</string>
+
+    <string name="settings_tv">电视设置</string>
+    <string name="settings_tv_sub">电视自带的设置</string>
+    <string name="system_tv_settings">打开电视设置</string>
+    <string name="system_tv_settings_sub">画面、声音、网络、应用以及电视提供的所有其他设置</string>
+    <string name="setting_language">语言</string>
+    <string name="language_system">跟随系统</string>
+    <string name="setting_licenses">许可</string>
+    <string name="license_text">天气数据由 Open‑Meteo.com 提供，采用 CC BY 4.0 许可。\n图标：Tabler Icons，MIT 许可证。\n字体：Inter，SIL Open Font License 1.1。\n应用图标和横幅归其各自应用所有。</string>
+    <string name="credits_made_by">由 %1$s 制作</string>
+
+    <string name="minutes_ago">%1$d 分钟前</string>
+    <string name="hours_ago">%1$d 小时前</string>
+    <string name="days_ago">%1$d 天前</string>
+    <string name="cancel">取消</string>
+    <string name="home_key_disclosure_title">让主页键打开 Matinee？</string>
+    <string name="home_key_disclosure_body">有些电视会将主页键保留给内置启动器。为了改为打开 Matinee，Matinee 会使用一项 Android 无障碍权限。\n\n它只监听遥控器的主页键，不会读取屏幕上的内容、你输入的内容或任何其他按键，也不会向任何地方发送数据。\n\n在下一个页面中，选择“Matinee 主页键”并将其开启。你可以随时在那里将其关闭。</string>
+    <string name="home_key_disclosure_accept">同意并继续</string>
+    <string name="home_key_restricted_title">请先从 Google Play 安装 Matinee</string>
+    <string name="home_key_restricted_body">这台电视不允许通过 APK 文件安装的应用使用无障碍权限，因此开关会自动关闭。\n\n请卸载 Matinee，从 Google Play 重新安装，然后再次开启此功能。</string>
+    <string name="home_key_restricted_try">仍然尝试</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">通知</string>
+    <string name="notifications_clear_all">全部清除</string>
+    <string name="notifications_empty">没有新通知。</string>
+    <string name="notifications_access_needed">授予 Matinee 通知使用权后，Play Store 更新会显示在这里。</string>
+    <string name="notice_play_source">Play Store</string>
+    <string name="notice_new_device">新设备：%1$s</string>
+    <string name="notice_new_device_sub">已连接到 %1$s</string>
+    <string name="notice_memory_high">RAM 已达 %1$d%%</string>
+    <string name="notice_memory_high_sub">你的警告值为 %1$d%%</string>
+    <string name="notice_action_play">在 Play Store 中打开</string>
+    <string name="notice_action_device">切换到该信号源</string>
+    <string name="notice_action_memory">释放 RAM</string>
+    <plurals name="a11y_notifications">
+        <item quantity="other">通知，%1$d 条新通知</item>
+    </plurals>
+    <string name="setting_notifications">通知铃铛</string>
+    <string name="setting_notifications_sub">应用更新、新设备和 RAM 警告</string>
+    <string name="setting_play_updates">Play Store 更新</string>
+    <string name="setting_play_updates_sub_ok">显示 Play Store 自身的更新通知</string>
+    <string name="setting_play_updates_sub_missing">需要为 Matinee 授予通知使用权</string>
+
+    <string name="switch_on">开</string>
+    <string name="switch_off">关</string>
+</resources>

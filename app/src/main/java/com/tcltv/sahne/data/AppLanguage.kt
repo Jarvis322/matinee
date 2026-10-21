@@ -3,16 +3,23 @@ package com.tcltv.sahne.data
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import androidx.annotation.StringRes
+import com.tcltv.sahne.R
 import java.util.Locale
 
 /**
  * In-app language choice. Kept in plain SharedPreferences rather than DataStore because it must be read
  * synchronously in attachBaseContext, before the activity has any coroutine scope.
  */
-enum class AppLanguage(val tag: String?) {
-    SYSTEM(null),
-    TURKISH("tr"),
-    ENGLISH("en");
+enum class AppLanguage(val tag: String?, @StringRes val label: Int) {
+    SYSTEM(null, R.string.language_system),
+    ENGLISH("en", R.string.language_english),
+    TURKISH("tr", R.string.language_turkish),
+    SPANISH("es", R.string.language_spanish),
+    FRENCH("fr", R.string.language_french),
+    GERMAN("de", R.string.language_german),
+    JAPANESE("ja", R.string.language_japanese),
+    CHINESE("zh-CN", R.string.language_chinese);
 
     companion object {
         private const val PREFS = "app_language"
