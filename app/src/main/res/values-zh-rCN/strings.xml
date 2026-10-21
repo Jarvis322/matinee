@@ -15,6 +15,7 @@
     <string name="app_info">应用信息</string>
     <string name="section_apps">应用</string>
     <string name="section_inputs">信号源</string>
+    <string name="live_tv">直播电视</string>
     <string name="hint_navigate">移动</string>
     <string name="hint_open">打开</string>
     <string name="hint_back">返回</string>

@@ -15,6 +15,7 @@
     <string name="app_info">Uygulama bilgisi</string>
     <string name="section_apps">Uygulamalar</string>
     <string name="section_inputs">Girişler</string>
+    <string name="live_tv">Canlı TV</string>
     <string name="hint_navigate">gez</string>
     <string name="hint_open">aç</string>
     <string name="hint_back">Geri</string>

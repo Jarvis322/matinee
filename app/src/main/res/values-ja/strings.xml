@@ -16,6 +16,7 @@
     <string name="app_info">アプリ情報</string>
     <string name="section_apps">アプリ</string>
     <string name="section_inputs">入力</string>
+    <string name="live_tv">ライブ TV</string>
     <string name="hint_navigate">移動</string>
     <string name="hint_open">開く</string>
     <string name="hint_back">戻る</string>

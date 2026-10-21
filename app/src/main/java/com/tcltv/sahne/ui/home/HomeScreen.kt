@@ -1,6 +1,7 @@
 package com.tcltv.sahne.ui.home
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Spring
@@ -107,6 +108,7 @@ import com.tcltv.sahne.R
 import com.tcltv.sahne.WeatherUiState
 import com.tcltv.sahne.data.DevicePower
 import com.tcltv.sahne.data.HdmiInput
+import com.tcltv.sahne.data.LiveTvInput
 import com.tcltv.sahne.data.LaunchableApp
 import com.tcltv.sahne.data.TemperatureUnit
 import com.tcltv.sahne.ui.AppGlyph
@@ -129,11 +131,12 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
     val apps by viewModel.apps.collectAsStateWithLifecycle()
     val allApps by viewModel.appsForSettings.collectAsStateWithLifecycle()
     val inputs by viewModel.inputs.collectAsStateWithLifecycle()
+    val liveTv by viewModel.liveTvInputs.collectAsStateWithLifecycle()
     val settings by viewModel.settings.collectAsStateWithLifecycle()
     val lastPlayed by viewModel.lastPlayed.collectAsStateWithLifecycle()
 
     if (settings.homeLayout == HomeLayout.GRID) {
-        GridHome(viewModel, apps, allApps, inputs, settings, lastPlayed, resumeTick, onOpenSettings)
+        GridHome(viewModel, apps, allApps, liveTv, inputs, settings, lastPlayed, resumeTick, onOpenSettings)
         return
     }
 
@@ -251,8 +254,10 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
 
         val visibleInputs = if (settings.hideDisconnectedInputs) inputs.filter { it.connected } else inputs
         BottomRow(
+            liveTv = if (settings.showInputs) liveTv else emptyList(),
             inputs = if (settings.showInputs) visibleInputs else emptyList(),
             enabled = !editMode,
+            onOpenLiveTv = viewModel::openLiveTv,
             onOpenInput = viewModel::openInput,
             modifier = Modifier
                 .padding(start = SIDE.dp, end = SIDE.dp, top = if (editMode) 492.dp else 479.dp)
@@ -834,12 +839,24 @@ internal fun AddAppDialog(hiddenApps: List<LaunchableApp>, onAdd: (LaunchableApp
 }
 
 @Composable
-private fun BottomRow(inputs: List<HdmiInput>, enabled: Boolean, onOpenInput: (HdmiInput) -> Unit, modifier: Modifier) {
+private fun BottomRow(
+    liveTv: List<LiveTvInput>,
+    inputs: List<HdmiInput>,
+    enabled: Boolean,
+    onOpenLiveTv: (LiveTvInput) -> Unit,
+    onOpenInput: (HdmiInput) -> Unit,
+    modifier: Modifier,
+) {
     Row(modifier.fillMaxWidth().height(29.dp), verticalAlignment = Alignment.CenterVertically) {
-        if (inputs.isNotEmpty()) {
+        if (liveTv.isNotEmpty() || inputs.isNotEmpty()) {
             BasicText(stringResource(R.string.section_inputs), style = interStyle(12.sp, 600, Color.White.copy(alpha = 0.55f)))
             Spacer(Modifier.width(14.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                liveTv.forEachIndexed { index, input ->
+                    LiveTvChip(input, showLabel = liveTv.size > 1, enabled, isLast = inputs.isEmpty() && index == liveTv.lastIndex) {
+                        onOpenLiveTv(input)
+                    }
+                }
                 inputs.forEachIndexed { index, input ->
                     InputChip(input, enabled, isLast = index == inputs.lastIndex) { onOpenInput(input) }
                 }
@@ -858,8 +875,49 @@ private fun BottomRow(inputs: List<HdmiInput>, enabled: Boolean, onOpenInput: (H
 
 @Composable
 internal fun InputChip(input: HdmiInput, enabled: Boolean, isLast: Boolean, onClick: () -> Unit) {
-    var focused by remember { mutableStateOf(false) }
     val powerText = input.power?.let { stringResource(if (it == DevicePower.ON) R.string.input_power_on else R.string.input_power_standby) }
+    SourceChip(
+        icon = input.logo.icon,
+        title = input.chipTitle,
+        detail = input.chipDevice,
+        power = input.power,
+        description = listOfNotNull(input.chipTitle, input.chipDevice, input.portLabel, powerText).distinct().joinToString(", "),
+        enabled = enabled,
+        isLast = isLast,
+        onClick = onClick,
+    )
+}
+
+/** Opens the TV's own live broadcast on its built-in tuner, like the stock launcher's Live TV button. */
+@Composable
+internal fun LiveTvChip(input: LiveTvInput, showLabel: Boolean, enabled: Boolean, isLast: Boolean, onClick: () -> Unit) {
+    val title = stringResource(R.string.live_tv)
+    // A TV with several tuners (antenna and satellite, say) needs the TV's own name to tell them apart.
+    val detail = input.label.takeIf { showLabel && it.isNotBlank() }
+    SourceChip(
+        icon = R.drawable.ic_antenna,
+        title = title,
+        detail = detail,
+        power = null,
+        description = listOfNotNull(title, detail).joinToString(", "),
+        enabled = enabled,
+        isLast = isLast,
+        onClick = onClick,
+    )
+}
+
+@Composable
+private fun SourceChip(
+    @DrawableRes icon: Int,
+    title: String,
+    detail: String?,
+    power: DevicePower?,
+    description: String,
+    enabled: Boolean,
+    isLast: Boolean,
+    onClick: () -> Unit,
+) {
+    var focused by remember { mutableStateOf(false) }
     val content = if (focused) Palette.Background else Palette.TextPrimary
     Row(
         Modifier
@@ -871,7 +929,7 @@ internal fun InputChip(input: HdmiInput, enabled: Boolean, isLast: Boolean, onCl
             .focusProperties { canFocus = enabled }
             .blockRightExit(isLast)
             .onFocusChanged { focused = it.isFocused }
-            .semantics { contentDescription = listOfNotNull(input.chipTitle, input.chipDevice, input.portLabel, powerText).distinct().joinToString(", ") }
+            .semantics { contentDescription = description }
             .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick)
             .padding(start = 7.dp, end = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -880,16 +938,16 @@ internal fun InputChip(input: HdmiInput, enabled: Boolean, isLast: Boolean, onCl
             Modifier.size(17.dp).background(content.copy(alpha = 0.1f), RoundedCornerShape(5.dp)),
             contentAlignment = Alignment.Center,
         ) {
-            TintedIcon(input.logo.icon, 11.dp, content)
+            TintedIcon(icon, 11.dp, content)
         }
         Spacer(Modifier.width(8.dp))
-        BasicText(input.chipTitle, maxLines = 1, style = interStyle(12.sp, 600, content))
-        input.chipDevice?.let {
+        BasicText(title, maxLines = 1, style = interStyle(12.sp, 600, content))
+        detail?.let {
             BasicText(" · $it", maxLines = 1, style = interStyle(12.sp, 500, content.copy(alpha = 0.6f)))
         }
-        input.power?.let { power ->
+        power?.let {
             Spacer(Modifier.width(7.dp))
-            Box(Modifier.size(6.dp).background(if (power == DevicePower.ON) Palette.Online else Palette.Warning, CircleShape))
+            Box(Modifier.size(6.dp).background(if (it == DevicePower.ON) Palette.Online else Palette.Warning, CircleShape))
         }
     }
 }

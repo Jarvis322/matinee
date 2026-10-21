@@ -29,6 +29,8 @@ import com.tcltv.sahne.data.HdmiInput
 import com.tcltv.sahne.data.InputCatalog
 import com.tcltv.sahne.data.RawHdmiInput
 import com.tcltv.sahne.data.LastPlayed
+import com.tcltv.sahne.data.LiveTvCatalog
+import com.tcltv.sahne.data.LiveTvInput
 import com.tcltv.sahne.data.MediaHistory
 import com.tcltv.sahne.data.ProfilePhoto
 import com.tcltv.sahne.system.Connection
@@ -117,6 +119,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private val settingsStore = SettingsStore(application)
     private val appCatalog = AppCatalog(application)
     private val inputCatalog = InputCatalog(application)
+    private val liveTvCatalog = LiveTvCatalog(application)
     private val weatherClient = WeatherClient()
     private val memoryStatus = MemoryStatus(application)
     private val airPlayMonitor = ReceiverMonitor(application, ReceiverMonitor.AIRPLAY_PACKAGES)
@@ -161,6 +164,11 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyMap())
 
     fun clearMediaHistory() = mediaHistory.clear()
+
+    val liveTvInputs: StateFlow<List<LiveTvInput>> = liveTvCatalog.tuners
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    fun openLiveTv(input: LiveTvInput) = startSafely(liveTvCatalog.tunerIntent(input))
 
     // The panel, its mini items and the grid hero show the same files, and focus moves ask again each time.
     private val artworkCache = object : LruCache<String, ImageBitmap>(ARTWORK_CACHE_BYTES) {

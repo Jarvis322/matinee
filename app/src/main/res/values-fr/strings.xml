@@ -15,6 +15,7 @@
     <string name="app_info">Infos sur l\'appli</string>
     <string name="section_apps">Applis</string>
     <string name="section_inputs">Entrées</string>
+    <string name="live_tv">TV en direct</string>
     <string name="hint_navigate">naviguer</string>
     <string name="hint_open">ouvrir</string>
     <string name="hint_back">Retour</string>

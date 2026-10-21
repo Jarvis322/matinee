@@ -64,6 +64,7 @@ import com.tcltv.sahne.R
 import com.tcltv.sahne.data.AppCatalog
 import com.tcltv.sahne.data.CardTheme
 import com.tcltv.sahne.data.HdmiInput
+import com.tcltv.sahne.data.LiveTvInput
 import com.tcltv.sahne.data.LastPlayed
 import com.tcltv.sahne.data.LaunchableApp
 import com.tcltv.sahne.data.LauncherSettings
@@ -113,6 +114,7 @@ internal fun GridHome(
     viewModel: LauncherViewModel,
     apps: List<LaunchableApp>,
     allApps: List<LaunchableApp>,
+    liveTv: List<LiveTvInput>,
     inputs: List<HdmiInput>,
     settings: LauncherSettings,
     lastPlayed: Map<String, LastPlayed>,
@@ -166,6 +168,7 @@ internal fun GridHome(
         val cells: List<LaunchableApp?> = apps.drop(COLUMNS) + if (hiddenApps.isNotEmpty()) listOf(null) else emptyList()
         val visibleInputs = (if (settings.hideDisconnectedInputs) inputs.filter { it.connected } else inputs)
             .takeIf { settings.showInputs }.orEmpty()
+        val visibleLiveTv = liveTv.takeIf { settings.showInputs }.orEmpty()
 
         @Composable
         fun Cell(app: LaunchableApp?, isRowEnd: Boolean) {
@@ -224,12 +227,20 @@ internal fun GridHome(
                 itemsIndexed(cells.chunked(COLUMNS), key = { index, _ -> "row$index" }) { _, row ->
                     CellRow(row, Modifier.padding(horizontal = ROW_INSET.dp)) { app, isRowEnd -> Cell(app, isRowEnd) }
                 }
-                if (visibleInputs.isNotEmpty()) {
+                if (visibleLiveTv.isNotEmpty() || visibleInputs.isNotEmpty()) {
                     item(key = "inputs") {
                         Row(Modifier.padding(start = ROW_INSET.dp, top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
                             BasicText(stringResource(R.string.section_inputs), style = interStyle(12.sp, 600, Color.White.copy(alpha = 0.55f)))
                             Spacer(Modifier.width(14.dp))
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                visibleLiveTv.forEachIndexed { index, input ->
+                                    LiveTvChip(
+                                        input,
+                                        showLabel = visibleLiveTv.size > 1,
+                                        enabled = liftedPackage == null,
+                                        isLast = visibleInputs.isEmpty() && index == visibleLiveTv.lastIndex,
+                                    ) { viewModel.openLiveTv(input) }
+                                }
                                 visibleInputs.forEachIndexed { index, input ->
                                     InputChip(input, enabled = liftedPackage == null, isLast = index == visibleInputs.lastIndex) {
                                         viewModel.openInput(input)

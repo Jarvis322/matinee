@@ -17,6 +17,7 @@
     <string name="app_info">App info</string>
     <string name="section_apps">Apps</string>
     <string name="section_inputs">Inputs</string>
+    <string name="live_tv">Live TV</string>
     <string name="hint_navigate">move</string>
     <string name="hint_open">open</string>
     <string name="hint_back">Back</string>
