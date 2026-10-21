@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tcltv.sahne.ui.DesignCanvas
+import com.tcltv.sahne.ui.LocalGlassEffects
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.home.HomeScreen
 import com.tcltv.sahne.ui.settings.SettingsScreen
@@ -34,7 +35,7 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
     val isHome = remember(resumeTick) { viewModel.isHomeKeyTarget() }
     BackHandler(enabled = !showSettings && isHome) { }
 
-    CompositionLocalProvider(LocalReduceMotion provides settings.reduceMotion) {
+    CompositionLocalProvider(LocalReduceMotion provides settings.reduceMotion, LocalGlassEffects provides settings.glassEffects) {
         DesignCanvas {
             Box(
                 Modifier

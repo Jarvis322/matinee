@@ -6,8 +6,7 @@ import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.RadialGradient
 import android.graphics.Shader
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,12 +20,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
+import com.tcltv.sahne.ui.LocalBackdrop
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.Palette
 import kotlinx.coroutines.Dispatchers
@@ -40,19 +41,29 @@ import kotlinx.coroutines.withContext
 fun CinematicBackground(accent: Color, modifier: Modifier = Modifier) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     val cache = remember { BackdropCache() }
-    var backdrop by remember { mutableStateOf<ImageBitmap?>(null) }
+    // Shared with the glass surfaces, which show their own slice of whatever is drawn here.
+    val shared = LocalBackdrop.current
+    val reduceMotion = LocalReduceMotion.current
     LaunchedEffect(accent, size) {
         if (size == IntSize.Zero) return@LaunchedEffect
         val cached = cache.get(accent.toArgb())
-        if (cached != null) {
-            backdrop = cached
+        val image = cached ?: run {
+            // Holding the D-pad changes the accent every few frames; render only once focus settles.
+            delay(RENDER_DEBOUNCE_MS)
+            withContext(Dispatchers.Default) { renderBackdrop(size, accent.toArgb()).asImageBitmap() }
+                .also { cache.put(accent.toArgb(), it) }
+        }
+        if (shared.to === image) return@LaunchedEffect
+        shared.from = shared.to
+        shared.to = image
+        if (shared.from == null || reduceMotion) {
+            shared.from = null
+            shared.progress = 1f
             return@LaunchedEffect
         }
-        // Holding the D-pad changes the accent every few frames; render only once focus settles.
-        delay(RENDER_DEBOUNCE_MS)
-        backdrop = withContext(Dispatchers.Default) {
-            renderBackdrop(size, accent.toArgb()).asImageBitmap()
-        }.also { cache.put(accent.toArgb(), it) }
+        shared.progress = 0f
+        animate(0f, 1f, animationSpec = tween(420)) { value, _ -> shared.progress = value }
+        shared.from = null
     }
     Box(
         modifier
@@ -60,14 +71,14 @@ fun CinematicBackground(accent: Color, modifier: Modifier = Modifier) {
             .background(Palette.Background)
             .onSizeChanged { size = it },
     ) {
-        Crossfade(
-            targetState = backdrop,
-            animationSpec = if (LocalReduceMotion.current) snap() else tween(420),
-            label = "backdrop",
-        ) { image ->
-            if (image != null) {
-                Image(image, contentDescription = null, contentScale = ContentScale.FillBounds, modifier = Modifier.fillMaxSize())
-            }
+        shared.from?.let { Image(it, contentDescription = null, contentScale = ContentScale.FillBounds, modifier = Modifier.fillMaxSize()) }
+        shared.to?.let {
+            Image(
+                it,
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.fillMaxSize().graphicsLayer { alpha = if (shared.from != null) shared.progress else 1f },
+            )
         }
     }
 }
@@ -105,9 +116,20 @@ private fun renderBackdrop(screen: IntSize, accent: Int): Bitmap {
     canvas.drawColor(base)
 
     paint.shader = RadialGradient(
-        w * 0.86f, h * 0.06f, w * 0.62f,
-        intArrayOf(withAlpha(accent, 0.78f), withAlpha(accent, 0.32f), android.graphics.Color.TRANSPARENT),
-        floatArrayOf(0f, 0.45f, 1f),
+        w * 0.84f, h * 0.04f, w * 0.85f,
+        intArrayOf(withAlpha(accent, 0.86f), withAlpha(accent, 0.42f), android.graphics.Color.TRANSPARENT),
+        floatArrayOf(0f, 0.5f, 1f),
+        Shader.TileMode.CLAMP,
+    )
+    canvas.drawRect(0f, 0f, w.toFloat(), h.toFloat(), paint)
+    paint.shader = null
+
+    // A second, softer glow low on the left: the glass shelf and panels pick up colour from it, which is what makes
+    // them read as glass instead of grey plastic.
+    paint.shader = RadialGradient(
+        w * 0.16f, h * 0.98f, w * 0.85f,
+        intArrayOf(withAlpha(accent, 0.58f), withAlpha(accent, 0.22f), android.graphics.Color.TRANSPARENT),
+        floatArrayOf(0f, 0.5f, 1f),
         Shader.TileMode.CLAMP,
     )
     canvas.drawRect(0f, 0f, w.toFloat(), h.toFloat(), paint)
@@ -115,16 +137,16 @@ private fun renderBackdrop(screen: IntSize, accent: Int): Bitmap {
 
     paint.shader = LinearGradient(
         0f, 0f, w.toFloat(), 0f,
-        intArrayOf(withAlpha(base, 0.92f), withAlpha(base, 0.55f), android.graphics.Color.TRANSPARENT),
-        floatArrayOf(0f, 0.38f, 0.62f),
+        intArrayOf(withAlpha(base, 0.8f), withAlpha(base, 0.4f), android.graphics.Color.TRANSPARENT),
+        floatArrayOf(0f, 0.34f, 0.6f),
         Shader.TileMode.CLAMP,
     )
     canvas.drawRect(0f, 0f, w.toFloat(), h.toFloat(), paint)
 
     paint.shader = LinearGradient(
         0f, 0f, 0f, h.toFloat(),
-        intArrayOf(android.graphics.Color.TRANSPARENT, withAlpha(base, 0.82f), base),
-        floatArrayOf(0.5f, 0.78f, 1f),
+        intArrayOf(android.graphics.Color.TRANSPARENT, withAlpha(base, 0.5f), withAlpha(base, 0.72f)),
+        floatArrayOf(0.55f, 0.85f, 1f),
         Shader.TileMode.CLAMP,
     )
     canvas.drawRect(0f, 0f, w.toFloat(), h.toFloat(), paint)

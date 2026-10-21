@@ -89,6 +89,8 @@
     <!-- Home screen settings -->
     <string name="setting_adaptive_background">Fondo según la app</string>
     <string name="setting_adaptive_background_sub">Usa el color de la app seleccionada</string>
+    <string name="setting_glass_effects">Efectos de cristal</string>
+    <string name="setting_glass_effects_sub">Aspecto de cristal esmerilado. Desactívalo si la pantalla de inicio va lenta.</string>
     <string name="setting_clock_format">Formato de hora</string>
     <string name="clock_24">24 horas</string>
     <string name="clock_12">12 horas</string>

@@ -36,6 +36,7 @@ data class LauncherSettings(
     val showGreeting: Boolean = true,
     val reduceMotion: Boolean = false,
     val adaptiveBackground: Boolean = true,
+    val glassEffects: Boolean = true,
     val cardTheme: CardTheme = CardTheme.LIGHT,
     val homeLayout: HomeLayout = HomeLayout.GRID,
     val showClock: Boolean = true,
@@ -82,6 +83,7 @@ class SettingsStore(private val context: Context) {
         val showGreeting = booleanPreferencesKey("show_greeting")
         val reduceMotion = booleanPreferencesKey("reduce_motion")
         val adaptiveBackground = booleanPreferencesKey("adaptive_background")
+        val glassEffects = booleanPreferencesKey("glass_effects")
         val cardTheme = stringPreferencesKey("card_theme")
         val homeLayout = stringPreferencesKey("home_layout")
         val showClock = booleanPreferencesKey("show_clock")
@@ -140,6 +142,7 @@ class SettingsStore(private val context: Context) {
             showGreeting = this[Keys.showGreeting] ?: defaults.showGreeting,
             reduceMotion = this[Keys.reduceMotion] ?: defaults.reduceMotion,
             adaptiveBackground = this[Keys.adaptiveBackground] ?: defaults.adaptiveBackground,
+            glassEffects = this[Keys.glassEffects] ?: defaults.glassEffects,
             cardTheme = CardTheme.entries.firstOrNull { it.name == this[Keys.cardTheme] } ?: defaults.cardTheme,
             homeLayout = HomeLayout.entries.firstOrNull { it.name == this[Keys.homeLayout] } ?: defaults.homeLayout,
             showClock = this[Keys.showClock] ?: defaults.showClock,
@@ -188,6 +191,7 @@ class SettingsStore(private val context: Context) {
     suspend fun setShowGreeting(value: Boolean) = edit { it[Keys.showGreeting] = value }
     suspend fun setReduceMotion(value: Boolean) = edit { it[Keys.reduceMotion] = value }
     suspend fun setAdaptiveBackground(value: Boolean) = edit { it[Keys.adaptiveBackground] = value }
+    suspend fun setGlassEffects(value: Boolean) = edit { it[Keys.glassEffects] = value }
     suspend fun setCardTheme(value: CardTheme) = edit { it[Keys.cardTheme] = value.name }
     suspend fun setHomeLayout(value: HomeLayout) = edit { it[Keys.homeLayout] = value.name }
     suspend fun setShowClock(value: Boolean) = edit { it[Keys.showClock] = value }

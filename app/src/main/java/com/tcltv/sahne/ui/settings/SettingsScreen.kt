@@ -92,12 +92,14 @@ import com.tcltv.sahne.data.HomeLayout
 import com.tcltv.sahne.data.InputDetection
 import com.tcltv.sahne.data.TemperatureUnit
 import com.tcltv.sahne.ui.KeyCap
+import com.tcltv.sahne.ui.GlassStyle
 import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.TintedIcon
 import com.tcltv.sahne.ui.home.CinematicBackground
 import com.tcltv.sahne.ui.home.NeutralAccent
 import com.tcltv.sahne.ui.home.TopBar
 import com.tcltv.sahne.ui.home.profileColorCount
+import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.interStyle
 
 private enum class Section(@StringRes val title: Int, @StringRes val subtitle: Int, @DrawableRes val icon: Int) {
@@ -121,7 +123,6 @@ private sealed interface SubPage {
     data object Language : SubPage
 }
 
-private val RowFocusFill = Color.White.copy(alpha = 0.1f)
 private val Divider = Color.White.copy(alpha = 0.06f)
 
 @Composable
@@ -173,10 +174,8 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
             Modifier
                 .padding(start = 348.dp, end = 48.dp, top = 137.dp, bottom = 59.dp)
                 .fillMaxSize()
-                .clip(RoundedCornerShape(16.dp))
-                .background(Brush.verticalGradient(listOf(Color(0xE61A1F38), Color(0xE612141F))))
-                .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(16.dp))
-                .padding(start = 20.dp, end = 20.dp, top = 18.dp),
+                .glass(RoundedCornerShape(30.dp), GlassStyle.Panel)
+                .padding(start = 22.dp, end = 22.dp, top = 20.dp),
         ) {
             val page = subPage
             PanelHeader(
@@ -258,12 +257,11 @@ private fun NavItem(
         Modifier
             .fillMaxWidth()
             .height(33.dp)
-            .clip(RoundedCornerShape(9.dp))
-            .background(
+            .then(
                 when {
-                    highlighted -> Color.White
-                    selected -> Color.White.copy(alpha = 0.07f)
-                    else -> Color.Transparent
+                    highlighted -> Modifier.glass(CircleShape, GlassStyle.Bright)
+                    selected -> Modifier.glass(CircleShape, GlassStyle.Selected)
+                    else -> Modifier
                 },
             )
             .focusRequester(focusRequester)
@@ -401,6 +399,9 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
         WifiNameRow(viewModel)
         ToggleRow(R.string.setting_adaptive_background, R.string.setting_adaptive_background_sub, s.adaptiveBackground) {
             viewModel.update { setAdaptiveBackground(it) }
+        }
+        ToggleRow(R.string.setting_glass_effects, R.string.setting_glass_effects_sub, s.glassEffects) {
+            viewModel.update { setGlassEffects(it) }
         }
         ValueRow(
             R.string.setting_home_layout,
@@ -791,9 +792,7 @@ private fun FocusRow(onClick: () -> Unit, modifier: Modifier = Modifier, content
             modifier
                 .fillMaxWidth()
                 .heightIn(min = 46.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(if (focused) RowFocusFill else Color.Transparent)
-                .border(1.dp, if (focused) Color.White.copy(alpha = 0.45f) else Color.Transparent, RoundedCornerShape(10.dp))
+                .then(if (focused) Modifier.glass(RoundedCornerShape(16.dp), GlassStyle.Lit) else Modifier)
                 .onFocusChanged { focused = it.isFocused }
                 .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick)
                 .padding(horizontal = 12.dp, vertical = 6.dp),
@@ -899,9 +898,7 @@ private fun InfoRow(@StringRes label: Int, @StringRes subtitle: Int?, value: Str
             modifier
                 .fillMaxWidth()
                 .heightIn(min = 46.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(if (focused) RowFocusFill else Color.Transparent)
-                .border(1.dp, if (focused) Color.White.copy(alpha = 0.45f) else Color.Transparent, RoundedCornerShape(10.dp))
+                .then(if (focused) Modifier.glass(RoundedCornerShape(16.dp), GlassStyle.Lit) else Modifier)
                 .onFocusChanged { focused = it.isFocused }
                 .focusable()
                 .padding(horizontal = 12.dp, vertical = 6.dp),
@@ -1089,9 +1086,7 @@ private fun ConsentDialog(@StringRes title: Int, @StringRes body: Int, @StringRe
         Column(
             Modifier
                 .width(440.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFF15151B))
-                .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
+                .glass(RoundedCornerShape(28.dp), GlassStyle.Dense)
                 .padding(22.dp),
         ) {
             BasicText(stringResource(title), style = interStyle(17.sp, 700))

@@ -89,6 +89,8 @@
     <!-- Home screen settings -->
     <string name="setting_adaptive_background">Arka plan rengi uygulamaya uysun</string>
     <string name="setting_adaptive_background_sub">Odaktaki uygulamanın rengini kullan</string>
+    <string name="setting_glass_effects">Cam efektleri</string>
+    <string name="setting_glass_effects_sub">Buzlu cam görünümü. Ana ekran yavaş gelirse kapat.</string>
     <string name="setting_clock_format">Saat formatı</string>
     <string name="clock_24">24 saat</string>
     <string name="clock_12">12 saat</string>

@@ -89,6 +89,8 @@
     <!-- Home screen settings -->
     <string name="setting_adaptive_background">Fond assorti à l\'appli</string>
     <string name="setting_adaptive_background_sub">Utiliser la couleur de l\'appli sélectionnée</string>
+    <string name="setting_glass_effects">Effets de verre</string>
+    <string name="setting_glass_effects_sub">Aspect verre dépoli. Désactivez-le si l\'écran d\'accueil est lent.</string>
     <string name="setting_clock_format">Format de l\'heure</string>
     <string name="clock_24">24 h</string>
     <string name="clock_12">12 h</string>

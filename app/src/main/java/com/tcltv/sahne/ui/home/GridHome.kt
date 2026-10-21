@@ -68,12 +68,17 @@ import com.tcltv.sahne.data.LiveTvInput
 import com.tcltv.sahne.data.LastPlayed
 import com.tcltv.sahne.data.LaunchableApp
 import com.tcltv.sahne.data.LauncherSettings
+import com.tcltv.sahne.ui.GlassStyle
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.TintedIcon
+import com.tcltv.sahne.ui.focusSheen
+import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.interStyle
+import com.tcltv.sahne.ui.rememberFocusSheen
 
 private const val COLUMNS = 6
+private const val TILE_RADIUS = 14
 private const val GRID_SIDE = 48
 // Shared by the shelf's inner padding and the grid rows, so shelf tiles line up with the grid columns below.
 private const val ROW_INSET = 12
@@ -209,10 +214,8 @@ internal fun GridHome(
                         Box(
                             Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(22.dp))
-                                .background(Color.White.copy(alpha = 0.08f))
-                                .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(22.dp))
-                                .padding(start = ROW_INSET.dp, end = ROW_INSET.dp, top = 14.dp, bottom = 6.dp),
+                                .glass(RoundedCornerShape(30.dp), GlassStyle.Panel)
+                                .padding(start = ROW_INSET.dp, end = ROW_INSET.dp, top = 16.dp, bottom = 8.dp),
                         ) {
                             CellRow(shelf) { app, isRowEnd -> Cell(app, isRowEnd) }
                         }
@@ -306,19 +309,21 @@ private fun GridTile(
             onFocusRequestHandled()
         }
     }
-    val shape = RoundedCornerShape(12.dp)
+    val shape = RoundedCornerShape(TILE_RADIUS.dp)
     val active = focused || lifted
+    val sheen = rememberFocusSheen(active)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
                 .scaleBy(focusScale(active, if (lifted) 1.14f else 1.1f))
-                .shadow(if (active) 14.dp else 0.dp, shape)
+                .shadow(if (active) 18.dp else 0.dp, shape)
                 .clip(shape)
                 .background(if (cardTheme == CardTheme.LIGHT) CardLight else CardDark)
-                // Scale alone is too subtle from across the room, so focus also gets a solid outline.
-                .border(if (active) 2.dp else 1.dp, if (active) Color.White else Color.White.copy(alpha = if (dimmed) 0.04f else 0.08f), shape)
+                // Scale alone is too subtle from across the room, so focus also lights a bright rim and a sheen.
+                .focusSheen(sheen, shape)
+                .then(if (active) Modifier else Modifier.border(1.dp, Color.White.copy(alpha = if (dimmed) 0.05f else 0.14f), shape))
                 .focusRequester(focusRequester)
                 .onFocusChanged {
                     focused = it.isFocused
@@ -364,16 +369,14 @@ private fun GridTile(
 @Composable
 private fun AddTile(enabled: Boolean, isRowEnd: Boolean, onClick: () -> Unit) {
     var focused by remember { mutableStateOf(false) }
-    val shape = RoundedCornerShape(12.dp)
+    val shape = RoundedCornerShape(TILE_RADIUS.dp)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
                 .scaleBy(focusScale(focused, 1.1f))
-                .clip(shape)
-                .background(Color.White.copy(alpha = if (focused) 0.14f else 0.05f))
-                .border(if (focused) 2.dp else 1.dp, if (focused) Color.White else Color.White.copy(alpha = 0.16f), shape)
+                .glass(shape, if (focused) GlassStyle.Lit else GlassStyle.Pill)
                 .blockRightExit(isRowEnd)
                 .onFocusChanged { focused = it.isFocused }
                 .clickable(enabled = enabled, interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick),
@@ -394,9 +397,7 @@ private fun MoveToolbar(modifier: Modifier) {
     Row(
         modifier
             .height(37.dp)
-            .clip(RoundedCornerShape(19.dp))
-            .background(Color(0xE6131317))
-            .border(1.dp, Color.White.copy(alpha = 0.14f), RoundedCornerShape(19.dp))
+            .glass(CircleShape, GlassStyle.Dense)
             .padding(horizontal = 15.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

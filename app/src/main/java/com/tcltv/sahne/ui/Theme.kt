@@ -18,8 +18,6 @@ object Palette {
     val TextPrimary = Color(0xFFFFFFFF)
     val TextSecondary = Color(0xFFFFFFFF).copy(alpha = 0.72f)
     val TextMuted = Color(0xFFFFFFFF).copy(alpha = 0.5f)
-    val Glass = Color(0xFFFFFFFF).copy(alpha = 0.06f)
-    val GlassBorder = Color(0xFFFFFFFF).copy(alpha = 0.11f)
     val Amber = Color(0xFFF2B134)
     val OnAmber = Color(0xFF1E1606)
     val Warning = Color(0xFFFF5A4E)

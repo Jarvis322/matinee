@@ -37,6 +37,7 @@ import com.tcltv.sahne.data.LastPlayed
 import com.tcltv.sahne.data.LaunchableApp
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.Palette
+import com.tcltv.sahne.ui.fadeIntoBackdrop
 import com.tcltv.sahne.ui.interStyle
 
 /**
@@ -47,8 +48,15 @@ import com.tcltv.sahne.ui.interStyle
 @Composable
 internal fun GridHero(app: LaunchableApp, entry: LastPlayed?, viewModel: LauncherViewModel, modifier: Modifier) {
     Box(modifier.fillMaxSize()) {
-        // Ends a little below the shelf's top edge, so artwork never sits behind the app grid.
-        Box(Modifier.fillMaxWidth().height((GRID_HERO_BOTTOM + ARTWORK_OVERLAP).dp)) {
+        // Ends a little below the shelf's top edge, so artwork never sits behind the app grid. Its bottom is faded out
+        // with an alpha mask rather than a colour, so it melts into the coloured backdrop and the glass shelf.
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height((GRID_HERO_BOTTOM + ARTWORK_OVERLAP).dp)
+                // With no artwork there is nothing to fade out, and the steps would only cost fill.
+                .then(if (entry != null) Modifier.fadeIntoBackdrop(HERO_FADE_HEIGHT) else Modifier),
+        ) {
             Crossfade(
                 targetState = entry,
                 animationSpec = if (LocalReduceMotion.current) snap() else tween(500),
@@ -69,14 +77,10 @@ internal fun GridHero(app: LaunchableApp, entry: LastPlayed?, viewModel: Launche
             )
             Box(
                 Modifier.fillMaxSize().background(
-                    // The top band keeps the clock and profile readable over bright artwork; the bottom melts into
-                    // the page so the shelf doesn't sit on a hard image edge.
+                    // The top band keeps the clock and profile readable over bright artwork.
                     Brush.verticalGradient(
                         0f to Palette.Background.copy(alpha = 0.92f),
                         0.3f to Color.Transparent,
-                        0.5f to Color.Transparent,
-                        0.82f to Palette.Background.copy(alpha = 0.9f),
-                        1f to Palette.Background,
                     ),
                 ),
             )
@@ -113,6 +117,7 @@ internal fun GridHero(app: LaunchableApp, entry: LastPlayed?, viewModel: Launche
 }
 
 private const val ARTWORK_OVERLAP = 60
+private val HERO_FADE_HEIGHT = 170.dp
 private const val TITLE_GAP = 22
 
 @Composable

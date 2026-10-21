@@ -89,6 +89,8 @@
     <!-- Home screen settings -->
     <string name="setting_adaptive_background">Hintergrund an App anpassen</string>
     <string name="setting_adaptive_background_sub">Farbe der ausgewählten App verwenden</string>
+    <string name="setting_glass_effects">Glaseffekte</string>
+    <string name="setting_glass_effects_sub">Milchglas-Optik. Schalte sie aus, wenn der Startbildschirm ruckelt.</string>
     <string name="setting_clock_format">Uhrzeitformat</string>
     <string name="clock_24">24‑Stunden</string>
     <string name="clock_12">12‑Stunden</string>

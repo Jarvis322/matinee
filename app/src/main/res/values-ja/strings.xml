@@ -90,6 +90,8 @@
     <!-- Home screen settings -->
     <string name="setting_adaptive_background">背景をアプリに合わせる</string>
     <string name="setting_adaptive_background_sub">選択中のアプリの色を使用</string>
+    <string name="setting_glass_effects">ガラス効果</string>
+    <string name="setting_glass_effects_sub">すりガラス風の見た目です。ホーム画面が重いときはオフにしてください。</string>
     <string name="setting_clock_format">時刻の表示形式</string>
     <string name="clock_24">24 時間</string>
     <string name="clock_12">12 時間</string>

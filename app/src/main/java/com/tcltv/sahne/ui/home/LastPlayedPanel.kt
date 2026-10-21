@@ -42,9 +42,11 @@ import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.LastPlayed
 import com.tcltv.sahne.data.LaunchableApp
+import com.tcltv.sahne.ui.GlassStyle
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.TintedIcon
+import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.interStyle
 
 private val PanelWidth = 320.dp
@@ -59,14 +61,11 @@ internal fun LastPlayedPanel(
     viewModel: LauncherViewModel,
     modifier: Modifier,
 ) {
-    val shape = RoundedCornerShape(16.dp)
     Column(
         modifier
             .width(PanelWidth)
-            .clip(shape)
-            .background(Color(0xE0141418))
-            .border(1.dp, Color.White.copy(alpha = 0.1f), shape)
-            .padding(10.dp),
+            .glass(RoundedCornerShape(24.dp), GlassStyle.Panel)
+            .padding(12.dp),
     ) {
         Crossfade(targetState = entry, animationSpec = if (LocalReduceMotion.current) snap() else tween(350), label = "lastPlayed") { shown ->
             MainItem(shown, app, viewModel)

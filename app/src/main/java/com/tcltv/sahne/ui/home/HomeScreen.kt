@@ -114,9 +114,13 @@ import com.tcltv.sahne.data.TemperatureUnit
 import com.tcltv.sahne.ui.AppGlyph
 import com.tcltv.sahne.ui.Inter
 import com.tcltv.sahne.ui.KeyCap
+import com.tcltv.sahne.ui.GlassStyle
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.TintedIcon
+import com.tcltv.sahne.ui.focusSheen
+import com.tcltv.sahne.ui.glass
+import com.tcltv.sahne.ui.rememberFocusSheen
 import com.tcltv.sahne.ui.interStyle
 import kotlinx.coroutines.delay
 import java.time.format.DateTimeFormatter
@@ -419,9 +423,7 @@ private fun InfoButton(onClick: () -> Unit) {
         Modifier
             .scaleBy(focusScale(focused, 1.06f))
             .height(34.dp)
-            .clip(RoundedCornerShape(17.dp))
-            .background(if (focused) Color.White.copy(alpha = 0.16f) else Palette.Glass)
-            .border(if (focused) 2.dp else 1.dp, if (focused) Color.White else Color.White.copy(alpha = 0.14f), RoundedCornerShape(17.dp))
+            .glass(CircleShape, if (focused) GlassStyle.Lit else GlassStyle.Pill)
             .onFocusChanged { focused = it.isFocused }
             .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick)
             .padding(horizontal = 15.dp),
@@ -438,9 +440,7 @@ private fun EditToolbar(modifier: Modifier) {
     Row(
         modifier
             .height(37.dp)
-            .clip(RoundedCornerShape(19.dp))
-            .background(Color(0xE6131317))
-            .border(1.dp, Color.White.copy(alpha = 0.14f), RoundedCornerShape(19.dp))
+            .glass(CircleShape, GlassStyle.Dense)
             .padding(start = 7.dp, end = 15.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -595,7 +595,7 @@ private fun AppCard(
     }
     val reduceMotion = LocalReduceMotion.current
     val accent = Color(app.accent)
-    val shape = RoundedCornerShape(13.dp)
+    val shape = RoundedCornerShape(15.dp)
     val captionAlpha = animateFloatAsState(if (focused) 1f else 0f, tween(if (reduceMotion) 0 else 200), label = "caption")
     // Kept as State and read in graphicsLayer, so these springs redraw the card without recomposing it.
     val tilt = animateFloatAsState(
@@ -604,6 +604,7 @@ private fun AppCard(
         label = "tilt",
     )
     val lift = animateDpAsState(if (lifted) (-10).dp else 0.dp, if (reduceMotion) snap() else spring(dampingRatio = 0.6f), label = "lift")
+    val sheen = rememberFocusSheen(focused || lifted)
 
     Column(
         Modifier
@@ -624,7 +625,6 @@ private fun AppCard(
                         translationY = lift.value.toPx()
                     }
                     .scaleBy(focusScale(focused || lifted, 1.17f))
-                    .border(2.5.dp, if (focused || lifted) Color.White else Color.Transparent, RoundedCornerShape(17.dp))
                     .padding(4.dp)
                     // Up from a card in edit mode lands on its own remove button, independent of layout geometry.
                     .focusProperties { if (showRemove) up = removeFocus }
@@ -670,7 +670,9 @@ private fun AppCard(
                         .height(75.dp)
                         .clip(shape)
                         .background(if (cardTheme == CardTheme.LIGHT) CardLight else CardDark)
-                        .border(1.dp, if (cardTheme == CardTheme.LIGHT) Color.Transparent else Color.White.copy(alpha = 0.08f), shape),
+                        // Scale alone is too subtle from across the room, so focus also lights a bright rim and a sheen.
+                        .focusSheen(sheen, shape)
+                        .then(if (focused || lifted) Modifier else Modifier.border(1.dp, Color.White.copy(alpha = if (cardTheme == CardTheme.LIGHT) 0.14f else 0.1f), shape)),
                     contentAlignment = Alignment.Center,
                 ) {
                     CardArt(app, cardTheme)
@@ -799,10 +801,8 @@ internal fun AddAppDialog(hiddenApps: List<LaunchableApp>, onAdd: (LaunchableApp
         Column(
             Modifier
                 .width(380.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFF15151B))
-                .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
-                .padding(20.dp),
+                .glass(RoundedCornerShape(28.dp), GlassStyle.Dense)
+                .padding(22.dp),
         ) {
             BasicText(stringResource(R.string.add_app), style = interStyle(18.sp, 700))
             Spacer(Modifier.height(12.dp))
@@ -923,9 +923,7 @@ private fun SourceChip(
         Modifier
             .scaleBy(focusScale(focused, 1.08f))
             .height(29.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(if (focused) Color.White else Color.White.copy(alpha = 0.05f))
-            .border(1.dp, Color.White.copy(alpha = if (focused) 0f else 0.1f), RoundedCornerShape(8.dp))
+            .glass(CircleShape, if (focused) GlassStyle.Bright else GlassStyle.Pill)
             .focusProperties { canFocus = enabled }
             .blockRightExit(isLast)
             .onFocusChanged { focused = it.isFocused }
@@ -1037,10 +1035,8 @@ private fun AllAppsDialog(apps: List<LaunchableApp>, onOpen: (LaunchableApp) -> 
         Column(
             Modifier
                 .width(640.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFF15151B))
-                .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
-                .padding(20.dp),
+                .glass(RoundedCornerShape(28.dp), GlassStyle.Dense)
+                .padding(22.dp),
         ) {
             BasicText(stringResource(R.string.all_apps_title, apps.size), style = interStyle(18.sp, 700))
             Spacer(Modifier.height(12.dp))

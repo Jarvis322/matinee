@@ -61,9 +61,11 @@ import android.provider.Settings
 import com.tcltv.sahne.system.Connection
 import com.tcltv.sahne.system.ReceiverState
 import com.tcltv.sahne.data.TemperatureUnit
+import com.tcltv.sahne.ui.GlassStyle
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.TintedIcon
+import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.interStyle
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
@@ -148,9 +150,7 @@ private fun ClockWeatherPill(viewModel: LauncherViewModel, onOpenSettings: () ->
     Row(
         Modifier
             .height(32.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(if (focused) Color.White.copy(alpha = 0.16f) else Palette.Glass)
-            .border(if (focused) 2.dp else 1.dp, if (focused) Color.White else Palette.GlassBorder, RoundedCornerShape(16.dp))
+            .glass(CircleShape, if (focused) GlassStyle.Lit else GlassStyle.Pill)
             .onFocusChanged { focused = it.isFocused }
             .semantics { contentDescription = openSettings }
             .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onOpenSettings)
@@ -240,17 +240,7 @@ private fun ProfileButton(viewModel: LauncherViewModel, open: Boolean, onClick: 
     Row(
         Modifier
             .height(32.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(if (highlighted) Color.White.copy(alpha = 0.16f) else if (settings.showGreeting) Palette.Glass else Color.Transparent)
-            .border(
-                if (highlighted) 2.dp else 1.dp,
-                when {
-                    highlighted -> Color.White
-                    settings.showGreeting -> Palette.GlassBorder
-                    else -> Color.Transparent
-                },
-                RoundedCornerShape(16.dp),
-            )
+            .then(if (highlighted || settings.showGreeting) Modifier.glass(CircleShape, if (highlighted) GlassStyle.Lit else GlassStyle.Pill) else Modifier)
             .onFocusChanged { focused = it.isFocused }
             .semantics { contentDescription = description }
             .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick)
@@ -300,10 +290,8 @@ private fun ProfileMenu(viewModel: LauncherViewModel, onOpenSettings: () -> Unit
     Column(
         Modifier
             .width(280.dp)
-            .clip(RoundedCornerShape(14.dp))
-            .background(Color(0xF7121218))
-            .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(14.dp))
-            .padding(10.dp),
+            .glass(RoundedCornerShape(22.dp), GlassStyle.Dense)
+            .padding(12.dp),
     ) {
         Row(Modifier.padding(start = 6.dp, top = 2.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             ProfileAvatar(viewModel, 36.dp)
@@ -457,9 +445,7 @@ private fun BellButton(viewModel: LauncherViewModel, open: Boolean, onClick: () 
         Box(
             Modifier
                 .size(32.dp)
-                .clip(CircleShape)
-                .background(if (highlighted) Color.White else Palette.Glass)
-                .border(1.dp, if (highlighted) Color.Transparent else Palette.GlassBorder, CircleShape)
+                .glass(CircleShape, if (highlighted) GlassStyle.Bright else GlassStyle.Pill)
                 .onFocusChanged { focused = it.isFocused }
                 .semantics { contentDescription = description }
                 .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick),
@@ -495,10 +481,8 @@ private fun NotificationPanel(viewModel: LauncherViewModel, onClose: () -> Unit)
     Column(
         Modifier
             .width(300.dp)
-            .clip(RoundedCornerShape(14.dp))
-            .background(Color(0xF7121218))
-            .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(14.dp))
-            .padding(12.dp),
+            .glass(RoundedCornerShape(22.dp), GlassStyle.Dense)
+            .padding(14.dp),
     ) {
         Row(Modifier.fillMaxWidth().padding(start = 4.dp, bottom = 6.dp), verticalAlignment = Alignment.CenterVertically) {
             BasicText(stringResource(R.string.notifications_title), style = interStyle(14.sp, 700), modifier = Modifier.weight(1f))
@@ -639,9 +623,7 @@ private fun WifiButton(viewModel: LauncherViewModel) {
         Box(
             Modifier
                 .size(32.dp)
-                .clip(CircleShape)
-                .background(if (focused) Color.White else Palette.Glass)
-                .border(1.dp, if (focused) Color.Transparent else Palette.GlassBorder, CircleShape)
+                .glass(CircleShape, if (focused) GlassStyle.Bright else GlassStyle.Pill)
                 .onFocusChanged {
                     focused = it.isFocused
                     viewModel.onNetworkFocusChanged(it.isFocused)
@@ -690,10 +672,8 @@ private fun NetworkDetails(connection: Connection, speed: SpeedState) {
     Column(
         Modifier
             .widthIn(min = 180.dp, max = 260.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xF7121218))
-            .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
-            .padding(horizontal = 12.dp, vertical = 9.dp),
+            .glass(RoundedCornerShape(18.dp), GlassStyle.Dense)
+            .padding(horizontal = 14.dp, vertical = 11.dp),
     ) {
         BasicText(name, maxLines = 1, overflow = TextOverflow.Ellipsis, style = interStyle(12.5.sp, 700))
         if (speedText != null) {

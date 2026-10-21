@@ -91,6 +91,8 @@
     <!-- Home screen settings -->
     <string name="setting_adaptive_background">Match background to app</string>
     <string name="setting_adaptive_background_sub">Use the focused app\'s color</string>
+    <string name="setting_glass_effects">Glass effects</string>
+    <string name="setting_glass_effects_sub">Frosted glass look. Turn off if the home screen feels slow.</string>
     <string name="setting_clock_format">Clock format</string>
     <string name="clock_24">24‑hour</string>
     <string name="clock_12">12‑hour</string>
