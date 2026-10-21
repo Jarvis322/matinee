@@ -38,6 +38,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,6 +50,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -61,6 +63,8 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -72,9 +76,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
-import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tcltv.sahne.CitySearchState
@@ -82,9 +86,9 @@ import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.AppLanguage
 import com.tcltv.sahne.data.CardTheme
-import com.tcltv.sahne.data.HomeLayout
 import com.tcltv.sahne.data.DeviceLogo
 import com.tcltv.sahne.data.HdmiInput
+import com.tcltv.sahne.data.HomeLayout
 import com.tcltv.sahne.data.InputDetection
 import com.tcltv.sahne.data.TemperatureUnit
 import com.tcltv.sahne.ui.KeyCap
@@ -921,6 +925,8 @@ private fun ValuePill(text: String, fill: Color = Color.White.copy(alpha = 0.08f
 @Composable
 private fun TextInput(value: String, placeholder: String, modifier: Modifier = Modifier, onChange: (String) -> Unit) {
     var focused by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
     BasicTextField(
         value = value,
         onValueChange = onChange,
@@ -928,8 +934,17 @@ private fun TextInput(value: String, placeholder: String, modifier: Modifier = M
         textStyle = interStyle(14.sp, 500),
         cursorBrush = SolidColor(Palette.Amber),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        // The keyboard's check mark closes it and hands focus to whatever sits below, such as the city results.
+        keyboardActions = KeyboardActions(onDone = {
+            keyboard?.hide()
+            focusManager.moveFocus(FocusDirection.Down)
+        }),
         modifier = modifier
             .fillMaxWidth()
+            // A text field swallows the remote's Down key, which left focus stuck here with results below it.
+            .onPreviewKeyEvent { event ->
+                event.key == Key.DirectionDown && event.type == KeyEventType.KeyDown && focusManager.moveFocus(FocusDirection.Down)
+            }
             .onFocusChanged { focused = it.isFocused },
         decorationBox = { inner ->
             Box(
