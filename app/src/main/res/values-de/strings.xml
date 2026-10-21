@@ -228,9 +228,9 @@
     <string name="setting_notification_access_sub">Liest nur Infos zur Medienwiedergabe und Update-Benachrichtigungen des Play Store. Nichts verlässt den Fernseher.</string>
 
     <string name="home_key_service_label">Matinee Home-Taste</string>
-    <string name="home_key_service_description">Lässt die Home-Taste der Fernbedienung Matinee öffnen. Matinee achtet nur auf die Home-Taste und liest nie, was auf dem Bildschirm angezeigt wird.</string>
+    <string name="home_key_service_description">Hält Matinee als Startbildschirm: Die Home-Taste der Fernbedienung öffnet Matinee, ebenso wenn der integrierte Startbildschirm des Fernsehers erscheint. Matinee liest nie, was auf dem Bildschirm angezeigt wird.</string>
     <string name="setting_home_key">Home-Taste öffnet Matinee</string>
-    <string name="setting_home_key_sub">Verwendet eine Bedienungshilfen-Berechtigung, die nur auf die Home-Taste achtet. Bildschirminhalte werden nicht gelesen.</string>
+    <string name="setting_home_key_sub">Verwendet eine Bedienungshilfen-Berechtigung, die nur die Home-Taste und das Öffnen des integrierten Startbildschirms sieht. Bildschirminhalte werden nicht gelesen.</string>
 
     <string name="setting_wifi_name">Wi‑Fi-Netzwerknamen anzeigen</string>
     <string name="setting_wifi_name_sub">Android gibt den Netzwerknamen nur an Apps mit Standortberechtigung weiter. Matinee nutzt sie für nichts anderes.</string>
@@ -275,7 +275,7 @@
     <string name="days_ago">vor %1$d Tagen</string>
     <string name="cancel">Abbrechen</string>
     <string name="home_key_disclosure_title">Soll die Home-Taste Matinee öffnen?</string>
-    <string name="home_key_disclosure_body">Manche Fernseher reservieren die Home-Taste für ihren integrierten Launcher. Damit stattdessen Matinee geöffnet wird, nutzt Matinee eine Android-Bedienungshilfen-Berechtigung.\n\nSie achtet nur auf die Home-Taste der Fernbedienung. Sie liest weder Bildschirminhalte noch deine Eingaben oder andere Tasten, und es wird nichts gesendet.\n\nWähle auf dem nächsten Bildschirm „Matinee Home-Taste“ und aktiviere sie. Du kannst sie dort jederzeit wieder deaktivieren.</string>
+    <string name="home_key_disclosure_body">Manche Fernseher reservieren die Home-Taste für ihren integrierten Launcher und zeigen dessen Startbildschirm nach einem Neustart wieder an. Damit stattdessen Matinee geöffnet wird, nutzt Matinee eine Android-Bedienungshilfen-Berechtigung.\n\nSie sieht nur die Home-Taste der Fernbedienung und wann der integrierte Startbildschirm des Fernsehers geöffnet wird. Sie liest weder Bildschirminhalte noch deine Eingaben, andere Tasten oder andere Apps, und es wird nichts gesendet.\n\nWähle auf dem nächsten Bildschirm „Matinee Home-Taste“ und aktiviere sie. Du kannst sie dort jederzeit wieder deaktivieren.</string>
     <string name="home_key_disclosure_accept">Zustimmen und weiter</string>
     <string name="home_key_restricted_title">Installiere Matinee zuerst über Google Play</string>
     <string name="home_key_restricted_body">Dieser Fernseher erlaubt Apps, die aus einer APK-Datei installiert wurden, keine Bedienungshilfen-Berechtigungen, deshalb schaltet sich der Schalter wieder aus.\n\nDeinstalliere Matinee, installiere es über Google Play und aktiviere die Option dann erneut.</string>

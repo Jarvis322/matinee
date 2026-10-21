@@ -230,9 +230,9 @@
     <string name="setting_notification_access_sub">Reads only media playback info and Play Store update notifications. Nothing leaves the TV.</string>
 
     <string name="home_key_service_label">Matinee Home button</string>
-    <string name="home_key_service_description">Lets the remote\'s Home button open Matinee. Matinee listens only for the Home button and never reads what is on the screen.</string>
+    <string name="home_key_service_description">Keeps Matinee as your home screen: the remote\'s Home button opens Matinee, and so does the TV\'s built-in home screen when it appears. Matinee never reads what is on the screen.</string>
     <string name="setting_home_key">Home button opens Matinee</string>
-    <string name="setting_home_key_sub">Uses an accessibility permission that listens only for the Home button. Nothing on screen is read.</string>
+    <string name="setting_home_key_sub">Uses an accessibility permission that sees only the Home button and when the built-in home screen opens. Nothing on screen is read.</string>
 
     <string name="setting_wifi_name">Show Wi‑Fi network name</string>
     <string name="setting_wifi_name_sub">Android shares the network name only with apps that have location permission. Matinee uses it for nothing else.</string>
@@ -285,7 +285,7 @@
     <string name="days_ago">%1$d d ago</string>
     <string name="cancel">Cancel</string>
     <string name="home_key_disclosure_title">Let the Home button open Matinee?</string>
-    <string name="home_key_disclosure_body">Some TVs keep the Home button for their built‑in launcher. To open Matinee instead, Matinee uses an Android accessibility permission.\n\nIt listens only for the remote\'s Home button. It does not read what is on the screen, what you type, or any other key, and nothing is sent anywhere.\n\nOn the next screen, choose “Matinee Home button” and turn it on. You can turn it off there at any time.</string>
+    <string name="home_key_disclosure_body">Some TVs keep the Home button for their built‑in launcher and bring its home screen back after a restart. To open Matinee instead, Matinee uses an Android accessibility permission.\n\nIt sees only the remote\'s Home button and when the TV\'s built‑in home screen opens. It does not read what is on the screen, what you type, other keys or other apps, and nothing is sent anywhere.\n\nOn the next screen, choose “Matinee Home button” and turn it on. You can turn it off there at any time.</string>
     <string name="home_key_disclosure_accept">Agree and continue</string>
     <string name="home_key_restricted_title">Install Matinee from Google Play first</string>
     <string name="home_key_restricted_body">This TV doesn\'t let apps installed from an APK file use accessibility permissions, so the switch turns itself back off.\n\nUninstall Matinee, install it from Google Play, then turn this on again.</string>

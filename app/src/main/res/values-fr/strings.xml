@@ -228,9 +228,9 @@
     <string name="setting_notification_access_sub">Lit uniquement les infos de lecture multimédia et les notifications de mise à jour du Play Store. Rien ne quitte le téléviseur.</string>
 
     <string name="home_key_service_label">Bouton Accueil Matinee</string>
-    <string name="home_key_service_description">Permet au bouton Accueil de la télécommande d\'ouvrir Matinee. Matinee écoute uniquement le bouton Accueil et ne lit jamais le contenu de l\'écran.</string>
+    <string name="home_key_service_description">Garde Matinee comme écran d\'accueil : le bouton Accueil de la télécommande ouvre Matinee, de même que l\'écran d\'accueil intégré du téléviseur quand il apparaît. Matinee ne lit jamais le contenu de l\'écran.</string>
     <string name="setting_home_key">Le bouton Accueil ouvre Matinee</string>
-    <string name="setting_home_key_sub">Utilise une autorisation d\'accessibilité qui écoute uniquement le bouton Accueil. Rien n\'est lu à l\'écran.</string>
+    <string name="setting_home_key_sub">Utilise une autorisation d\'accessibilité qui ne voit que le bouton Accueil et l\'ouverture de l\'écran d\'accueil intégré. Rien n\'est lu à l\'écran.</string>
 
     <string name="setting_wifi_name">Afficher le nom du réseau Wi‑Fi</string>
     <string name="setting_wifi_name_sub">Android ne communique le nom du réseau qu\'aux applis autorisées à accéder à la localisation. Matinee ne l\'utilise pour rien d\'autre.</string>
@@ -275,7 +275,7 @@
     <string name="days_ago">Il y a %1$d j</string>
     <string name="cancel">Annuler</string>
     <string name="home_key_disclosure_title">Ouvrir Matinee avec le bouton Accueil ?</string>
-    <string name="home_key_disclosure_body">Certains téléviseurs réservent le bouton Accueil à leur lanceur intégré. Pour ouvrir Matinee à la place, Matinee utilise une autorisation d\'accessibilité Android.\n\nElle écoute uniquement le bouton Accueil de la télécommande. Elle ne lit ni le contenu de l\'écran, ni ce que vous saisissez, ni aucune autre touche, et rien n\'est envoyé nulle part.\n\nSur l\'écran suivant, choisissez « Bouton Accueil Matinee » et activez-le. Vous pourrez le désactiver à tout moment au même endroit.</string>
+    <string name="home_key_disclosure_body">Certains téléviseurs réservent le bouton Accueil à leur lanceur intégré et réaffichent son écran d\'accueil après un redémarrage. Pour ouvrir Matinee à la place, Matinee utilise une autorisation d\'accessibilité Android.\n\nElle ne voit que le bouton Accueil de la télécommande et l\'ouverture de l\'écran d\'accueil intégré du téléviseur. Elle ne lit ni le contenu de l\'écran, ni ce que vous saisissez, ni les autres touches ou applis, et rien n\'est envoyé nulle part.\n\nSur l\'écran suivant, choisissez « Bouton Accueil Matinee » et activez-le. Vous pourrez le désactiver à tout moment au même endroit.</string>
     <string name="home_key_disclosure_accept">Accepter et continuer</string>
     <string name="home_key_restricted_title">Installez d\'abord Matinee depuis Google Play</string>
     <string name="home_key_restricted_body">Ce téléviseur n\'autorise pas les applis installées depuis un fichier APK à utiliser les autorisations d\'accessibilité ; l\'option se désactive donc d\'elle-même.\n\nDésinstallez Matinee, installez-la depuis Google Play, puis réactivez cette option.</string>

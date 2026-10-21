@@ -229,9 +229,9 @@
     <string name="setting_notification_access_sub">メディアの再生情報と Play Store のアップデート通知のみを読み取ります。データがテレビの外に送信されることはありません。</string>
 
     <string name="home_key_service_label">Matinee ホームボタン</string>
-    <string name="home_key_service_description">リモコンのホームボタンで Matinee を開けるようにします。Matinee はホームボタンのみを検知し、画面の内容を読み取ることはありません。</string>
+    <string name="home_key_service_description">Matinee をホーム画面として保ちます。リモコンのホームボタンを押したときや、テレビ内蔵のホーム画面が表示されたときに Matinee を開きます。Matinee が画面の内容を読み取ることはありません。</string>
     <string name="setting_home_key">ホームボタンで Matinee を開く</string>
-    <string name="setting_home_key_sub">ホームボタンのみを検知するユーザー補助の権限を使用します。画面の内容は読み取りません。</string>
+    <string name="setting_home_key_sub">ホームボタンと内蔵ホーム画面が開いたことだけを検知するユーザー補助の権限を使用します。画面の内容は読み取りません。</string>
 
     <string name="setting_wifi_name">Wi‑Fi ネットワーク名を表示</string>
     <string name="setting_wifi_name_sub">Android は位置情報の権限を持つアプリにのみネットワーク名を共有します。Matinee はそれ以外の目的に使用しません。</string>
@@ -276,7 +276,7 @@
     <string name="days_ago">%1$d 日前</string>
     <string name="cancel">キャンセル</string>
     <string name="home_key_disclosure_title">ホームボタンで Matinee を開きますか？</string>
-    <string name="home_key_disclosure_body">一部のテレビでは、ホームボタンが内蔵のランチャー専用になっています。代わりに Matinee を開くため、Matinee は Android のユーザー補助の権限を使用します。\n\n検知するのはリモコンのホームボタンのみです。画面の内容、入力した文字、その他のキーは読み取らず、どこにもデータを送信しません。\n\n次の画面で「Matinee ホームボタン」を選び、オンにしてください。この設定はいつでもそこでオフにできます。</string>
+    <string name="home_key_disclosure_body">一部のテレビでは、ホームボタンが内蔵のランチャー専用になっていて、再起動後にそのホーム画面に戻ります。代わりに Matinee を開くため、Matinee は Android のユーザー補助の権限を使用します。\n\n検知するのはリモコンのホームボタンと、テレビ内蔵のホーム画面が開いたことだけです。画面の内容、入力した文字、その他のキーやアプリは読み取らず、どこにもデータを送信しません。\n\n次の画面で「Matinee ホームボタン」を選び、オンにしてください。この設定はいつでもそこでオフにできます。</string>
     <string name="home_key_disclosure_accept">同意して続行</string>
     <string name="home_key_restricted_title">まず Google Play から Matinee をインストールしてください</string>
     <string name="home_key_restricted_body">このテレビでは、APK ファイルからインストールしたアプリはユーザー補助の権限を使用できないため、スイッチが自動的にオフに戻ります。\n\nMatinee をアンインストールし、Google Play からインストールしてから、もう一度オンにしてください。</string>

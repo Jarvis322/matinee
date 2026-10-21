@@ -228,9 +228,9 @@
     <string name="setting_notification_access_sub">Solo lee la información de reproducción y las notificaciones de actualización de Play Store. Nada sale de la TV.</string>
 
     <string name="home_key_service_label">Botón Inicio de Matinee</string>
-    <string name="home_key_service_description">Permite que el botón Inicio del control remoto abra Matinee. Matinee solo detecta el botón Inicio y nunca lee lo que hay en la pantalla.</string>
+    <string name="home_key_service_description">Mantiene Matinee como pantalla de inicio: el botón Inicio del control remoto abre Matinee, y también cuando aparece la pantalla de inicio integrada de la TV. Matinee nunca lee lo que hay en la pantalla.</string>
     <string name="setting_home_key">Inicio abre Matinee</string>
-    <string name="setting_home_key_sub">Usa un permiso de accesibilidad que solo detecta el botón Inicio. No se lee nada de la pantalla.</string>
+    <string name="setting_home_key_sub">Usa un permiso de accesibilidad que solo detecta el botón Inicio y cuándo se abre la pantalla de inicio integrada. No se lee nada de la pantalla.</string>
 
     <string name="setting_wifi_name">Mostrar nombre de la red Wi‑Fi</string>
     <string name="setting_wifi_name_sub">Android solo comparte el nombre de la red con apps que tienen permiso de ubicación. Matinee no lo usa para nada más.</string>
@@ -275,7 +275,7 @@
     <string name="days_ago">Hace %1$d d</string>
     <string name="cancel">Cancelar</string>
     <string name="home_key_disclosure_title">¿Dejar que el botón Inicio abra Matinee?</string>
-    <string name="home_key_disclosure_body">Algunas TV reservan el botón Inicio para su launcher integrado. Para abrir Matinee en su lugar, Matinee usa un permiso de accesibilidad de Android.\n\nSolo detecta el botón Inicio del control remoto. No lee lo que hay en la pantalla, lo que escribes ni ninguna otra tecla, y no se envía nada a ningún sitio.\n\nEn la siguiente pantalla, elige “Botón Inicio de Matinee” y actívalo. Puedes desactivarlo allí en cualquier momento.</string>
+    <string name="home_key_disclosure_body">Algunas TV reservan el botón Inicio para su launcher integrado y vuelven a mostrar su pantalla de inicio tras reiniciarse. Para abrir Matinee en su lugar, Matinee usa un permiso de accesibilidad de Android.\n\nSolo detecta el botón Inicio del control remoto y cuándo se abre la pantalla de inicio integrada de la TV. No lee lo que hay en la pantalla, lo que escribes, otras teclas ni otras apps, y no se envía nada a ningún sitio.\n\nEn la siguiente pantalla, elige “Botón Inicio de Matinee” y actívalo. Puedes desactivarlo allí en cualquier momento.</string>
     <string name="home_key_disclosure_accept">Aceptar y continuar</string>
     <string name="home_key_restricted_title">Primero instala Matinee desde Google Play</string>
     <string name="home_key_restricted_body">Esta TV no deja que las apps instaladas desde un archivo APK usen permisos de accesibilidad, así que el interruptor se vuelve a desactivar solo.\n\nDesinstala Matinee, instálalo desde Google Play y vuelve a activar esta opción.</string>

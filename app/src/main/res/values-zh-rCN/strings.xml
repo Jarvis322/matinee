@@ -228,9 +228,9 @@
     <string name="setting_notification_access_sub">仅读取媒体播放信息和 Play Store 更新通知。所有数据都不会离开电视。</string>
 
     <string name="home_key_service_label">Matinee 主页键</string>
-    <string name="home_key_service_description">让遥控器的主页键打开 Matinee。Matinee 只监听主页键，绝不读取屏幕上的内容。</string>
+    <string name="home_key_service_description">让 Matinee 始终作为主屏幕：按遥控器的主页键或电视显示内置主屏幕时，都会打开 Matinee。Matinee 绝不读取屏幕上的内容。</string>
     <string name="setting_home_key">主页键打开 Matinee</string>
-    <string name="setting_home_key_sub">使用仅监听主页键的无障碍权限。不会读取屏幕上的任何内容。</string>
+    <string name="setting_home_key_sub">使用仅检测主页键和内置主屏幕打开的无障碍权限。不会读取屏幕上的任何内容。</string>
 
     <string name="setting_wifi_name">显示 Wi‑Fi 网络名称</string>
     <string name="setting_wifi_name_sub">Android 只向拥有位置权限的应用提供网络名称。Matinee 不会将其用于其他用途。</string>
@@ -275,7 +275,7 @@
     <string name="days_ago">%1$d 天前</string>
     <string name="cancel">取消</string>
     <string name="home_key_disclosure_title">让主页键打开 Matinee？</string>
-    <string name="home_key_disclosure_body">有些电视会将主页键保留给内置启动器。为了改为打开 Matinee，Matinee 会使用一项 Android 无障碍权限。\n\n它只监听遥控器的主页键，不会读取屏幕上的内容、你输入的内容或任何其他按键，也不会向任何地方发送数据。\n\n在下一个页面中，选择“Matinee 主页键”并将其开启。你可以随时在那里将其关闭。</string>
+    <string name="home_key_disclosure_body">有些电视会将主页键保留给内置启动器，并在重启后回到其主屏幕。为了改为打开 Matinee，Matinee 会使用一项 Android 无障碍权限。\n\n它只检测遥控器的主页键和电视内置主屏幕的打开，不会读取屏幕上的内容、你输入的内容、其他按键或其他应用，也不会向任何地方发送数据。\n\n在下一个页面中，选择“Matinee 主页键”并将其开启。你可以随时在那里将其关闭。</string>
     <string name="home_key_disclosure_accept">同意并继续</string>
     <string name="home_key_restricted_title">请先从 Google Play 安装 Matinee</string>
     <string name="home_key_restricted_body">这台电视不允许通过 APK 文件安装的应用使用无障碍权限，因此开关会自动关闭。\n\n请卸载 Matinee，从 Google Play 重新安装，然后再次开启此功能。</string>

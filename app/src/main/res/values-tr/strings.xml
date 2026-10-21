@@ -228,9 +228,9 @@
     <string name="setting_notification_access_sub">Yalnızca oynatılan medya bilgisi ve Play Store güncelleme bildirimleri okunur. Hiçbiri TV\'den çıkmaz.</string>
 
     <string name="home_key_service_label">Matinee Home tuşu</string>
-    <string name="home_key_service_description">Kumandanın Home tuşunun Matinee\'yi açmasını sağlar. Matinee yalnızca Home tuşunu dinler, ekranda ne olduğunu asla okumaz.</string>
+    <string name="home_key_service_description">Matinee\'yi ana ekranın olarak tutar: kumandanın Home tuşu ve TV\'nin yerleşik ana ekranı açıldığında Matinee açılır. Matinee ekranda ne olduğunu asla okumaz.</string>
     <string name="setting_home_key">Home tuşu Matinee\'yi açsın</string>
-    <string name="setting_home_key_sub">Yalnızca Home tuşunu dinleyen bir erişilebilirlik izni kullanır. Ekrandaki hiçbir şey okunmaz.</string>
+    <string name="setting_home_key_sub">Yalnızca Home tuşunu ve yerleşik ana ekranın açıldığını gören bir erişilebilirlik izni kullanır. Ekrandaki hiçbir şey okunmaz.</string>
 
     <string name="setting_wifi_name">Wi‑Fi ağ adını göster</string>
     <string name="setting_wifi_name_sub">Android ağ adını yalnızca konum izni olan uygulamalara verir. Matinee bu izni başka hiçbir şey için kullanmaz.</string>
@@ -275,7 +275,7 @@
     <string name="days_ago">%1$d gün önce</string>
     <string name="cancel">Vazgeç</string>
     <string name="home_key_disclosure_title">Home tuşu Matinee\'yi açsın mı?</string>
-    <string name="home_key_disclosure_body">Bazı TV\'ler Home tuşunu kendi yerleşik ana ekranına ayırır. Bunun yerine Matinee\'nin açılması için Matinee bir Android erişilebilirlik izni kullanır.\n\nYalnızca kumandanın Home tuşunu dinler. Ekranda ne olduğunu, ne yazdığını ya da başka bir tuşu okumaz; hiçbir şey hiçbir yere gönderilmez.\n\nSonraki ekranda “Matinee Home tuşu” seçeneğini seçip aç. İstediğin zaman oradan kapatabilirsin.</string>
+    <string name="home_key_disclosure_body">Bazı TV\'ler Home tuşunu kendi yerleşik ana ekranına ayırır ve yeniden başlatınca o ekranı geri getirir. Bunun yerine Matinee\'nin açılması için Matinee bir Android erişilebilirlik izni kullanır.\n\nYalnızca kumandanın Home tuşunu ve TV\'nin yerleşik ana ekranının açıldığını görür. Ekranda ne olduğunu, ne yazdığını, başka tuşları ya da başka uygulamaları okumaz; hiçbir şey hiçbir yere gönderilmez.\n\nSonraki ekranda “Matinee Home tuşu” seçeneğini seçip aç. İstediğin zaman oradan kapatabilirsin.</string>
     <string name="home_key_disclosure_accept">Kabul et ve devam et</string>
     <string name="home_key_restricted_title">Önce Matinee\'yi Google Play\'den kur</string>
     <string name="home_key_restricted_body">Bu TV, APK dosyasından kurulan uygulamaların erişilebilirlik izni kullanmasına izin vermiyor; bu yüzden anahtar kendiliğinden kapanıyor.\n\nMatinee\'yi kaldır, Google Play\'den kur, sonra bunu tekrar aç.</string>
