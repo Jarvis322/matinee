@@ -3,6 +3,9 @@ package com.tcltv.sahne.ui.home
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.BringIntoViewSpec
+import androidx.compose.foundation.gestures.LocalBringIntoViewSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,6 +31,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -75,12 +79,35 @@ private const val ROW_INSET = 12
 // Pushes the shelf to the lower part of the screen so the hero has room above it and the first grid row peeks below.
 private const val HERO_SPACE = 236
 
+/** Bottom of the hero area in screen dp: top bar padding + list top padding + [HERO_SPACE]. */
+internal const val GRID_HERO_BOTTOM = 80 + 14 + HERO_SPACE
+
+/**
+ * Android TV's default bring-into-view pivots the focused item to a fixed height, so the first move along the shelf
+ * jumped the whole page up. This scrolls only as far as needed to show the focused item, plus a margin so the last
+ * row doesn't end flush with the screen edge.
+ */
+@OptIn(ExperimentalFoundationApi::class)
+private val MinimalBringIntoView = object : BringIntoViewSpec {
+    override fun calculateScrollDistance(offset: Float, size: Float, containerSize: Float): Float {
+        val margin = SCROLL_MARGIN_PX.coerceAtMost((containerSize - size) / 2).coerceAtLeast(0f)
+        return when {
+            offset < margin -> offset - margin
+            offset + size > containerSize - margin -> offset + size - (containerSize - margin)
+            else -> 0f
+        }
+    }
+}
+
+private const val SCROLL_MARGIN_PX = 64f
+
 private data class GridFocusRequest(val packageName: String?, val nonce: Int)
 
 /**
  * Favorites shelf above a grid of the home apps. The shelf holds the first [COLUMNS] apps in the user's order,
  * so moving an app into the first places puts it on the shelf.
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun GridHome(
     viewModel: LauncherViewModel,
@@ -97,6 +124,7 @@ internal fun GridHome(
     var focusRequest by remember { mutableStateOf(GridFocusRequest(null, 0)) }
     var showAddDialog by remember { mutableStateOf(false) }
     var shelfFocused by remember { mutableStateOf(true) }
+    var gridFocused by remember { mutableStateOf(true) }
     val listState = rememberLazyListState()
     // Read only in graphicsLayer and a derived flag, so the fade redraws the hero instead of recomposing the grid.
     val heroAlpha = animateFloatAsState(
@@ -117,8 +145,14 @@ internal fun GridHome(
     // A moved card is recomposed at its new place (often in another row), so focus is handed to it once the order lands.
     LaunchedEffect(apps) { liftedPackage?.let(::requestFocus) }
     BackHandler(enabled = liftedPackage != null) { liftedPackage = null }
-    // Coming back up to the shelf restores the full hero instead of leaving the shelf pinned under the top bar.
-    LaunchedEffect(shelfFocused) { if (shelfFocused) listState.animateScrollToItem(0) }
+    // Coming back up to the shelf restores the full hero; going down into the grid lifts the shelf under the top bar
+    // so the rows get the room the fading hero leaves. Focus on the top bar moves neither.
+    LaunchedEffect(shelfFocused, gridFocused) {
+        when {
+            shelfFocused -> listState.animateScrollToItem(0)
+            gridFocused && listState.firstVisibleItemIndex == 0 -> listState.animateScrollToItem(1)
+        }
+    }
 
     Box(Modifier.fillMaxSize()) {
         CinematicBackground(accent)
@@ -159,45 +193,47 @@ internal fun GridHome(
             }
         }
 
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxSize().padding(top = 80.dp),
-            contentPadding = PaddingValues(start = GRID_SIDE.dp, end = GRID_SIDE.dp, top = 14.dp, bottom = 40.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            item(key = "heroSpace") { Spacer(Modifier.height(HERO_SPACE.dp)) }
-            item(key = "shelf") {
-                Column(Modifier.onFocusChanged { shelfFocused = it.hasFocus }) {
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(22.dp))
-                            .background(Color.White.copy(alpha = 0.08f))
-                            .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(22.dp))
-                            .padding(start = ROW_INSET.dp, end = ROW_INSET.dp, top = 14.dp, bottom = 6.dp),
-                    ) {
-                        CellRow(shelf) { app, isRowEnd -> Cell(app, isRowEnd) }
+        CompositionLocalProvider(LocalBringIntoViewSpec provides MinimalBringIntoView) {
+            LazyColumn(
+                state = listState,
+                modifier = Modifier.fillMaxSize().padding(top = 80.dp).onFocusChanged { gridFocused = it.hasFocus },
+                contentPadding = PaddingValues(start = GRID_SIDE.dp, end = GRID_SIDE.dp, top = 14.dp, bottom = 40.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                item(key = "heroSpace") { Spacer(Modifier.height(HERO_SPACE.dp)) }
+                item(key = "shelf") {
+                    Column(Modifier.onFocusChanged { shelfFocused = it.hasFocus }) {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(22.dp))
+                                .background(Color.White.copy(alpha = 0.08f))
+                                .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(22.dp))
+                                .padding(start = ROW_INSET.dp, end = ROW_INSET.dp, top = 14.dp, bottom = 6.dp),
+                        ) {
+                            CellRow(shelf) { app, isRowEnd -> Cell(app, isRowEnd) }
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        BasicText(
+                            stringResource(R.string.grid_favorites_hint),
+                            style = interStyle(11.sp, 500, Palette.TextMuted),
+                            modifier = Modifier.padding(start = ROW_INSET.dp),
+                        )
                     }
-                    Spacer(Modifier.height(8.dp))
-                    BasicText(
-                        stringResource(R.string.grid_favorites_hint),
-                        style = interStyle(11.sp, 500, Palette.TextMuted),
-                        modifier = Modifier.padding(start = ROW_INSET.dp),
-                    )
                 }
-            }
-            itemsIndexed(cells.chunked(COLUMNS), key = { index, _ -> "row$index" }) { _, row ->
-                CellRow(row, Modifier.padding(horizontal = ROW_INSET.dp)) { app, isRowEnd -> Cell(app, isRowEnd) }
-            }
-            if (visibleInputs.isNotEmpty()) {
-                item(key = "inputs") {
-                    Row(Modifier.padding(start = ROW_INSET.dp, top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                        BasicText(stringResource(R.string.section_inputs), style = interStyle(12.sp, 600, Color.White.copy(alpha = 0.55f)))
-                        Spacer(Modifier.width(14.dp))
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            visibleInputs.forEachIndexed { index, input ->
-                                InputChip(input, enabled = liftedPackage == null, isLast = index == visibleInputs.lastIndex) {
-                                    viewModel.openInput(input)
+                itemsIndexed(cells.chunked(COLUMNS), key = { index, _ -> "row$index" }) { _, row ->
+                    CellRow(row, Modifier.padding(horizontal = ROW_INSET.dp)) { app, isRowEnd -> Cell(app, isRowEnd) }
+                }
+                if (visibleInputs.isNotEmpty()) {
+                    item(key = "inputs") {
+                        Row(Modifier.padding(start = ROW_INSET.dp, top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                            BasicText(stringResource(R.string.section_inputs), style = interStyle(12.sp, 600, Color.White.copy(alpha = 0.55f)))
+                            Spacer(Modifier.width(14.dp))
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                visibleInputs.forEachIndexed { index, input ->
+                                    InputChip(input, enabled = liftedPackage == null, isLast = index == visibleInputs.lastIndex) {
+                                        viewModel.openInput(input)
+                                    }
                                 }
                             }
                         }

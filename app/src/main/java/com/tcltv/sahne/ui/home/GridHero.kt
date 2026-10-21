@@ -25,8 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,47 +40,66 @@ import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.interStyle
 
 /**
- * Full-bleed area above the grid's shelf: the focused app's last played artwork across the top of the screen,
- * with its title on the left. Apps with nothing played yet show only their name over the tinted backdrop.
+ * Area above the grid's shelf, like the top shelf on Apple TV: the focused app's last played artwork across the top
+ * of the screen, fading out behind the shelf, with its title at the bottom left just above the shelf. Apps with
+ * nothing played yet show only their name over the tinted backdrop.
  */
 @Composable
 internal fun GridHero(app: LaunchableApp, entry: LastPlayed?, viewModel: LauncherViewModel, modifier: Modifier) {
     Box(modifier.fillMaxSize()) {
-        Crossfade(
-            targetState = entry,
-            animationSpec = if (LocalReduceMotion.current) snap() else tween(500),
-            label = "gridHero",
-        ) { shown ->
-            if (shown != null) HeroArtwork(shown, viewModel)
-        }
-        // Darkens the left side for the title and fades into the page background behind the shelf.
-        Box(
-            Modifier.fillMaxSize().background(
-                Brush.horizontalGradient(0f to Palette.Background.copy(alpha = 0.78f), 0.55f to Color.Transparent),
-            ),
-        )
-        Box(
-            Modifier.fillMaxSize().background(
-                // The top band keeps the clock and profile readable over bright artwork.
-                Brush.verticalGradient(
-                    0f to Palette.Background.copy(alpha = 0.7f),
-                    0.18f to Color.Transparent,
-                    0.4f to Color.Transparent,
-                    0.72f to Palette.Background.copy(alpha = 0.85f),
-                    1f to Palette.Background,
+        // Ends a little below the shelf's top edge, so artwork never sits behind the app grid.
+        Box(Modifier.fillMaxWidth().height((GRID_HERO_BOTTOM + ARTWORK_OVERLAP).dp)) {
+            Crossfade(
+                targetState = entry,
+                animationSpec = if (LocalReduceMotion.current) snap() else tween(500),
+                label = "gridHero",
+            ) { shown ->
+                if (shown != null) HeroArtwork(shown, viewModel)
+            }
+            // Darkens the left side for the title.
+            Box(
+                Modifier.fillMaxSize().background(
+                    // Strong enough to quiet text baked into thumbnails, which would otherwise fight with the title.
+                    Brush.horizontalGradient(
+                        0f to Palette.Background.copy(alpha = 0.94f),
+                        0.38f to Palette.Background.copy(alpha = 0.7f),
+                        0.7f to Color.Transparent,
+                    ),
                 ),
-            ),
-        )
-        Column(Modifier.padding(start = 48.dp, top = 104.dp).width(520.dp)) {
+            )
+            Box(
+                Modifier.fillMaxSize().background(
+                    // The top band keeps the clock and profile readable over bright artwork; the bottom melts into
+                    // the page so the shelf doesn't sit on a hard image edge.
+                    Brush.verticalGradient(
+                        0f to Palette.Background.copy(alpha = 0.92f),
+                        0.3f to Color.Transparent,
+                        0.5f to Color.Transparent,
+                        0.82f to Palette.Background.copy(alpha = 0.9f),
+                        1f to Palette.Background,
+                    ),
+                ),
+            )
+        }
+        Column(
+            Modifier
+                .padding(start = 48.dp, top = (GRID_HERO_BOTTOM - TITLE_GAP).dp)
+                .width(560.dp)
+                .layout { measurable, constraints ->
+                    // Grows upward from just above the shelf, whatever the title's line count.
+                    val placeable = measurable.measure(constraints)
+                    layout(placeable.width, 0) { placeable.place(0, -placeable.height) }
+                },
+        ) {
             BasicText(
                 entry?.title ?: app.label,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                style = interStyle(38.sp, 800).copy(lineHeight = 41.sp),
+                style = if (entry != null) interStyle(26.sp, 800).copy(lineHeight = 31.sp) else interStyle(40.sp, 800),
             )
             val meta = listOfNotNull(entry?.subtitle, if (entry != null) app.label else null).joinToString(" · ")
             if (meta.isNotEmpty()) {
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(6.dp))
                 BasicText(meta, maxLines = 1, overflow = TextOverflow.Ellipsis, style = interStyle(13.sp, 500, Palette.TextSecondary))
             }
             entry?.progress?.let { progress ->
@@ -91,6 +112,9 @@ internal fun GridHero(app: LaunchableApp, entry: LastPlayed?, viewModel: Launche
     }
 }
 
+private const val ARTWORK_OVERLAP = 60
+private const val TITLE_GAP = 22
+
 @Composable
 private fun HeroArtwork(entry: LastPlayed, viewModel: LauncherViewModel) {
     var artwork by remember(entry.artworkPath, entry.updatedAt) { mutableStateOf<ImageBitmap?>(null) }
@@ -98,10 +122,18 @@ private fun HeroArtwork(entry: LastPlayed, viewModel: LauncherViewModel) {
     val image = artwork ?: return
     // Square music covers would be cropped to a sliver across the full width, so they sit on the right at their own shape.
     if (entry.artworkIsSquare) {
-        Box(Modifier.fillMaxSize().padding(start = 560.dp, end = 48.dp, top = 90.dp, bottom = 230.dp)) {
+        Box(Modifier.fillMaxSize().padding(start = 560.dp, end = 48.dp, top = 90.dp, bottom = (ARTWORK_OVERLAP + 20).dp)) {
             Image(image, contentDescription = null, contentScale = ContentScale.Fit, modifier = Modifier.fillMaxSize())
         }
     } else {
-        Image(image, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+        // Apps share artwork at about 640 px (YouTube sends exactly 640x360), so it is upscaled about 3x across the
+        // screen; the better filter keeps that softer rather than blocky.
+        Image(
+            image,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            filterQuality = FilterQuality.High,
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
