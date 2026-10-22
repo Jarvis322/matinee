@@ -139,8 +139,14 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
     val settings by viewModel.settings.collectAsStateWithLifecycle()
     val lastPlayed by viewModel.lastPlayed.collectAsStateWithLifecycle()
 
+    val menu = rememberAppMenuState()
+    val openMenu = { app: LaunchableApp ->
+        viewModel.gate.requireForAdmin(R.string.pin_reason_admin) { menu.target = MenuTarget(app, inFolder = false) }
+    }
+    AppMenuHost(viewModel, menu, settings.cardTheme)
+
     if (settings.homeLayout == HomeLayout.GRID) {
-        GridHome(viewModel, apps, allApps, liveTv, inputs, settings, lastPlayed, resumeTick, onOpenSettings)
+        GridHome(viewModel, apps, allApps, liveTv, inputs, settings, lastPlayed, resumeTick, onOpenSettings, menu, openMenu)
         return
     }
 
@@ -166,6 +172,15 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
     }
     LaunchedEffect(resumeTick, apps.isNotEmpty()) {
         requestCardFocus(current?.packageName)
+    }
+    // "Move" in the long-press menu starts the arrangement mode with that card lifted.
+    LaunchedEffect(menu.moveRequest) {
+        menu.moveRequest?.let {
+            editMode = true
+            liftedPackage = it
+            requestCardFocus(it)
+            menu.moveRequest = null
+        }
     }
     BackHandler(enabled = editMode) {
         liftedPackage = null
@@ -239,8 +254,7 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
                     viewModel.launchApp(app)
                 }
             },
-            // Entering edit mode leaves the card in place so Up reaches its remove button; OK then lifts it.
-            onLongPress = { editMode = true },
+            onLongPress = openMenu,
             onMove = { app, delta ->
                 viewModel.moveApp(app.packageName, delta)
                 requestCardFocus(app.packageName)

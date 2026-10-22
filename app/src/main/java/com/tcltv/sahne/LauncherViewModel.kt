@@ -22,6 +22,10 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.tcltv.sahne.data.AppCatalog
+import com.tcltv.sahne.data.UserImages
+import com.tcltv.sahne.data.HomeApps
+import com.tcltv.sahne.data.FolderEdits
+import com.tcltv.sahne.data.AppOverride
 import com.tcltv.sahne.data.CleanResult
 import com.tcltv.sahne.data.CurrentWeather
 import com.tcltv.sahne.data.DeviceLogo
@@ -63,6 +67,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -132,14 +137,43 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     val settings: StateFlow<LauncherSettings> = settingsStore.settings
         .stateIn(viewModelScope, SharingStarted.Eagerly, LauncherSettings())
 
-    private val allApps: StateFlow<List<LaunchableApp>> = appCatalog.apps
+    private val userImages = UserImages(application)
+    private val homeApps = HomeApps(application, userImages)
+    val gate = ParentalGate(settings, settingsStore)
+
+    /** Every app the catalog found, with the user's names, pictures and locks applied. */
+    private val decoratedApps: StateFlow<List<LaunchableApp>> = combine(
+        appCatalog.apps,
+        settings.map { it.appOverrides }.distinctUntilChanged(),
+    ) { apps, overrides -> homeApps.decorate(apps, overrides) }
+        .flowOn(Dispatchers.Default)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    /** What the home screen orders and shows: apps that sit in a folder are replaced by the folder's own card. */
+    private val allApps: StateFlow<List<LaunchableApp>> = combine(
+        decoratedApps,
+        settings.map { it.folders }.distinctUntilChanged(),
+    ) { apps, folders -> homeApps.withFolders(apps, folders) }
+        .flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     val apps: StateFlow<List<LaunchableApp>> = combine(allApps, settings) { apps, s -> AppCatalog.ordered(apps, s) }
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    val appsForSettings: StateFlow<List<LaunchableApp>> = combine(allApps, settings) { apps, s -> AppCatalog.orderedIncludingHidden(apps, s) }
+    val appsForSettings: StateFlow<List<LaunchableApp>> = combine(decoratedApps, settings) { apps, s -> AppCatalog.orderedIncludingHidden(apps, s) }
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    private val _openFolder = MutableStateFlow<String?>(null)
+    val openFolderId: StateFlow<String?> = _openFolder.asStateFlow()
+
+    /** The apps inside the open folder, in folder order. */
+    val openFolderApps: StateFlow<List<LaunchableApp>> = combine(openFolderId, decoratedApps, settings) { id, apps, s ->
+        if (id == null) emptyList() else homeApps.membersOf(id, apps, s.folders)
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    fun closeFolder() {
+        _openFolder.value = null
+    }
 
     private val rawInputs: StateFlow<List<RawHdmiInput>> = inputCatalog.rawInputs
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
@@ -488,7 +522,14 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         _citySearch.value = CitySearchState.Idle
     }
 
-    fun launchApp(app: LaunchableApp) = startSafely(appCatalog.launchIntent(app))
+    /** A folder opens its contents; a locked app asks for the PIN first. */
+    fun launchApp(app: LaunchableApp) {
+        if (app.folderId != null) {
+            _openFolder.value = app.folderId
+        } else {
+            gate.requireForApp(R.string.pin_reason_app, app.isLocked) { startSafely(appCatalog.launchIntent(app)) }
+        }
+    }
 
     fun openInput(input: HdmiInput) = startSafely(inputCatalog.launchIntent(input.id))
 
@@ -570,6 +611,91 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         } else {
             setAppVisibility(hidden = current.hiddenApps + packageName, shown = current.shownApps - packageName)
         }
+    }
+
+    private val customizeLock = Mutex()
+
+    private fun changeOverride(packageName: String, change: (AppOverride) -> AppOverride) = update {
+        customizeLock.withLock {
+            val current = settings.first().appOverrides
+            val next = change(current[packageName] ?: AppOverride())
+            setAppOverrides(if (next.isDefault) current - packageName else current + (packageName to next))
+        }
+    }
+
+    /** A blank name goes back to the app's own name. */
+    fun renameApp(packageName: String, name: String) {
+        val app = allApps.value.firstOrNull { it.packageName == packageName } ?: return
+        if (app.folderId != null) renameFolder(app.folderId, name) else changeOverride(packageName) { it.copy(label = name.trim().ifEmpty { null }) }
+    }
+
+    fun setAppLocked(packageName: String, locked: Boolean) = changeOverride(packageName) { it.copy(locked = locked) }
+
+    /** Stores a picture the user chose as the app's card, replacing any earlier one. */
+    fun setAppIcon(packageName: String, picture: java.io.File?) = update {
+        customizeLock.withLock {
+            val current = settings.first().appOverrides
+            val previous = current[packageName]?.icon
+            val name = picture?.let { "icon_${packageName.hashCode().toUInt()}_${System.currentTimeMillis()}.img" }
+            if (picture != null && name != null) picture.renameTo(userImages.file(name))
+            if (previous != null) userImages.delete(previous)
+            val next = (current[packageName] ?: AppOverride()).copy(icon = name)
+            setAppOverrides(if (next.isDefault) current - packageName else current + (packageName to next))
+        }
+    }
+
+    /** Where a picture for an app is received before it is attached to it. */
+    fun newPictureFile(): java.io.File = userImages.file("incoming_${System.currentTimeMillis()}.img")
+
+    private suspend fun currentOrder(): List<String> =
+        AppCatalog.orderedIncludingHidden(allApps.value, settings.first()).map { it.packageName }
+
+    fun createFolder(packageName: String, name: String) = update {
+        customizeLock.withLock {
+            val current = settings.first()
+            val result = FolderEdits.create(currentOrder(), current.folders, packageName, name)
+            setFolders(result.folders)
+            setAppOrder(result.order)
+        }
+    }
+
+    fun addToFolder(folderId: String, packageName: String) = update {
+        customizeLock.withLock {
+            val result = FolderEdits.add(currentOrder(), settings.first().folders, folderId, packageName)
+            setFolders(result.folders)
+            setAppOrder(result.order)
+        }
+    }
+
+    fun removeFromFolder(packageName: String) = update {
+        customizeLock.withLock {
+            val result = FolderEdits.remove(currentOrder(), settings.first().folders, packageName)
+            setFolders(result.folders)
+            setAppOrder(result.order)
+            // The folder may have just emptied; its open view would have nothing left to show.
+            if (result.folders.none { it.id == _openFolder.value }) _openFolder.value = null
+        }
+    }
+
+    fun deleteFolder(folderId: String) = update {
+        customizeLock.withLock {
+            val result = FolderEdits.delete(currentOrder(), settings.first().folders, folderId)
+            setFolders(result.folders)
+            setAppOrder(result.order)
+            if (_openFolder.value == folderId) _openFolder.value = null
+        }
+    }
+
+    fun renameFolder(folderId: String, name: String) = update {
+        customizeLock.withLock { setFolders(FolderEdits.rename(settings.first().folders, folderId, name)) }
+    }
+
+    fun setPin(pin: String) {
+        viewModelScope.launch { gate.setPin(pin) }
+    }
+
+    fun removePin() {
+        viewModelScope.launch { gate.removePin() }
     }
 
     fun toggleCleanExclusion(packageName: String) = update {

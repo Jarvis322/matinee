@@ -13,6 +13,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -63,6 +64,9 @@ data class LauncherSettings(
     val autoCleanMemory: Boolean = false,
     val memoryThresholdPercent: Int = 80,
     val memoryCleanExclusions: Set<String> = emptySet(),
+    val appOverrides: Map<String, AppOverride> = emptyMap(),
+    val folders: List<Folder> = emptyList(),
+    val parental: Parental = Parental(),
 ) {
     companion object {
         val DEFAULT_LOCATION = WeatherLocation("İstanbul", 41.0138, 28.9497)
@@ -111,6 +115,13 @@ class SettingsStore(private val context: Context) {
         val autoCleanMemory = booleanPreferencesKey("auto_clean_memory")
         val memoryThreshold = intPreferencesKey("memory_threshold_percent")
         val memoryExclusions = stringSetPreferencesKey("memory_clean_exclusions")
+        val appOverrides = stringPreferencesKey("app_overrides")
+        val folders = stringPreferencesKey("folders")
+        val pinHash = stringPreferencesKey("pin_hash")
+        val pinSalt = stringPreferencesKey("pin_salt")
+        val protectSettings = booleanPreferencesKey("protect_settings")
+        val pinFailures = intPreferencesKey("pin_failures")
+        val pinLockedUntil = longPreferencesKey("pin_locked_until")
         const val INPUT_NAME_PREFIX = "input_name:"
         const val INPUT_LOGO_PREFIX = "input_logo:"
     }
@@ -174,6 +185,15 @@ class SettingsStore(private val context: Context) {
             autoCleanMemory = this[Keys.autoCleanMemory] ?: defaults.autoCleanMemory,
             memoryThresholdPercent = this[Keys.memoryThreshold] ?: defaults.memoryThresholdPercent,
             memoryCleanExclusions = this[Keys.memoryExclusions] ?: defaults.memoryCleanExclusions,
+            appOverrides = CustomizationJson.decodeOverrides(this[Keys.appOverrides]),
+            folders = CustomizationJson.decodeFolders(this[Keys.folders]),
+            parental = Parental(
+                pinHash = this[Keys.pinHash],
+                pinSalt = this[Keys.pinSalt],
+                protectSettings = this[Keys.protectSettings] ?: defaults.parental.protectSettings,
+                failures = this[Keys.pinFailures] ?: 0,
+                lockedUntilMillis = this[Keys.pinLockedUntil] ?: 0L,
+            ),
         )
     }
 
@@ -233,6 +253,36 @@ class SettingsStore(private val context: Context) {
     suspend fun setAutoCleanMemory(value: Boolean) = edit { it[Keys.autoCleanMemory] = value }
     suspend fun setMemoryThreshold(value: Int) = edit { it[Keys.memoryThreshold] = value }
     suspend fun setMemoryCleanExclusions(value: Set<String>) = edit { it[Keys.memoryExclusions] = value }
+
+    suspend fun setAppOverrides(value: Map<String, AppOverride>) = edit { it[Keys.appOverrides] = CustomizationJson.encodeOverrides(value) }
+    suspend fun setFolders(value: List<Folder>) = edit { it[Keys.folders] = CustomizationJson.encodeFolders(value) }
+
+    suspend fun setPin(hash: String, salt: String) = edit {
+        it[Keys.pinHash] = hash
+        it[Keys.pinSalt] = salt
+        it[Keys.pinFailures] = 0
+        it[Keys.pinLockedUntil] = 0L
+    }
+
+    suspend fun clearPin() = edit {
+        it.remove(Keys.pinHash)
+        it.remove(Keys.pinSalt)
+        it[Keys.pinFailures] = 0
+        it[Keys.pinLockedUntil] = 0L
+    }
+
+    suspend fun setProtectSettings(value: Boolean) = edit { it[Keys.protectSettings] = value }
+
+    suspend fun recordPinFailure(now: Long) = edit {
+        val failures = (it[Keys.pinFailures] ?: 0) + 1
+        it[Keys.pinFailures] = failures
+        it[Keys.pinLockedUntil] = now + PinHasher.lockoutMillisAfter(failures)
+    }
+
+    suspend fun clearPinFailures() = edit {
+        it[Keys.pinFailures] = 0
+        it[Keys.pinLockedUntil] = 0L
+    }
 
     suspend fun reset() = edit { it.clear() }
 }

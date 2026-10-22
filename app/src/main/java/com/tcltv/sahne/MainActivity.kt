@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onPause() {
+        viewModel.gate.endAdminSession()
         viewModel.onHomePaused()
         super.onPause()
     }

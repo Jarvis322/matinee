@@ -125,6 +125,8 @@ internal fun GridHome(
     lastPlayed: Map<String, LastPlayed>,
     resumeTick: Int,
     onOpenSettings: () -> Unit,
+    menu: AppMenuState,
+    onOpenMenu: (LaunchableApp) -> Unit,
 ) {
     var selectedPackage by remember { mutableStateOf<String?>(null) }
     var liftedPackage by remember { mutableStateOf<String?>(null) }
@@ -149,6 +151,14 @@ internal fun GridHome(
         if (packageName != null) focusRequest = GridFocusRequest(packageName, focusRequest.nonce + 1)
     }
     LaunchedEffect(resumeTick, apps.isNotEmpty()) { requestFocus(current?.packageName) }
+    // "Move" in the long-press menu lifts the card, exactly as holding OK on it used to.
+    LaunchedEffect(menu.moveRequest) {
+        menu.moveRequest?.let {
+            liftedPackage = it
+            requestFocus(it)
+            menu.moveRequest = null
+        }
+    }
     // A moved card is recomposed at its new place (often in another row), so focus is handed to it once the order lands.
     LaunchedEffect(apps) { liftedPackage?.let(::requestFocus) }
     BackHandler(enabled = liftedPackage != null) { liftedPackage = null }
@@ -195,7 +205,7 @@ internal fun GridHome(
                             app.packageName -> liftedPackage = null
                         }
                     },
-                    onLongPress = { if (liftedPackage == null) liftedPackage = app.packageName },
+                    onLongPress = { if (liftedPackage == null) onOpenMenu(app) },
                     onMove = { delta -> viewModel.moveApp(app.packageName, delta) },
                 )
             }

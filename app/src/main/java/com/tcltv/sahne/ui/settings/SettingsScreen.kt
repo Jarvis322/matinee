@@ -96,6 +96,8 @@ import com.tcltv.sahne.data.TemperatureUnit
 import com.tcltv.sahne.ui.KeyCap
 import com.tcltv.sahne.ui.GlassStyle
 import com.tcltv.sahne.ui.Palette
+import com.tcltv.sahne.ui.PinSetup
+import com.tcltv.sahne.ui.TextInput
 import com.tcltv.sahne.ui.TintedIcon
 import com.tcltv.sahne.ui.home.CinematicBackground
 import com.tcltv.sahne.ui.home.NeutralAccent
@@ -110,6 +112,7 @@ private enum class Section(@StringRes val title: Int, @StringRes val subtitle: I
     APPS(R.string.settings_apps, R.string.settings_apps_sub, R.drawable.ic_layout_grid),
     INPUTS(R.string.settings_inputs, R.string.settings_inputs_sub, R.drawable.ic_hdmi),
     HOME(R.string.settings_home, R.string.settings_home_sub, R.drawable.ic_home),
+    PARENTAL(R.string.settings_parental, R.string.settings_parental_sub, R.drawable.ic_lock),
     DEVICE(R.string.settings_device, R.string.settings_device_sub, R.drawable.ic_cpu),
     BLUETOOTH(R.string.settings_bluetooth, R.string.settings_bluetooth_sub, R.drawable.ic_bluetooth),
     ABOUT(R.string.settings_about, R.string.settings_about_sub, R.drawable.ic_info_circle),
@@ -123,6 +126,7 @@ private sealed interface SubPage {
     data class InputEditor(val inputId: String) : SubPage
     data object CleanExclusions : SubPage
     data object Language : SubPage
+    data object LockedApps : SubPage
 }
 
 private val Divider = Color.White.copy(alpha = 0.06f)
@@ -210,6 +214,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                     SubPage.Licenses -> stringResource(R.string.setting_licenses)
                     SubPage.CleanExclusions -> stringResource(R.string.setting_exclusions)
                     SubPage.Language -> stringResource(R.string.setting_language)
+                    SubPage.LockedApps -> stringResource(R.string.setting_locked_apps)
                     is SubPage.InputEditor -> stringResource(R.string.edit_input)
                 },
                 subtitle = stringResource(section.subtitle),
@@ -223,6 +228,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                 SubPage.Licenses -> LicensesPage(panelRequester)
                 SubPage.CleanExclusions -> CleanExclusionsPage(viewModel, panelRequester)
                 SubPage.Language -> LanguagePage(panelRequester)
+                SubPage.LockedApps -> LockedAppsPage(viewModel, panelRequester)
             }
         }
 
@@ -373,6 +379,7 @@ private fun SectionContent(
             listOf(SystemLink(R.string.system_bluetooth, R.string.system_bluetooth_sub, Settings.ACTION_BLUETOOTH_SETTINGS)),
         )
         Section.HOME -> HomePanel(viewModel, firstRow, onEditApps, open)
+        Section.PARENTAL -> ParentalPanel(viewModel, firstRow, open)
         Section.INPUTS -> InputsPanel(viewModel, firstRow, open)
         Section.DEVICE -> DevicePanel(viewModel, firstRow, open)
         Section.ABOUT -> AboutPanel(viewModel, firstRow, open)
@@ -653,6 +660,77 @@ private fun InfoTextBlock(@StringRes res: Int, modifier: Modifier) {
             .focusable()
             .padding(12.dp),
     )
+}
+
+@Composable
+private fun ParentalPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, open: (SubPage) -> Unit) {
+    val s by viewModel.settings.collectAsStateWithLifecycle()
+    val parental = s.parental
+    var showSetup by remember { mutableStateOf(false) }
+    var setupClosed by remember { mutableStateOf(false) }
+    // The row that opened the PIN screen may be gone by the time it closes (Set a PIN becomes Change PIN), so focus
+    // returns to the first row of the panel.
+    LaunchedEffect(setupClosed, parental.hasPin) {
+        if (setupClosed) {
+            setupClosed = false
+            runCatching { firstRow.requestFocus() }
+        }
+    }
+    PanelList {
+        if (!parental.hasPin) {
+            ValueRow(R.string.setting_pin_set, R.string.setting_pin_set_sub, null, Modifier.focusRequester(firstRow)) { showSetup = true }
+        } else {
+            // Changing or removing the PIN always asks for the current one, whatever the "protect settings" choice.
+            ValueRow(R.string.setting_pin_change, null, null, Modifier.focusRequester(firstRow)) {
+                viewModel.gate.requireForApp(R.string.pin_reason_admin, locked = true) { showSetup = true }
+            }
+            ValueRow(R.string.setting_pin_remove, null, null) {
+                viewModel.gate.requireForApp(R.string.pin_reason_admin, locked = true) { viewModel.removePin() }
+            }
+            ToggleRow(R.string.setting_protect_settings, R.string.setting_protect_settings_sub, parental.protectSettings) {
+                viewModel.update { setProtectSettings(it) }
+            }
+        }
+        ValueRow(
+            R.string.setting_locked_apps,
+            null,
+            s.appOverrides.values.count { it.locked }.let { if (it == 0) stringResource(R.string.none) else stringResource(R.string.app_count, it) },
+            Modifier.opensPage(SubPage.LockedApps),
+        ) { open(SubPage.LockedApps) }
+        Note(R.string.note_pin_forgot)
+    }
+    if (showSetup) {
+        PinSetup(
+            title = stringResource(R.string.pin_new_title),
+            onSet = {
+                viewModel.setPin(it)
+                showSetup = false
+                setupClosed = true
+            },
+            onCancel = {
+                showSetup = false
+                setupClosed = true
+            },
+        )
+    }
+}
+
+@Composable
+private fun LockedAppsPage(viewModel: LauncherViewModel, firstRow: FocusRequester) {
+    val apps by viewModel.appsForSettings.collectAsStateWithLifecycle()
+    val s by viewModel.settings.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) { runCatching { firstRow.requestFocus() } }
+    PanelList {
+        Note(if (s.parental.hasPin) R.string.note_locked_apps else R.string.note_locked_needs_pin)
+        apps.forEachIndexed { index, app ->
+            ToggleRow(
+                label = app.label,
+                subtitle = null,
+                checked = app.isLocked,
+                modifier = if (index == 0) Modifier.focusRequester(firstRow) else Modifier,
+            ) { viewModel.setAppLocked(app.packageName, !app.isLocked) }
+        }
+    }
 }
 
 @Composable
@@ -941,48 +1019,6 @@ private fun ValuePill(text: String, fill: Color = Color.White.copy(alpha = 0.08f
     Box(Modifier.background(fill, RoundedCornerShape(7.dp)).padding(horizontal = 9.dp, vertical = 3.dp)) {
         BasicText(text, maxLines = 1, style = interStyle(12.sp, 600, color))
     }
-}
-
-@Composable
-private fun TextInput(value: String, placeholder: String, modifier: Modifier = Modifier, onChange: (String) -> Unit) {
-    var focused by remember { mutableStateOf(false) }
-    val focusManager = LocalFocusManager.current
-    val keyboard = LocalSoftwareKeyboardController.current
-    BasicTextField(
-        value = value,
-        onValueChange = onChange,
-        singleLine = true,
-        textStyle = interStyle(14.sp, 500),
-        cursorBrush = SolidColor(Palette.Amber),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        // The keyboard's check mark closes it and hands focus to whatever sits below, such as the city results.
-        keyboardActions = KeyboardActions(onDone = {
-            keyboard?.hide()
-            focusManager.moveFocus(FocusDirection.Down)
-        }),
-        modifier = modifier
-            .fillMaxWidth()
-            // A text field swallows the remote's Down key, which left focus stuck here with results below it.
-            .onPreviewKeyEvent { event ->
-                event.key == Key.DirectionDown && event.type == KeyEventType.KeyDown && focusManager.moveFocus(FocusDirection.Down)
-            }
-            .onFocusChanged { focused = it.isFocused },
-        decorationBox = { inner ->
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(42.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.White.copy(alpha = 0.08f))
-                    .border(1.5.dp, if (focused) Color.White.copy(alpha = 0.7f) else Color.Transparent, RoundedCornerShape(10.dp))
-                    .padding(horizontal = 14.dp),
-                contentAlignment = Alignment.CenterStart,
-            ) {
-                if (value.isEmpty()) BasicText(placeholder, style = interStyle(14.sp, 500, Palette.TextMuted))
-                inner()
-            }
-        },
-    )
 }
 
 @Composable

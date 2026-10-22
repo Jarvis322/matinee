@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tcltv.sahne.ui.DesignCanvas
 import com.tcltv.sahne.ui.LocalGlassEffects
 import com.tcltv.sahne.ui.LocalReduceMotion
+import com.tcltv.sahne.ui.PinGate
 import com.tcltv.sahne.ui.home.HomeScreen
 import com.tcltv.sahne.ui.settings.SettingsScreen
 
@@ -30,6 +31,8 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
     // Saveable: changing the language recreates the activity, and the user should land back in settings.
     var showSettings by rememberSaveable { mutableStateOf(false) }
     var editRequest by remember { mutableIntStateOf(0) }
+
+    fun openSettings() = viewModel.gate.requireForAdmin(R.string.pin_reason_admin) { showSettings = true }
 
     // As the Home app, Back has nowhere to go; opened from the app list, Back returns to the TV's own home.
     val isHome = remember(resumeTick) { viewModel.isHomeKeyTarget() }
@@ -42,7 +45,7 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
                     .fillMaxSize()
                     .onPreviewKeyEvent { event ->
                         if (!showSettings && event.type == KeyEventType.KeyUp && event.key == Key.Menu) {
-                            showSettings = true
+                            openSettings()
                             true
                         } else {
                             false
@@ -63,9 +66,10 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
                         viewModel = viewModel,
                         resumeTick = resumeTick,
                         editRequest = editRequest,
-                        onOpenSettings = { showSettings = true },
+                        onOpenSettings = ::openSettings,
                     )
                 }
+                PinGate(viewModel.gate, settings.parental)
             }
         }
     }

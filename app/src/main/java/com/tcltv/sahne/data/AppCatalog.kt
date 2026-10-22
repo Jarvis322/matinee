@@ -43,6 +43,10 @@ data class LaunchableApp(
     val isSystemComponent: Boolean,
     /** Declares a TV (leanback) launcher activity; phone-style apps only have a regular launcher activity. */
     val isTvApp: Boolean,
+    /** Needs the parental PIN to open. */
+    val isLocked: Boolean = false,
+    /** Set when this card is a folder rather than an app; [packageName] is then the folder's key. */
+    val folderId: String? = null,
 )
 
 private data class KnownApp(val accent: Int, @StringRes val tagline: Int)
@@ -197,7 +201,7 @@ class AppCatalog(context: Context) {
             return if (count == 0) null else sum / count
         }
 
-        private fun dominantColor(bitmap: Bitmap): Int {
+        internal fun dominantColor(bitmap: Bitmap): Int {
             val hsv = FloatArray(3)
             var bestScore = -1f
             var best = 0xFF5B5E68.toInt()

@@ -86,6 +86,9 @@ data class GlassStyle(
         /** Capsules and small controls at rest. */
         val Pill = GlassStyle(backdrop = 1f, veilTop = 0.2f, veilBottom = 0.09f, sheen = 0.14f, rim = 0.58f)
 
+        /** A control that sits on a panel in its own window, where the screen's backdrop can't be lined up. */
+        val Inset = GlassStyle(backdrop = 0f, veilTop = 0.17f, veilBottom = 0.07f, sheen = 0.1f, rim = 0.5f)
+
         /** A focused control that keeps its colour: lighter and sharper than [Pill], with white text still on top. */
         val Lit = GlassStyle(backdrop = 1f, veilTop = 0.36f, veilBottom = 0.2f, sheen = 0.32f, rim = 1f, shadow = 0.3f)
 
