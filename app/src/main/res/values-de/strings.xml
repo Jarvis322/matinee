@@ -368,4 +368,7 @@
     <string name="picker_no_system_picker">Dieser Fernseher hat keine Dateiauswahl. Kopiere Bilder per Dateimanager oder USB in diesen Ordner und wähle dann eines: %1$s</string>
     <string name="setting_airplay_receiver">AirPlay-Empfänger</string>
     <string name="setting_airplay_receiver_sub">Zeigt den Bildschirm von iPhone, iPad oder Mac auf diesem Fernseher. Experimentell.</string>
+    <string name="airplay_channel">AirPlay-Empfänger</string>
+    <string name="airplay_notification_title">AirPlay ist an</string>
+    <string name="airplay_notification_text">Dieser Fernseher kann von iPhone, iPad und Mac empfangen</string>
 </resources>

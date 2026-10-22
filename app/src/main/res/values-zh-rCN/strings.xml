@@ -367,4 +367,7 @@
     <string name="picker_no_system_picker">此电视没有文件选择器。请用文件管理器或 USB 将图片复制到此文件夹，然后选择一张：%1$s</string>
     <string name="setting_airplay_receiver">AirPlay 接收器</string>
     <string name="setting_airplay_receiver_sub">在此电视上显示 iPhone、iPad 或 Mac 的屏幕。实验性功能。</string>
+    <string name="airplay_channel">AirPlay 接收器</string>
+    <string name="airplay_notification_title">AirPlay 已开启</string>
+    <string name="airplay_notification_text">此电视可接收来自 iPhone、iPad 和 Mac 的内容</string>
 </resources>

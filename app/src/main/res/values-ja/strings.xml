@@ -368,4 +368,7 @@
     <string name="picker_no_system_picker">このテレビにはファイル選択機能がありません。ファイルマネージャーやUSBで次のフォルダに画像をコピーしてから選んでください: %1$s</string>
     <string name="setting_airplay_receiver">AirPlayレシーバー</string>
     <string name="setting_airplay_receiver_sub">iPhone、iPad、Macの画面をこのテレビに表示します。試験的な機能です。</string>
+    <string name="airplay_channel">AirPlayレシーバー</string>
+    <string name="airplay_notification_title">AirPlayはオンです</string>
+    <string name="airplay_notification_text">このテレビはiPhone、iPad、Macから受信できます</string>
 </resources>

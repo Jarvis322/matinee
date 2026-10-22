@@ -378,4 +378,7 @@
     <string name="picker_no_system_picker">This TV has no file picker. Copy pictures into this folder with a file manager or a USB transfer, then choose one: %1$s</string>
     <string name="setting_airplay_receiver">AirPlay receiver</string>
     <string name="setting_airplay_receiver_sub">Show your iPhone, iPad or Mac screen on this TV. Experimental.</string>
+    <string name="airplay_channel">AirPlay receiver</string>
+    <string name="airplay_notification_title">AirPlay is on</string>
+    <string name="airplay_notification_text">This TV can receive from iPhone, iPad and Mac</string>
 </resources>

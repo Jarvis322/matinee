@@ -368,4 +368,7 @@
     <string name="picker_no_system_picker">Bu TV\'de dosya seçici yok. Resimleri bir dosya yöneticisi veya USB ile şu klasöre kopyalayın, sonra birini seçin: %1$s</string>
     <string name="setting_airplay_receiver">AirPlay alıcısı</string>
     <string name="setting_airplay_receiver_sub">iPhone, iPad veya Mac ekranını bu TV\'de göster. Deneysel.</string>
+    <string name="airplay_channel">AirPlay alıcısı</string>
+    <string name="airplay_notification_title">AirPlay açık</string>
+    <string name="airplay_notification_text">Bu TV iPhone, iPad ve Mac\'ten görüntü alabilir</string>
 </resources>

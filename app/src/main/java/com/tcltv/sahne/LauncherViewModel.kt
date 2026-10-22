@@ -25,7 +25,7 @@ import com.tcltv.sahne.data.AppCatalog
 import com.tcltv.sahne.data.UserImages
 import com.tcltv.sahne.data.HomeApps
 import com.tcltv.sahne.data.FolderEdits
-import com.tcltv.sahne.airplay.AirPlayReceiver
+import com.tcltv.sahne.airplay.AirPlayService
 import com.tcltv.sahne.data.ImageImport
 import com.tcltv.sahne.data.PickedImage
 import com.tcltv.sahne.data.AppOverride
@@ -346,11 +346,10 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch { runAirPlayReceiver() }
     }
 
-    // The receiver outlives this screen on purpose: phones can only find the TV while it is running.
+    // A foreground service, so the receiver outlives this screen: phones can only find the TV while it runs.
     private suspend fun runAirPlayReceiver() {
         settings.map { it.airplayReceiver }.distinctUntilChanged().collect { enabled ->
-            val receiver = AirPlayReceiver.get(getApplication())
-            withContext(Dispatchers.Default) { if (enabled) receiver.start(AIRPLAY_NAME) else receiver.stop() }
+            AirPlayService.setRunning(getApplication(), enabled, AIRPLAY_NAME)
         }
     }
 

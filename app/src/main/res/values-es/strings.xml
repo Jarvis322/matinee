@@ -369,4 +369,7 @@
     <string name="picker_no_system_picker">Este televisor no tiene selector de archivos. Copia imágenes a esta carpeta con un administrador de archivos o por USB y elige una: %1$s</string>
     <string name="setting_airplay_receiver">Receptor AirPlay</string>
     <string name="setting_airplay_receiver_sub">Muestra la pantalla de tu iPhone, iPad o Mac en este televisor. Experimental.</string>
+    <string name="airplay_channel">Receptor AirPlay</string>
+    <string name="airplay_notification_title">AirPlay activado</string>
+    <string name="airplay_notification_text">Este televisor puede recibir desde iPhone, iPad y Mac</string>
 </resources>
