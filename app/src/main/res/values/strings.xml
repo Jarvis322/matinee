@@ -279,7 +279,7 @@
     <string name="language_japanese" translatable="false">日本語</string>
     <string name="language_chinese" translatable="false">简体中文</string>
     <string name="setting_licenses">Licenses</string>
-    <string name="license_text">Weather data by Open‑Meteo.com, licensed under CC BY 4.0.\nIcons: Tabler Icons, MIT License.\nTypeface: Inter, SIL Open Font License 1.1.\nApp icons and banners belong to their apps.</string>
+    <string name="license_text">Weather data by Open‑Meteo.com, licensed under CC BY 4.0.\nIcons: Tabler Icons, MIT License.\nTypeface: Inter, SIL Open Font License 1.1.\nApp icons and banners belong to their apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL, Apache-2.0.</string>
     <string name="credits_made_by">Made by %1$s</string>
 
     <string name="minutes_ago">%1$d min ago</string>
@@ -376,4 +376,6 @@
     <string name="system_accessibility">Accessibility</string>
     <string name="system_accessibility_sub">Captions, text-to-speech, high contrast and the TV\'s accessibility shortcut</string>
     <string name="picker_no_system_picker">This TV has no file picker. Copy pictures into this folder with a file manager or a USB transfer, then choose one: %1$s</string>
+    <string name="setting_airplay_receiver">AirPlay receiver</string>
+    <string name="setting_airplay_receiver_sub">Show your iPhone, iPad or Mac screen on this TV. Experimental.</string>
 </resources>

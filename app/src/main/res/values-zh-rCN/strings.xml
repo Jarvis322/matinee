@@ -269,7 +269,7 @@
     <string name="setting_language">语言</string>
     <string name="language_system">跟随系统</string>
     <string name="setting_licenses">许可</string>
-    <string name="license_text">天气数据由 Open‑Meteo.com 提供，采用 CC BY 4.0 许可。\n图标：Tabler Icons，MIT 许可证。\n字体：Inter，SIL Open Font License 1.1。\n应用图标和横幅归其各自应用所有。</string>
+    <string name="license_text">天气数据由 Open‑Meteo.com 提供，采用 CC BY 4.0 许可。\n图标：Tabler Icons，MIT 许可证。\n字体：Inter，SIL Open Font License 1.1。\n应用图标和横幅归其各自应用所有。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL, Apache-2.0.</string>
     <string name="credits_made_by">由 %1$s 制作</string>
 
     <string name="minutes_ago">%1$d 分钟前</string>
@@ -365,4 +365,6 @@
     <string name="system_accessibility">无障碍</string>
     <string name="system_accessibility_sub">字幕、文字转语音、高对比度及电视的无障碍快捷方式</string>
     <string name="picker_no_system_picker">此电视没有文件选择器。请用文件管理器或 USB 将图片复制到此文件夹，然后选择一张：%1$s</string>
+    <string name="setting_airplay_receiver">AirPlay 接收器</string>
+    <string name="setting_airplay_receiver_sub">在此电视上显示 iPhone、iPad 或 Mac 的屏幕。实验性功能。</string>
 </resources>

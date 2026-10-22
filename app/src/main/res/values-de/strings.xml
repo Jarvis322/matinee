@@ -269,7 +269,7 @@
     <string name="setting_language">Sprache</string>
     <string name="language_system">System</string>
     <string name="setting_licenses">Lizenzen</string>
-    <string name="license_text">Wetterdaten von Open‑Meteo.com, lizenziert unter CC BY 4.0.\nSymbole: Tabler Icons, MIT-Lizenz.\nSchrift: Inter, SIL Open Font License 1.1.\nApp-Symbole und -Banner gehören den jeweiligen Apps.</string>
+    <string name="license_text">Wetterdaten von Open‑Meteo.com, lizenziert unter CC BY 4.0.\nSymbole: Tabler Icons, MIT-Lizenz.\nSchrift: Inter, SIL Open Font License 1.1.\nApp-Symbole und -Banner gehören den jeweiligen Apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL, Apache-2.0.</string>
     <string name="credits_made_by">Erstellt von %1$s</string>
 
     <string name="minutes_ago">vor %1$d Min.</string>
@@ -366,4 +366,6 @@
     <string name="system_accessibility">Bedienungshilfen</string>
     <string name="system_accessibility_sub">Untertitel, Sprachausgabe, hoher Kontrast und die Bedienungshilfen-Verknüpfung des Fernsehers</string>
     <string name="picker_no_system_picker">Dieser Fernseher hat keine Dateiauswahl. Kopiere Bilder per Dateimanager oder USB in diesen Ordner und wähle dann eines: %1$s</string>
+    <string name="setting_airplay_receiver">AirPlay-Empfänger</string>
+    <string name="setting_airplay_receiver_sub">Zeigt den Bildschirm von iPhone, iPad oder Mac auf diesem Fernseher. Experimentell.</string>
 </resources>

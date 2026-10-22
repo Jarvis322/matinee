@@ -1,0 +1,1 @@
+/* libplist build options are passed as compile definitions in CMakeLists.txt. */

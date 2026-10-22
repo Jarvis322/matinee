@@ -269,7 +269,7 @@
     <string name="setting_language">Dil</string>
     <string name="language_system">Sistem</string>
     <string name="setting_licenses">Lisanslar</string>
-    <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.</string>
+    <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL, Apache-2.0.</string>
     <string name="credits_made_by">%1$s tarafından geliştirildi</string>
 
     <string name="minutes_ago">%1$d dk önce</string>
@@ -366,4 +366,6 @@
     <string name="system_accessibility">Erişilebilirlik</string>
     <string name="system_accessibility_sub">Altyazılar, metin okuma, yüksek kontrast ve TV\'nin erişilebilirlik kısayolu</string>
     <string name="picker_no_system_picker">Bu TV\'de dosya seçici yok. Resimleri bir dosya yöneticisi veya USB ile şu klasöre kopyalayın, sonra birini seçin: %1$s</string>
+    <string name="setting_airplay_receiver">AirPlay alıcısı</string>
+    <string name="setting_airplay_receiver_sub">iPhone, iPad veya Mac ekranını bu TV\'de göster. Deneysel.</string>
 </resources>

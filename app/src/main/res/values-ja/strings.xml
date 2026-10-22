@@ -270,7 +270,7 @@
     <string name="setting_language">言語</string>
     <string name="language_system">システム</string>
     <string name="setting_licenses">ライセンス</string>
-    <string name="license_text">天気データ: Open‑Meteo.com（CC BY 4.0 ライセンス）。\nアイコン: Tabler Icons（MIT ライセンス）。\n書体: Inter（SIL Open Font License 1.1）。\nアプリのアイコンとバナーは各アプリに帰属します。</string>
+    <string name="license_text">天気データ: Open‑Meteo.com（CC BY 4.0 ライセンス）。\nアイコン: Tabler Icons（MIT ライセンス）。\n書体: Inter（SIL Open Font License 1.1）。\nアプリのアイコンとバナーは各アプリに帰属します。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL, Apache-2.0.</string>
     <string name="credits_made_by">制作: %1$s</string>
 
     <string name="minutes_ago">%1$d 分前</string>
@@ -366,4 +366,6 @@
     <string name="system_accessibility">ユーザー補助</string>
     <string name="system_accessibility_sub">字幕、読み上げ、ハイコントラスト、テレビのユーザー補助ショートカット</string>
     <string name="picker_no_system_picker">このテレビにはファイル選択機能がありません。ファイルマネージャーやUSBで次のフォルダに画像をコピーしてから選んでください: %1$s</string>
+    <string name="setting_airplay_receiver">AirPlayレシーバー</string>
+    <string name="setting_airplay_receiver_sub">iPhone、iPad、Macの画面をこのテレビに表示します。試験的な機能です。</string>
 </resources>

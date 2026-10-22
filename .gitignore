@@ -21,3 +21,7 @@ play/RELEASE.md
 play/privacy-policy.md
 play/data-safety.md
 play/listing.md
+
+# Built by scripts/build-openssl.sh
+app/src/main/cpp/openssl/
+.cxx/
