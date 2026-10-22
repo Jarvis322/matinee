@@ -269,7 +269,7 @@
     <string name="setting_language">Sprache</string>
     <string name="language_system">System</string>
     <string name="setting_licenses">Lizenzen</string>
-    <string name="license_text">Wetterdaten von Open‑Meteo.com, lizenziert unter CC BY 4.0.\nSymbole: Tabler Icons, MIT-Lizenz.\nSchrift: Inter, SIL Open Font License 1.1.\nApp-Symbole und -Banner gehören den jeweiligen Apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL, Apache-2.0.</string>
+    <string name="license_text">Wetterdaten von Open‑Meteo.com, lizenziert unter CC BY 4.0.\nSymbole: Tabler Icons, MIT-Lizenz.\nSchrift: Inter, SIL Open Font License 1.1.\nApp-Symbole und -Banner gehören den jeweiligen Apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">Erstellt von %1$s</string>
 
     <string name="minutes_ago">vor %1$d Min.</string>

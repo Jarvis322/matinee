@@ -81,12 +81,13 @@ class VideoDecoder(private val surface: Surface) {
     }
 }
 
-/** Decodes the phone's audio (AAC-ELD or AAC-LC) and plays it. ALAC, used by some music streams, is not supported yet. */
+/** Decodes the phone's audio (AAC-ELD and AAC-LC for mirroring, ALAC for music) and plays it. */
 class AudioPlayer {
 
     private var codec: MediaCodec? = null
     private var track: AudioTrack? = null
     private var drain: Thread? = null
+    private var alac: AlacDecoder? = null
     private var codecType = 0
 
     @Volatile
@@ -97,6 +98,14 @@ class AudioPlayer {
 
     fun start(codecType: Int) {
         stop()
+        if (codecType == ALAC) {
+            val decoder = AlacDecoder()
+            if (!decoder.isReady) return
+            alac = decoder
+            track = createTrack()
+            this.codecType = codecType
+            return
+        }
         val config = when (codecType) {
             // AAC-ELD, 44.1 kHz stereo; the bytes are the AudioSpecificConfig the phone's encoder uses.
             ELD -> byteArrayOf(0xF8.toByte(), 0xE8.toByte(), 0x50, 0x00)
@@ -114,6 +123,15 @@ class AudioPlayer {
         val decoder = MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_AUDIO_AAC)
         decoder.configure(format, null, null, 0)
         decoder.start()
+        val audioTrack = createTrack()
+        this.codecType = codecType
+        codec = decoder
+        track = audioTrack
+        running = true
+        drain = Thread({ drainOutput(decoder, audioTrack) }, "airplay-audio-out").apply { start() }
+    }
+
+    private fun createTrack(): AudioTrack {
         val minBuffer = AudioTrack.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT)
         val audioTrack = AudioTrack.Builder()
             .setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
@@ -123,15 +141,16 @@ class AudioPlayer {
             .build()
         audioTrack.setVolume(gain)
         audioTrack.play()
-        this.codecType = codecType
-        codec = decoder
-        track = audioTrack
-        running = true
-        drain = Thread({ drainOutput(decoder, audioTrack) }, "airplay-audio-out").apply { start() }
+        return audioTrack
     }
 
     fun queue(data: ByteArray, type: Int, presentationNanos: Long) {
-        if (codec == null || type != codecType) start(type)
+        if (type != codecType || (codec == null && alac == null)) start(type)
+        alac?.let { decoder ->
+            val pcm = decoder.decode(data) ?: return
+            track?.write(pcm, 0, pcm.size)
+            return
+        }
         val decoder = codec ?: return
         try {
             val index = decoder.dequeueInputBuffer(DEQUEUE_TIMEOUT_US)
@@ -189,12 +208,15 @@ class AudioPlayer {
         runCatching { codec?.release() }
         runCatching { track?.stop() }
         runCatching { track?.release() }
+        alac?.release()
+        alac = null
         codec = null
         track = null
         codecType = 0
     }
 
     private companion object {
+        const val ALAC = 2
         const val ELD = 8
         const val LC = 4
         const val AAC_OBJECT_LC = 2

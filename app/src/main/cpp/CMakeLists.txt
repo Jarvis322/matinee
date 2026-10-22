@@ -27,7 +27,10 @@ target_compile_options(airplay PRIVATE -w)
 target_compile_options(plist PRIVATE -w)
 target_link_libraries(airplay PUBLIC plist crypto)
 
-add_library(matinee_airplay SHARED android/airplay_jni.cpp)
+file(GLOB ALAC_SOURCES alac/*.c alac/*.cpp)
+add_library(matinee_airplay SHARED android/airplay_jni.cpp android/alac_jni.cpp ${ALAC_SOURCES})
+target_include_directories(matinee_airplay PRIVATE alac)
+target_compile_options(matinee_airplay PRIVATE -Wno-everything)
 target_link_libraries(matinee_airplay airplay log)
 # Page-aligned segments for Android 15+ devices with 16 KB pages.
 target_link_options(matinee_airplay PRIVATE -Wl,-z,max-page-size=16384)
