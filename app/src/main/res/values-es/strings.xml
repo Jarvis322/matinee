@@ -352,4 +352,19 @@
     <string name="picker_denied">Matinee necesita permiso para leer imágenes. Concédelo en los ajustes de apps de la TV e inténtalo de nuevo.</string>
     <string name="picker_empty">No se encontraron imágenes. Conecta una unidad USB o añade imágenes a esta TV.</string>
     <string name="picker_count">%1$d imágenes</string>
+    <string name="wallpaper_aurora">Aurora</string>
+    <string name="wallpaper_dusk">Crepúsculo</string>
+    <string name="wallpaper_ocean">Océano</string>
+    <string name="wallpaper_ember">Brasas</string>
+    <string name="wallpaper_forest">Bosque</string>
+    <string name="wallpaper_orchid">Orquídea</string>
+    <string name="wallpaper_graphite">Grafito</string>
+    <string name="wallpaper_sand">Arena</string>
+    <string name="wallpaper_adaptive">Color adaptable</string>
+    <string name="wallpaper_add">Añadir la tuya</string>
+    <string name="wallpaper_yours">Tus imágenes</string>
+    <string name="setting_wallpaper">Fondo de pantalla</string>
+    <string name="setting_wallpaper_animated">Luz en movimiento</string>
+    <string name="setting_wallpaper_animated_sub">Luz que se desplaza despacio en los fondos incluidos. Consume más; desactívalo si la TV va lenta.</string>
+    <string name="wallpaper_hint">Mantén pulsado OK en una imagen añadida para quitarla.</string>
 </resources>

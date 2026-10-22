@@ -67,6 +67,11 @@ data class LauncherSettings(
     val appOverrides: Map<String, AppOverride> = emptyMap(),
     val folders: List<Folder> = emptyList(),
     val parental: Parental = Parental(),
+    /** "" for the colour that follows the focused app, else a [WallpaperKey]. */
+    val wallpaper: String = "",
+    val wallpaperAnimated: Boolean = false,
+    /** File names of pictures the user added as wallpapers. */
+    val userWallpapers: List<String> = emptyList(),
 ) {
     companion object {
         val DEFAULT_LOCATION = WeatherLocation("İstanbul", 41.0138, 28.9497)
@@ -115,6 +120,9 @@ class SettingsStore(private val context: Context) {
         val autoCleanMemory = booleanPreferencesKey("auto_clean_memory")
         val memoryThreshold = intPreferencesKey("memory_threshold_percent")
         val memoryExclusions = stringSetPreferencesKey("memory_clean_exclusions")
+        val wallpaper = stringPreferencesKey("wallpaper")
+        val wallpaperAnimated = booleanPreferencesKey("wallpaper_animated")
+        val userWallpapers = stringPreferencesKey("user_wallpapers")
         val appOverrides = stringPreferencesKey("app_overrides")
         val folders = stringPreferencesKey("folders")
         val pinHash = stringPreferencesKey("pin_hash")
@@ -185,6 +193,9 @@ class SettingsStore(private val context: Context) {
             autoCleanMemory = this[Keys.autoCleanMemory] ?: defaults.autoCleanMemory,
             memoryThresholdPercent = this[Keys.memoryThreshold] ?: defaults.memoryThresholdPercent,
             memoryCleanExclusions = this[Keys.memoryExclusions] ?: defaults.memoryCleanExclusions,
+            wallpaper = this[Keys.wallpaper] ?: defaults.wallpaper,
+            wallpaperAnimated = this[Keys.wallpaperAnimated] ?: defaults.wallpaperAnimated,
+            userWallpapers = this[Keys.userWallpapers]?.split('|')?.filter { it.isNotBlank() } ?: defaults.userWallpapers,
             appOverrides = CustomizationJson.decodeOverrides(this[Keys.appOverrides]),
             folders = CustomizationJson.decodeFolders(this[Keys.folders]),
             parental = Parental(
@@ -253,6 +264,10 @@ class SettingsStore(private val context: Context) {
     suspend fun setAutoCleanMemory(value: Boolean) = edit { it[Keys.autoCleanMemory] = value }
     suspend fun setMemoryThreshold(value: Int) = edit { it[Keys.memoryThreshold] = value }
     suspend fun setMemoryCleanExclusions(value: Set<String>) = edit { it[Keys.memoryExclusions] = value }
+
+    suspend fun setWallpaper(value: String) = edit { it[Keys.wallpaper] = value }
+    suspend fun setWallpaperAnimated(value: Boolean) = edit { it[Keys.wallpaperAnimated] = value }
+    suspend fun setUserWallpapers(value: List<String>) = edit { it[Keys.userWallpapers] = value.joinToString("|") }
 
     suspend fun setAppOverrides(value: Map<String, AppOverride>) = edit { it[Keys.appOverrides] = CustomizationJson.encodeOverrides(value) }
     suspend fun setFolders(value: List<Folder>) = edit { it[Keys.folders] = CustomizationJson.encodeFolders(value) }

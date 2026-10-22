@@ -351,4 +351,19 @@
     <string name="picker_denied">Matinee に画像を読み取る権限が必要です。テレビのアプリ設定で許可してから、もう一度お試しください。</string>
     <string name="picker_empty">画像が見つかりません。USB メモリを接続するか、このテレビに画像を追加してください。</string>
     <string name="picker_count">%1$d 枚</string>
+    <string name="wallpaper_aurora">オーロラ</string>
+    <string name="wallpaper_dusk">夕暮れ</string>
+    <string name="wallpaper_ocean">海</string>
+    <string name="wallpaper_ember">燠火</string>
+    <string name="wallpaper_forest">森</string>
+    <string name="wallpaper_orchid">蘭</string>
+    <string name="wallpaper_graphite">グラファイト</string>
+    <string name="wallpaper_sand">砂</string>
+    <string name="wallpaper_adaptive">アプリに合わせた色</string>
+    <string name="wallpaper_add">自分の画像を追加</string>
+    <string name="wallpaper_yours">追加した画像</string>
+    <string name="setting_wallpaper">壁紙</string>
+    <string name="setting_wallpaper_animated">動く光</string>
+    <string name="setting_wallpaper_animated_sub">内蔵の壁紙で光がゆっくり動きます。負荷が高くなるので、重いときはオフにしてください。</string>
+    <string name="wallpaper_hint">追加した画像は、OK を長押しすると削除できます。</string>
 </resources>

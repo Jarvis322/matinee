@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.layout.LayoutCoordinates
+import com.tcltv.sahne.data.ResolvedWallpaper
 import androidx.compose.ui.layout.findRootCoordinates
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
@@ -61,6 +62,12 @@ class BackdropState {
 }
 
 val LocalBackdrop = staticCompositionLocalOf { BackdropState() }
+
+/** The wallpaper the user chose, or null while the colour follows the focused app. */
+val LocalWallpaper = staticCompositionLocalOf<ResolvedWallpaper?> { null }
+
+/** Whether the built-in wallpapers' light should drift, which the user can turn off for a slow TV. */
+val LocalWallpaperAnimated = staticCompositionLocalOf { false }
 
 /** Off draws every glass surface as a flat tint with a thin edge, for TVs whose GPU can't spare the extra passes. */
 val LocalGlassEffects = staticCompositionLocalOf { true }

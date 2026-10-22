@@ -351,4 +351,19 @@
     <string name="picker_denied">Matinee braucht die Erlaubnis, Bilder zu lesen. Erlaube sie in den App-Einstellungen des Fernsehers und versuche es erneut.</string>
     <string name="picker_empty">Keine Bilder gefunden. Stecke einen USB-Stick an oder füge Bilder auf diesem Fernseher hinzu.</string>
     <string name="picker_count">%1$d Bilder</string>
+    <string name="wallpaper_aurora">Aurora</string>
+    <string name="wallpaper_dusk">Dämmerung</string>
+    <string name="wallpaper_ocean">Ozean</string>
+    <string name="wallpaper_ember">Glut</string>
+    <string name="wallpaper_forest">Wald</string>
+    <string name="wallpaper_orchid">Orchidee</string>
+    <string name="wallpaper_graphite">Graphit</string>
+    <string name="wallpaper_sand">Sand</string>
+    <string name="wallpaper_adaptive">Adaptive Farbe</string>
+    <string name="wallpaper_add">Eigenes hinzufügen</string>
+    <string name="wallpaper_yours">Deine Bilder</string>
+    <string name="setting_wallpaper">Hintergrund</string>
+    <string name="setting_wallpaper_animated">Bewegtes Licht</string>
+    <string name="setting_wallpaper_animated_sub">Langsam wandernde Lichter auf den mitgelieferten Hintergründen. Braucht mehr Leistung; schalte es aus, wenn der Fernseher ruckelt.</string>
+    <string name="wallpaper_hint">Halte OK auf einem hinzugefügten Bild gedrückt, um es zu entfernen.</string>
 </resources>

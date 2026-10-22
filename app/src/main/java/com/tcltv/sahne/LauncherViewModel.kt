@@ -28,6 +28,10 @@ import com.tcltv.sahne.data.FolderEdits
 import com.tcltv.sahne.data.Gallery
 import com.tcltv.sahne.data.GalleryImage
 import com.tcltv.sahne.data.AppOverride
+import com.tcltv.sahne.data.BuiltinWallpaper
+import com.tcltv.sahne.data.ResolvedWallpaper
+import com.tcltv.sahne.data.WallpaperKey
+import com.tcltv.sahne.data.WallpaperResolver
 import com.tcltv.sahne.data.CleanResult
 import com.tcltv.sahne.data.CurrentWeather
 import com.tcltv.sahne.data.DeviceLogo
@@ -70,6 +74,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -141,6 +146,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     private val userImages = UserImages(application)
     private val gallery = Gallery(application)
+    private val wallpaperResolver = WallpaperResolver(application, userImages)
     private val homeApps = HomeApps(application, userImages)
     val gate = ParentalGate(settings, settingsStore)
 
@@ -165,6 +171,41 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     val appsForSettings: StateFlow<List<LaunchableApp>> = combine(decoratedApps, settings) { apps, s -> AppCatalog.orderedIncludingHidden(apps, s) }
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    /** The chosen wallpaper, drawn once at screen size; null when the colour follows the focused app. */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val wallpaper: StateFlow<ResolvedWallpaper?> = settings.map { it.wallpaper }.distinctUntilChanged()
+        .mapLatest { key -> if (key.isEmpty()) null else wallpaperResolver.resolve(key) }
+        .flowOn(Dispatchers.Default)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    fun wallpaperPreview(wallpaper: BuiltinWallpaper, width: Int) = wallpaperResolver.preview(wallpaper, width)
+
+    fun userWallpaperPreview(file: String, width: Int) = wallpaperResolver.userPreview(file, width)
+
+    fun setWallpaper(key: String) = update { setWallpaper(key) }
+
+    /** Adds a picture from the gallery to the wallpapers and makes it the current one. */
+    fun importWallpaper(image: GalleryImage) {
+        viewModelScope.launch {
+            val name = "wallpaper_${System.currentTimeMillis()}.jpg"
+            // 2560 on the long side keeps a photo sharp on a 4K TV without holding the original's megapixels.
+            if (!gallery.importTo(image.uri, userImages.file(name), WALLPAPER_MAX_SIDE, keepAlpha = false)) return@launch
+            customizeLock.withLock {
+                settingsStore.setUserWallpapers(settings.first().userWallpapers + name)
+                settingsStore.setWallpaper(WallpaperKey.user(name))
+            }
+        }
+    }
+
+    fun removeWallpaper(file: String) = update {
+        customizeLock.withLock {
+            val current = settings.first()
+            setUserWallpapers(current.userWallpapers - file)
+            if (current.wallpaper == WallpaperKey.user(file)) setWallpaper("")
+            userImages.delete(file)
+        }
+    }
 
     private val _openFolder = MutableStateFlow<String?>(null)
     val openFolderId: StateFlow<String?> = _openFolder.asStateFlow()
@@ -720,6 +761,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         const val SPEED_CACHE_MILLIS = 5 * 60_000L
         const val ARTWORK_CACHE_BYTES = 6 * 1024 * 1024
         const val ICON_MAX_SIDE = 640
+        const val WALLPAPER_MAX_SIDE = 2560
         const val WEATHER_RETRY_MILLIS = 60_000L
         const val MEMORY_ALERT_REARM_PERCENT = 5
         const val MAX_LOCAL_NOTICES = 20

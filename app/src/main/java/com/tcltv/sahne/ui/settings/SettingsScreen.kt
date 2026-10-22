@@ -11,6 +11,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -58,12 +60,14 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -87,24 +91,28 @@ import com.tcltv.sahne.CitySearchState
 import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.AppLanguage
+import com.tcltv.sahne.data.BuiltinWallpaper
 import com.tcltv.sahne.data.CardTheme
 import com.tcltv.sahne.data.DeviceLogo
 import com.tcltv.sahne.data.HdmiInput
 import com.tcltv.sahne.data.HomeLayout
 import com.tcltv.sahne.data.InputDetection
 import com.tcltv.sahne.data.TemperatureUnit
-import com.tcltv.sahne.ui.KeyCap
+import com.tcltv.sahne.data.WallpaperKey
 import com.tcltv.sahne.ui.GlassStyle
+import com.tcltv.sahne.ui.ImagePicker
+import com.tcltv.sahne.ui.KeyCap
 import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.PinSetup
 import com.tcltv.sahne.ui.TextInput
 import com.tcltv.sahne.ui.TintedIcon
+import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.home.CinematicBackground
 import com.tcltv.sahne.ui.home.NeutralAccent
 import com.tcltv.sahne.ui.home.TopBar
 import com.tcltv.sahne.ui.home.profileColorCount
-import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.interStyle
+import com.tcltv.sahne.ui.longPressClickable
 
 private enum class Section(@StringRes val title: Int, @StringRes val subtitle: Int, @DrawableRes val icon: Int) {
     NETWORK(R.string.settings_network, R.string.settings_network_sub, R.drawable.ic_wifi),
@@ -127,6 +135,7 @@ private sealed interface SubPage {
     data object CleanExclusions : SubPage
     data object Language : SubPage
     data object LockedApps : SubPage
+    data object Wallpaper : SubPage
 }
 
 private val Divider = Color.White.copy(alpha = 0.06f)
@@ -215,6 +224,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                     SubPage.CleanExclusions -> stringResource(R.string.setting_exclusions)
                     SubPage.Language -> stringResource(R.string.setting_language)
                     SubPage.LockedApps -> stringResource(R.string.setting_locked_apps)
+                    SubPage.Wallpaper -> stringResource(R.string.setting_wallpaper)
                     is SubPage.InputEditor -> stringResource(R.string.edit_input)
                 },
                 subtitle = stringResource(section.subtitle),
@@ -229,6 +239,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                 SubPage.CleanExclusions -> CleanExclusionsPage(viewModel, panelRequester)
                 SubPage.Language -> LanguagePage(panelRequester)
                 SubPage.LockedApps -> LockedAppsPage(viewModel, panelRequester)
+                SubPage.Wallpaper -> WallpaperPage(viewModel, panelRequester)
             }
         }
 
@@ -427,6 +438,12 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
         DefaultHomeRow(viewModel, Modifier.focusRequester(firstRow))
         HomeKeyRow(viewModel)
         WifiNameRow(viewModel)
+        ValueRow(
+            R.string.setting_wallpaper,
+            null,
+            wallpaperName(s.wallpaper),
+            Modifier.opensPage(SubPage.Wallpaper),
+        ) { open(SubPage.Wallpaper) }
         ToggleRow(R.string.setting_adaptive_background, R.string.setting_adaptive_background_sub, s.adaptiveBackground) {
             viewModel.update { setAdaptiveBackground(it) }
         }
@@ -714,6 +731,103 @@ private fun ParentalPanel(viewModel: LauncherViewModel, firstRow: FocusRequester
         )
     }
 }
+
+@Composable
+private fun wallpaperName(key: String): String = when {
+    key.startsWith(WallpaperKey.BUILTIN_PREFIX) ->
+        BuiltinWallpaper.byId(key.removePrefix(WallpaperKey.BUILTIN_PREFIX))?.let { stringResource(it.label) } ?: stringResource(R.string.wallpaper_adaptive)
+    key.startsWith(WallpaperKey.USER_PREFIX) -> stringResource(R.string.wallpaper_yours)
+    else -> stringResource(R.string.wallpaper_adaptive)
+}
+
+@Composable
+private fun WallpaperPage(viewModel: LauncherViewModel, firstRow: FocusRequester) {
+    val s by viewModel.settings.collectAsStateWithLifecycle()
+    var adding by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { runCatching { firstRow.requestFocus() } }
+    // The previews are drawn once per page visit; each is a small picture, so this is cheap.
+    val builtinPreviews = remember { BuiltinWallpaper.entries.associateWith { viewModel.wallpaperPreview(it, PREVIEW_WIDTH) } }
+    PanelList {
+        if (s.wallpaper.startsWith(WallpaperKey.BUILTIN_PREFIX)) {
+            ToggleRow(R.string.setting_wallpaper_animated, R.string.setting_wallpaper_animated_sub, s.wallpaperAnimated, Modifier.focusRequester(firstRow)) {
+                viewModel.update { setWallpaperAnimated(it) }
+            }
+        }
+        val tiles = buildList {
+            add(WallpaperTile(stringResource(R.string.wallpaper_adaptive), null, "", false))
+            BuiltinWallpaper.entries.forEach { add(WallpaperTile(stringResource(it.label), builtinPreviews[it], WallpaperKey.builtin(it), false)) }
+            s.userWallpapers.forEach { file ->
+                add(WallpaperTile(stringResource(R.string.wallpaper_yours), viewModel.userWallpaperPreview(file, PREVIEW_WIDTH), WallpaperKey.user(file), true, file))
+            }
+        }
+        tiles.chunked(3).forEachIndexed { rowIndex, row ->
+            Row(Modifier.fillMaxWidth().padding(vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                row.forEachIndexed { col, tile ->
+                    Box(Modifier.weight(1f)) {
+                        WallpaperChoice(
+                            tile = tile,
+                            selected = tile.key == s.wallpaper,
+                            modifier = if (rowIndex == 0 && col == 0 && !s.wallpaper.startsWith(WallpaperKey.BUILTIN_PREFIX)) Modifier.focusRequester(firstRow) else Modifier,
+                            onChoose = { viewModel.setWallpaper(tile.key) },
+                            onRemove = { tile.file?.let(viewModel::removeWallpaper) },
+                        )
+                    }
+                }
+                repeat(3 - row.size) { Spacer(Modifier.weight(1f)) }
+            }
+        }
+        Box(Modifier.padding(top = 4.dp)) {
+            ValueRow(R.string.wallpaper_add, null, null) { adding = true }
+        }
+        Note(R.string.wallpaper_hint)
+    }
+    if (adding) {
+        ImagePicker(
+            onPicked = {
+                viewModel.importWallpaper(it)
+                adding = false
+            },
+            onDismiss = { adding = false },
+        )
+    }
+}
+
+private class WallpaperTile(val label: String, val preview: ImageBitmap?, val key: String, val removable: Boolean, val file: String? = null)
+
+@Composable
+private fun WallpaperChoice(tile: WallpaperTile, selected: Boolean, modifier: Modifier, onChoose: () -> Unit, onRemove: () -> Unit) {
+    var focused by remember { mutableStateOf(false) }
+    val shape = RoundedCornerShape(14.dp)
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            modifier
+                .fillMaxWidth()
+                .aspectRatio(16f / 9f)
+                .clip(shape)
+                .background(Color.White.copy(alpha = 0.06f))
+                .onFocusChanged { focused = it.isFocused }
+                .semantics { contentDescription = tile.label }
+                .then(if (tile.removable) Modifier.longPressClickable(onClick = onChoose, onLongPress = onRemove) else Modifier.clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onChoose)),
+            contentAlignment = Alignment.Center,
+        ) {
+            tile.preview?.let { Image(it, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize()) }
+            if (tile.preview == null) BasicText(tile.label, style = interStyle(12.sp, 600, Palette.TextSecondary))
+            // Focus and the current choice both read from across the room: a bright ring, and a check on the choice.
+            // A zero-width border would still draw a hairline, so an unmarked tile gets none at all.
+            if (focused || selected) {
+                Box(Modifier.fillMaxSize().border(if (focused) 3.dp else 2.dp, if (focused) Color.White else Palette.ToggleOn, shape))
+            }
+            if (selected) {
+                Box(Modifier.align(Alignment.TopEnd).padding(6.dp).size(20.dp).background(Palette.ToggleOn, CircleShape), contentAlignment = Alignment.Center) {
+                    TintedIcon(R.drawable.ic_check, 12.dp, Color.White)
+                }
+            }
+        }
+        BasicText(tile.label, maxLines = 1, overflow = TextOverflow.Ellipsis, style = interStyle(11.sp, if (focused) 700 else 500, if (focused) Palette.TextPrimary else Palette.TextSecondary), modifier = Modifier.padding(top = 5.dp))
+    }
+}
+
+private const val PREVIEW_WIDTH = 300
 
 @Composable
 private fun LockedAppsPage(viewModel: LauncherViewModel, firstRow: FocusRequester) {

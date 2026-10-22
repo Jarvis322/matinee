@@ -29,6 +29,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import com.tcltv.sahne.ui.LocalBackdrop
 import com.tcltv.sahne.ui.LocalReduceMotion
+import com.tcltv.sahne.ui.LocalWallpaper
 import com.tcltv.sahne.ui.Palette
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -39,6 +40,11 @@ import kotlinx.coroutines.withContext
  */
 @Composable
 fun CinematicBackground(accent: Color, modifier: Modifier = Modifier) {
+    val wallpaper = LocalWallpaper.current
+    if (wallpaper != null) {
+        WallpaperBackground(wallpaper, modifier)
+        return
+    }
     var size by remember { mutableStateOf(IntSize.Zero) }
     val cache = remember { BackdropCache() }
     // Shared with the glass surfaces, which show their own slice of whatever is drawn here.

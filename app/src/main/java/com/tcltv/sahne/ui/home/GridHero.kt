@@ -64,26 +64,29 @@ internal fun GridHero(app: LaunchableApp, entry: LastPlayed?, viewModel: Launche
             ) { shown ->
                 if (shown != null) HeroArtwork(shown, viewModel)
             }
-            // Darkens the left side for the title.
-            Box(
-                Modifier.fillMaxSize().background(
-                    // Strong enough to quiet text baked into thumbnails, which would otherwise fight with the title.
-                    Brush.horizontalGradient(
-                        0f to Palette.Background.copy(alpha = 0.94f),
-                        0.38f to Palette.Background.copy(alpha = 0.7f),
-                        0.7f to Color.Transparent,
+            // The scrims protect text against bright artwork; with no artwork the backdrop is already dark enough, and a
+            // scrim that stopped at this box's bottom edge would show as a step.
+            if (entry != null) {
+                Box(
+                    Modifier.fillMaxSize().background(
+                        // Strong enough to quiet text baked into thumbnails, which would otherwise fight with the title.
+                        Brush.horizontalGradient(
+                            0f to Palette.Background.copy(alpha = 0.94f),
+                            0.38f to Palette.Background.copy(alpha = 0.7f),
+                            0.7f to Color.Transparent,
+                        ),
                     ),
-                ),
-            )
-            Box(
-                Modifier.fillMaxSize().background(
-                    // The top band keeps the clock and profile readable over bright artwork.
-                    Brush.verticalGradient(
-                        0f to Palette.Background.copy(alpha = 0.92f),
-                        0.3f to Color.Transparent,
+                )
+                Box(
+                    Modifier.fillMaxSize().background(
+                        // The top band keeps the clock and profile readable over bright artwork.
+                        Brush.verticalGradient(
+                            0f to Palette.Background.copy(alpha = 0.92f),
+                            0.3f to Color.Transparent,
+                        ),
                     ),
-                ),
-            )
+                )
+            }
         }
         Column(
             Modifier

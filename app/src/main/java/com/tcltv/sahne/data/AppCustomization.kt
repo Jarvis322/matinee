@@ -104,7 +104,7 @@ class UserImages(context: Context) {
     }
 
     /** Decodes [name] scaled so its width is about [maxWidth], or null when it is missing or not an image. */
-    fun load(name: String, maxWidth: Int): Bitmap? {
+    fun load(name: String, maxWidth: Int, mutable: Boolean = false): Bitmap? {
         val file = file(name)
         if (!file.isFile) return null
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
@@ -112,7 +112,7 @@ class UserImages(context: Context) {
         if (bounds.outWidth <= 0) return null
         var sample = 1
         while (bounds.outWidth / (sample * 2) >= maxWidth) sample *= 2
-        return BitmapFactory.decodeFile(file.path, BitmapFactory.Options().apply { inSampleSize = sample })
+        return BitmapFactory.decodeFile(file.path, BitmapFactory.Options().apply { inSampleSize = sample; inMutable = mutable })
     }
 }
 

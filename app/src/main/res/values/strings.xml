@@ -361,4 +361,19 @@
     <string name="picker_denied">Matinee needs permission to read pictures. Allow it in the TV\'s app settings, then try again.</string>
     <string name="picker_empty">No pictures found. Plug in a USB drive or add pictures to this TV.</string>
     <string name="picker_count">%1$d pictures</string>
+    <string name="wallpaper_aurora">Aurora</string>
+    <string name="wallpaper_dusk">Dusk</string>
+    <string name="wallpaper_ocean">Ocean</string>
+    <string name="wallpaper_ember">Ember</string>
+    <string name="wallpaper_forest">Forest</string>
+    <string name="wallpaper_orchid">Orchid</string>
+    <string name="wallpaper_graphite">Graphite</string>
+    <string name="wallpaper_sand">Sand</string>
+    <string name="wallpaper_adaptive">Adaptive color</string>
+    <string name="wallpaper_add">Add your own</string>
+    <string name="wallpaper_yours">Yours</string>
+    <string name="setting_wallpaper">Wallpaper</string>
+    <string name="setting_wallpaper_animated">Moving light</string>
+    <string name="setting_wallpaper_animated_sub">Slowly drifting light on the built-in wallpapers. Uses more power; turn off if the TV feels slow.</string>
+    <string name="wallpaper_hint">Hold OK on a picture you added to remove it.</string>
 </resources>
