@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -122,7 +123,7 @@ private fun FolderList(folders: List<GalleryFolder>, onOpen: (GalleryFolder) -> 
             val f = folders[index]
             PickerRow(
                 title = f.name,
-                trailing = stringResource(R.string.picker_count, f.images.size),
+                trailing = pluralStringResource(R.plurals.picker_count, f.images.size, f.images.size),
                 modifier = if (index == 0) Modifier.focusRequester(first) else Modifier,
             ) { onOpen(f) }
         }

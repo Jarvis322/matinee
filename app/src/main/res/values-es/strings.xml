@@ -351,7 +351,11 @@
     <string name="picker_loading">Cargando imágenes…</string>
     <string name="picker_denied">Matinee necesita permiso para leer imágenes. Concédelo en los ajustes de apps de la TV e inténtalo de nuevo.</string>
     <string name="picker_empty">No se encontraron imágenes. Conecta una unidad USB o añade imágenes a esta TV.</string>
-    <string name="picker_count">%1$d imágenes</string>
+    <plurals name="picker_count">
+        <item quantity="one">%1$d imagen</item>
+        <item quantity="many">%1$d imágenes</item>
+        <item quantity="other">%1$d imágenes</item>
+    </plurals>
     <string name="wallpaper_aurora">Aurora</string>
     <string name="wallpaper_dusk">Crepúsculo</string>
     <string name="wallpaper_ocean">Océano</string>
@@ -367,4 +371,6 @@
     <string name="setting_wallpaper_animated">Luz en movimiento</string>
     <string name="setting_wallpaper_animated_sub">Luz que se desplaza despacio en los fondos incluidos. Consume más; desactívalo si la TV va lenta.</string>
     <string name="wallpaper_hint">Mantén pulsado OK en una imagen añadida para quitarla.</string>
+    <string name="system_accessibility">Accesibilidad</string>
+    <string name="system_accessibility_sub">Subtítulos, lectura de texto, alto contraste y el acceso directo de accesibilidad de la TV</string>
 </resources>

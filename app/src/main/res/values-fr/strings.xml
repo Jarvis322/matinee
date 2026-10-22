@@ -351,7 +351,11 @@
     <string name="picker_loading">Chargement des images…</string>
     <string name="picker_denied">Matinee a besoin de l\'autorisation de lire les images. Accordez-la dans les réglages des applis du téléviseur, puis réessayez.</string>
     <string name="picker_empty">Aucune image trouvée. Branchez une clé USB ou ajoutez des images à ce téléviseur.</string>
-    <string name="picker_count">%1$d images</string>
+    <plurals name="picker_count">
+        <item quantity="one">%1$d image</item>
+        <item quantity="many">%1$d images</item>
+        <item quantity="other">%1$d images</item>
+    </plurals>
     <string name="wallpaper_aurora">Aurore</string>
     <string name="wallpaper_dusk">Crépuscule</string>
     <string name="wallpaper_ocean">Océan</string>
@@ -367,4 +371,6 @@
     <string name="setting_wallpaper_animated">Lumière animée</string>
     <string name="setting_wallpaper_animated_sub">Lumière qui dérive lentement sur les fonds intégrés. Consomme plus ; désactivez-la si le téléviseur ralentit.</string>
     <string name="wallpaper_hint">Maintenez OK sur une image ajoutée pour la retirer.</string>
+    <string name="system_accessibility">Accessibilité</string>
+    <string name="system_accessibility_sub">Sous-titres, synthèse vocale, contraste élevé et raccourci d\'accessibilité du téléviseur</string>
 </resources>

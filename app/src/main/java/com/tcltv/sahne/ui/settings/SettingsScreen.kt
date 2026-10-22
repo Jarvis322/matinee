@@ -370,6 +370,8 @@ private fun SectionContent(
             listOf(
                 SystemLink(R.string.system_display, R.string.system_display_sub, Settings.ACTION_DISPLAY_SETTINGS),
                 SystemLink(R.string.system_sound, R.string.system_sound_sub, Settings.ACTION_SOUND_SETTINGS),
+                // Every Android TV has this screen, though some vendors tuck it away; the fallback is the main settings.
+                SystemLink(R.string.system_accessibility, R.string.system_accessibility_sub, Settings.ACTION_ACCESSIBILITY_SETTINGS),
             ),
         )
         Section.APPS -> SystemPanel(

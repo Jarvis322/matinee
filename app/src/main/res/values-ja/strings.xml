@@ -350,7 +350,9 @@
     <string name="picker_loading">画像を読み込み中…</string>
     <string name="picker_denied">Matinee に画像を読み取る権限が必要です。テレビのアプリ設定で許可してから、もう一度お試しください。</string>
     <string name="picker_empty">画像が見つかりません。USB メモリを接続するか、このテレビに画像を追加してください。</string>
-    <string name="picker_count">%1$d 枚</string>
+    <plurals name="picker_count">
+        <item quantity="other">%1$d 枚</item>
+    </plurals>
     <string name="wallpaper_aurora">オーロラ</string>
     <string name="wallpaper_dusk">夕暮れ</string>
     <string name="wallpaper_ocean">海</string>
@@ -366,4 +368,6 @@
     <string name="setting_wallpaper_animated">動く光</string>
     <string name="setting_wallpaper_animated_sub">内蔵の壁紙で光がゆっくり動きます。負荷が高くなるので、重いときはオフにしてください。</string>
     <string name="wallpaper_hint">追加した画像は、OK を長押しすると削除できます。</string>
+    <string name="system_accessibility">ユーザー補助</string>
+    <string name="system_accessibility_sub">字幕、読み上げ、ハイコントラスト、テレビのユーザー補助ショートカット</string>
 </resources>

@@ -350,7 +350,10 @@
     <string name="picker_loading">Resimler yükleniyor…</string>
     <string name="picker_denied">Matinee\'nin resimleri okuma iznine ihtiyacı var. TV\'nin uygulama ayarlarından izin ver, sonra tekrar dene.</string>
     <string name="picker_empty">Resim bulunamadı. Bir USB bellek tak ya da bu TV\'ye resim ekle.</string>
-    <string name="picker_count">%1$d resim</string>
+    <plurals name="picker_count">
+        <item quantity="one">%1$d resim</item>
+        <item quantity="other">%1$d resim</item>
+    </plurals>
     <string name="wallpaper_aurora">Aurora</string>
     <string name="wallpaper_dusk">Alacakaranlık</string>
     <string name="wallpaper_ocean">Okyanus</string>
@@ -366,4 +369,6 @@
     <string name="setting_wallpaper_animated">Hareketli ışık</string>
     <string name="setting_wallpaper_animated_sub">Yerleşik duvar kağıtlarında yavaşça kayan ışık. Daha çok güç harcar; TV yavaşlarsa kapat.</string>
     <string name="wallpaper_hint">Eklediğin bir resmi kaldırmak için OK\'a basılı tut.</string>
+    <string name="system_accessibility">Erişilebilirlik</string>
+    <string name="system_accessibility_sub">Altyazılar, metin okuma, yüksek kontrast ve TV\'nin erişilebilirlik kısayolu</string>
 </resources>

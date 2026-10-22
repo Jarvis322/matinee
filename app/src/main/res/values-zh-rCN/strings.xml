@@ -349,7 +349,9 @@
     <string name="picker_loading">正在加载图片…</string>
     <string name="picker_denied">Matinee 需要读取图片的权限。请在电视的应用设置中允许后重试。</string>
     <string name="picker_empty">未找到图片。请插入 U 盘或向此电视添加图片。</string>
-    <string name="picker_count">%1$d 张</string>
+    <plurals name="picker_count">
+        <item quantity="other">%1$d 张</item>
+    </plurals>
     <string name="wallpaper_aurora">极光</string>
     <string name="wallpaper_dusk">黄昏</string>
     <string name="wallpaper_ocean">海洋</string>
@@ -365,4 +367,6 @@
     <string name="setting_wallpaper_animated">流动光效</string>
     <string name="setting_wallpaper_animated_sub">内置壁纸上的光线缓缓移动。更耗电，电视变卡时请关闭。</string>
     <string name="wallpaper_hint">长按 OK 可删除你添加的图片。</string>
+    <string name="system_accessibility">无障碍</string>
+    <string name="system_accessibility_sub">字幕、文字转语音、高对比度及电视的无障碍快捷方式</string>
 </resources>
