@@ -25,6 +25,8 @@ import com.tcltv.sahne.data.AppCatalog
 import com.tcltv.sahne.data.UserImages
 import com.tcltv.sahne.data.HomeApps
 import com.tcltv.sahne.data.FolderEdits
+import com.tcltv.sahne.data.Gallery
+import com.tcltv.sahne.data.GalleryImage
 import com.tcltv.sahne.data.AppOverride
 import com.tcltv.sahne.data.CleanResult
 import com.tcltv.sahne.data.CurrentWeather
@@ -138,6 +140,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         .stateIn(viewModelScope, SharingStarted.Eagerly, LauncherSettings())
 
     private val userImages = UserImages(application)
+    private val gallery = Gallery(application)
     private val homeApps = HomeApps(application, userImages)
     val gate = ParentalGate(settings, settingsStore)
 
@@ -644,8 +647,16 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    /** Where a picture for an app is received before it is attached to it. */
-    fun newPictureFile(): java.io.File = userImages.file("incoming_${System.currentTimeMillis()}.img")
+    /** Takes a picture the user picked in the gallery and makes it the app's card. */
+    fun importAppIcon(packageName: String, image: GalleryImage) {
+        viewModelScope.launch {
+            val incoming = userImages.file("incoming_${System.currentTimeMillis()}.img")
+            // PNG keeps the transparent corners of a logo; a photo shrinks to a card-sized picture.
+            if (gallery.importTo(image.uri, incoming, ICON_MAX_SIDE, keepAlpha = true)) setAppIcon(packageName, incoming)
+        }
+    }
+
+    fun resetAppIcon(packageName: String) = setAppIcon(packageName, null)
 
     private suspend fun currentOrder(): List<String> =
         AppCatalog.orderedIncludingHidden(allApps.value, settings.first()).map { it.packageName }
@@ -708,6 +719,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         const val SEARCH_DEBOUNCE_MILLIS = 400L
         const val SPEED_CACHE_MILLIS = 5 * 60_000L
         const val ARTWORK_CACHE_BYTES = 6 * 1024 * 1024
+        const val ICON_MAX_SIDE = 640
         const val WEATHER_RETRY_MILLIS = 60_000L
         const val MEMORY_ALERT_REARM_PERCENT = 5
         const val MAX_LOCAL_NOTICES = 20

@@ -47,6 +47,7 @@ import com.tcltv.sahne.R
 import com.tcltv.sahne.data.Folder
 import com.tcltv.sahne.data.LaunchableApp
 import com.tcltv.sahne.ui.GlassStyle
+import com.tcltv.sahne.ui.ImagePicker
 import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.PinSetup
 import com.tcltv.sahne.ui.TextInput
@@ -85,6 +86,7 @@ fun AppMenuHost(viewModel: LauncherViewModel, state: AppMenuState, cardTheme: co
     var prompt by remember { mutableStateOf<Prompt?>(null) }
     var pickFolder by remember { mutableStateOf(false) }
     var lockAfterPin by remember { mutableStateOf<LaunchableApp?>(null) }
+    var pickIconFor by remember { mutableStateOf<LaunchableApp?>(null) }
 
     openFolderId?.let { id ->
         val folder = settings.folders.firstOrNull { it.id == id }
@@ -137,6 +139,15 @@ fun AppMenuHost(viewModel: LauncherViewModel, state: AppMenuState, cardTheme: co
                 },
                 onRename = {
                     prompt = Prompt.Rename(app)
+                    dismiss()
+                },
+                hasCustomIcon = settings.appOverrides[app.packageName]?.icon != null,
+                onChangeIcon = {
+                    pickIconFor = app
+                    dismiss()
+                },
+                onResetIcon = {
+                    viewModel.resetAppIcon(app.packageName)
                     dismiss()
                 },
                 onAddToFolder = {
@@ -198,6 +209,16 @@ fun AppMenuHost(viewModel: LauncherViewModel, state: AppMenuState, cardTheme: co
         }
     }
 
+    pickIconFor?.let { app ->
+        ImagePicker(
+            onPicked = { image ->
+                viewModel.importAppIcon(app.packageName, image)
+                pickIconFor = null
+            },
+            onDismiss = { pickIconFor = null },
+        )
+    }
+
     // Locking needs a PIN to mean anything, so the first lock asks the parent to choose one.
     lockAfterPin?.let { app ->
         PinSetup(
@@ -221,6 +242,9 @@ private fun AppMenu(
     onOpen: () -> Unit,
     onMove: () -> Unit,
     onRename: () -> Unit,
+    hasCustomIcon: Boolean,
+    onChangeIcon: () -> Unit,
+    onResetIcon: () -> Unit,
     onAddToFolder: () -> Unit,
     onRemoveFromFolder: () -> Unit,
     onToggleLock: () -> Unit,
@@ -238,6 +262,8 @@ private fun AppMenu(
         if (isFolder) {
             MenuRow(stringResource(R.string.menu_delete_folder), onClick = onDeleteFolder)
         } else {
+            MenuRow(stringResource(R.string.menu_change_picture), onClick = onChangeIcon)
+            if (hasCustomIcon) MenuRow(stringResource(R.string.menu_reset_picture), onClick = onResetIcon)
             if (inFolder) {
                 MenuRow(stringResource(R.string.menu_remove_from_folder), onClick = onRemoveFromFolder)
             } else {

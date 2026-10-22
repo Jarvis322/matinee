@@ -12,19 +12,21 @@ import androidx.compose.ui.graphics.asImageBitmap
 class HomeApps(private val context: Context, private val images: UserImages) {
 
     private val customIcons = HashMap<String, ImageBitmap?>()
+    private val customCards = HashMap<String, ImageBitmap?>()
     private val folderCards = HashMap<String, LaunchableApp>()
 
     fun decorate(apps: List<LaunchableApp>, overrides: Map<String, AppOverride>): List<LaunchableApp> =
         apps.map { app ->
             val override = overrides[app.packageName] ?: return@map app
             val picture = override.icon?.let(::customIcon)
+            val card = override.icon?.let(::customCard)
             app.copy(
                 label = override.label ?: app.label,
                 icon = picture ?: app.icon,
                 glyph = picture ?: app.glyph,
                 glyphLightness = if (picture != null) null else app.glyphLightness,
                 // A banner carries the app's own name, so a renamed app shows its icon and the new name instead.
-                banner = picture ?: app.banner.takeIf { override.label == null },
+                banner = card ?: app.banner.takeIf { override.label == null },
                 accent = picture?.let { AppCatalog.dominantColor(it.asAndroidBitmap()) } ?: app.accent,
                 isLocked = override.locked,
             )
@@ -48,6 +50,11 @@ class HomeApps(private val context: Context, private val images: UserImages) {
     }
 
     private fun customIcon(file: String): ImageBitmap? = customIcons.getOrPut(file) { images.load(file, ICON_WIDTH)?.asImageBitmap() }
+
+    /** The picture as a 16:9 card: used as is when it already is one, else centred whole over its own dominant colour. */
+    private fun customCard(file: String): ImageBitmap? = customCards.getOrPut(file) {
+        customIcon(file)?.let { CardPicture.compose(it.asAndroidBitmap()).asImageBitmap() }
+    }
 
     private fun folderCard(folder: Folder, members: List<LaunchableApp>): LaunchableApp {
         // The card is redrawn only when the folder's name or what it shows changes.
@@ -96,4 +103,45 @@ object FolderEdits {
 
     private fun List<Folder>.withoutApp(packageName: String): List<Folder> =
         mapNotNull { f -> (f.apps - packageName).let { rest -> if (rest.isEmpty()) null else f.copy(apps = rest) } }
+}
+
+internal object CardPicture {
+    private const val W = 640
+    private const val H = 360
+
+    fun compose(source: android.graphics.Bitmap): android.graphics.Bitmap {
+        val ratio = source.width.toFloat() / source.height
+        val out = android.graphics.Bitmap.createBitmap(W, H, android.graphics.Bitmap.Config.ARGB_8888)
+        val canvas = android.graphics.Canvas(out)
+        val paint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG or android.graphics.Paint.FILTER_BITMAP_FLAG)
+        if (ratio in 1.55f..2.0f) {
+            canvas.drawBitmap(source, null, android.graphics.RectF(0f, 0f, W.toFloat(), H.toFloat()), paint)
+            return out
+        }
+        val dominant = AppCatalog.dominantColor(source)
+        paint.shader = android.graphics.LinearGradient(
+            0f, 0f, 0f, H.toFloat(),
+            blend(dominant, android.graphics.Color.WHITE, 0.12f),
+            blend(dominant, android.graphics.Color.BLACK, 0.35f),
+            android.graphics.Shader.TileMode.CLAMP,
+        )
+        canvas.drawRect(0f, 0f, W.toFloat(), H.toFloat(), paint)
+        paint.shader = null
+        val fitH = H * 0.8f
+        val fitW = (fitH * ratio).coerceAtMost(W * 0.9f)
+        val h = fitW / ratio
+        val left = (W - fitW) / 2f
+        val top = (H - h) / 2f
+        canvas.drawBitmap(source, null, android.graphics.RectF(left, top, left + fitW, top + h), paint)
+        return out
+    }
+
+    private fun blend(a: Int, b: Int, t: Float): Int {
+        fun mix(x: Int, y: Int) = (x + (y - x) * t).toInt().coerceIn(0, 255)
+        return android.graphics.Color.rgb(
+            mix(android.graphics.Color.red(a), android.graphics.Color.red(b)),
+            mix(android.graphics.Color.green(a), android.graphics.Color.green(b)),
+            mix(android.graphics.Color.blue(a), android.graphics.Color.blue(b)),
+        )
+    }
 }

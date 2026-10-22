@@ -344,4 +344,11 @@
     <string name="menu_hide">ホームから隠す</string>
     <string name="prompt_rename_title">%1$s の名前を変更</string>
     <string name="prompt_new_folder_title">新しいフォルダの名前</string>
+    <string name="menu_change_picture">画像を変更</string>
+    <string name="menu_reset_picture">アプリの画像に戻す</string>
+    <string name="picker_title">画像を選択</string>
+    <string name="picker_loading">画像を読み込み中…</string>
+    <string name="picker_denied">Matinee に画像を読み取る権限が必要です。テレビのアプリ設定で許可してから、もう一度お試しください。</string>
+    <string name="picker_empty">画像が見つかりません。USB メモリを接続するか、このテレビに画像を追加してください。</string>
+    <string name="picker_count">%1$d 枚</string>
 </resources>

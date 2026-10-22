@@ -345,4 +345,11 @@
     <string name="menu_hide">Masquer de l\'accueil</string>
     <string name="prompt_rename_title">Renommer %1$s</string>
     <string name="prompt_new_folder_title">Nommez le nouveau dossier</string>
+    <string name="menu_change_picture">Changer l\'image</string>
+    <string name="menu_reset_picture">Utiliser l\'image de l\'appli</string>
+    <string name="picker_title">Choisissez une image</string>
+    <string name="picker_loading">Chargement des images…</string>
+    <string name="picker_denied">Matinee a besoin de l\'autorisation de lire les images. Accordez-la dans les réglages des applis du téléviseur, puis réessayez.</string>
+    <string name="picker_empty">Aucune image trouvée. Branchez une clé USB ou ajoutez des images à ce téléviseur.</string>
+    <string name="picker_count">%1$d images</string>
 </resources>

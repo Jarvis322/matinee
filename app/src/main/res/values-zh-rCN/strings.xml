@@ -343,4 +343,11 @@
     <string name="menu_hide">从主屏幕隐藏</string>
     <string name="prompt_rename_title">重命名 %1$s</string>
     <string name="prompt_new_folder_title">为新文件夹命名</string>
+    <string name="menu_change_picture">更换图片</string>
+    <string name="menu_reset_picture">使用应用自带图片</string>
+    <string name="picker_title">选择图片</string>
+    <string name="picker_loading">正在加载图片…</string>
+    <string name="picker_denied">Matinee 需要读取图片的权限。请在电视的应用设置中允许后重试。</string>
+    <string name="picker_empty">未找到图片。请插入 U 盘或向此电视添加图片。</string>
+    <string name="picker_count">%1$d 张</string>
 </resources>

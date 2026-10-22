@@ -344,4 +344,11 @@
     <string name="menu_hide">Ana ekrandan gizle</string>
     <string name="prompt_rename_title">%1$s adını değiştir</string>
     <string name="prompt_new_folder_title">Yeni klasöre ad ver</string>
+    <string name="menu_change_picture">Resmi değiştir</string>
+    <string name="menu_reset_picture">Uygulamanın kendi resmini kullan</string>
+    <string name="picker_title">Bir resim seç</string>
+    <string name="picker_loading">Resimler yükleniyor…</string>
+    <string name="picker_denied">Matinee\'nin resimleri okuma iznine ihtiyacı var. TV\'nin uygulama ayarlarından izin ver, sonra tekrar dene.</string>
+    <string name="picker_empty">Resim bulunamadı. Bir USB bellek tak ya da bu TV\'ye resim ekle.</string>
+    <string name="picker_count">%1$d resim</string>
 </resources>

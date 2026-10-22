@@ -354,4 +354,11 @@
     <string name="menu_hide">Hide from home</string>
     <string name="prompt_rename_title">Rename %1$s</string>
     <string name="prompt_new_folder_title">Name the new folder</string>
+    <string name="menu_change_picture">Change picture</string>
+    <string name="menu_reset_picture">Use the app\'s own picture</string>
+    <string name="picker_title">Choose a picture</string>
+    <string name="picker_loading">Loading pictures…</string>
+    <string name="picker_denied">Matinee needs permission to read pictures. Allow it in the TV\'s app settings, then try again.</string>
+    <string name="picker_empty">No pictures found. Plug in a USB drive or add pictures to this TV.</string>
+    <string name="picker_count">%1$d pictures</string>
 </resources>
