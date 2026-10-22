@@ -41,7 +41,9 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -125,23 +127,45 @@ private sealed interface SubPage {
 
 private val Divider = Color.White.copy(alpha = 0.06f)
 
+/** Gives each sub-page's entry row a focus requester, so closing the page puts focus back on the row that opened it. */
+private class PageFocus {
+    private val requesters = mutableMapOf<SubPage, FocusRequester>()
+
+    fun of(page: SubPage): FocusRequester = requesters.getOrPut(page) { FocusRequester() }
+}
+
+private val LocalPageFocus = compositionLocalOf { PageFocus() }
+
+@Composable
+private fun Modifier.opensPage(page: SubPage): Modifier = focusRequester(LocalPageFocus.current.of(page))
+
 @Composable
 fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps: () -> Unit) {
     var section by rememberSaveable { mutableStateOf(Section.HOME) }
     var subPage by remember { mutableStateOf<SubPage?>(null) }
     val navRequesters = remember { Section.entries.associateWith { FocusRequester() } }
     val panelRequester = remember { FocusRequester() }
+    val pageFocus = remember { PageFocus() }
+    var returningFrom by remember { mutableStateOf<SubPage?>(null) }
+    fun closePage() {
+        returningFrom = subPage
+        subPage = null
+    }
+    // Once the section's rows are back, focus returns to the one that opened the page instead of being lost.
+    LaunchedEffect(subPage, returningFrom) {
+        val page = returningFrom
+        if (subPage == null && page != null) {
+            returningFrom = null
+            runCatching { pageFocus.of(page).requestFocus() }.onFailure { runCatching { panelRequester.requestFocus() } }
+        }
+    }
 
     BackHandler {
-        if (subPage != null) {
-            subPage = null
-            runCatching { panelRequester.requestFocus() }
-        } else {
-            onClose()
-        }
+        if (subPage != null) closePage() else onClose()
     }
     LaunchedEffect(Unit) { runCatching { navRequesters.getValue(section).requestFocus() } }
 
+    CompositionLocalProvider(LocalPageFocus provides pageFocus) {
     Box(Modifier.fillMaxSize()) {
         CinematicBackground(NeutralAccent)
         TopBar(viewModel, onOpenSettings = {}, modifier = Modifier.padding(start = 48.dp, end = 48.dp, top = 30.dp))
@@ -193,9 +217,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
             Spacer(Modifier.height(10.dp))
             when (page) {
                 null -> SectionContent(section, viewModel, panelRequester, onEditApps) { subPage = it }
-                SubPage.CitySearch -> CitySearchPage(viewModel, panelRequester) {
-                    subPage = null
-                }
+                SubPage.CitySearch -> CitySearchPage(viewModel, panelRequester) { closePage() }
                 is SubPage.InputEditor -> InputEditorPage(viewModel, page.inputId, panelRequester)
                 SubPage.ProfileName -> ProfileNamePage(viewModel, panelRequester)
                 SubPage.Licenses -> LicensesPage(panelRequester)
@@ -211,6 +233,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
             Spacer(Modifier.width(16.dp))
             Hint(stringResource(R.string.key_ok), stringResource(R.string.hint_select))
         }
+    }
     }
 }
 
@@ -420,7 +443,7 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
         ValueRow(R.string.setting_clock_format, null, stringResource(if (s.use24Hour) R.string.clock_24 else R.string.clock_12)) {
             viewModel.update { setUse24Hour(!s.use24Hour) }
         }
-        ValueRow(R.string.setting_city, null, s.weatherLocation.name.substringBefore(',')) { open(SubPage.CitySearch) }
+        ValueRow(R.string.setting_city, null, s.weatherLocation.name.substringBefore(','), Modifier.opensPage(SubPage.CitySearch)) { open(SubPage.CitySearch) }
         ValueRow(R.string.setting_app_order, R.string.setting_app_order_sub, null, onClick = onEditApps)
         ToggleRow(R.string.setting_widget_inputs, R.string.setting_widget_inputs_sub, s.showInputs) { viewModel.update { setShowInputs(it) } }
         ValueRow(R.string.setting_memory_warning, R.string.setting_memory_warning_sub, stringResource(R.string.percent_value, s.memoryThresholdPercent)) {
@@ -464,7 +487,7 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
         ) { viewModel.update { setShowAirPlay(it) } }
         ToggleRow(R.string.setting_widget_memory, null, s.showMemory) { viewModel.update { setShowMemory(it) } }
         ToggleRow(R.string.setting_chromecast, R.string.setting_chromecast_sub, s.showChromecast) { viewModel.update { setShowChromecast(it) } }
-        ValueRow(R.string.setting_profile_name, null, s.profileName.ifBlank { stringResource(R.string.not_set) }) { open(SubPage.ProfileName) }
+        ValueRow(R.string.setting_profile_name, null, s.profileName.ifBlank { stringResource(R.string.not_set) }, Modifier.opensPage(SubPage.ProfileName)) { open(SubPage.ProfileName) }
         ValueRow(R.string.setting_profile_color, null, stringResource(R.string.color_number, s.profileColor.mod(profileColorCount) + 1)) {
             viewModel.update { setProfileColor((s.profileColor + 1).mod(profileColorCount)) }
         }
@@ -484,7 +507,7 @@ private fun InputsPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, 
     val inputs by viewModel.inputs.collectAsStateWithLifecycle()
     PanelList {
         inputs.forEachIndexed { index, input ->
-            InputRow(input, if (index == 0) Modifier.focusRequester(firstRow) else Modifier) { open(SubPage.InputEditor(input.id)) }
+            InputRow(input, (if (index == 0) Modifier.focusRequester(firstRow) else Modifier).opensPage(SubPage.InputEditor(input.id))) { open(SubPage.InputEditor(input.id)) }
         }
         ToggleRow(
             R.string.setting_auto_detect,
@@ -530,6 +553,7 @@ private fun DevicePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, 
             R.string.setting_exclusions,
             null,
             if (s.memoryCleanExclusions.isEmpty()) stringResource(R.string.none) else stringResource(R.string.app_count, s.memoryCleanExclusions.size),
+            Modifier.opensPage(SubPage.CleanExclusions),
         ) { open(SubPage.CleanExclusions) }
         if (storage != null) {
             ValueRow(
@@ -551,7 +575,7 @@ private fun AboutPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, o
     var confirmReset by remember { mutableStateOf(false) }
     PanelList {
         InfoRow(R.string.setting_version, null, viewModel.versionName, modifier = Modifier.focusRequester(firstRow))
-        LanguageRow { open(SubPage.Language) }
+        LanguageRow(Modifier.opensPage(SubPage.Language)) { open(SubPage.Language) }
         DefaultHomeRow(viewModel, Modifier)
         ValueRow(R.string.setting_reset, null, stringResource(if (confirmReset) R.string.reset_confirm else R.string.reset_action)) {
             if (confirmReset) {
@@ -561,16 +585,16 @@ private fun AboutPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, o
                 confirmReset = true
             }
         }
-        ValueRow(R.string.setting_licenses, null, null) { open(SubPage.Licenses) }
+        ValueRow(R.string.setting_licenses, null, null, Modifier.opensPage(SubPage.Licenses)) { open(SubPage.Licenses) }
         Credits()
     }
 }
 
 @Composable
-private fun LanguageRow(onClick: () -> Unit) {
+private fun LanguageRow(modifier: Modifier, onClick: () -> Unit) {
     val context = LocalContext.current
     val current = remember { AppLanguage.current(context) }
-    ValueRow(R.string.setting_language, null, stringResource(current.label), onClick = onClick)
+    ValueRow(R.string.setting_language, null, stringResource(current.label), modifier, onClick)
 }
 
 @Composable
