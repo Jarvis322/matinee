@@ -34,6 +34,9 @@ Switch between them in **Settings → Home screen → Layout**.
 ## Features
 
 - **Your apps, your order.** Hold OK on a card to move it or remove it. Phone-style apps that some TV boxes ship, such as satellite or IPTV players, can be added from the app list.
+- **Make it yours.** Hold OK on a card for a menu: move, rename, change its picture, put it in a folder, lock it with a parental PIN, or hide it. Pictures come from the TV or a USB drive.
+- **Wallpapers.** Eight built-in wallpapers, an optional slowly moving light, or your own pictures, with a Liquid Glass look that shows the wallpaper through the shelf and menus.
+- **Parental PIN.** Lock apps, and optionally settings and home screen changes, behind a 4-digit PIN.
 - **Last played.** Title, artwork and progress from apps that share their media session. Stored only on the TV.
 - **Live TV and HDMI inputs.** TVs with a built-in antenna, cable or satellite tuner get a Live TV shortcut that opens the TV's own broadcast. Each HDMI input shows the connected device's name and whether it is on or in standby (HDMI-CEC). Rename inputs and pick an icon.
 - **At a glance.** Clock, weather for a city you choose, network name and a quick download speed test.
@@ -56,7 +59,7 @@ Matinee is in testing on Google Play:
 
 To sideload instead, download the APK from the [latest release](https://github.com/Jarvis322/matinee/releases/latest). Prefer Google Play if you want the Home button option: Android 13 and later block accessibility permissions for apps installed from a file, so it would not stay on.
 
-Requires Google TV or Android TV 9 or later.
+Requires Google TV or Android TV 8 or later.
 
 ## After installing
 
