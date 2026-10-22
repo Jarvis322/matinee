@@ -100,6 +100,30 @@ enum class BuiltinWallpaper(val id: String, @StringRes val label: Int, val base:
     }
 }
 
+/**
+ * Photographs that ship in the app's assets, in `assets/wallpapers`. Only the files actually present are offered, so a
+ * build without them simply has no photo section.
+ */
+enum class PhotoWallpaper(val id: String, @StringRes val label: Int, val asset: String) {
+    MOUNTAIN_DUSK("mountain_dusk", R.string.photo_mountain_dusk, "photo_01.jpg"),
+    LAKE_TRAIL("lake_trail", R.string.photo_lake_trail, "photo_02.jpg"),
+    ROCKY_COAST("rocky_coast", R.string.photo_rocky_coast, "photo_03.jpg"),
+    CLIFF_BEACH("cliff_beach", R.string.photo_cliff_beach, "photo_04.jpg"),
+    PARIS("paris", R.string.photo_paris, "photo_05.jpg"),
+    SALT_MARSH("salt_marsh", R.string.photo_salt_marsh, "photo_06.jpg"),
+    HILL_TOWN("hill_town", R.string.photo_hill_town, "photo_07.jpg");
+
+    companion object {
+        fun byId(id: String): PhotoWallpaper? = entries.firstOrNull { it.id == id }
+
+        /** The photos this build actually contains. */
+        fun available(context: Context): List<PhotoWallpaper> {
+            val present = runCatching { context.assets.list("wallpapers")?.toSet() }.getOrNull().orEmpty()
+            return entries.filter { it.asset in present }
+        }
+    }
+}
+
 /** What the home screen draws: the wallpaper at screen size, and a small soft copy the glass surfaces show through. */
 class ResolvedWallpaper(
     val key: String,
@@ -112,10 +136,13 @@ class ResolvedWallpaper(
 object WallpaperKey {
     const val BUILTIN_PREFIX = "builtin:"
     const val USER_PREFIX = "user:"
+    const val PHOTO_PREFIX = "photo:"
 
     fun builtin(wallpaper: BuiltinWallpaper) = BUILTIN_PREFIX + wallpaper.id
 
     fun user(file: String) = USER_PREFIX + file
+
+    fun photo(wallpaper: PhotoWallpaper) = PHOTO_PREFIX + wallpaper.id
 }
 
 object WallpaperRenderer {
@@ -179,6 +206,7 @@ class WallpaperResolver(private val context: Context, private val images: UserIm
     fun resolve(key: String): ResolvedWallpaper? = when {
         key.startsWith(WallpaperKey.BUILTIN_PREFIX) -> BuiltinWallpaper.byId(key.removePrefix(WallpaperKey.BUILTIN_PREFIX))?.let { builtin(key, it) }
         key.startsWith(WallpaperKey.USER_PREFIX) -> user(key, key.removePrefix(WallpaperKey.USER_PREFIX))
+        key.startsWith(WallpaperKey.PHOTO_PREFIX) -> PhotoWallpaper.byId(key.removePrefix(WallpaperKey.PHOTO_PREFIX))?.let { photo(key, it) }
         else -> null
     }
 
@@ -187,6 +215,35 @@ class WallpaperResolver(private val context: Context, private val images: UserIm
         WallpaperRenderer.render(wallpaper, width, width * 9 / 16, 0f, scrims = false).asImageBitmap()
 
     fun userPreview(file: String, width: Int): ImageBitmap? = images.load(file, width)?.asImageBitmap()
+
+    fun photoPreview(wallpaper: PhotoWallpaper, width: Int): ImageBitmap? = decodeAsset(wallpaper.asset, width, mutable = false)?.asImageBitmap()
+
+    private fun photo(key: String, wallpaper: PhotoWallpaper): ResolvedWallpaper? {
+        val (w, _) = displaySize()
+        val full = decodeAsset(wallpaper.asset, w, mutable = true) ?: return null
+        return finish(key, full)
+    }
+
+    private fun decodeAsset(name: String, maxWidth: Int, mutable: Boolean): Bitmap? = runCatching {
+        val path = "wallpapers/$name"
+        val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        context.assets.open(path).use { android.graphics.BitmapFactory.decodeStream(it, null, bounds) }
+        var sample = 1
+        while (bounds.outWidth / (sample * 2) >= maxWidth) sample *= 2
+        context.assets.open(path).use {
+            android.graphics.BitmapFactory.decodeStream(it, null, android.graphics.BitmapFactory.Options().apply { inSampleSize = sample; inMutable = mutable })
+        }
+    }.getOrNull()
+
+    /** Bakes the scrims into the picture and into the soft copy the glass shows through. */
+    private fun finish(key: String, full: Bitmap): ResolvedWallpaper {
+        // Scaled down hard, the picture is a blur of itself, which is what frosted glass needs to show.
+        val softHeight = (SOFT_WIDTH.toFloat() * full.height / full.width).toInt().coerceAtLeast(1)
+        val soft = Bitmap.createScaledBitmap(full, SOFT_WIDTH, softHeight, true).let { if (it.isMutable) it else it.copy(Bitmap.Config.ARGB_8888, true) }
+        WallpaperRenderer.drawScrims(Canvas(full), full.width, full.height)
+        WallpaperRenderer.drawScrims(Canvas(soft), soft.width, soft.height)
+        return ResolvedWallpaper(key, full.asImageBitmap(), soft.asImageBitmap(), null)
+    }
 
     private fun builtin(key: String, wallpaper: BuiltinWallpaper): ResolvedWallpaper {
         val (w, h) = displaySize()
@@ -201,12 +258,7 @@ class WallpaperResolver(private val context: Context, private val images: UserIm
     private fun user(key: String, file: String): ResolvedWallpaper? {
         val (w, _) = displaySize()
         val full = images.load(file, w, mutable = true) ?: return null
-        // Scaled down hard, the picture is a blur of itself, which is what frosted glass needs to show.
-        val softHeight = (SOFT_WIDTH.toFloat() * full.height / full.width).toInt().coerceAtLeast(1)
-        val soft = Bitmap.createScaledBitmap(full, SOFT_WIDTH, softHeight, true).let { if (it.isMutable) it else it.copy(Bitmap.Config.ARGB_8888, true) }
-        WallpaperRenderer.drawScrims(Canvas(full), full.width, full.height)
-        WallpaperRenderer.drawScrims(Canvas(soft), soft.width, soft.height)
-        return ResolvedWallpaper(key, full.asImageBitmap(), soft.asImageBitmap(), null)
+        return finish(key, full)
     }
 
     /** The screen's own size, capped at full HD: 4K would cost 32 MB for a picture that sits behind blurred glass. */

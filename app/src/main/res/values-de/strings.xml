@@ -371,4 +371,11 @@
     <string name="wallpaper_hint">Halte OK auf einem hinzugefügten Bild gedrückt, um es zu entfernen.</string>
     <string name="system_accessibility">Bedienungshilfen</string>
     <string name="system_accessibility_sub">Untertitel, Sprachausgabe, hoher Kontrast und die Bedienungshilfen-Verknüpfung des Fernsehers</string>
+    <string name="photo_mountain_dusk">Berge in der Dämmerung</string>
+    <string name="photo_lake_trail">Seepfad</string>
+    <string name="photo_rocky_coast">Felsküste</string>
+    <string name="photo_cliff_beach">Klippen und Strand</string>
+    <string name="photo_paris">Paris</string>
+    <string name="photo_salt_marsh">Salzwiese</string>
+    <string name="photo_hill_town">Bergstadt</string>
 </resources>

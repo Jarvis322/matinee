@@ -381,4 +381,11 @@
     <string name="wallpaper_hint">Hold OK on a picture you added to remove it.</string>
     <string name="system_accessibility">Accessibility</string>
     <string name="system_accessibility_sub">Captions, text-to-speech, high contrast and the TV\'s accessibility shortcut</string>
+    <string name="photo_mountain_dusk">Mountain dusk</string>
+    <string name="photo_lake_trail">Lake trail</string>
+    <string name="photo_rocky_coast">Rocky coast</string>
+    <string name="photo_cliff_beach">Cliff beach</string>
+    <string name="photo_paris">Paris</string>
+    <string name="photo_salt_marsh">Salt marsh</string>
+    <string name="photo_hill_town">Hill town</string>
 </resources>

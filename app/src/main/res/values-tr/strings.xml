@@ -371,4 +371,11 @@
     <string name="wallpaper_hint">Eklediğin bir resmi kaldırmak için OK\'a basılı tut.</string>
     <string name="system_accessibility">Erişilebilirlik</string>
     <string name="system_accessibility_sub">Altyazılar, metin okuma, yüksek kontrast ve TV\'nin erişilebilirlik kısayolu</string>
+    <string name="photo_mountain_dusk">Dağ alacakaranlığı</string>
+    <string name="photo_lake_trail">Göl patikası</string>
+    <string name="photo_rocky_coast">Kayalık kıyı</string>
+    <string name="photo_cliff_beach">Falez ve plaj</string>
+    <string name="photo_paris">Paris</string>
+    <string name="photo_salt_marsh">Tuz bataklığı</string>
+    <string name="photo_hill_town">Tepe kasabası</string>
 </resources>

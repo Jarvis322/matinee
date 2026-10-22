@@ -373,4 +373,11 @@
     <string name="wallpaper_hint">Mantén pulsado OK en una imagen añadida para quitarla.</string>
     <string name="system_accessibility">Accesibilidad</string>
     <string name="system_accessibility_sub">Subtítulos, lectura de texto, alto contraste y el acceso directo de accesibilidad de la TV</string>
+    <string name="photo_mountain_dusk">Montañas al atardecer</string>
+    <string name="photo_lake_trail">Sendero junto al lago</string>
+    <string name="photo_rocky_coast">Costa rocosa</string>
+    <string name="photo_cliff_beach">Playa y acantilado</string>
+    <string name="photo_paris">París</string>
+    <string name="photo_salt_marsh">Marisma</string>
+    <string name="photo_hill_town">Pueblo en la colina</string>
 </resources>
