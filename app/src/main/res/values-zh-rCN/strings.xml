@@ -346,12 +346,7 @@
     <string name="menu_change_picture">更换图片</string>
     <string name="menu_reset_picture">使用应用自带图片</string>
     <string name="picker_title">选择图片</string>
-    <string name="picker_loading">正在加载图片…</string>
-    <string name="picker_denied">Matinee 需要读取图片的权限。请在电视的应用设置中允许后重试。</string>
     <string name="picker_empty">未找到图片。请插入 U 盘或向此电视添加图片。</string>
-    <plurals name="picker_count">
-        <item quantity="other">%1$d 张</item>
-    </plurals>
     <string name="wallpaper_aurora">极光</string>
     <string name="wallpaper_dusk">黄昏</string>
     <string name="wallpaper_ocean">海洋</string>
@@ -369,11 +364,5 @@
     <string name="wallpaper_hint">长按 OK 可删除你添加的图片。</string>
     <string name="system_accessibility">无障碍</string>
     <string name="system_accessibility_sub">字幕、文字转语音、高对比度及电视的无障碍快捷方式</string>
-    <string name="photo_mountain_dusk">暮色群山</string>
-    <string name="photo_lake_trail">湖畔小径</string>
-    <string name="photo_rocky_coast">岩石海岸</string>
-    <string name="photo_cliff_beach">悬崖海滩</string>
-    <string name="photo_paris">巴黎</string>
-    <string name="photo_salt_marsh">盐沼</string>
-    <string name="photo_hill_town">山顶小镇</string>
+    <string name="picker_no_system_picker">此电视没有文件选择器。请用文件管理器或 USB 将图片复制到此文件夹，然后选择一张：%1$s</string>
 </resources>

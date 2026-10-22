@@ -348,14 +348,7 @@
     <string name="menu_change_picture">Changer l\'image</string>
     <string name="menu_reset_picture">Utiliser l\'image de l\'appli</string>
     <string name="picker_title">Choisissez une image</string>
-    <string name="picker_loading">Chargement des images…</string>
-    <string name="picker_denied">Matinee a besoin de l\'autorisation de lire les images. Accordez-la dans les réglages des applis du téléviseur, puis réessayez.</string>
     <string name="picker_empty">Aucune image trouvée. Branchez une clé USB ou ajoutez des images à ce téléviseur.</string>
-    <plurals name="picker_count">
-        <item quantity="one">%1$d image</item>
-        <item quantity="many">%1$d images</item>
-        <item quantity="other">%1$d images</item>
-    </plurals>
     <string name="wallpaper_aurora">Aurore</string>
     <string name="wallpaper_dusk">Crépuscule</string>
     <string name="wallpaper_ocean">Océan</string>
@@ -373,11 +366,5 @@
     <string name="wallpaper_hint">Maintenez OK sur une image ajoutée pour la retirer.</string>
     <string name="system_accessibility">Accessibilité</string>
     <string name="system_accessibility_sub">Sous-titres, synthèse vocale, contraste élevé et raccourci d\'accessibilité du téléviseur</string>
-    <string name="photo_mountain_dusk">Montagnes au crépuscule</string>
-    <string name="photo_lake_trail">Sentier du lac</string>
-    <string name="photo_rocky_coast">Côte rocheuse</string>
-    <string name="photo_cliff_beach">Falaise et plage</string>
-    <string name="photo_paris">Paris</string>
-    <string name="photo_salt_marsh">Marais salants</string>
-    <string name="photo_hill_town">Village perché</string>
+    <string name="picker_no_system_picker">Ce téléviseur n\'a pas de sélecteur de fichiers. Copiez des images dans ce dossier avec un gestionnaire de fichiers ou en USB, puis choisissez-en une : %1$s</string>
 </resources>

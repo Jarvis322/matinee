@@ -348,14 +348,7 @@
     <string name="menu_change_picture">Cambiar imagen</string>
     <string name="menu_reset_picture">Usar la imagen de la app</string>
     <string name="picker_title">Elige una imagen</string>
-    <string name="picker_loading">Cargando imágenes…</string>
-    <string name="picker_denied">Matinee necesita permiso para leer imágenes. Concédelo en los ajustes de apps de la TV e inténtalo de nuevo.</string>
     <string name="picker_empty">No se encontraron imágenes. Conecta una unidad USB o añade imágenes a esta TV.</string>
-    <plurals name="picker_count">
-        <item quantity="one">%1$d imagen</item>
-        <item quantity="many">%1$d imágenes</item>
-        <item quantity="other">%1$d imágenes</item>
-    </plurals>
     <string name="wallpaper_aurora">Aurora</string>
     <string name="wallpaper_dusk">Crepúsculo</string>
     <string name="wallpaper_ocean">Océano</string>
@@ -373,11 +366,5 @@
     <string name="wallpaper_hint">Mantén pulsado OK en una imagen añadida para quitarla.</string>
     <string name="system_accessibility">Accesibilidad</string>
     <string name="system_accessibility_sub">Subtítulos, lectura de texto, alto contraste y el acceso directo de accesibilidad de la TV</string>
-    <string name="photo_mountain_dusk">Montañas al atardecer</string>
-    <string name="photo_lake_trail">Sendero junto al lago</string>
-    <string name="photo_rocky_coast">Costa rocosa</string>
-    <string name="photo_cliff_beach">Playa y acantilado</string>
-    <string name="photo_paris">París</string>
-    <string name="photo_salt_marsh">Marisma</string>
-    <string name="photo_hill_town">Pueblo en la colina</string>
+    <string name="picker_no_system_picker">Este televisor no tiene selector de archivos. Copia imágenes a esta carpeta con un administrador de archivos o por USB y elige una: %1$s</string>
 </resources>

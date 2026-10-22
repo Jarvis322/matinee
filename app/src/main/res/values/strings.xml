@@ -357,13 +357,7 @@
     <string name="menu_change_picture">Change picture</string>
     <string name="menu_reset_picture">Use the app\'s own picture</string>
     <string name="picker_title">Choose a picture</string>
-    <string name="picker_loading">Loading pictures…</string>
-    <string name="picker_denied">Matinee needs permission to read pictures. Allow it in the TV\'s app settings, then try again.</string>
     <string name="picker_empty">No pictures found. Plug in a USB drive or add pictures to this TV.</string>
-    <plurals name="picker_count">
-        <item quantity="one">%1$d picture</item>
-        <item quantity="other">%1$d pictures</item>
-    </plurals>
     <string name="wallpaper_aurora">Aurora</string>
     <string name="wallpaper_dusk">Dusk</string>
     <string name="wallpaper_ocean">Ocean</string>
@@ -381,11 +375,5 @@
     <string name="wallpaper_hint">Hold OK on a picture you added to remove it.</string>
     <string name="system_accessibility">Accessibility</string>
     <string name="system_accessibility_sub">Captions, text-to-speech, high contrast and the TV\'s accessibility shortcut</string>
-    <string name="photo_mountain_dusk">Mountain dusk</string>
-    <string name="photo_lake_trail">Lake trail</string>
-    <string name="photo_rocky_coast">Rocky coast</string>
-    <string name="photo_cliff_beach">Cliff beach</string>
-    <string name="photo_paris">Paris</string>
-    <string name="photo_salt_marsh">Salt marsh</string>
-    <string name="photo_hill_town">Hill town</string>
+    <string name="picker_no_system_picker">This TV has no file picker. Copy pictures into this folder with a file manager or a USB transfer, then choose one: %1$s</string>
 </resources>

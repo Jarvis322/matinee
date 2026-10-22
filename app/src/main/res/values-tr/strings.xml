@@ -347,13 +347,7 @@
     <string name="menu_change_picture">Resmi değiştir</string>
     <string name="menu_reset_picture">Uygulamanın kendi resmini kullan</string>
     <string name="picker_title">Bir resim seç</string>
-    <string name="picker_loading">Resimler yükleniyor…</string>
-    <string name="picker_denied">Matinee\'nin resimleri okuma iznine ihtiyacı var. TV\'nin uygulama ayarlarından izin ver, sonra tekrar dene.</string>
     <string name="picker_empty">Resim bulunamadı. Bir USB bellek tak ya da bu TV\'ye resim ekle.</string>
-    <plurals name="picker_count">
-        <item quantity="one">%1$d resim</item>
-        <item quantity="other">%1$d resim</item>
-    </plurals>
     <string name="wallpaper_aurora">Aurora</string>
     <string name="wallpaper_dusk">Alacakaranlık</string>
     <string name="wallpaper_ocean">Okyanus</string>
@@ -371,11 +365,5 @@
     <string name="wallpaper_hint">Eklediğin bir resmi kaldırmak için OK\'a basılı tut.</string>
     <string name="system_accessibility">Erişilebilirlik</string>
     <string name="system_accessibility_sub">Altyazılar, metin okuma, yüksek kontrast ve TV\'nin erişilebilirlik kısayolu</string>
-    <string name="photo_mountain_dusk">Dağ alacakaranlığı</string>
-    <string name="photo_lake_trail">Göl patikası</string>
-    <string name="photo_rocky_coast">Kayalık kıyı</string>
-    <string name="photo_cliff_beach">Falez ve plaj</string>
-    <string name="photo_paris">Paris</string>
-    <string name="photo_salt_marsh">Tuz bataklığı</string>
-    <string name="photo_hill_town">Tepe kasabası</string>
+    <string name="picker_no_system_picker">Bu TV\'de dosya seçici yok. Resimleri bir dosya yöneticisi veya USB ile şu klasöre kopyalayın, sonra birini seçin: %1$s</string>
 </resources>

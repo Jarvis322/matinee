@@ -34,8 +34,8 @@ Switch between them in **Settings → Home screen → Layout**.
 ## Features
 
 - **Your apps, your order.** Hold OK on a card to move it or remove it. Phone-style apps that some TV boxes ship, such as satellite or IPTV players, can be added from the app list.
-- **Make it yours.** Hold OK on a card for a menu: move, rename, change its picture, put it in a folder, lock it with a parental PIN, or hide it. Pictures come from the TV or a USB drive.
-- **Wallpapers.** Eight built-in wallpapers, an optional slowly moving light, or your own pictures, with a Liquid Glass look that shows the wallpaper through the shelf and menus.
+- **Make it yours.** Hold OK on a card for a menu: move, rename, change its picture, put it in a folder, lock it with a parental PIN, or hide it. Pictures are chosen as files, so Matinee needs no storage permission.
+- **Wallpapers.** Eight built-in wallpapers, an optional slowly moving light, or a picture file of your own, with a Liquid Glass look that shows the wallpaper through the shelf and menus.
 - **Parental PIN.** Lock apps, and optionally settings and home screen changes, behind a 4-digit PIN.
 - **Last played.** Title, artwork and progress from apps that share their media session. Stored only on the TV.
 - **Live TV and HDMI inputs.** TVs with a built-in antenna, cable or satellite tuner get a Live TV shortcut that opens the TV's own broadcast. Each HDMI input shows the connected device's name and whether it is on or in standby (HDMI-CEC). Rename inputs and pick an icon.

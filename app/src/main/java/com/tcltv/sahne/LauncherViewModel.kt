@@ -25,11 +25,10 @@ import com.tcltv.sahne.data.AppCatalog
 import com.tcltv.sahne.data.UserImages
 import com.tcltv.sahne.data.HomeApps
 import com.tcltv.sahne.data.FolderEdits
-import com.tcltv.sahne.data.Gallery
-import com.tcltv.sahne.data.GalleryImage
+import com.tcltv.sahne.data.ImageImport
+import com.tcltv.sahne.data.PickedImage
 import com.tcltv.sahne.data.AppOverride
 import com.tcltv.sahne.data.BuiltinWallpaper
-import com.tcltv.sahne.data.PhotoWallpaper
 import com.tcltv.sahne.data.ResolvedWallpaper
 import com.tcltv.sahne.data.WallpaperKey
 import com.tcltv.sahne.data.WallpaperResolver
@@ -146,7 +145,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         .stateIn(viewModelScope, SharingStarted.Eagerly, LauncherSettings())
 
     private val userImages = UserImages(application)
-    private val gallery = Gallery(application)
+    private val imageImport = ImageImport(application)
     private val wallpaperResolver = WallpaperResolver(application, userImages)
     private val homeApps = HomeApps(application, userImages)
     val gate = ParentalGate(settings, settingsStore)
@@ -184,18 +183,15 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     fun userWallpaperPreview(file: String, width: Int) = wallpaperResolver.userPreview(file, width)
 
-    fun photoWallpaperPreview(wallpaper: PhotoWallpaper, width: Int) = wallpaperResolver.photoPreview(wallpaper, width)
-
-    val photoWallpapers: List<PhotoWallpaper> = PhotoWallpaper.available(application)
 
     fun setWallpaper(key: String) = update { setWallpaper(key) }
 
     /** Adds a picture from the gallery to the wallpapers and makes it the current one. */
-    fun importWallpaper(image: GalleryImage) {
+    fun importWallpaper(image: PickedImage) {
         viewModelScope.launch {
             val name = "wallpaper_${System.currentTimeMillis()}.jpg"
             // 2560 on the long side keeps a photo sharp on a 4K TV without holding the original's megapixels.
-            if (!gallery.importTo(image.uri, userImages.file(name), WALLPAPER_MAX_SIDE, keepAlpha = false)) return@launch
+            if (!imageImport.importTo(image, userImages.file(name), WALLPAPER_MAX_SIDE, keepAlpha = false)) return@launch
             customizeLock.withLock {
                 settingsStore.setUserWallpapers(settings.first().userWallpapers + name)
                 settingsStore.setWallpaper(WallpaperKey.user(name))
@@ -694,11 +690,11 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     }
 
     /** Takes a picture the user picked in the gallery and makes it the app's card. */
-    fun importAppIcon(packageName: String, image: GalleryImage) {
+    fun importAppIcon(packageName: String, image: PickedImage) {
         viewModelScope.launch {
             val incoming = userImages.file("incoming_${System.currentTimeMillis()}.img")
             // PNG keeps the transparent corners of a logo; a photo shrinks to a card-sized picture.
-            if (gallery.importTo(image.uri, incoming, ICON_MAX_SIDE, keepAlpha = true)) setAppIcon(packageName, incoming)
+            if (imageImport.importTo(image, incoming, ICON_MAX_SIDE, keepAlpha = true)) setAppIcon(packageName, incoming)
         }
     }
 

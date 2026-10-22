@@ -92,7 +92,6 @@ import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.AppLanguage
 import com.tcltv.sahne.data.BuiltinWallpaper
-import com.tcltv.sahne.data.PhotoWallpaper
 import com.tcltv.sahne.data.CardTheme
 import com.tcltv.sahne.data.DeviceLogo
 import com.tcltv.sahne.data.HdmiInput
@@ -739,8 +738,6 @@ private fun ParentalPanel(viewModel: LauncherViewModel, firstRow: FocusRequester
 private fun wallpaperName(key: String): String = when {
     key.startsWith(WallpaperKey.BUILTIN_PREFIX) ->
         BuiltinWallpaper.byId(key.removePrefix(WallpaperKey.BUILTIN_PREFIX))?.let { stringResource(it.label) } ?: stringResource(R.string.wallpaper_adaptive)
-    key.startsWith(WallpaperKey.PHOTO_PREFIX) ->
-        PhotoWallpaper.byId(key.removePrefix(WallpaperKey.PHOTO_PREFIX))?.let { stringResource(it.label) } ?: stringResource(R.string.wallpaper_adaptive)
     key.startsWith(WallpaperKey.USER_PREFIX) -> stringResource(R.string.wallpaper_yours)
     else -> stringResource(R.string.wallpaper_adaptive)
 }
@@ -752,7 +749,6 @@ private fun WallpaperPage(viewModel: LauncherViewModel, firstRow: FocusRequester
     LaunchedEffect(Unit) { runCatching { firstRow.requestFocus() } }
     // The previews are drawn once per page visit; each is a small picture, so this is cheap.
     val builtinPreviews = remember { BuiltinWallpaper.entries.associateWith { viewModel.wallpaperPreview(it, PREVIEW_WIDTH) } }
-    val photoPreviews = remember { viewModel.photoWallpapers.associateWith { viewModel.photoWallpaperPreview(it, PREVIEW_WIDTH) } }
     PanelList {
         if (s.wallpaper.startsWith(WallpaperKey.BUILTIN_PREFIX)) {
             ToggleRow(R.string.setting_wallpaper_animated, R.string.setting_wallpaper_animated_sub, s.wallpaperAnimated, Modifier.focusRequester(firstRow)) {
@@ -762,7 +758,6 @@ private fun WallpaperPage(viewModel: LauncherViewModel, firstRow: FocusRequester
         val tiles = buildList {
             add(WallpaperTile(stringResource(R.string.wallpaper_adaptive), null, "", false))
             BuiltinWallpaper.entries.forEach { add(WallpaperTile(stringResource(it.label), builtinPreviews[it], WallpaperKey.builtin(it), false)) }
-            photoPreviews.forEach { (photo, preview) -> add(WallpaperTile(stringResource(photo.label), preview, WallpaperKey.photo(photo), false)) }
             s.userWallpapers.forEach { file ->
                 add(WallpaperTile(stringResource(R.string.wallpaper_yours), viewModel.userWallpaperPreview(file, PREVIEW_WIDTH), WallpaperKey.user(file), true, file))
             }
