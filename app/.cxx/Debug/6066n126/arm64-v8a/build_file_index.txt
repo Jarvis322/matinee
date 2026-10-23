@@ -1,1 +1,0 @@
-/Users/jarvis/Desktop/Projeler/tcltv/launcher/app/src/main/cpp/CMakeLists.txt
