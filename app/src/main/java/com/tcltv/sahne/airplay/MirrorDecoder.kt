@@ -14,31 +14,31 @@ private const val TAG = "MirrorDecoder"
 private const val DEQUEUE_TIMEOUT_US = 10_000L
 private const val SAMPLE_RATE = 44_100
 
-/** Decodes the phone's H.264 screen and draws it straight onto [surface]. */
-class VideoDecoder(private val surface: Surface) {
+/**
+ * Decodes the phone's H.264 screen and draws it straight onto [surface]. A new SPS (the phone rotated or changed
+ * resolution) gets a freshly configured decoder, because many TV decoders fail on a size change mid-stream; a
+ * decoder that fails anyway is rebuilt at the next keyframe, which always carries its SPS.
+ */
+class VideoDecoder(private val surface: Surface, private val onVideoSize: (width: Int, height: Int) -> Unit) {
 
     private var codec: MediaCodec? = null
     private var drain: Thread? = null
+    private var sps: ByteArray? = null
 
     @Volatile
     private var running = false
 
-    fun start() {
-        val format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, 1920, 1080).apply {
-            setInteger(MediaFormat.KEY_MAX_WIDTH, 3840)
-            setInteger(MediaFormat.KEY_MAX_HEIGHT, 2160)
-            setInteger(MediaFormat.KEY_LOW_LATENCY, 1)
-        }
-        val decoder = MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
-        decoder.configure(format, surface, null, 0)
-        decoder.start()
-        codec = decoder
-        running = true
-        drain = Thread({ drainOutput(decoder) }, "airplay-video-out").apply { start() }
-    }
+    @Volatile
+    private var failed = false
+
+    private var rendered = false
 
     fun queue(data: ByteArray, presentationNanos: Long) {
-        val decoder = codec ?: return
+        val frameSps = spsOf(data)
+        if (frameSps != null && (codec == null || failed || !frameSps.contentEquals(sps))) {
+            restart(frameSps)
+        }
+        val decoder = codec?.takeIf { !failed } ?: return
         try {
             val index = decoder.dequeueInputBuffer(DEQUEUE_TIMEOUT_US)
             if (index < 0) return
@@ -47,7 +47,7 @@ class VideoDecoder(private val surface: Surface) {
             buffer.put(data)
             decoder.queueInputBuffer(index, 0, data.size, presentationNanos / 1000, 0)
         } catch (e: IllegalStateException) {
-            Log.w(TAG, "video decoder not ready", e)
+            markFailed(e)
         }
     }
 
@@ -55,8 +55,39 @@ class VideoDecoder(private val surface: Surface) {
         try {
             codec?.flush()
         } catch (e: IllegalStateException) {
-            Log.w(TAG, "video flush failed", e)
+            markFailed(e)
         }
+    }
+
+    private fun restart(newSps: ByteArray) {
+        release()
+        Log.i(TAG, "starting video decoder for a new stream (${newSps.size}-byte SPS)")
+        val format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, 1920, 1080).apply {
+            setInteger(MediaFormat.KEY_MAX_WIDTH, 3840)
+            setInteger(MediaFormat.KEY_MAX_HEIGHT, 2160)
+        }
+        val decoder = try {
+            MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_VIDEO_AVC).also {
+                it.configure(format, surface, null, 0)
+                it.start()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "video decoder could not start", e)
+            return
+        }
+        Log.i(TAG, "video decoder ${decoder.name}")
+        codec = decoder
+        sps = newSps
+        failed = false
+        running = true
+        drain = Thread({ drainOutput(decoder) }, "airplay-video-out").apply { start() }
+    }
+
+    private fun markFailed(e: IllegalStateException) {
+        if (failed) return
+        failed = true
+        val detail = (e as? MediaCodec.CodecException)?.let { " (${it.diagnosticInfo}, recoverable=${it.isRecoverable}, transient=${it.isTransient})" }.orEmpty()
+        Log.e(TAG, "video decoder failed$detail; waiting for the next keyframe", e)
     }
 
     private fun drainOutput(decoder: MediaCodec) {
@@ -64,20 +95,55 @@ class VideoDecoder(private val surface: Surface) {
         while (running) {
             try {
                 val index = decoder.dequeueOutputBuffer(info, DEQUEUE_TIMEOUT_US)
-                // Frames are shown the moment they decode: the phone already paces them, and waiting only adds lag.
-                if (index >= 0) decoder.releaseOutputBuffer(index, true)
+                when {
+                    // Frames are shown the moment they decode: the phone already paces them, and waiting only adds lag.
+                    index >= 0 -> {
+                        decoder.releaseOutputBuffer(index, true)
+                        if (!rendered) {
+                            rendered = true
+                            Log.i(TAG, "first mirrored frame on screen")
+                        }
+                    }
+                    index == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED -> reportSize(decoder.outputFormat)
+                }
             } catch (e: IllegalStateException) {
+                if (running) markFailed(e)
                 return
             }
         }
     }
 
-    fun stop() {
+    /** The picture's own size, from the crop rectangle when the decoder pads the frame to its block size. */
+    private fun reportSize(format: MediaFormat) {
+        val width = if (format.containsKey("crop-right")) format.getInteger("crop-right") - format.getInteger("crop-left") + 1 else format.getInteger(MediaFormat.KEY_WIDTH)
+        val height = if (format.containsKey("crop-bottom")) format.getInteger("crop-bottom") - format.getInteger("crop-top") + 1 else format.getInteger(MediaFormat.KEY_HEIGHT)
+        Log.i(TAG, "video ${width}x$height")
+        if (width > 0 && height > 0) onVideoSize(width, height)
+    }
+
+    private fun release() {
         running = false
         drain?.join(500)
+        drain = null
         runCatching { codec?.stop() }
         runCatching { codec?.release() }
         codec = null
+    }
+
+    fun stop() {
+        release()
+        sps = null
+    }
+
+    companion object {
+        /** The SPS NAL unit when the frame starts with one (Annex B start code, NAL type 7), without its start code. */
+        fun spsOf(data: ByteArray): ByteArray? {
+            if (data.size < 6 || data[0].toInt() != 0 || data[1].toInt() != 0 || data[2].toInt() != 0 || data[3].toInt() != 1) return null
+            if (data[4].toInt() and 0x1F != 7) return null
+            var end = 5
+            while (end + 3 < data.size && !(data[end].toInt() == 0 && data[end + 1].toInt() == 0 && data[end + 2].toInt() == 0 && data[end + 3].toInt() == 1)) end++
+            return data.copyOfRange(4, if (end + 3 < data.size) end else data.size)
+        }
     }
 }
 

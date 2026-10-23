@@ -70,11 +70,10 @@ class AirPlayReceiver private constructor(private val context: Context) : AirPla
     }
 
     /** The mirror screen is ready to draw; frames that arrived while it opened are replayed first. */
-    fun attachSurface(surface: Surface) {
+    fun attachSurface(surface: Surface, onVideoSize: (width: Int, height: Int) -> Unit) {
         synchronized(lock) {
             video?.stop()
-            val decoder = VideoDecoder(surface)
-            decoder.start()
+            val decoder = VideoDecoder(surface, onVideoSize)
             video = decoder
             while (pendingFrames.isNotEmpty()) {
                 val (data, time) = pendingFrames.removeFirst()
@@ -170,6 +169,8 @@ class AirPlayReceiver private constructor(private val context: Context) : AirPla
             if (decoder != null) {
                 decoder.queue(data, remoteTimeNanos)
             } else {
+                // A keyframe makes everything before it useless, and the decoder can't start without one.
+                if (VideoDecoder.spsOf(data) != null) pendingFrames.clear()
                 if (pendingFrames.size >= MAX_PENDING_FRAMES) pendingFrames.removeFirst()
                 pendingFrames.addLast(data to remoteTimeNanos)
                 if (!activityRequested) {
