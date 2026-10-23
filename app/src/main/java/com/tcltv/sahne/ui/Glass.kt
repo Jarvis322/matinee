@@ -85,19 +85,21 @@ data class GlassStyle(
     val shadow: Float = 0f,
     /** Drawn under the veil; for surfaces in their own window, which have no backdrop slice to show. */
     val base: Color = Color.Transparent,
+    /** How strongly the edge bends the backdrop behind it, 0 to 1; only surfaces that show the backdrop can bend it. */
+    val refraction: Float = 0f,
 ) {
     companion object {
         /** Large containers such as the shelf and the settings panel. */
-        val Panel = GlassStyle(backdrop = 1f, veilTop = 0.15f, veilBottom = 0.1f, sheen = 0f, rim = 0.62f, shadow = 0.34f)
+        val Panel = GlassStyle(backdrop = 1f, veilTop = 0.15f, veilBottom = 0.1f, sheen = 0f, rim = 0.62f, shadow = 0.34f, refraction = 1f)
 
         /** Capsules and small controls at rest. */
-        val Pill = GlassStyle(backdrop = 1f, veilTop = 0.2f, veilBottom = 0.09f, sheen = 0.14f, rim = 0.58f)
+        val Pill = GlassStyle(backdrop = 1f, veilTop = 0.2f, veilBottom = 0.09f, sheen = 0.14f, rim = 0.58f, refraction = 0.8f)
 
         /** A control that sits on a panel in its own window, where the screen's backdrop can't be lined up. */
         val Inset = GlassStyle(backdrop = 0f, veilTop = 0.17f, veilBottom = 0.07f, sheen = 0.1f, rim = 0.5f)
 
         /** A focused control that keeps its colour: lighter and sharper than [Pill], with white text still on top. */
-        val Lit = GlassStyle(backdrop = 1f, veilTop = 0.36f, veilBottom = 0.2f, sheen = 0.32f, rim = 1f, shadow = 0.3f)
+        val Lit = GlassStyle(backdrop = 1f, veilTop = 0.36f, veilBottom = 0.2f, sheen = 0.32f, rim = 1f, shadow = 0.3f, refraction = 1f)
 
         /**
          * Menus and dialogs. They live in their own window, where the screen's backdrop can't be lined up behind
@@ -109,7 +111,7 @@ data class GlassStyle(
         val Bright = GlassStyle(backdrop = 0f, veilTop = 0.98f, veilBottom = 0.86f, sheen = 0.5f, rim = 0.9f, shadow = 0.32f)
 
         /** A row that is selected but not focused. */
-        val Selected = GlassStyle(backdrop = 1f, veilTop = 0.16f, veilBottom = 0.1f, sheen = 0.1f, rim = 0.4f)
+        val Selected = GlassStyle(backdrop = 1f, veilTop = 0.16f, veilBottom = 0.1f, sheen = 0.1f, rim = 0.4f, refraction = 0.6f)
     }
 }
 
@@ -141,6 +143,8 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
     private var built: BuiltGlass? = null
     private val slicePaint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG or android.graphics.Paint.FILTER_BITMAP_FLAG)
     private val sliceMatrix = android.graphics.Matrix()
+    private val shadowPaint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG)
+    private var shadowBlur = 0f
     private var shaderImage: ImageBitmap? = null
     private var shader: android.graphics.BitmapShader? = null
     private var fromShaderImage: ImageBitmap? = null
@@ -182,19 +186,22 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
         drawContent()
     }
 
-    /** Rings of falling strength read as a blurred shadow. Each is a stroked band outside the surface, so no clip is needed. */
+    /**
+     * A blurred rounded rectangle under the surface. Skia draws a rounded-rectangle blur analytically on the GPU, so it
+     * is smooth at any size; stacked stroked bands, the cheaper stand-in, showed up as steps over photos.
+     */
     private fun DrawScope.drawSoftShadow(outline: Outline.Rounded, strength: Float) {
-        val corner = outline.roundRect.topLeftCornerRadius.x
-        for ((spread, fraction) in SHADOW_RINGS) {
-            val grow = spread * density
-            drawRoundRect(
-                color = Color.Black.copy(alpha = strength * fraction),
-                topLeft = Offset(-grow / 2f, -grow / 2f + SHADOW_DROP_DP * density),
-                size = Size(size.width + grow, size.height + grow),
-                cornerRadius = androidx.compose.ui.geometry.CornerRadius(corner + grow / 2f),
-                style = Stroke(width = grow),
-            )
+        // Before Android 9 the GPU renderer can't draw mask filters; a glass edge without a shadow still reads well.
+        if (android.os.Build.VERSION.SDK_INT < 28) return
+        val radius = SHADOW_BLUR_DP * density
+        if (shadowPaint.maskFilter == null || shadowBlur != radius) {
+            shadowPaint.maskFilter = android.graphics.BlurMaskFilter(radius, android.graphics.BlurMaskFilter.Blur.NORMAL)
+            shadowBlur = radius
         }
+        shadowPaint.color = Color.Black.copy(alpha = (strength * SHADOW_ALPHA).coerceIn(0f, 1f)).toArgb()
+        val corner = outline.roundRect.topLeftCornerRadius.x
+        val drop = SHADOW_DROP_DP * density
+        drawIntoCanvas { it.nativeCanvas.drawRoundRect(0f, drop, size.width, size.height + drop, corner, corner, shadowPaint) }
     }
 
     /**
@@ -242,14 +249,22 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
             } else {
                 native.drawRect(0f, 0f, size.width, size.height, slicePaint)
             }
+            // The bent edge is drawn over the plain fill with the same paint, so the two meet without a seam.
+            glass.ring?.let { ring ->
+                native.drawVertices(
+                    android.graphics.Canvas.VertexMode.TRIANGLES,
+                    ring.positions.size, ring.positions, 0, ring.textures, 0,
+                    null, 0, ring.indices, 0, ring.indices.size, slicePaint,
+                )
+            }
         }
     }
 
     private companion object {
         const val RIM_WIDTH_DP = 1.1f
-        const val SHADOW_DROP_DP = 4f
-        // Many faint bands blend into one soft falloff; a few strong ones show up as dark outlines on a TV.
-        val SHADOW_RINGS = listOf(4f to 0.14f, 9f to 0.14f, 15f to 0.14f, 22f to 0.14f, 30f to 0.14f)
+        const val SHADOW_DROP_DP = 6f
+        const val SHADOW_BLUR_DP = 16f
+        const val SHADOW_ALPHA = 0.7f
     }
 }
 
@@ -264,6 +279,7 @@ private class BuiltGlass(
     val veilFilter: android.graphics.PorterDuffColorFilter,
     val sheen: Brush,
     val rim: Brush,
+    val ring: RefractionRing?,
 ) {
     fun matches(size: Size, direction: androidx.compose.ui.unit.LayoutDirection, shape: Shape, style: GlassStyle) =
         this.size == size && layoutDirection == direction && this.shape == shape && this.style == style
@@ -271,12 +287,13 @@ private class BuiltGlass(
     companion object {
         fun create(scope: DrawScope, shape: Shape, style: GlassStyle): BuiltGlass {
             val size = scope.size
+            val outline = shape.createOutline(size, scope.layoutDirection, scope)
             return BuiltGlass(
                 size = size,
                 layoutDirection = scope.layoutDirection,
                 shape = shape,
                 style = style,
-                outline = shape.createOutline(size, scope.layoutDirection, scope),
+                outline = outline,
                 veil = Brush.verticalGradient(listOf(Color.White.copy(alpha = style.veilTop), Color.White.copy(alpha = style.veilBottom)), endY = size.height),
                 veilFilter = android.graphics.PorterDuffColorFilter(
                     Color.White.copy(alpha = (style.veilTop + style.veilBottom) / 2f).toArgb(),
@@ -296,6 +313,9 @@ private class BuiltGlass(
                     start = Offset.Zero,
                     end = Offset(size.width, size.height),
                 ),
+                ring = (outline as? Outline.Rounded)
+                    ?.takeIf { style.refraction > 0f && style.backdrop > 0f && android.os.Build.VERSION.SDK_INT >= 29 }
+                    ?.let { RefractionRing.create(size, it.roundRect.topLeftCornerRadius.x, style.refraction, scope.density) },
             )
         }
     }
@@ -465,5 +485,82 @@ private class BackdropFadeNode(var height: Dp) :
 
     private companion object {
         const val FADE_STEPS = 18
+    }
+}
+
+/**
+ * The band along a glass edge where the backdrop bends, as in Apple's Liquid Glass. It follows the refraction model of
+ * Kyant's AndroidLiquidGlass (Apache-2.0): a point at depth s inside the edge shows the backdrop pushed outward along
+ * the edge normal by circleMap(1 - s / height) * amount. That library evaluates it per pixel in an AGSL shader, which
+ * needs Android 13; here the same displacement is baked into a textured triangle mesh, which the GPU draws from
+ * Android 10 on.
+ */
+internal class RefractionRing(val positions: FloatArray, val textures: FloatArray, val indices: ShortArray) {
+
+    companion object {
+        private const val HEIGHT_DP = 20f
+        private const val AMOUNT_DP = 26f
+        private const val LEVELS = 7
+        private const val ARC_STEPS = 10
+
+        fun create(size: Size, cornerRadius: Float, strength: Float, density: Float): RefractionRing? {
+            val w = size.width
+            val h = size.height
+            val radius = cornerRadius.coerceIn(0f, minOf(w, h) / 2f)
+            // Deeper than the corner radius, the inset would fold the corners over themselves.
+            val band = minOf(HEIGHT_DP * density, minOf(w, h) / 2f, radius)
+            if (band < 2f) return null
+            val amount = AMOUNT_DP * density * strength
+
+            // The outline as points with outward normals: each corner's arc, then straight on to the next corner.
+            val outline = ArrayList<FloatArray>()
+            val corners = listOf(
+                floatArrayOf(w - radius, radius, -90f),
+                floatArrayOf(w - radius, h - radius, 0f),
+                floatArrayOf(radius, h - radius, 90f),
+                floatArrayOf(radius, radius, 180f),
+            )
+            for (corner in corners) {
+                for (step in 0..ARC_STEPS) {
+                    val angle = Math.toRadians((corner[2] + 90f * step / ARC_STEPS).toDouble())
+                    val nx = kotlin.math.cos(angle).toFloat()
+                    val ny = kotlin.math.sin(angle).toFloat()
+                    outline += floatArrayOf(corner[0] + nx * radius, corner[1] + ny * radius, nx, ny)
+                }
+            }
+            val count = outline.size
+            val positions = FloatArray(count * (LEVELS + 1) * 2)
+            val textures = FloatArray(positions.size)
+            for (level in 0..LEVELS) {
+                // Levels crowd toward the edge, where the bend changes fastest.
+                val t = level.toFloat() / LEVELS
+                val depth = band * t * t + if (level == 0) 0.5f else 0f
+                val x = 1f - depth / band
+                val bend = (1f - kotlin.math.sqrt((1f - x * x).coerceAtLeast(0f))) * amount
+                for (i in 0 until count) {
+                    val p = outline[i]
+                    val px = p[0] - p[2] * depth
+                    val py = p[1] - p[3] * depth
+                    val at = (level * count + i) * 2
+                    positions[at] = px
+                    positions[at + 1] = py
+                    textures[at] = px + p[2] * bend
+                    textures[at + 1] = py + p[3] * bend
+                }
+            }
+            val indices = ShortArray(LEVELS * count * 6)
+            var n = 0
+            for (level in 0 until LEVELS) {
+                for (i in 0 until count) {
+                    val a = level * count + i
+                    val b = level * count + (i + 1) % count
+                    val c = a + count
+                    val d = b + count
+                    indices[n++] = a.toShort(); indices[n++] = b.toShort(); indices[n++] = c.toShort()
+                    indices[n++] = b.toShort(); indices[n++] = d.toShort(); indices[n++] = c.toShort()
+                }
+            }
+            return RefractionRing(positions, textures, indices)
+        }
     }
 }

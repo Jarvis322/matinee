@@ -220,9 +220,16 @@ class WallpaperResolver(private val context: Context, private val images: UserIm
 
     /** Bakes the scrims into the picture and into the soft copy the glass shows through. */
     private fun finish(key: String, full: Bitmap): ResolvedWallpaper {
-        // Scaled down hard, the picture is a blur of itself, which is what frosted glass needs to show.
+        // Scaled down, the picture is a light blur of itself: soft enough to read as glass, sharp enough that the
+        // bent edges show what they bend. Halving step by step averages every pixel instead of skipping most of them.
+        var soft = full
+        while (soft.width / 2 >= SOFT_WIDTH) {
+            val half = Bitmap.createScaledBitmap(soft, soft.width / 2, (soft.height / 2).coerceAtLeast(1), true)
+            if (soft !== full) soft.recycle()
+            soft = half
+        }
         val softHeight = (SOFT_WIDTH.toFloat() * full.height / full.width).toInt().coerceAtLeast(1)
-        val soft = Bitmap.createScaledBitmap(full, SOFT_WIDTH, softHeight, true).let { if (it.isMutable) it else it.copy(Bitmap.Config.ARGB_8888, true) }
+        soft = Bitmap.createScaledBitmap(soft, SOFT_WIDTH, softHeight, true).let { if (it.isMutable) it else it.copy(Bitmap.Config.ARGB_8888, true) }
         WallpaperRenderer.drawScrims(Canvas(full), full.width, full.height)
         WallpaperRenderer.drawScrims(Canvas(soft), soft.width, soft.height)
         return ResolvedWallpaper(key, full.asImageBitmap(), soft.asImageBitmap(), null)
@@ -269,7 +276,7 @@ class WallpaperResolver(private val context: Context, private val images: UserIm
     }
 
     private companion object {
-        const val SOFT_WIDTH = 192
+        const val SOFT_WIDTH = 384
         const val MAX_DISPLAY_WIDTH = 1920
     }
 }
