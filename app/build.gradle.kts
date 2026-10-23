@@ -15,8 +15,8 @@ android {
         applicationId = "com.yigitcan.matinee"
         minSdk = 26
         targetSdk = 35
-        versionCode = 17
-        versionName = "1.5.2"
+        versionCode = 18
+        versionName = "1.5.3"
     }
 
     // The Play upload key lives outside the project so it can never be committed or shared with the source.

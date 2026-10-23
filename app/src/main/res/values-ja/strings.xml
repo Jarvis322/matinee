@@ -366,4 +366,11 @@
     <string name="system_accessibility">ユーザー補助</string>
     <string name="system_accessibility_sub">字幕、読み上げ、ハイコントラスト、テレビのユーザー補助ショートカット</string>
     <string name="picker_no_system_picker">このテレビにはファイル選択機能がありません。ファイルマネージャーやUSBで次のフォルダに画像をコピーしてから選んでください: %1$s</string>
+    <string name="photo_mountain_dusk">夕暮れの山々</string>
+    <string name="photo_lake_trail">湖畔の小道</string>
+    <string name="photo_rocky_coast">岩の海岸</string>
+    <string name="photo_cliff_beach">断崖と浜辺</string>
+    <string name="photo_paris">パリ</string>
+    <string name="photo_salt_marsh">塩性湿地</string>
+    <string name="photo_hill_town">丘の上の町</string>
 </resources>

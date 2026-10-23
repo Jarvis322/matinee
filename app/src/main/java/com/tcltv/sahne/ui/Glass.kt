@@ -247,8 +247,9 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
 
     private companion object {
         const val RIM_WIDTH_DP = 1.1f
-        const val SHADOW_DROP_DP = 6f
-        val SHADOW_RINGS = listOf(5f to 0.55f, 16f to 0.22f)
+        const val SHADOW_DROP_DP = 4f
+        // Many faint bands blend into one soft falloff; a few strong ones show up as dark outlines on a TV.
+        val SHADOW_RINGS = listOf(4f to 0.14f, 9f to 0.14f, 15f to 0.14f, 22f to 0.14f, 30f to 0.14f)
     }
 }
 

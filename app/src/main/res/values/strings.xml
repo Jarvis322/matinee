@@ -376,4 +376,11 @@
     <string name="system_accessibility">Accessibility</string>
     <string name="system_accessibility_sub">Captions, text-to-speech, high contrast and the TV\'s accessibility shortcut</string>
     <string name="picker_no_system_picker">This TV has no file picker. Copy pictures into this folder with a file manager or a USB transfer, then choose one: %1$s</string>
+    <string name="photo_mountain_dusk">Mountain dusk</string>
+    <string name="photo_lake_trail">Lake trail</string>
+    <string name="photo_rocky_coast">Rocky coast</string>
+    <string name="photo_cliff_beach">Cliff beach</string>
+    <string name="photo_paris">Paris</string>
+    <string name="photo_salt_marsh">Salt marsh</string>
+    <string name="photo_hill_town">Hill town</string>
 </resources>

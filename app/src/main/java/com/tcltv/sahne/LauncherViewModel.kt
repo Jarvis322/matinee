@@ -26,6 +26,7 @@ import com.tcltv.sahne.data.UserImages
 import com.tcltv.sahne.data.HomeApps
 import com.tcltv.sahne.data.FolderEdits
 import com.tcltv.sahne.data.ImageImport
+import com.tcltv.sahne.data.PhotoWallpaper
 import com.tcltv.sahne.data.PickedImage
 import com.tcltv.sahne.data.AppOverride
 import com.tcltv.sahne.data.BuiltinWallpaper
@@ -183,6 +184,10 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     fun userWallpaperPreview(file: String, width: Int) = wallpaperResolver.userPreview(file, width)
 
+
+    fun photoWallpaperPreview(wallpaper: PhotoWallpaper, width: Int) = wallpaperResolver.photoPreview(wallpaper, width)
+
+    val photoWallpapers: List<PhotoWallpaper> = PhotoWallpaper.available(application)
 
     fun setWallpaper(key: String) = update { setWallpaper(key) }
 

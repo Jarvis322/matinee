@@ -365,4 +365,11 @@
     <string name="system_accessibility">无障碍</string>
     <string name="system_accessibility_sub">字幕、文字转语音、高对比度及电视的无障碍快捷方式</string>
     <string name="picker_no_system_picker">此电视没有文件选择器。请用文件管理器或 USB 将图片复制到此文件夹，然后选择一张：%1$s</string>
+    <string name="photo_mountain_dusk">暮色群山</string>
+    <string name="photo_lake_trail">湖畔小径</string>
+    <string name="photo_rocky_coast">岩石海岸</string>
+    <string name="photo_cliff_beach">悬崖海滩</string>
+    <string name="photo_paris">巴黎</string>
+    <string name="photo_salt_marsh">盐沼</string>
+    <string name="photo_hill_town">山顶小镇</string>
 </resources>
