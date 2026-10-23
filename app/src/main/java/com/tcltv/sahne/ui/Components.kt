@@ -137,6 +137,26 @@ fun TextInput(value: String, placeholder: String, modifier: Modifier = Modifier,
     )
 }
 
+/**
+ * Ignores OK until a fresh press begins. A long press that opens a screen is still held when that screen appears, so
+ * its repeats and its release would otherwise land on the new screen and activate whatever is focused first.
+ */
+@Composable
+fun Modifier.ignoreHeldOk(resetKey: Any? = Unit): Modifier {
+    var armed by remember(resetKey) { mutableStateOf(false) }
+    return onPreviewKeyEvent { event ->
+        val center = event.key == Key.DirectionCenter || event.key == Key.Enter || event.key == Key.NumPadEnter
+        when {
+            !center || armed -> false
+            event.type == KeyEventType.KeyDown && event.nativeKeyEvent.repeatCount == 0 -> {
+                armed = true
+                false
+            }
+            else -> true
+        }
+    }
+}
+
 /** A click on OK, or a long press on it; the key-up that ends a long press is swallowed so it doesn't also click. */
 @Composable
 fun Modifier.longPressClickable(onClick: () -> Unit, onLongPress: () -> Unit): Modifier {

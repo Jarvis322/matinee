@@ -1,0 +1,5 @@
+/Users/jarvis/Desktop/Projeler/tcltv/launcher/app/.cxx/Debug/6066n126/x86_64/CMakeFiles/plist.dir
+/Users/jarvis/Desktop/Projeler/tcltv/launcher/app/.cxx/Debug/6066n126/x86_64/CMakeFiles/airplay.dir
+/Users/jarvis/Desktop/Projeler/tcltv/launcher/app/.cxx/Debug/6066n126/x86_64/CMakeFiles/matinee_airplay.dir
+/Users/jarvis/Desktop/Projeler/tcltv/launcher/app/.cxx/Debug/6066n126/x86_64/CMakeFiles/edit_cache.dir
+/Users/jarvis/Desktop/Projeler/tcltv/launcher/app/.cxx/Debug/6066n126/x86_64/CMakeFiles/rebuild_cache.dir

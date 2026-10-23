@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "matinee_airplay",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "airplay::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-airplay-Debug-9e65d16132d9f9cfd634.json",
+					"name" : "airplay",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "matinee_airplay::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-matinee_airplay-Debug-d8fd256081de41ca8734.json",
+					"name" : "matinee_airplay",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "plist::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-plist-Debug-c8476d866086f856d328.json",
+					"name" : "plist",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/jarvis/Desktop/Projeler/tcltv/launcher/app/.cxx/Debug/6066n126/armeabi-v7a",
+		"source" : "/Users/jarvis/Desktop/Projeler/tcltv/launcher/app/src/main/cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

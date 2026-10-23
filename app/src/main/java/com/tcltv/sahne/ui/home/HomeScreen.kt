@@ -113,6 +113,7 @@ import com.tcltv.sahne.data.LaunchableApp
 import com.tcltv.sahne.data.TemperatureUnit
 import com.tcltv.sahne.ui.AppGlyph
 import com.tcltv.sahne.ui.Inter
+import com.tcltv.sahne.ui.ignoreHeldOk
 import com.tcltv.sahne.ui.KeyCap
 import com.tcltv.sahne.ui.GlassStyle
 import com.tcltv.sahne.ui.LocalReduceMotion
@@ -187,7 +188,8 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
         editMode = false
     }
 
-    Box(Modifier.fillMaxSize()) {
+    // Opening arrangement mode from Settings can leave OK held; its tail must not act on the cards.
+    Box(Modifier.fillMaxSize().ignoreHeldOk(editRequest)) {
         CinematicBackground(accent)
         val dim = Modifier.alpha(if (editMode) 0.18f else 1f)
         val currentLast = current?.let { lastPlayed[it.packageName] }

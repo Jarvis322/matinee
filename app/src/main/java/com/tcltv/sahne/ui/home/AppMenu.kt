@@ -54,6 +54,7 @@ import com.tcltv.sahne.ui.TextInput
 import com.tcltv.sahne.ui.focusSheen
 import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.interStyle
+import com.tcltv.sahne.ui.ignoreHeldOk
 import com.tcltv.sahne.ui.longPressClickable
 import com.tcltv.sahne.ui.rememberFocusSheen
 
@@ -297,6 +298,7 @@ private fun MenuDialog(title: String, onDismiss: () -> Unit, content: @Composabl
         Column(
             Modifier
                 .width(300.dp)
+                .ignoreHeldOk()
                 .glass(RoundedCornerShape(28.dp), GlassStyle.Dense)
                 .padding(horizontal = 14.dp, vertical = 16.dp),
         ) {
@@ -345,6 +347,7 @@ private fun TextPrompt(title: String, initial: String, onConfirm: (String) -> Un
         Column(
             Modifier
                 .width(380.dp)
+                .ignoreHeldOk()
                 .glass(RoundedCornerShape(28.dp), GlassStyle.Dense)
                 .padding(22.dp),
         ) {
@@ -393,6 +396,7 @@ private fun FolderView(
         Column(
             Modifier
                 .width(620.dp)
+                .ignoreHeldOk()
                 .glass(RoundedCornerShape(32.dp), GlassStyle.Dense)
                 .padding(24.dp),
         ) {
