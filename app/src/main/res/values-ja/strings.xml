@@ -270,7 +270,7 @@
     <string name="setting_language">言語</string>
     <string name="language_system">システム</string>
     <string name="setting_licenses">ライセンス</string>
-    <string name="license_text">天気データ: Open‑Meteo.com（CC BY 4.0 ライセンス）。\nアイコン: Tabler Icons（MIT ライセンス）。\n書体: Inter（SIL Open Font License 1.1）。\nアプリのアイコンとバナーは各アプリに帰属します。</string>
+    <string name="license_text">天気データ: Open‑Meteo.com（CC BY 4.0 ライセンス）。\nアイコン: Tabler Icons（MIT ライセンス）。\n書体: Inter（SIL Open Font License 1.1）。\nアプリのアイコンとバナーは各アプリに帰属します。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">制作: %1$s</string>
 
     <string name="minutes_ago">%1$d 分前</string>
@@ -373,4 +373,9 @@
     <string name="photo_paris">パリ</string>
     <string name="photo_salt_marsh">塩性湿地</string>
     <string name="photo_hill_town">丘の上の町</string>
+    <string name="setting_airplay_receiver">AirPlayレシーバー</string>
+    <string name="setting_airplay_receiver_sub">iPhone、iPad、Macの画面をこのテレビに表示します。試験的な機能です。</string>
+    <string name="airplay_channel">AirPlayレシーバー</string>
+    <string name="airplay_notification_title">AirPlayはオンです</string>
+    <string name="airplay_notification_text">このテレビはiPhone、iPad、Macから受信できます</string>
 </resources>

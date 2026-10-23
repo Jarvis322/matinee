@@ -1,0 +1,1 @@
+Vendored from libplist 2.6.0 (https://github.com/libimobiledevice/libplist), commit 2117b8fdb6b4096455bd2041a63e59a028120136, LGPL-2.1+.

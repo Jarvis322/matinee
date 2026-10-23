@@ -1,0 +1,1 @@
+Decoder files vendored from Apple ALAC (https://github.com/macosforge/alac), commit c38887c5c5e64a4b31108733bd79ca9b2496d987, Apache-2.0. The encoder is left out.

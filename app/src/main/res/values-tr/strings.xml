@@ -269,7 +269,7 @@
     <string name="setting_language">Dil</string>
     <string name="language_system">Sistem</string>
     <string name="setting_licenses">Lisanslar</string>
-    <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.</string>
+    <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">%1$s tarafından geliştirildi</string>
 
     <string name="minutes_ago">%1$d dk önce</string>
@@ -373,4 +373,9 @@
     <string name="photo_paris">Paris</string>
     <string name="photo_salt_marsh">Tuz bataklığı</string>
     <string name="photo_hill_town">Tepe kasabası</string>
+    <string name="setting_airplay_receiver">AirPlay alıcısı</string>
+    <string name="setting_airplay_receiver_sub">iPhone, iPad veya Mac ekranını bu TV\'de göster. Deneysel.</string>
+    <string name="airplay_channel">AirPlay alıcısı</string>
+    <string name="airplay_notification_title">AirPlay açık</string>
+    <string name="airplay_notification_text">Bu TV iPhone, iPad ve Mac\'ten görüntü alabilir</string>
 </resources>

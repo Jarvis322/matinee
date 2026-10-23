@@ -10,13 +10,25 @@ android {
     namespace = "com.tcltv.sahne"
     compileSdk = 35
     buildToolsVersion = "35.0.0"
+    ndkVersion = "29.0.14206865"
 
     defaultConfig {
         applicationId = "com.yigitcan.matinee"
         minSdk = 26
         targetSdk = 35
-        versionCode = 18
-        versionName = "1.5.3"
+        versionCode = 19
+        versionName = "1.5.4"
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
+        }
+    }
+
+    // The AirPlay receiver is UxPlay's protocol library (C); see app/src/main/cpp/uxplay/SOURCE.txt.
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.31.6"
+        }
     }
 
     // The Play upload key lives outside the project so it can never be committed or shared with the source.

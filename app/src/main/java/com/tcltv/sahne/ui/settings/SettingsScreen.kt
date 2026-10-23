@@ -453,6 +453,9 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
         ToggleRow(R.string.setting_glass_effects, R.string.setting_glass_effects_sub, s.glassEffects) {
             viewModel.update { setGlassEffects(it) }
         }
+        ToggleRow(R.string.setting_airplay_receiver, R.string.setting_airplay_receiver_sub, s.airplayReceiver) {
+            viewModel.update { setAirplayReceiver(it) }
+        }
         ValueRow(
             R.string.setting_home_layout,
             R.string.setting_home_layout_sub,

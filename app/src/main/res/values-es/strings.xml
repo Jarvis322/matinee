@@ -269,7 +269,7 @@
     <string name="setting_language">Idioma</string>
     <string name="language_system">Sistema</string>
     <string name="setting_licenses">Licencias</string>
-    <string name="license_text">Datos meteorológicos de Open‑Meteo.com, con licencia CC BY 4.0.\nIconos: Tabler Icons, licencia MIT.\nTipografía: Inter, SIL Open Font License 1.1.\nLos iconos y banners de las apps pertenecen a sus respectivas apps.</string>
+    <string name="license_text">Datos meteorológicos de Open‑Meteo.com, con licencia CC BY 4.0.\nIconos: Tabler Icons, licencia MIT.\nTipografía: Inter, SIL Open Font License 1.1.\nLos iconos y banners de las apps pertenecen a sus respectivas apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">Creado por %1$s</string>
 
     <string name="minutes_ago">Hace %1$d min</string>
@@ -374,4 +374,9 @@
     <string name="photo_paris">París</string>
     <string name="photo_salt_marsh">Marisma</string>
     <string name="photo_hill_town">Pueblo en la colina</string>
+    <string name="setting_airplay_receiver">Receptor AirPlay</string>
+    <string name="setting_airplay_receiver_sub">Muestra la pantalla de tu iPhone, iPad o Mac en este televisor. Experimental.</string>
+    <string name="airplay_channel">Receptor AirPlay</string>
+    <string name="airplay_notification_title">AirPlay activado</string>
+    <string name="airplay_notification_text">Este televisor puede recibir desde iPhone, iPad y Mac</string>
 </resources>

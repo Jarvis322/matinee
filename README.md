@@ -85,6 +85,10 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
 
+## AirPlay receiver (experimental)
+
+Turn on **Settings → Home screen → AirPlay receiver** to show an iPhone, iPad or Mac screen on the TV. It uses the protocol library from [UxPlay](https://github.com/FDH2/UxPlay) (GPL-3.0) and [libplist](https://github.com/libimobiledevice/libplist) (LGPL-2.1), vendored under `app/src/main/cpp`. OpenSSL is built locally; run `scripts/build-openssl.sh <OpenSSL 3.0 source dir>` once before the first build.
+
 ## License
 
 [GPL-3.0](LICENSE) © Yiğit Can Polat · [yigitech.dev](https://yigitech.dev) · [x.com/yigitech](https://x.com/yigitech)

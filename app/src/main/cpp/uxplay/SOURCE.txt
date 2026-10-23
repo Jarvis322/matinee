@@ -1,0 +1,2 @@
+Vendored from UxPlay (https://github.com/FDH2/UxPlay), lib/ directory, commit 0477d471cc5899ea13382b5871cf70dbfe050ebd, GPL-3.0.
+The mdnsd and CMake files are left out; dns_sd/dns_sd.c is built against android/dns_sd.h.

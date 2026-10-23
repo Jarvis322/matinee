@@ -25,6 +25,7 @@ import com.tcltv.sahne.data.AppCatalog
 import com.tcltv.sahne.data.UserImages
 import com.tcltv.sahne.data.HomeApps
 import com.tcltv.sahne.data.FolderEdits
+import com.tcltv.sahne.airplay.AirPlayService
 import com.tcltv.sahne.data.ImageImport
 import com.tcltv.sahne.data.PhotoWallpaper
 import com.tcltv.sahne.data.PickedImage
@@ -347,6 +348,14 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     init {
         viewModelScope.launch { runWeatherLoop() }
         viewModelScope.launch { watchForNewDevices() }
+        viewModelScope.launch { runAirPlayReceiver() }
+    }
+
+    // A foreground service, so the receiver outlives this screen: phones can only find the TV while it runs.
+    private suspend fun runAirPlayReceiver() {
+        settings.map { it.airplayReceiver }.distinctUntilChanged().collect { enabled ->
+            AirPlayService.setRunning(getApplication(), enabled, AIRPLAY_NAME)
+        }
     }
 
     // Polled only while the home screen is visible; nothing shows the value while another app is in front.
@@ -768,6 +777,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         const val ARTWORK_CACHE_BYTES = 6 * 1024 * 1024
         const val ICON_MAX_SIDE = 640
         const val WALLPAPER_MAX_SIDE = 2560
+        const val AIRPLAY_NAME = "Matinee"
         const val WEATHER_RETRY_MILLIS = 60_000L
         const val MEMORY_ALERT_REARM_PERCENT = 5
         const val MAX_LOCAL_NOTICES = 20

@@ -24,3 +24,6 @@ play/listing.md
 
 # Photo wallpapers are bundled by the maintainer's local builds only; their licenses are not tracked here
 app/src/main/assets/wallpapers/
+# Built by scripts/build-openssl.sh
+app/src/main/cpp/openssl/
+.cxx/
