@@ -87,4 +87,4 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ## License
 
-[GPL-3.0](LICENSE) © Yiğit Can Polat · [yigitech.dev](https://yigitech.dev) · [x.com/yigitech](https://x.com/yigitech)
+[MIT](LICENSE) © Yiğit Can Polat · [yigitech.dev](https://yigitech.dev) · [x.com/yigitech](https://x.com/yigitech)
