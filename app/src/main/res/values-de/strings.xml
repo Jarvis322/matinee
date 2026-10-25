@@ -393,4 +393,6 @@
         <item quantity="other">%d Kerne</item>
     </plurals>
     <string name="pin_new_title_directions">Wähle 4 Pfeilschritte</string>
+    <string name="setting_licenses">Lizenzen</string>
+    <string name="license_text">Wetterdaten von Open‑Meteo.com, lizenziert unter CC BY 4.0.\nSymbole: Tabler Icons, MIT-Lizenz.\nSchrift: Inter, SIL Open Font License 1.1.\nApp-Symbole und -Banner gehören den jeweiligen Apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
 </resources>

@@ -392,4 +392,6 @@
         <item quantity="other">%d 核</item>
     </plurals>
     <string name="pin_new_title_directions">选择 4 步方向</string>
+    <string name="setting_licenses">许可</string>
+    <string name="license_text">天气数据由 Open‑Meteo.com 提供，采用 CC BY 4.0 许可。\n图标：Tabler Icons，MIT 许可证。\n字体：Inter，SIL Open Font License 1.1。\n应用图标和横幅归其各自应用所有。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
 </resources>

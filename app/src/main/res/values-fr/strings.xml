@@ -394,4 +394,6 @@
         <item quantity="other">%d cœurs</item>
     </plurals>
     <string name="pin_new_title_directions">Choisissez 4 étapes avec les flèches</string>
+    <string name="setting_licenses">Licences</string>
+    <string name="license_text">Données météo fournies par Open‑Meteo.com, sous licence CC BY 4.0.\nIcônes : Tabler Icons, licence MIT.\nPolice : Inter, SIL Open Font License 1.1.\nLes icônes et bannières d\'applis appartiennent à leurs applis respectives.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
 </resources>

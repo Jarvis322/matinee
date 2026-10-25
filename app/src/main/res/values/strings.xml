@@ -403,4 +403,6 @@
         <item quantity="other">%d cores</item>
     </plurals>
     <string name="pin_new_title_directions">Choose 4 arrow steps</string>
+    <string name="setting_licenses">Licenses</string>
+    <string name="license_text">Weather data by Open‑Meteo.com, licensed under CC BY 4.0.\nIcons: Tabler Icons, MIT License.\nTypeface: Inter, SIL Open Font License 1.1.\nApp icons and banners belong to their apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
 </resources>

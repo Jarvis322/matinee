@@ -142,6 +142,7 @@ private sealed interface SubPage {
     data class InputEditor(val inputId: String) : SubPage
     data object CleanExclusions : SubPage
     data object Language : SubPage
+    data object Licenses : SubPage
     data object LockedApps : SubPage
     data object Wallpaper : SubPage
 }
@@ -234,6 +235,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                     SubPage.ProfileName -> stringResource(R.string.setting_profile_name)
                     SubPage.CleanExclusions -> stringResource(R.string.setting_exclusions)
                     SubPage.Language -> stringResource(R.string.setting_language)
+                    SubPage.Licenses -> stringResource(R.string.setting_licenses)
                     SubPage.LockedApps -> stringResource(R.string.setting_locked_apps)
                     SubPage.Wallpaper -> stringResource(R.string.setting_wallpaper)
                     is SubPage.InputEditor -> stringResource(R.string.edit_input)
@@ -248,6 +250,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                 SubPage.ProfileName -> ProfileNamePage(viewModel, panelRequester)
                 SubPage.CleanExclusions -> CleanExclusionsPage(viewModel, panelRequester)
                 SubPage.Language -> LanguagePage(panelRequester)
+                SubPage.Licenses -> LicensesPage(panelRequester)
                 SubPage.LockedApps -> LockedAppsPage(viewModel, panelRequester)
                 SubPage.Wallpaper -> WallpaperPage(viewModel, panelRequester)
             }
@@ -635,6 +638,7 @@ private fun AboutPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, o
                 confirmReset = true
             }
         }
+        ValueRow(R.string.setting_licenses, null, null, Modifier.opensPage(SubPage.Licenses)) { open(SubPage.Licenses) }
         Credits()
     }
 }
@@ -673,7 +677,7 @@ private fun LanguagePage(firstRow: FocusRequester) {
 private fun Credits() {
     var focused by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(20.dp)
-    Row(
+    Column(
         Modifier
             .fillMaxWidth()
             .padding(top = 14.dp)
@@ -681,22 +685,25 @@ private fun Credits() {
             .onFocusChanged { focused = it.isFocused }
             .focusable()
             .padding(horizontal = 16.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Image(
-            painterResource(R.drawable.ic_launcher),
-            contentDescription = null,
-            modifier = Modifier.size(46.dp).clip(RoundedCornerShape(12.dp)),
-        )
-        Spacer(Modifier.width(14.dp))
-        Column(Modifier.weight(1f)) {
-            BasicText(stringResource(R.string.app_name), style = interStyle(16.sp, 800))
-            BasicText(stringResource(R.string.credits_made_by, DEVELOPER_NAME), style = interStyle(12.sp, 500, Palette.TextSecondary))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painterResource(R.drawable.ic_launcher),
+                contentDescription = null,
+                modifier = Modifier.size(46.dp).clip(RoundedCornerShape(12.dp)),
+            )
+            Spacer(Modifier.width(14.dp))
+            Column {
+                BasicText(stringResource(R.string.app_name), style = interStyle(16.sp, 800))
+                BasicText(stringResource(R.string.credits_made_by, DEVELOPER_NAME), style = interStyle(12.sp, 500, Palette.TextSecondary))
+            }
         }
-        Spacer(Modifier.width(12.dp))
-        CreditChip(R.drawable.ic_world, DEVELOPER_SITE)
-        Spacer(Modifier.width(8.dp))
-        CreditChip(R.drawable.ic_brand_x, DEVELOPER_X)
+        Spacer(Modifier.height(12.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            CreditChip(R.drawable.ic_world, DEVELOPER_SITE)
+            CreditChip(R.drawable.ic_brand_x, DEVELOPER_X)
+            CreditChip(R.drawable.ic_brand_github, DEVELOPER_GITHUB)
+        }
     }
 }
 
@@ -718,6 +725,32 @@ private fun CreditChip(@DrawableRes icon: Int, label: String) {
 private const val DEVELOPER_NAME = "Yiğit Can Polat"
 private const val DEVELOPER_SITE = "yigitech.dev"
 private const val DEVELOPER_X = "@yigitech"
+private const val DEVELOPER_GITHUB = "github.com/Jarvis322/matinee"
+
+@Composable
+private fun LicensesPage(firstRow: FocusRequester) {
+    LaunchedEffect(Unit) { runCatching { firstRow.requestFocus() } }
+    PanelList {
+        InfoTextBlock(R.string.license_text, Modifier.focusRequester(firstRow))
+    }
+}
+
+/** A focusable block of plain text, so long read-only content can still be reached and scrolled with the remote. */
+@Composable
+private fun InfoTextBlock(@StringRes res: Int, modifier: Modifier) {
+    var focused by remember { mutableStateOf(false) }
+    BasicText(
+        stringResource(res),
+        style = interStyle(12.sp, 500, Palette.TextSecondary).copy(lineHeight = 18.sp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .border(1.dp, if (focused) Color.White.copy(alpha = 0.45f) else Color.Transparent, RoundedCornerShape(10.dp))
+            .onFocusChanged { focused = it.isFocused }
+            .focusable()
+            .padding(12.dp),
+    )
+}
 
 @Composable
 private fun ParentalPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, open: (SubPage) -> Unit) {
