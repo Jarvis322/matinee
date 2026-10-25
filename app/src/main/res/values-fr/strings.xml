@@ -69,7 +69,7 @@
     <string name="settings_bluetooth">Bluetooth et télécommande</string>
     <string name="settings_bluetooth_sub">Télécommande et accessoires</string>
     <string name="settings_about">À propos</string>
-    <string name="settings_about_sub">Version et licences</string>
+    <string name="settings_about_sub">Version, langue et crédits</string>
 
     <!-- System links -->
     <string name="open_in_tv_settings">Ouvrir</string>
@@ -268,8 +268,6 @@
     <string name="system_tv_settings_sub">Image, son, réseau, applis et tout ce que propose le téléviseur</string>
     <string name="setting_language">Langue</string>
     <string name="language_system">Système</string>
-    <string name="setting_licenses">Licences</string>
-    <string name="license_text">Données météo fournies par Open‑Meteo.com, sous licence CC BY 4.0.\nIcônes : Tabler Icons, licence MIT.\nPolice : Inter, SIL Open Font License 1.1.\nLes icônes et bannières d\'applis appartiennent à leurs applis respectives.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">Créé par %1$s</string>
 
     <string name="minutes_ago">Il y a %1$d min</string>
@@ -381,4 +379,19 @@
     <string name="airplay_notification_text">Ce téléviseur peut recevoir depuis iPhone, iPad et Mac</string>
     <string name="airplay_hint_fill">Appuyez sur OK pour qu\'une vidéo plein écran remplisse l\'écran</string>
     <string name="airplay_hint_show_all">Appuyez sur OK pour afficher tout l\'écran du téléphone</string>
+    <string name="pin_kind_title">Choisissez le type de code</string>
+    <string name="pin_kind_digits">Chiffres</string>
+    <string name="pin_kind_directions">Flèches</string>
+    <string name="pin_directions_hint">Appuyez sur les flèches de la télécommande, 4 étapes</string>
+    <string name="setting_chip">Processeur</string>
+    <string name="setting_performance">Profil de performances</string>
+    <string name="setting_performance_sub">Le verre et la lumière animée démarrent activés ou non selon ce téléviseur ; vos choix sont conservés</string>
+    <string name="performance_light">Léger</string>
+    <string name="performance_balanced">Équilibré</string>
+    <string name="performance_full">Complet</string>
+    <plurals name="cpu_cores">
+        <item quantity="one">%d cœur</item>
+        <item quantity="other">%d cœurs</item>
+    </plurals>
+    <string name="pin_new_title_directions">Choisissez 4 étapes avec les flèches</string>
 </resources>

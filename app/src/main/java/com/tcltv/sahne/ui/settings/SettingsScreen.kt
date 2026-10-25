@@ -12,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -71,6 +73,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -92,6 +95,7 @@ import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.AppLanguage
 import com.tcltv.sahne.data.BuiltinWallpaper
+import com.tcltv.sahne.data.DeviceProfile
 import com.tcltv.sahne.data.PhotoWallpaper
 import com.tcltv.sahne.data.CardTheme
 import com.tcltv.sahne.data.DeviceLogo
@@ -131,7 +135,6 @@ private enum class Section(@StringRes val title: Int, @StringRes val subtitle: I
 private sealed interface SubPage {
     data object CitySearch : SubPage
     data object ProfileName : SubPage
-    data object Licenses : SubPage
     data class InputEditor(val inputId: String) : SubPage
     data object CleanExclusions : SubPage
     data object Language : SubPage
@@ -221,7 +224,6 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                     null -> stringResource(section.title)
                     SubPage.CitySearch -> stringResource(R.string.setting_city)
                     SubPage.ProfileName -> stringResource(R.string.setting_profile_name)
-                    SubPage.Licenses -> stringResource(R.string.setting_licenses)
                     SubPage.CleanExclusions -> stringResource(R.string.setting_exclusions)
                     SubPage.Language -> stringResource(R.string.setting_language)
                     SubPage.LockedApps -> stringResource(R.string.setting_locked_apps)
@@ -236,7 +238,6 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                 SubPage.CitySearch -> CitySearchPage(viewModel, panelRequester) { closePage() }
                 is SubPage.InputEditor -> InputEditorPage(viewModel, page.inputId, panelRequester)
                 SubPage.ProfileName -> ProfileNamePage(viewModel, panelRequester)
-                SubPage.Licenses -> LicensesPage(panelRequester)
                 SubPage.CleanExclusions -> CleanExclusionsPage(viewModel, panelRequester)
                 SubPage.Language -> LanguagePage(panelRequester)
                 SubPage.LockedApps -> LockedAppsPage(viewModel, panelRequester)
@@ -569,6 +570,17 @@ private fun DevicePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, 
             stringResource(R.string.memory_usage, memory.usedPercent, Formatter.formatShortFileSize(context, memory.availableBytes)),
             modifier = Modifier.focusRequester(firstRow),
         )
+        val profile = remember { DeviceProfile.of(context) }
+        InfoRow(
+            R.string.setting_chip,
+            null,
+            listOf(
+                profile.chip.ifBlank { null },
+                pluralStringResource(R.plurals.cpu_cores, profile.cores, profile.cores),
+                Formatter.formatShortFileSize(context, profile.memoryBytes),
+            ).filterNotNull().joinToString(" · "),
+        )
+        InfoRow(R.string.setting_performance, R.string.setting_performance_sub, stringResource(profile.tier.label))
         ValueRow(
             R.string.setting_clean_now,
             R.string.setting_clean_now_sub,
@@ -615,7 +627,6 @@ private fun AboutPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, o
                 confirmReset = true
             }
         }
-        ValueRow(R.string.setting_licenses, null, null, Modifier.opensPage(SubPage.Licenses)) { open(SubPage.Licenses) }
         Credits()
     }
 }
@@ -649,41 +660,56 @@ private fun LanguagePage(firstRow: FocusRequester) {
     }
 }
 
+/** Who made Matinee and where to find them: a TV has no browser to open links in, so they are shown, not linked. */
 @Composable
 private fun Credits() {
-    Column(Modifier.fillMaxWidth().padding(start = 12.dp, top = 18.dp, end = 12.dp)) {
-        BasicText(stringResource(R.string.credits_made_by, DEVELOPER_SITE), style = interStyle(12.sp, 600, Palette.TextSecondary))
-        BasicText("$DEVELOPER_SITE · $DEVELOPER_X", style = interStyle(11.sp, 500, Palette.TextMuted))
-    }
-}
-
-private const val DEVELOPER_SITE = "yigitech.dev"
-private const val DEVELOPER_X = "x.com/yigitech"
-
-@Composable
-private fun LicensesPage(firstRow: FocusRequester) {
-    LaunchedEffect(Unit) { runCatching { firstRow.requestFocus() } }
-    PanelList {
-        InfoTextBlock(R.string.license_text, Modifier.focusRequester(firstRow))
-    }
-}
-
-/** A focusable block of plain text, so long read-only content can still be reached and scrolled with the remote. */
-@Composable
-private fun InfoTextBlock(@StringRes res: Int, modifier: Modifier) {
     var focused by remember { mutableStateOf(false) }
-    BasicText(
-        stringResource(res),
-        style = interStyle(12.sp, 500, Palette.TextSecondary).copy(lineHeight = 18.sp),
-        modifier = modifier
+    val shape = RoundedCornerShape(20.dp)
+    Row(
+        Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .border(1.dp, if (focused) Color.White.copy(alpha = 0.45f) else Color.Transparent, RoundedCornerShape(10.dp))
+            .padding(top = 14.dp)
+            .glass(shape, if (focused) GlassStyle.Lit else GlassStyle.Selected)
             .onFocusChanged { focused = it.isFocused }
             .focusable()
-            .padding(12.dp),
-    )
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Image(
+            painterResource(R.drawable.ic_launcher),
+            contentDescription = null,
+            modifier = Modifier.size(46.dp).clip(RoundedCornerShape(12.dp)),
+        )
+        Spacer(Modifier.width(14.dp))
+        Column(Modifier.weight(1f)) {
+            BasicText(stringResource(R.string.app_name), style = interStyle(16.sp, 800))
+            BasicText(stringResource(R.string.credits_made_by, DEVELOPER_NAME), style = interStyle(12.sp, 500, Palette.TextSecondary))
+        }
+        Spacer(Modifier.width(12.dp))
+        CreditChip(R.drawable.ic_world, DEVELOPER_SITE)
+        Spacer(Modifier.width(8.dp))
+        CreditChip(R.drawable.ic_brand_x, DEVELOPER_X)
+    }
 }
+
+@Composable
+private fun CreditChip(@DrawableRes icon: Int, label: String) {
+    Row(
+        Modifier
+            .background(Color.White.copy(alpha = 0.1f), CircleShape)
+            .border(1.dp, Color.White.copy(alpha = 0.14f), CircleShape)
+            .padding(horizontal = 12.dp, vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Image(painterResource(icon), contentDescription = null, colorFilter = ColorFilter.tint(Palette.TextPrimary), modifier = Modifier.size(15.dp))
+        Spacer(Modifier.width(7.dp))
+        BasicText(label, maxLines = 1, style = interStyle(12.5.sp, 650))
+    }
+}
+
+private const val DEVELOPER_NAME = "Yiğit Can Polat"
+private const val DEVELOPER_SITE = "yigitech.dev"
+private const val DEVELOPER_X = "@yigitech"
 
 @Composable
 private fun ParentalPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, open: (SubPage) -> Unit) {
@@ -691,21 +717,24 @@ private fun ParentalPanel(viewModel: LauncherViewModel, firstRow: FocusRequester
     val parental = s.parental
     var showSetup by remember { mutableStateOf(false) }
     var setupClosed by remember { mutableStateOf(false) }
-    // The row that opened the PIN screen may be gone by the time it closes (Set a PIN becomes Change PIN), so focus
-    // returns to the first row of the panel.
+    // The row that opened the PIN screen may be gone by the time it closes (Set a PIN becomes Change PIN, a moment
+    // after the PIN is saved), so focus returns to the first row of the panel, and again once that row is replaced.
     LaunchedEffect(setupClosed, parental.hasPin) {
-        if (setupClosed) {
-            setupClosed = false
-            runCatching { firstRow.requestFocus() }
-        }
+        if (setupClosed) runCatching { firstRow.requestFocus() }
     }
     PanelList {
         if (!parental.hasPin) {
-            ValueRow(R.string.setting_pin_set, R.string.setting_pin_set_sub, null, Modifier.focusRequester(firstRow)) { showSetup = true }
+            ValueRow(R.string.setting_pin_set, R.string.setting_pin_set_sub, null, Modifier.focusRequester(firstRow)) {
+                setupClosed = false
+                showSetup = true
+            }
         } else {
             // Changing or removing the PIN always asks for the current one, whatever the "protect settings" choice.
             ValueRow(R.string.setting_pin_change, null, null, Modifier.focusRequester(firstRow)) {
-                viewModel.gate.requireForApp(R.string.pin_reason_admin, locked = true) { showSetup = true }
+                viewModel.gate.requireForApp(R.string.pin_reason_admin, locked = true) {
+                    setupClosed = false
+                    showSetup = true
+                }
             }
             ValueRow(R.string.setting_pin_remove, null, null) {
                 viewModel.gate.requireForApp(R.string.pin_reason_admin, locked = true) { viewModel.removePin() }
@@ -725,8 +754,8 @@ private fun ParentalPanel(viewModel: LauncherViewModel, firstRow: FocusRequester
     if (showSetup) {
         PinSetup(
             title = stringResource(R.string.pin_new_title),
-            onSet = {
-                viewModel.setPin(it)
+            onSet = { pin, kind ->
+                viewModel.setPin(pin, kind)
                 showSetup = false
                 setupClosed = true
             },

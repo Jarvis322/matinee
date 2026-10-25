@@ -4,6 +4,7 @@ import android.os.SystemClock
 import androidx.annotation.StringRes
 import com.tcltv.sahne.data.LauncherSettings
 import com.tcltv.sahne.data.PinHasher
+import com.tcltv.sahne.data.PinKind
 import com.tcltv.sahne.data.SettingsStore
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -82,10 +83,10 @@ class ParentalGate(
     }
 
     /** Sets or changes the PIN. Changing it needs the old one first, which the caller asks for with [requireForAdmin]. */
-    suspend fun setPin(pin: String) {
+    suspend fun setPin(pin: String, kind: PinKind) {
         val salt = PinHasher.newSalt()
         val hash = withContext(worker) { PinHasher.hash(pin, salt) }
-        store.setPin(hash, salt)
+        store.setPin(hash, salt, kind)
         adminUntil = SystemClock.elapsedRealtime() + ADMIN_WINDOW_MILLIS
     }
 

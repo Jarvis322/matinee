@@ -58,7 +58,7 @@ fun WallpaperBackground(wallpaper: ResolvedWallpaper, modifier: Modifier = Modif
     }
 }
 
-/** Redraws the wallpaper's light about ten times a second into two small bitmaps that take turns, so nothing is allocated. */
+/** Redraws the wallpaper's light about fifteen times a second into two small bitmaps that take turns, so nothing is allocated. */
 @Composable
 private fun DriftingLight(wallpaper: BuiltinWallpaper, onFrame: (ImageBitmap) -> Unit) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -82,4 +82,4 @@ private fun DriftingLight(wallpaper: BuiltinWallpaper, onFrame: (ImageBitmap) ->
 
 private const val FRAME_WIDTH = 384
 private const val FRAME_HEIGHT = 216
-private const val FRAME_INTERVAL_MS = 100L
+private const val FRAME_INTERVAL_MS = 66L

@@ -6,10 +6,17 @@ import java.security.SecureRandom
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
+/** How the PIN is entered: four digits, or four presses of the remote's arrow keys. */
+enum class PinKind {
+    DIGITS,
+    DIRECTIONS,
+}
+
 /** The parental PIN and the lockout that follows wrong guesses. Only a salted hash of the PIN is ever stored. */
 data class Parental(
     val pinHash: String? = null,
     val pinSalt: String? = null,
+    val pinKind: PinKind = PinKind.DIGITS,
     /** Opening settings and editing the home screen needs the PIN too, not only locked apps. */
     val protectSettings: Boolean = true,
     val failures: Int = 0,

@@ -177,6 +177,9 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
         if (s.backdrop > 0f) {
             // The veil rides on the slice's own pass as a colour filter: one fill instead of two over a large area.
             drawBackdropFill(glass, currentValueOf(LocalBackdrop), s.backdrop)
+            // Over a bright or busy wallpaper the glass darkens, so the text on it stays readable.
+            val dim = currentValueOf(LocalWallpaper)?.glassDim ?: 0f
+            if (dim > 0.01f) drawOutline(outline, Color.Black.copy(alpha = dim * s.backdrop))
         } else {
             drawOutline(outline, glass.veil)
         }

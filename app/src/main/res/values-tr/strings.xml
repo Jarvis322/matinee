@@ -69,7 +69,7 @@
     <string name="settings_bluetooth">Bluetooth ve Kumanda</string>
     <string name="settings_bluetooth_sub">Kumanda ve aksesuarlar</string>
     <string name="settings_about">Hakkında</string>
-    <string name="settings_about_sub">Sürüm ve lisanslar</string>
+    <string name="settings_about_sub">Sürüm, dil ve geliştirici</string>
 
     <!-- System links -->
     <string name="open_in_tv_settings">Aç</string>
@@ -268,8 +268,6 @@
     <string name="system_tv_settings_sub">Görüntü, ses, ağ, uygulamalar ve TV\'nin sunduğu diğer her şey</string>
     <string name="setting_language">Dil</string>
     <string name="language_system">Sistem</string>
-    <string name="setting_licenses">Lisanslar</string>
-    <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">%1$s tarafından geliştirildi</string>
 
     <string name="minutes_ago">%1$d dk önce</string>
@@ -380,4 +378,19 @@
     <string name="airplay_notification_text">Bu TV iPhone, iPad ve Mac\'ten görüntü alabilir</string>
     <string name="airplay_hint_fill">Tam ekran videoyu ekrana yaymak için OK\'a bas</string>
     <string name="airplay_hint_show_all">Telefon ekranının tamamını göstermek için OK\'a bas</string>
+    <string name="pin_kind_title">PIN türünü seç</string>
+    <string name="pin_kind_digits">Rakamlar</string>
+    <string name="pin_kind_directions">Yön tuşları</string>
+    <string name="pin_directions_hint">Kumandanın yön tuşlarıyla 4 adım gir</string>
+    <string name="setting_chip">İşlemci</string>
+    <string name="setting_performance">Performans profili</string>
+    <string name="setting_performance_sub">Cam ve hareketli ışık bu TV\'ye göre açık ya da kapalı başlar; senin seçimlerin korunur</string>
+    <string name="performance_light">Hafif</string>
+    <string name="performance_balanced">Dengeli</string>
+    <string name="performance_full">Güçlü</string>
+    <plurals name="cpu_cores">
+        <item quantity="one">%d çekirdek</item>
+        <item quantity="other">%d çekirdek</item>
+    </plurals>
+    <string name="pin_new_title_directions">4 yön adımı seç</string>
 </resources>

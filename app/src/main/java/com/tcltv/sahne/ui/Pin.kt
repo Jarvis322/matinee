@@ -3,6 +3,7 @@ package com.tcltv.sahne.ui
 import android.view.KeyEvent as AndroidKeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,6 +45,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.PinHasher
+import com.tcltv.sahne.data.PinKind
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -54,6 +56,12 @@ import com.tcltv.sahne.data.Parental
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+// The steps of a direction PIN, as they are hashed; the letters never appear on screen.
+private const val UP = 'U'
+private const val DOWN = 'D'
+private const val LEFT = 'L'
+private const val RIGHT = 'R'
+
 /** What the PIN screen shows under its title: nothing, or a message that the last entry was refused. */
 sealed interface PinNotice {
     data object None : PinNotice
@@ -63,15 +71,17 @@ sealed interface PinNotice {
 }
 
 /**
- * A PIN entry screen for the remote: a keypad that moves with the D-pad, and the remote's number keys work too.
- * [onComplete] gets the digits once all [PinHasher.LENGTH] are in; [attempt] changes after each refused entry so the
- * dots clear again.
+ * A PIN entry screen for the remote. A [PinKind.DIGITS] PIN has a keypad that moves with the D-pad, and the remote's
+ * number keys work too; a [PinKind.DIRECTIONS] PIN is the arrow keys themselves, one step per press.
+ * [onComplete] gets the entry once all [PinHasher.LENGTH] steps are in; [attempt] changes after each refused entry so
+ * the dots clear again.
  */
 @Composable
 fun PinPad(
     title: String,
     notice: PinNotice,
     attempt: Int,
+    kind: PinKind,
     onComplete: (String) -> Unit,
     onCancel: () -> Unit,
 ) {
@@ -99,6 +109,18 @@ fun PinPad(
                 .onPreviewKeyEvent { event ->
                     if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
                     val code = event.key.nativeKeyCode
+                    if (kind == PinKind.DIRECTIONS) {
+                        return@onPreviewKeyEvent when (code) {
+                            AndroidKeyEvent.KEYCODE_DPAD_UP -> { press(UP); true }
+                            AndroidKeyEvent.KEYCODE_DPAD_DOWN -> { press(DOWN); true }
+                            AndroidKeyEvent.KEYCODE_DPAD_LEFT -> { press(LEFT); true }
+                            AndroidKeyEvent.KEYCODE_DPAD_RIGHT -> { press(RIGHT); true }
+                            AndroidKeyEvent.KEYCODE_DEL, AndroidKeyEvent.KEYCODE_FORWARD_DEL -> { backspace(); true }
+                            // OK and the centre key would otherwise reach nothing; swallow them so they can't leak.
+                            AndroidKeyEvent.KEYCODE_DPAD_CENTER, AndroidKeyEvent.KEYCODE_ENTER -> true
+                            else -> false
+                        }
+                    }
                     when (code) {
                         in AndroidKeyEvent.KEYCODE_0..AndroidKeyEvent.KEYCODE_9 -> { press('0' + (code - AndroidKeyEvent.KEYCODE_0)); true }
                         in AndroidKeyEvent.KEYCODE_NUMPAD_0..AndroidKeyEvent.KEYCODE_NUMPAD_9 -> { press('0' + (code - AndroidKeyEvent.KEYCODE_NUMPAD_0)); true }
@@ -127,6 +149,10 @@ fun PinPad(
                 modifier = Modifier.fillMaxWidth().height(30.dp),
                 maxLines = 2,
             )
+            if (kind == PinKind.DIRECTIONS) {
+                DirectionPrompt(start)
+                return@Column
+            }
             val rows = listOf("123", "456", "789")
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 rows.forEach { row ->
@@ -141,6 +167,32 @@ fun PinPad(
                 }
             }
         }
+    }
+}
+
+/** The arrow cross shown for a direction PIN; it holds focus so the arrow presses come to the PIN screen. */
+@Composable
+private fun DirectionPrompt(focus: FocusRequester) {
+    Column(
+        Modifier
+            .focusRequester(focus)
+            .focusable()
+            .padding(top = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        val arrow = interStyle(26.sp, 700, Palette.TextPrimary)
+        BasicText("↑", style = arrow)
+        Row(horizontalArrangement = Arrangement.spacedBy(46.dp), verticalAlignment = Alignment.CenterVertically) {
+            BasicText("←", style = arrow)
+            BasicText("→", style = arrow)
+        }
+        BasicText("↓", style = arrow)
+        Spacer(Modifier.height(14.dp))
+        BasicText(
+            stringResource(R.string.pin_directions_hint),
+            style = interStyle(12.5.sp, 500, Palette.TextSecondary).copy(textAlign = TextAlign.Center),
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
@@ -160,16 +212,29 @@ private fun KeyButton(label: String, modifier: Modifier, description: String = l
     }
 }
 
-/** Asks for a new PIN twice, so a slip of the remote doesn't lock the parent out. */
+/**
+ * Asks which kind of PIN to use, then for the new PIN twice, so a slip of the remote doesn't lock the parent out.
+ */
 @Composable
-fun PinSetup(title: String, onSet: (String) -> Unit, onCancel: () -> Unit) {
+fun PinSetup(title: String, onSet: (String, PinKind) -> Unit, onCancel: () -> Unit) {
+    var kind by remember { mutableStateOf<PinKind?>(null) }
     var first by remember { mutableStateOf<String?>(null) }
     var notice by remember { mutableStateOf<PinNotice>(PinNotice.None) }
     var attempt by remember { mutableStateOf(0) }
+    val chosen = kind
+    if (chosen == null) {
+        PinKindChooser(onChoose = { kind = it }, onCancel = onCancel)
+        return
+    }
     PinPad(
-        title = if (first == null) title else stringResource(R.string.pin_confirm),
+        title = when {
+            first != null -> stringResource(R.string.pin_confirm)
+            chosen == PinKind.DIRECTIONS -> stringResource(R.string.pin_new_title_directions)
+            else -> title
+        },
         notice = notice,
         attempt = attempt,
+        kind = chosen,
         onComplete = { entered ->
             val firstEntry = first
             when {
@@ -177,7 +242,7 @@ fun PinSetup(title: String, onSet: (String) -> Unit, onCancel: () -> Unit) {
                     first = entered
                     notice = PinNotice.None
                 }
-                firstEntry == entered -> onSet(entered)
+                firstEntry == entered -> onSet(entered, chosen)
                 else -> {
                     first = null
                     notice = PinNotice.Mismatch
@@ -187,6 +252,45 @@ fun PinSetup(title: String, onSet: (String) -> Unit, onCancel: () -> Unit) {
         },
         onCancel = onCancel,
     )
+}
+
+@Composable
+private fun PinKindChooser(onChoose: (PinKind) -> Unit, onCancel: () -> Unit) {
+    val first = remember { FocusRequester() }
+    LaunchedEffect(Unit) { runCatching { first.requestFocus() } }
+    Dialog(onDismissRequest = onCancel, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Column(
+            Modifier
+                .width(300.dp)
+                .ignoreHeldOk()
+                .glass(RoundedCornerShape(30.dp), GlassStyle.Dense)
+                .padding(horizontal = 24.dp, vertical = 22.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            BasicText(stringResource(R.string.pin_kind_title), style = interStyle(17.sp, 700), modifier = Modifier.fillMaxWidth())
+            KindRow(stringResource(R.string.pin_kind_digits), "1 2 3", Modifier.focusRequester(first)) { onChoose(PinKind.DIGITS) }
+            KindRow(stringResource(R.string.pin_kind_directions), "↑ ← → ↓", Modifier) { onChoose(PinKind.DIRECTIONS) }
+        }
+    }
+}
+
+@Composable
+private fun KindRow(label: String, sample: String, modifier: Modifier, onClick: () -> Unit) {
+    var focused by remember { mutableStateOf(false) }
+    Row(
+        modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .glass(CircleShape, if (focused) GlassStyle.Bright else GlassStyle.Inset)
+            .onFocusChanged { focused = it.isFocused }
+            .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClick)
+            .padding(horizontal = 18.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        val color = if (focused) Palette.Background else Palette.TextPrimary
+        BasicText(label, style = interStyle(14.sp, 650, color), modifier = Modifier.weight(1f))
+        BasicText(sample, style = interStyle(14.sp, 600, color.copy(alpha = 0.7f)))
+    }
 }
 
 /** Shows the PIN screen whenever something is waiting for the PIN, and passes each entry to the gate. */
@@ -212,6 +316,7 @@ fun PinGate(gate: ParentalGate, parental: Parental) {
         title = stringResource(pending.reason),
         notice = notice,
         attempt = attempt,
+        kind = parental.pinKind,
         onComplete = { entered ->
             scope.launch {
                 when (val result = gate.submit(entered)) {

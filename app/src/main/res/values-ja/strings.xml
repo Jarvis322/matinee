@@ -70,7 +70,7 @@
     <string name="settings_bluetooth">Bluetooth とリモコン</string>
     <string name="settings_bluetooth_sub">リモコンとアクセサリ</string>
     <string name="settings_about">このアプリについて</string>
-    <string name="settings_about_sub">バージョンとライセンス</string>
+    <string name="settings_about_sub">バージョン、言語、クレジット</string>
 
     <!-- System links -->
     <string name="open_in_tv_settings">開く</string>
@@ -269,8 +269,6 @@
     <string name="system_tv_settings_sub">画質、音声、ネットワーク、アプリなど、テレビのすべての設定</string>
     <string name="setting_language">言語</string>
     <string name="language_system">システム</string>
-    <string name="setting_licenses">ライセンス</string>
-    <string name="license_text">天気データ: Open‑Meteo.com（CC BY 4.0 ライセンス）。\nアイコン: Tabler Icons（MIT ライセンス）。\n書体: Inter（SIL Open Font License 1.1）。\nアプリのアイコンとバナーは各アプリに帰属します。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">制作: %1$s</string>
 
     <string name="minutes_ago">%1$d 分前</string>
@@ -380,4 +378,19 @@
     <string name="airplay_notification_text">このテレビはiPhone、iPad、Macから受信できます</string>
     <string name="airplay_hint_fill">OKを押すと全画面の動画が画面いっぱいに表示されます</string>
     <string name="airplay_hint_show_all">OKを押すとスマートフォンの画面全体を表示します</string>
+    <string name="pin_kind_title">PINの種類を選択</string>
+    <string name="pin_kind_digits">数字</string>
+    <string name="pin_kind_directions">矢印キー</string>
+    <string name="pin_directions_hint">リモコンの矢印キーで4回入力</string>
+    <string name="setting_chip">プロセッサ</string>
+    <string name="setting_performance">パフォーマンスプロファイル</string>
+    <string name="setting_performance_sub">ガラスと動く光はこのテレビに合わせてオン／オフで始まります。自分で変えた設定はそのままです</string>
+    <string name="performance_light">軽量</string>
+    <string name="performance_balanced">バランス</string>
+    <string name="performance_full">フル</string>
+    <plurals name="cpu_cores">
+        <item quantity="one">%dコア</item>
+        <item quantity="other">%dコア</item>
+    </plurals>
+    <string name="pin_new_title_directions">矢印キーで4ステップを選択</string>
 </resources>

@@ -71,7 +71,7 @@
     <string name="settings_bluetooth">Bluetooth and remote</string>
     <string name="settings_bluetooth_sub">Remote and accessories</string>
     <string name="settings_about">About</string>
-    <string name="settings_about_sub">Version and licenses</string>
+    <string name="settings_about_sub">Version, language and credits</string>
 
     <!-- System links -->
     <string name="open_in_tv_settings">Open</string>
@@ -278,8 +278,6 @@
     <string name="language_german" translatable="false">Deutsch</string>
     <string name="language_japanese" translatable="false">日本語</string>
     <string name="language_chinese" translatable="false">简体中文</string>
-    <string name="setting_licenses">Licenses</string>
-    <string name="license_text">Weather data by Open‑Meteo.com, licensed under CC BY 4.0.\nIcons: Tabler Icons, MIT License.\nTypeface: Inter, SIL Open Font License 1.1.\nApp icons and banners belong to their apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">Made by %1$s</string>
 
     <string name="minutes_ago">%1$d min ago</string>
@@ -390,4 +388,19 @@
     <string name="airplay_notification_text">This TV can receive from iPhone, iPad and Mac</string>
     <string name="airplay_hint_fill">Press OK to fill the screen with a full-screen video</string>
     <string name="airplay_hint_show_all">Press OK to show the whole phone screen</string>
+    <string name="pin_kind_title">Choose the kind of PIN</string>
+    <string name="pin_kind_digits">Numbers</string>
+    <string name="pin_kind_directions">Arrow keys</string>
+    <string name="pin_directions_hint">Press the remote\'s arrow keys, 4 steps</string>
+    <string name="setting_chip">Processor</string>
+    <string name="setting_performance">Performance profile</string>
+    <string name="setting_performance_sub">Glass and moving light start on or off to suit this TV; your own choices stay</string>
+    <string name="performance_light">Light</string>
+    <string name="performance_balanced">Balanced</string>
+    <string name="performance_full">Full</string>
+    <plurals name="cpu_cores">
+        <item quantity="one">%d core</item>
+        <item quantity="other">%d cores</item>
+    </plurals>
+    <string name="pin_new_title_directions">Choose 4 arrow steps</string>
 </resources>

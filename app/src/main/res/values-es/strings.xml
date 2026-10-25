@@ -69,7 +69,7 @@
     <string name="settings_bluetooth">Bluetooth y control remoto</string>
     <string name="settings_bluetooth_sub">Control remoto y accesorios</string>
     <string name="settings_about">Información</string>
-    <string name="settings_about_sub">Versión y licencias</string>
+    <string name="settings_about_sub">Versión, idioma y créditos</string>
 
     <!-- System links -->
     <string name="open_in_tv_settings">Abrir</string>
@@ -268,8 +268,6 @@
     <string name="system_tv_settings_sub">Imagen, sonido, red, apps y todo lo demás que ofrece la TV</string>
     <string name="setting_language">Idioma</string>
     <string name="language_system">Sistema</string>
-    <string name="setting_licenses">Licencias</string>
-    <string name="license_text">Datos meteorológicos de Open‑Meteo.com, con licencia CC BY 4.0.\nIconos: Tabler Icons, licencia MIT.\nTipografía: Inter, SIL Open Font License 1.1.\nLos iconos y banners de las apps pertenecen a sus respectivas apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">Creado por %1$s</string>
 
     <string name="minutes_ago">Hace %1$d min</string>
@@ -381,4 +379,19 @@
     <string name="airplay_notification_text">Este televisor puede recibir desde iPhone, iPad y Mac</string>
     <string name="airplay_hint_fill">Pulsa OK para que un vídeo a pantalla completa llene la pantalla</string>
     <string name="airplay_hint_show_all">Pulsa OK para ver toda la pantalla del teléfono</string>
+    <string name="pin_kind_title">Elige el tipo de PIN</string>
+    <string name="pin_kind_digits">Números</string>
+    <string name="pin_kind_directions">Flechas</string>
+    <string name="pin_directions_hint">Pulsa las flechas del mando, 4 pasos</string>
+    <string name="setting_chip">Procesador</string>
+    <string name="setting_performance">Perfil de rendimiento</string>
+    <string name="setting_performance_sub">El cristal y la luz en movimiento empiezan activados o no según este televisor; tus elecciones se mantienen</string>
+    <string name="performance_light">Ligero</string>
+    <string name="performance_balanced">Equilibrado</string>
+    <string name="performance_full">Completo</string>
+    <plurals name="cpu_cores">
+        <item quantity="one">%d núcleo</item>
+        <item quantity="other">%d núcleos</item>
+    </plurals>
+    <string name="pin_new_title_directions">Elige 4 pasos con las flechas</string>
 </resources>

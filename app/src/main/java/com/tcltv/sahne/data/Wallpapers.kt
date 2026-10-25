@@ -130,7 +130,28 @@ class ResolvedWallpaper(
     val display: ImageBitmap,
     val soft: ImageBitmap,
     val builtin: BuiltinWallpaper?,
+    /** How much darker the glass should be over this picture, 0 to 1, so white text stays readable on it. */
+    val glassDim: Float = 0f,
 )
+
+/**
+ * How much to darken glass over [soft]: bright pictures and busy ones (high contrast, such as clouds or a city) need
+ * more, the dark built-in wallpapers none. Judged from luminance alone, which is what decides whether text reads.
+ */
+internal fun glassDimFor(soft: Bitmap): Float {
+    val pixels = IntArray(soft.width * soft.height)
+    soft.getPixels(pixels, 0, soft.width, 0, 0, soft.width, soft.height)
+    var sum = 0.0
+    var sumSquares = 0.0
+    for (p in pixels) {
+        val y = (0.2126 * ((p shr 16) and 0xFF) + 0.7152 * ((p shr 8) and 0xFF) + 0.0722 * (p and 0xFF)) / 255.0
+        sum += y
+        sumSquares += y * y
+    }
+    val mean = sum / pixels.size
+    val spread = kotlin.math.sqrt((sumSquares / pixels.size - mean * mean).coerceAtLeast(0.0))
+    return ((mean - 0.28) * 0.9 + spread * 0.7).toFloat().coerceIn(0f, 0.42f)
+}
 
 /** Where a wallpaper choice is stored: nothing, a built-in's id, or the file name of a picture the user added. */
 object WallpaperKey {
@@ -154,10 +175,14 @@ object WallpaperRenderer {
         canvas.drawColor(wallpaper.base)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
         for (blob in wallpaper.blobs) {
-            val angle = time * blob.speed + blob.phase
-            val cx = (blob.x + blob.drift * sin(angle)) * w
-            val cy = (blob.y + blob.drift * 0.7f * cos(angle * 0.8f)) * h
-            val radius = blob.radius * w
+            // Measured from the resting picture, so time 0 (previews, the still wallpaper) looks exactly as before.
+            val t = time * MOTION_SPEED
+            val angle = t * blob.speed + blob.phase
+            val reach = blob.drift * MOTION_REACH
+            val cx = (blob.x + reach * (sin(angle) - sin(blob.phase))) * w
+            val cy = (blob.y + reach * 0.7f * (cos(angle * 0.8f) - cos(blob.phase * 0.8f))) * h
+            // The light also swells and settles, which reads as movement even where a blob barely travels.
+            val radius = blob.radius * w * (1f + 0.14f * sin(t * blob.speed * 0.7f))
             paint.shader = RadialGradient(
                 cx, cy, radius,
                 intArrayOf(withAlpha(blob.color, 0.9f), withAlpha(blob.color, 0.4f), withAlpha(blob.color, 0.12f), Color.TRANSPARENT),
@@ -197,6 +222,10 @@ object WallpaperRenderer {
 
     private const val SCRIM_BASE = 0xFF0B0B0E.toInt()
 
+    /** How much faster and farther the light moves than each blob's own drift and speed; at 1 it was too slow to see. */
+    private const val MOTION_SPEED = 2.4f
+    private const val MOTION_REACH = 2.2f
+
     private fun withAlpha(color: Int, alpha: Float): Int = (color and 0x00FFFFFF) or ((alpha * 255).toInt().coerceIn(0, 255) shl 24)
 }
 
@@ -232,16 +261,18 @@ class WallpaperResolver(private val context: Context, private val images: UserIm
         soft = Bitmap.createScaledBitmap(soft, SOFT_WIDTH, softHeight, true).let { if (it.isMutable) it else it.copy(Bitmap.Config.ARGB_8888, true) }
         WallpaperRenderer.drawScrims(Canvas(full), full.width, full.height)
         WallpaperRenderer.drawScrims(Canvas(soft), soft.width, soft.height)
-        return ResolvedWallpaper(key, full.asImageBitmap(), soft.asImageBitmap(), null)
+        return ResolvedWallpaper(key, full.asImageBitmap(), soft.asImageBitmap(), null, glassDimFor(soft))
     }
 
     private fun builtin(key: String, wallpaper: BuiltinWallpaper): ResolvedWallpaper {
         val (w, h) = displaySize()
+        val soft = WallpaperRenderer.render(wallpaper, SOFT_WIDTH, SOFT_WIDTH * 9 / 16, 0f)
         return ResolvedWallpaper(
             key,
             WallpaperRenderer.render(wallpaper, w, h, 0f).asImageBitmap(),
-            WallpaperRenderer.render(wallpaper, SOFT_WIDTH, SOFT_WIDTH * 9 / 16, 0f).asImageBitmap(),
+            soft.asImageBitmap(),
             wallpaper,
+            glassDimFor(soft),
         )
     }
 

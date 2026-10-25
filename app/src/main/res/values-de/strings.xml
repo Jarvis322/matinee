@@ -69,7 +69,7 @@
     <string name="settings_bluetooth">Bluetooth und Fernbedienung</string>
     <string name="settings_bluetooth_sub">Fernbedienung und Zubehör</string>
     <string name="settings_about">Info</string>
-    <string name="settings_about_sub">Version und Lizenzen</string>
+    <string name="settings_about_sub">Version, Sprache und Impressum</string>
 
     <!-- System links -->
     <string name="open_in_tv_settings">Öffnen</string>
@@ -268,8 +268,6 @@
     <string name="system_tv_settings_sub">Bild, Ton, Netzwerk, Apps und alles andere, was der Fernseher bietet</string>
     <string name="setting_language">Sprache</string>
     <string name="language_system">System</string>
-    <string name="setting_licenses">Lizenzen</string>
-    <string name="license_text">Wetterdaten von Open‑Meteo.com, lizenziert unter CC BY 4.0.\nSymbole: Tabler Icons, MIT-Lizenz.\nSchrift: Inter, SIL Open Font License 1.1.\nApp-Symbole und -Banner gehören den jeweiligen Apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">Erstellt von %1$s</string>
 
     <string name="minutes_ago">vor %1$d Min.</string>
@@ -380,4 +378,19 @@
     <string name="airplay_notification_text">Dieser Fernseher kann von iPhone, iPad und Mac empfangen</string>
     <string name="airplay_hint_fill">OK drücken, damit ein Vollbildvideo den Bildschirm füllt</string>
     <string name="airplay_hint_show_all">OK drücken, um den ganzen Telefonbildschirm zu zeigen</string>
+    <string name="pin_kind_title">PIN-Art wählen</string>
+    <string name="pin_kind_digits">Ziffern</string>
+    <string name="pin_kind_directions">Pfeiltasten</string>
+    <string name="pin_directions_hint">Drücke die Pfeiltasten der Fernbedienung, 4 Schritte</string>
+    <string name="setting_chip">Prozessor</string>
+    <string name="setting_performance">Leistungsprofil</string>
+    <string name="setting_performance_sub">Glas und bewegtes Licht starten passend zu diesem Fernseher an oder aus; deine Einstellungen bleiben</string>
+    <string name="performance_light">Leicht</string>
+    <string name="performance_balanced">Ausgewogen</string>
+    <string name="performance_full">Voll</string>
+    <plurals name="cpu_cores">
+        <item quantity="one">%d Kern</item>
+        <item quantity="other">%d Kerne</item>
+    </plurals>
+    <string name="pin_new_title_directions">Wähle 4 Pfeilschritte</string>
 </resources>

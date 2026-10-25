@@ -69,7 +69,7 @@
     <string name="settings_bluetooth">Bluetooth 和遥控器</string>
     <string name="settings_bluetooth_sub">遥控器和配件</string>
     <string name="settings_about">关于</string>
-    <string name="settings_about_sub">版本和许可</string>
+    <string name="settings_about_sub">版本、语言和制作者</string>
 
     <!-- System links -->
     <string name="open_in_tv_settings">打开</string>
@@ -268,8 +268,6 @@
     <string name="system_tv_settings_sub">画面、声音、网络、应用以及电视提供的所有其他设置</string>
     <string name="setting_language">语言</string>
     <string name="language_system">跟随系统</string>
-    <string name="setting_licenses">许可</string>
-    <string name="license_text">天气数据由 Open‑Meteo.com 提供，采用 CC BY 4.0 许可。\n图标：Tabler Icons，MIT 许可证。\n字体：Inter，SIL Open Font License 1.1。\n应用图标和横幅归其各自应用所有。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.</string>
     <string name="credits_made_by">由 %1$s 制作</string>
 
     <string name="minutes_ago">%1$d 分钟前</string>
@@ -379,4 +377,19 @@
     <string name="airplay_notification_text">此电视可接收来自 iPhone、iPad 和 Mac 的内容</string>
     <string name="airplay_hint_fill">按 OK 让全屏视频铺满屏幕</string>
     <string name="airplay_hint_show_all">按 OK 显示完整的手机屏幕</string>
+    <string name="pin_kind_title">选择 PIN 类型</string>
+    <string name="pin_kind_digits">数字</string>
+    <string name="pin_kind_directions">方向键</string>
+    <string name="pin_directions_hint">按遥控器方向键，共 4 步</string>
+    <string name="setting_chip">处理器</string>
+    <string name="setting_performance">性能配置</string>
+    <string name="setting_performance_sub">玻璃效果和流动光会根据此电视默认开启或关闭；你自己的选择会保留</string>
+    <string name="performance_light">轻量</string>
+    <string name="performance_balanced">均衡</string>
+    <string name="performance_full">完整</string>
+    <plurals name="cpu_cores">
+        <item quantity="one">%d 核</item>
+        <item quantity="other">%d 核</item>
+    </plurals>
+    <string name="pin_new_title_directions">选择 4 步方向</string>
 </resources>

@@ -29,6 +29,7 @@ import com.tcltv.sahne.airplay.AirPlayService
 import com.tcltv.sahne.data.ImageImport
 import com.tcltv.sahne.data.PhotoWallpaper
 import com.tcltv.sahne.data.PickedImage
+import com.tcltv.sahne.data.PinKind
 import com.tcltv.sahne.data.AppOverride
 import com.tcltv.sahne.data.BuiltinWallpaper
 import com.tcltv.sahne.data.ResolvedWallpaper
@@ -757,8 +758,8 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         customizeLock.withLock { setFolders(FolderEdits.rename(settings.first().folders, folderId, name)) }
     }
 
-    fun setPin(pin: String) {
-        viewModelScope.launch { gate.setPin(pin) }
+    fun setPin(pin: String, kind: PinKind) {
+        viewModelScope.launch { gate.setPin(pin, kind) }
     }
 
     fun removePin() {

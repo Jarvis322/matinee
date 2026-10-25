@@ -129,6 +129,7 @@ class SettingsStore(private val context: Context) {
         val folders = stringPreferencesKey("folders")
         val pinHash = stringPreferencesKey("pin_hash")
         val pinSalt = stringPreferencesKey("pin_salt")
+        val pinKind = stringPreferencesKey("pin_kind")
         val protectSettings = booleanPreferencesKey("protect_settings")
         val pinFailures = intPreferencesKey("pin_failures")
         val pinLockedUntil = longPreferencesKey("pin_locked_until")
@@ -141,7 +142,8 @@ class SettingsStore(private val context: Context) {
         .map { it.toSettings() }
 
     private fun Preferences.toSettings(): LauncherSettings {
-        val defaults = LauncherSettings()
+        // The TV's own capability picks the starting values for the effects; saved choices still win below.
+        val defaults = DeviceProfile.of(context).defaults()
         val overrides = mutableMapOf<String, InputOverride>()
         asMap().forEach { (key, value) ->
             val name = key.name
@@ -204,6 +206,7 @@ class SettingsStore(private val context: Context) {
             parental = Parental(
                 pinHash = this[Keys.pinHash],
                 pinSalt = this[Keys.pinSalt],
+                pinKind = PinKind.entries.firstOrNull { it.name == this[Keys.pinKind] } ?: PinKind.DIGITS,
                 protectSettings = this[Keys.protectSettings] ?: defaults.parental.protectSettings,
                 failures = this[Keys.pinFailures] ?: 0,
                 lockedUntilMillis = this[Keys.pinLockedUntil] ?: 0L,
@@ -276,9 +279,10 @@ class SettingsStore(private val context: Context) {
     suspend fun setAppOverrides(value: Map<String, AppOverride>) = edit { it[Keys.appOverrides] = CustomizationJson.encodeOverrides(value) }
     suspend fun setFolders(value: List<Folder>) = edit { it[Keys.folders] = CustomizationJson.encodeFolders(value) }
 
-    suspend fun setPin(hash: String, salt: String) = edit {
+    suspend fun setPin(hash: String, salt: String, kind: PinKind) = edit {
         it[Keys.pinHash] = hash
         it[Keys.pinSalt] = salt
+        it[Keys.pinKind] = kind.name
         it[Keys.pinFailures] = 0
         it[Keys.pinLockedUntil] = 0L
     }

@@ -224,8 +224,8 @@ fun AppMenuHost(viewModel: LauncherViewModel, state: AppMenuState, cardTheme: co
     lockAfterPin?.let { app ->
         PinSetup(
             title = stringResource(R.string.pin_new_title),
-            onSet = {
-                viewModel.setPin(it)
+            onSet = { pin, kind ->
+                viewModel.setPin(pin, kind)
                 viewModel.setAppLocked(app.packageName, true)
                 lockAfterPin = null
             },
