@@ -379,4 +379,6 @@
     <string name="airplay_channel">Receptor AirPlay</string>
     <string name="airplay_notification_title">AirPlay activado</string>
     <string name="airplay_notification_text">Este televisor puede recibir desde iPhone, iPad y Mac</string>
+    <string name="airplay_hint_fill">Pulsa OK para que un vídeo a pantalla completa llene la pantalla</string>
+    <string name="airplay_hint_show_all">Pulsa OK para ver toda la pantalla del teléfono</string>
 </resources>

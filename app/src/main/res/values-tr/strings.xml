@@ -378,4 +378,6 @@
     <string name="airplay_channel">AirPlay alıcısı</string>
     <string name="airplay_notification_title">AirPlay açık</string>
     <string name="airplay_notification_text">Bu TV iPhone, iPad ve Mac\'ten görüntü alabilir</string>
+    <string name="airplay_hint_fill">Tam ekran videoyu ekrana yaymak için OK\'a bas</string>
+    <string name="airplay_hint_show_all">Telefon ekranının tamamını göstermek için OK\'a bas</string>
 </resources>

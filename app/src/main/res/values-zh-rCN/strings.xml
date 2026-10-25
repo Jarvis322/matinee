@@ -377,4 +377,6 @@
     <string name="airplay_channel">AirPlay 接收器</string>
     <string name="airplay_notification_title">AirPlay 已开启</string>
     <string name="airplay_notification_text">此电视可接收来自 iPhone、iPad 和 Mac 的内容</string>
+    <string name="airplay_hint_fill">按 OK 让全屏视频铺满屏幕</string>
+    <string name="airplay_hint_show_all">按 OK 显示完整的手机屏幕</string>
 </resources>

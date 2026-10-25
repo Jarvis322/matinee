@@ -388,4 +388,6 @@
     <string name="airplay_channel">AirPlay receiver</string>
     <string name="airplay_notification_title">AirPlay is on</string>
     <string name="airplay_notification_text">This TV can receive from iPhone, iPad and Mac</string>
+    <string name="airplay_hint_fill">Press OK to fill the screen with a full-screen video</string>
+    <string name="airplay_hint_show_all">Press OK to show the whole phone screen</string>
 </resources>

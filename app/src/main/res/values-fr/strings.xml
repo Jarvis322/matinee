@@ -379,4 +379,6 @@
     <string name="airplay_channel">Récepteur AirPlay</string>
     <string name="airplay_notification_title">AirPlay activé</string>
     <string name="airplay_notification_text">Ce téléviseur peut recevoir depuis iPhone, iPad et Mac</string>
+    <string name="airplay_hint_fill">Appuyez sur OK pour qu\'une vidéo plein écran remplisse l\'écran</string>
+    <string name="airplay_hint_show_all">Appuyez sur OK pour afficher tout l\'écran du téléphone</string>
 </resources>

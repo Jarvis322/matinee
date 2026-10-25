@@ -378,4 +378,6 @@
     <string name="airplay_channel">AirPlayレシーバー</string>
     <string name="airplay_notification_title">AirPlayはオンです</string>
     <string name="airplay_notification_text">このテレビはiPhone、iPad、Macから受信できます</string>
+    <string name="airplay_hint_fill">OKを押すと全画面の動画が画面いっぱいに表示されます</string>
+    <string name="airplay_hint_show_all">OKを押すとスマートフォンの画面全体を表示します</string>
 </resources>

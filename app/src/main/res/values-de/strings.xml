@@ -378,4 +378,6 @@
     <string name="airplay_channel">AirPlay-Empfänger</string>
     <string name="airplay_notification_title">AirPlay ist an</string>
     <string name="airplay_notification_text">Dieser Fernseher kann von iPhone, iPad und Mac empfangen</string>
+    <string name="airplay_hint_fill">OK drücken, damit ein Vollbildvideo den Bildschirm füllt</string>
+    <string name="airplay_hint_show_all">OK drücken, um den ganzen Telefonbildschirm zu zeigen</string>
 </resources>
