@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.tcltv.sahne.ui.settings
 
 import android.Manifest
@@ -12,6 +14,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.focusGroup
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.background
@@ -215,6 +219,10 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
             Modifier
                 .padding(start = 348.dp, end = 48.dp, top = 137.dp, bottom = 59.dp)
                 .fillMaxSize()
+                // Left out of the panel goes back to the section it belongs to, not to whichever menu row happens to
+                // sit level with the focused row.
+                .focusProperties { exit = { direction -> if (direction == FocusDirection.Left) navRequesters.getValue(section) else FocusRequester.Default } }
+                .focusGroup()
                 .glass(RoundedCornerShape(30.dp), GlassStyle.Panel)
                 .padding(start = 22.dp, end = 22.dp, top = 20.dp),
         ) {
