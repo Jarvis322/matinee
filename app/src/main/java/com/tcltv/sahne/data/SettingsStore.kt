@@ -62,6 +62,8 @@ data class LauncherSettings(
     val hiddenApps: Set<String> = emptySet(),
     val shownApps: Set<String> = emptySet(),
     val showSystemApps: Boolean = false,
+    /** The grid's "Add app" tile; apps can also be added from Settings > Apps. */
+    val showAddTile: Boolean = true,
     val autoCleanMemory: Boolean = false,
     val memoryThresholdPercent: Int = 80,
     val memoryCleanExclusions: Set<String> = emptySet(),
@@ -119,6 +121,7 @@ class SettingsStore(private val context: Context) {
         val hiddenApps = stringSetPreferencesKey("hidden_apps")
         val shownApps = stringSetPreferencesKey("shown_apps")
         val showSystemApps = booleanPreferencesKey("show_system_apps")
+        val showAddTile = booleanPreferencesKey("show_add_tile")
         val autoCleanMemory = booleanPreferencesKey("auto_clean_memory")
         val memoryThreshold = intPreferencesKey("memory_threshold_percent")
         val memoryExclusions = stringSetPreferencesKey("memory_clean_exclusions")
@@ -195,6 +198,7 @@ class SettingsStore(private val context: Context) {
             hiddenApps = this[Keys.hiddenApps] ?: defaults.hiddenApps,
             shownApps = this[Keys.shownApps] ?: defaults.shownApps,
             showSystemApps = this[Keys.showSystemApps] ?: defaults.showSystemApps,
+            showAddTile = this[Keys.showAddTile] ?: defaults.showAddTile,
             autoCleanMemory = this[Keys.autoCleanMemory] ?: defaults.autoCleanMemory,
             memoryThresholdPercent = this[Keys.memoryThreshold] ?: defaults.memoryThresholdPercent,
             memoryCleanExclusions = this[Keys.memoryExclusions] ?: defaults.memoryCleanExclusions,
@@ -268,6 +272,7 @@ class SettingsStore(private val context: Context) {
         it[Keys.shownApps] = shown
     }
     suspend fun setShowSystemApps(value: Boolean) = edit { it[Keys.showSystemApps] = value }
+    suspend fun setShowAddTile(value: Boolean) = edit { it[Keys.showAddTile] = value }
     suspend fun setAutoCleanMemory(value: Boolean) = edit { it[Keys.autoCleanMemory] = value }
     suspend fun setMemoryThreshold(value: Int) = edit { it[Keys.memoryThreshold] = value }
     suspend fun setMemoryCleanExclusions(value: Set<String>) = edit { it[Keys.memoryExclusions] = value }

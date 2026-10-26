@@ -396,4 +396,8 @@
     <string name="pin_new_title_directions">Elige 4 pasos con las flechas</string>
     <string name="setting_licenses">Licencias</string>
     <string name="license_text">Datos meteorológicos de Open‑Meteo.com, con licencia CC BY 4.0.\nIconos: Tabler Icons, licencia MIT.\nTipografía: Inter, SIL Open Font License 1.1.\nLos iconos y banners de las apps pertenecen a sus respectivas apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="setting_add_app">Añadir una app a la pantalla de inicio</string>
+    <string name="setting_add_app_sub">Apps ocultas o que aún no están en la pantalla de inicio</string>
+    <string name="setting_show_add_tile">Mostrar el botón Añadir app</string>
+    <string name="setting_show_add_tile_sub">El botón al final de la cuadrícula; siempre puedes añadir apps aquí</string>
 </resources>

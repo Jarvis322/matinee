@@ -395,4 +395,8 @@
     <string name="pin_new_title_directions">4 yön adımı seç</string>
     <string name="setting_licenses">Lisanslar</string>
     <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="setting_add_app">Ana ekrana uygulama ekle</string>
+    <string name="setting_add_app_sub">Gizlenen ya da henüz ana ekranda olmayan uygulamalar</string>
+    <string name="setting_show_add_tile">Uygulama ekle kutusunu göster</string>
+    <string name="setting_show_add_tile_sub">Uygulama ızgarasının sonundaki kutu; uygulamaları her zaman buradan da ekleyebilirsin</string>
 </resources>

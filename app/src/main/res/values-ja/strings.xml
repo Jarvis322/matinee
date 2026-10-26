@@ -395,4 +395,8 @@
     <string name="pin_new_title_directions">矢印キーで4ステップを選択</string>
     <string name="setting_licenses">ライセンス</string>
     <string name="license_text">天気データ: Open‑Meteo.com（CC BY 4.0 ライセンス）。\nアイコン: Tabler Icons（MIT ライセンス）。\n書体: Inter（SIL Open Font License 1.1）。\nアプリのアイコンとバナーは各アプリに帰属します。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="setting_add_app">ホーム画面にアプリを追加</string>
+    <string name="setting_add_app_sub">非表示のアプリや、まだホーム画面にないアプリ</string>
+    <string name="setting_show_add_tile">「アプリを追加」タイルを表示</string>
+    <string name="setting_show_add_tile_sub">アプリ一覧の最後のタイル。ここからいつでもアプリを追加できます</string>
 </resources>

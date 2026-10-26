@@ -99,6 +99,8 @@ import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.AppLanguage
 import com.tcltv.sahne.data.BuiltinWallpaper
+import com.tcltv.sahne.data.AppCatalog
+import com.tcltv.sahne.ui.home.AddAppDialog
 import com.tcltv.sahne.data.DeviceProfile
 import com.tcltv.sahne.data.PhotoWallpaper
 import com.tcltv.sahne.data.CardTheme
@@ -393,6 +395,27 @@ private fun SectionContent(
             listOf(SystemLink(R.string.system_apps, R.string.system_apps_sub, Settings.ACTION_APPLICATION_SETTINGS)),
             extra = {
                 val s by viewModel.settings.collectAsStateWithLifecycle()
+                val allApps by viewModel.appsForSettings.collectAsStateWithLifecycle()
+                var adding by remember { mutableStateOf(false) }
+                val hidden = allApps.filter { AppCatalog.isHidden(it, s) }
+                ValueRow(
+                    R.string.setting_add_app,
+                    R.string.setting_add_app_sub,
+                    if (hidden.isEmpty()) stringResource(R.string.none) else stringResource(R.string.app_count, hidden.size),
+                ) { adding = true }
+                if (adding) {
+                    AddAppDialog(
+                        hiddenApps = hidden,
+                        onAdd = { app ->
+                            viewModel.toggleHidden(app.packageName)
+                            adding = false
+                        },
+                        onDismiss = { adding = false },
+                    )
+                }
+                ToggleRow(R.string.setting_show_add_tile, R.string.setting_show_add_tile_sub, s.showAddTile) {
+                    viewModel.update { setShowAddTile(it) }
+                }
                 ValueRow(R.string.setting_app_order, R.string.setting_app_order_sub, null, onClick = onEditApps)
                 ToggleRow(R.string.setting_show_system_apps, R.string.setting_show_system_apps_sub, s.showSystemApps) {
                     viewModel.update { setShowSystemApps(it) }

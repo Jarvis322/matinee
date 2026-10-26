@@ -396,4 +396,8 @@
     <string name="pin_new_title_directions">Choisissez 4 étapes avec les flèches</string>
     <string name="setting_licenses">Licences</string>
     <string name="license_text">Données météo fournies par Open‑Meteo.com, sous licence CC BY 4.0.\nIcônes : Tabler Icons, licence MIT.\nPolice : Inter, SIL Open Font License 1.1.\nLes icônes et bannières d\'applis appartiennent à leurs applis respectives.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="setting_add_app">Ajouter une appli à l\'écran d\'accueil</string>
+    <string name="setting_add_app_sub">Applis masquées ou pas encore sur l\'écran d\'accueil</string>
+    <string name="setting_show_add_tile">Afficher la tuile Ajouter une appli</string>
+    <string name="setting_show_add_tile_sub">La tuile en fin de grille ; vous pouvez toujours ajouter des applis ici</string>
 </resources>

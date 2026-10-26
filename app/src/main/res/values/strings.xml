@@ -405,4 +405,8 @@
     <string name="pin_new_title_directions">Choose 4 arrow steps</string>
     <string name="setting_licenses">Licenses</string>
     <string name="license_text">Weather data by Open‑Meteo.com, licensed under CC BY 4.0.\nIcons: Tabler Icons, MIT License.\nTypeface: Inter, SIL Open Font License 1.1.\nApp icons and banners belong to their apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="setting_add_app">Add an app to the home screen</string>
+    <string name="setting_add_app_sub">Apps that are hidden or not on the home screen yet</string>
+    <string name="setting_show_add_tile">Show the Add app tile</string>
+    <string name="setting_show_add_tile_sub">The tile at the end of the app grid; you can always add apps here</string>
 </resources>

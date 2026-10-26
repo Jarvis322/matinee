@@ -179,8 +179,8 @@ internal fun GridHome(
         TopBar(viewModel, onOpenSettings, Modifier.padding(start = GRID_SIDE.dp, end = GRID_SIDE.dp, top = 30.dp))
 
         val shelf = apps.take(COLUMNS)
-        // Null marks the add-app tile, shown only when there are apps left to add.
-        val cells: List<LaunchableApp?> = apps.drop(COLUMNS) + if (hiddenApps.isNotEmpty()) listOf(null) else emptyList()
+        // Null marks the add-app tile, shown only when there are apps left to add and the user hasn't turned it off.
+        val cells: List<LaunchableApp?> = apps.drop(COLUMNS) + if (hiddenApps.isNotEmpty() && settings.showAddTile) listOf(null) else emptyList()
         val visibleInputs = (if (settings.hideDisconnectedInputs) inputs.filter { it.connected } else inputs)
             .takeIf { settings.showInputs }.orEmpty()
         val visibleLiveTv = liveTv.takeIf { settings.showInputs }.orEmpty()
@@ -229,12 +229,15 @@ internal fun GridHome(
                         ) {
                             CellRow(shelf) { app, isRowEnd -> Cell(app, isRowEnd) }
                         }
-                        Spacer(Modifier.height(8.dp))
-                        BasicText(
-                            stringResource(R.string.grid_favorites_hint),
-                            style = interStyle(11.sp, 500, Palette.TextMuted),
-                            modifier = Modifier.padding(start = ROW_INSET.dp),
-                        )
+                        // The hint is about the apps below the shelf; with none there it would point at nothing.
+                        if (cells.any { it != null }) {
+                            Spacer(Modifier.height(8.dp))
+                            BasicText(
+                                stringResource(R.string.grid_favorites_hint),
+                                style = interStyle(11.sp, 500, Palette.TextMuted),
+                                modifier = Modifier.padding(start = ROW_INSET.dp),
+                            )
+                        }
                     }
                 }
                 itemsIndexed(cells.chunked(COLUMNS), key = { index, _ -> "row$index" }) { _, row ->
