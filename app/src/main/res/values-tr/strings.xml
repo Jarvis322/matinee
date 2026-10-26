@@ -152,8 +152,8 @@
     <!-- Device -->
     <string name="setting_ram_usage">Kullanılan RAM</string>
     <string name="memory_usage">%%%1$d · %2$s boş</string>
-    <string name="setting_clean_now">RAM\'i şimdi boşalt</string>
-    <string name="setting_clean_now_sub">Arka planda bekleyen uygulamaları kapatır</string>
+    <string name="setting_clean_now">Arka plan uygulamalarını kapat</string>
+    <string name="setting_clean_now_sub">Arka planda bekleyen tüm uygulamaları kapatır; korumaya aldıkların hariç</string>
     <string name="setting_auto_clean">Otomatik boşalt</string>
     <string name="setting_auto_clean_sub">Bellek uyarı seviyesi geçilince</string>
     <string name="setting_exclusions">Asla kapatma</string>
@@ -399,4 +399,5 @@
     <string name="setting_add_app_sub">Gizlenen ya da henüz ana ekranda olmayan uygulamalar</string>
     <string name="setting_show_add_tile">Uygulama ekle kutusunu göster</string>
     <string name="setting_show_add_tile_sub">Uygulama ızgarasının sonundaki kutu; uygulamaları her zaman buradan da ekleyebilirsin</string>
+    <string name="menu_reset_name">Uygulamanın kendi adını kullan</string>
 </resources>

@@ -142,6 +142,11 @@ fun AppMenuHost(viewModel: LauncherViewModel, state: AppMenuState, cardTheme: co
                     prompt = Prompt.Rename(app)
                     dismiss()
                 },
+                hasCustomName = settings.appOverrides[app.packageName]?.label != null,
+                onResetName = {
+                    viewModel.renameApp(app.packageName, "")
+                    dismiss()
+                },
                 hasCustomIcon = settings.appOverrides[app.packageName]?.icon != null,
                 onChangeIcon = {
                     pickIconFor = app
@@ -243,6 +248,8 @@ private fun AppMenu(
     onOpen: () -> Unit,
     onMove: () -> Unit,
     onRename: () -> Unit,
+    hasCustomName: Boolean,
+    onResetName: () -> Unit,
     hasCustomIcon: Boolean,
     onChangeIcon: () -> Unit,
     onResetIcon: () -> Unit,
@@ -260,6 +267,8 @@ private fun AppMenu(
         MenuRow(stringResource(R.string.menu_open), Modifier.focusRequester(first), onOpen)
         if (!inFolder) MenuRow(stringResource(R.string.menu_move), onClick = onMove)
         MenuRow(stringResource(if (isFolder) R.string.menu_rename_folder else R.string.menu_rename), onClick = onRename)
+        // A renamed app shows its icon and the new name instead of its own banner; this brings both back.
+        if (!isFolder && hasCustomName) MenuRow(stringResource(R.string.menu_reset_name), onClick = onResetName)
         if (isFolder) {
             MenuRow(stringResource(R.string.menu_delete_folder), onClick = onDeleteFolder)
         } else {

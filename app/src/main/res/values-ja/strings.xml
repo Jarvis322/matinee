@@ -153,8 +153,8 @@
     <!-- Device -->
     <string name="setting_ram_usage">RAM 使用量</string>
     <string name="memory_usage">%1$d%% · 空き %2$s</string>
-    <string name="setting_clean_now">今すぐ RAM を解放</string>
-    <string name="setting_clean_now_sub">バックグラウンドで待機中のアプリを終了します</string>
+    <string name="setting_clean_now">バックグラウンドのアプリを閉じる</string>
+    <string name="setting_clean_now_sub">バックグラウンドで待機中のアプリをすべて閉じます（除外したアプリは残ります）</string>
     <string name="setting_auto_clean">自動で解放</string>
     <string name="setting_auto_clean_sub">メモリ警告レベルを超えたとき</string>
     <string name="setting_exclusions">終了しないアプリ</string>
@@ -399,4 +399,5 @@
     <string name="setting_add_app_sub">非表示のアプリや、まだホーム画面にないアプリ</string>
     <string name="setting_show_add_tile">「アプリを追加」タイルを表示</string>
     <string name="setting_show_add_tile_sub">アプリ一覧の最後のタイル。ここからいつでもアプリを追加できます</string>
+    <string name="menu_reset_name">アプリ本来の名前を使う</string>
 </resources>

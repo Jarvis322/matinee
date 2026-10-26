@@ -152,8 +152,8 @@
     <!-- Device -->
     <string name="setting_ram_usage">RAM utilisée</string>
     <string name="memory_usage">%1$d %% · %2$s libres</string>
-    <string name="setting_clean_now">Libérer la RAM maintenant</string>
-    <string name="setting_clean_now_sub">Ferme les applis en attente en arrière-plan</string>
+    <string name="setting_clean_now">Fermer les applis en arrière-plan</string>
+    <string name="setting_clean_now_sub">Ferme toutes les applis en attente en arrière-plan, sauf celles que vous gardez</string>
     <string name="setting_auto_clean">Libérer automatiquement</string>
     <string name="setting_auto_clean_sub">Quand le seuil d\'alerte mémoire est dépassé</string>
     <string name="setting_exclusions">Ne jamais fermer</string>
@@ -400,4 +400,5 @@
     <string name="setting_add_app_sub">Applis masquées ou pas encore sur l\'écran d\'accueil</string>
     <string name="setting_show_add_tile">Afficher la tuile Ajouter une appli</string>
     <string name="setting_show_add_tile_sub">La tuile en fin de grille ; vous pouvez toujours ajouter des applis ici</string>
+    <string name="menu_reset_name">Utiliser le nom de l\'appli</string>
 </resources>

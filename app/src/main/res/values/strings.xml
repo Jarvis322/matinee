@@ -154,8 +154,8 @@
     <!-- Device -->
     <string name="setting_ram_usage">RAM in use</string>
     <string name="memory_usage">%1$d%% · %2$s free</string>
-    <string name="setting_clean_now">Free up RAM now</string>
-    <string name="setting_clean_now_sub">Closes apps waiting in the background</string>
+    <string name="setting_clean_now">Close background apps</string>
+    <string name="setting_clean_now_sub">Closes every app waiting in the background, except the ones you keep</string>
     <string name="setting_auto_clean">Free up automatically</string>
     <string name="setting_auto_clean_sub">When the memory warning level is passed</string>
     <string name="setting_exclusions">Never close</string>
@@ -409,4 +409,5 @@
     <string name="setting_add_app_sub">Apps that are hidden or not on the home screen yet</string>
     <string name="setting_show_add_tile">Show the Add app tile</string>
     <string name="setting_show_add_tile_sub">The tile at the end of the app grid; you can always add apps here</string>
+    <string name="menu_reset_name">Use the app\'s own name</string>
 </resources>

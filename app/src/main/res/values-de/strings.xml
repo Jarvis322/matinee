@@ -152,8 +152,8 @@
     <!-- Device -->
     <string name="setting_ram_usage">Belegter RAM</string>
     <string name="memory_usage">%1$d %% · %2$s frei</string>
-    <string name="setting_clean_now">RAM jetzt freigeben</string>
-    <string name="setting_clean_now_sub">Schließt Apps, die im Hintergrund warten</string>
+    <string name="setting_clean_now">Hintergrund-Apps schließen</string>
+    <string name="setting_clean_now_sub">Schließt alle im Hintergrund wartenden Apps, außer denen, die du behältst</string>
     <string name="setting_auto_clean">Automatisch freigeben</string>
     <string name="setting_auto_clean_sub">Wenn die Speicherwarnung überschritten wird</string>
     <string name="setting_exclusions">Nie schließen</string>
@@ -399,4 +399,5 @@
     <string name="setting_add_app_sub">Ausgeblendete oder noch nicht vorhandene Apps</string>
     <string name="setting_show_add_tile">Kachel „App hinzufügen“ zeigen</string>
     <string name="setting_show_add_tile_sub">Die Kachel am Ende des Rasters; Apps lassen sich hier jederzeit hinzufügen</string>
+    <string name="menu_reset_name">Eigenen Namen der App verwenden</string>
 </resources>
