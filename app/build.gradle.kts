@@ -16,8 +16,8 @@ android {
         applicationId = "com.yigitcan.matinee"
         minSdk = 26
         targetSdk = 35
-        versionCode = 24
-        versionName = "1.5.9"
+        versionCode = 25
+        versionName = "1.6.0"
         ndk {
             abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
         }
