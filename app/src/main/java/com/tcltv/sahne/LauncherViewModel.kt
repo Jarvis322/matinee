@@ -25,7 +25,9 @@ import com.tcltv.sahne.data.AppCatalog
 import com.tcltv.sahne.data.UserImages
 import com.tcltv.sahne.data.HomeApps
 import com.tcltv.sahne.data.FolderEdits
+import com.tcltv.sahne.airplay.AirPlayReceiver
 import com.tcltv.sahne.airplay.AirPlayService
+import com.tcltv.sahne.airplay.AirPlayState
 import com.tcltv.sahne.data.ImageImport
 import com.tcltv.sahne.data.PhotoWallpaper
 import com.tcltv.sahne.data.PickedImage
@@ -236,8 +238,21 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     // Bumped on every resume: notification access or the receiver app may have changed while away.
     private val receiverRefresh = MutableStateFlow(0)
 
+    /**
+     * Matinee's own receiver when it is on, otherwise the TV's built-in one: with ours running, the TV can take AirPlay
+     * even if the maker left it out.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
-    val airPlay: StateFlow<ReceiverStatus> = receiverRefresh.flatMapLatest { airPlayMonitor.status }
+    val airPlay: StateFlow<ReceiverStatus> = combine(
+        receiverRefresh.flatMapLatest { airPlayMonitor.status },
+        AirPlayReceiver.get(application).state,
+    ) { builtIn, own ->
+        when (own) {
+            AirPlayState.MIRRORING -> ReceiverStatus(ReceiverState.PLAYING, canDetectPlayback = true)
+            AirPlayState.READY -> ReceiverStatus(ReceiverState.READY, canDetectPlayback = true)
+            AirPlayState.OFF, AirPlayState.FAILED -> builtIn
+        }
+    }
         .stateIn(viewModelScope, SharingStarted.Eagerly, ReceiverStatus(ReceiverState.UNAVAILABLE, canDetectPlayback = false))
 
     @OptIn(ExperimentalCoroutinesApi::class)

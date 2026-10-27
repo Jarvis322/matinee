@@ -128,12 +128,13 @@ class AirPlayReceiver private constructor(private val context: Context) : AirPla
             parseTxt(txt).forEach { (k, v) -> setAttribute(k, v) }
         }
         val listener = object : NsdManager.RegistrationListener {
-            override fun onServiceRegistered(info: NsdServiceInfo) {
-                Log.i(TAG, "announced ${info.serviceType} as ${info.serviceName}")
+            // The callback's own NsdServiceInfo often comes back without its type, so log what was registered.
+            override fun onServiceRegistered(registered: NsdServiceInfo) {
+                Log.i(TAG, "announced ${info.serviceType} as ${registered.serviceName} on port ${info.port}")
             }
 
-            override fun onRegistrationFailed(info: NsdServiceInfo, errorCode: Int) {
-                Log.e(TAG, "announce failed $errorCode for ${info.serviceType}")
+            override fun onRegistrationFailed(failed: NsdServiceInfo, errorCode: Int) {
+                Log.e(TAG, "announce failed $errorCode for ${info.serviceType} as ${info.serviceName}")
             }
 
             override fun onServiceUnregistered(info: NsdServiceInfo) = Unit

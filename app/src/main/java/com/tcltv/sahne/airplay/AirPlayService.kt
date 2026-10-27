@@ -57,16 +57,28 @@ class AirPlayService : Service() {
          * Matinee after it so it isn't confused with a receiver built into the TV. DNS-SD names stop at 63 bytes.
          */
         fun receiverName(context: Context): String {
-            val device = runCatching { android.provider.Settings.Global.getString(context.contentResolver, android.provider.Settings.Global.DEVICE_NAME) }.getOrNull()
-                ?.trim()?.takeIf { it.isNotEmpty() }
-                ?: Build.MODEL.trim().takeIf { it.isNotEmpty() }
-                ?: return DEFAULT_NAME
+            val device = (
+                runCatching { android.provider.Settings.Global.getString(context.contentResolver, android.provider.Settings.Global.DEVICE_NAME) }.getOrNull()
+                    ?.let(::safeName)?.takeIf { it.isNotEmpty() }
+                    ?: safeName(Build.MODEL).takeIf { it.isNotEmpty() }
+                ) ?: return DEFAULT_NAME
             var name = "$device ($DEFAULT_NAME)"
             while (name.toByteArray(Charsets.UTF_8).size > 63 && name.length > DEFAULT_NAME.length + 4) {
                 name = name.substring(0, name.length - DEFAULT_NAME.length - 4).trimEnd() + " ($DEFAULT_NAME)"
             }
             return name
         }
+
+        /**
+         * Keeps letters, digits, spaces and a few plain marks. Makers put slashes and dots in model names
+         * ("55PUS7304/62"); the name doubles as a DNS-SD instance name, where such characters are escaped differently
+         * by different mDNS stacks, and an iPhone may then never list the TV.
+         */
+        private fun safeName(raw: String): String =
+            raw.map { c -> if (c.isLetterOrDigit() || c == ' ' || c == '-' || c == '(' || c == ')') c else '-' }
+                .joinToString("")
+                .replace(Regex("-{2,}"), "-")
+                .trim(' ', '-')
 
         fun setRunning(context: Context, running: Boolean, name: String) {
             val intent = Intent(context, AirPlayService::class.java).putExtra(EXTRA_NAME, name)
