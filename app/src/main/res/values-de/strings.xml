@@ -400,4 +400,8 @@
     <string name="setting_show_add_tile">Kachel „App hinzufügen“ zeigen</string>
     <string name="setting_show_add_tile_sub">Die Kachel am Ende des Rasters; Apps lassen sich hier jederzeit hinzufügen</string>
     <string name="menu_reset_name">Eigenen Namen der App verwenden</string>
+    <string name="home_key_stopped">Angehalten</string>
+    <string name="home_key_stopped_title">Der Dienst für die Home-Taste wurde angehalten</string>
+    <string name="home_key_stopped_body">Der Schalter ist noch an, aber Android hat den Dienst angehalten und startet ihn nicht selbst neu.\n\nÖffne im nächsten Bildschirm „Matinee Home-Taste“, schalte sie aus und wieder ein.</string>
+    <string name="home_key_stopped_open">Bedienungshilfen öffnen</string>
 </resources>

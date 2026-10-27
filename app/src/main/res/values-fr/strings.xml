@@ -401,4 +401,8 @@
     <string name="setting_show_add_tile">Afficher la tuile Ajouter une appli</string>
     <string name="setting_show_add_tile_sub">La tuile en fin de grille ; vous pouvez toujours ajouter des applis ici</string>
     <string name="menu_reset_name">Utiliser le nom de l\'appli</string>
+    <string name="home_key_stopped">Arrêté</string>
+    <string name="home_key_stopped_title">Le service du bouton Accueil s\'est arrêté</string>
+    <string name="home_key_stopped_body">L\'interrupteur est toujours activé, mais Android a arrêté le service et ne le relancera pas de lui-même.\n\nSur l\'écran suivant, ouvrez « Bouton Accueil Matinee », désactivez-le puis réactivez-le.</string>
+    <string name="home_key_stopped_open">Ouvrir les réglages d\'accessibilité</string>
 </resources>

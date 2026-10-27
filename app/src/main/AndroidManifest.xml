@@ -105,10 +105,13 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-        <!-- Optional: catches only the Home key so it opens Matinee; screen content is never read. -->
+        <!-- Optional: catches only the Home key so it opens Matinee; screen content is never read.
+             It runs in its own small process: Android stops rebinding an accessibility service whose process has
+             died (a crash, or the TV reclaiming memory from the launcher) until the user switches it off and on. -->
         <service
             android:name=".system.HomeKeyService"
             android:exported="false"
+            android:process=":homekey"
             android:label="@string/home_key_service_label"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>

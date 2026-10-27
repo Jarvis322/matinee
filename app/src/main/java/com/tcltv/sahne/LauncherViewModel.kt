@@ -1,5 +1,6 @@
 package com.tcltv.sahne
 
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.Application
 import android.app.ActivityOptions
 import android.app.PendingIntent
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import android.provider.Settings
+import android.view.accessibility.AccessibilityManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.AndroidViewModel
@@ -504,6 +506,21 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         val enabled = Settings.Secure.getString(app.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES).orEmpty()
         return enabled.split(':').any { it.equals(component, ignoreCase = true) }
     }
+
+    /**
+     * Whether Android has the Home button service running. It can be switched on and still stopped: Android doesn't
+     * restart an accessibility service whose process died until it is switched off and on again.
+     */
+    fun isHomeKeyServiceRunning(): Boolean {
+        val app = getApplication<Application>()
+        val component = ComponentName(app, HomeKeyService::class.java)
+        return app.getSystemService(AccessibilityManager::class.java)
+            .getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
+            .any { it.resolveInfo?.serviceInfo?.let { info -> ComponentName(info.packageName, info.name) } == component }
+    }
+
+    /** The home screen told the user the Home button stopped and they closed it; it isn't repeated this session. */
+    var homeKeyStoppedPromptDismissed = false
 
     fun hasNotificationAccess(): Boolean {
         val app = getApplication<Application>()

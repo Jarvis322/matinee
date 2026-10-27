@@ -410,4 +410,8 @@
     <string name="setting_show_add_tile">Show the Add app tile</string>
     <string name="setting_show_add_tile_sub">The tile at the end of the app grid; you can always add apps here</string>
     <string name="menu_reset_name">Use the app\'s own name</string>
+    <string name="home_key_stopped">Stopped</string>
+    <string name="home_key_stopped_title">The Home button service has stopped</string>
+    <string name="home_key_stopped_body">The switch is still on, but Android stopped the service and won\'t start it again by itself.\n\nOn the next screen, open “Matinee Home button”, turn it off, then turn it on again.</string>
+    <string name="home_key_stopped_open">Open accessibility settings</string>
 </resources>

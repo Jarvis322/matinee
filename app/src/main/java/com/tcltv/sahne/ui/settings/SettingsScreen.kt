@@ -6,6 +6,7 @@ import android.Manifest
 import android.app.Activity
 import android.os.Environment
 import android.os.StatFs
+import android.os.SystemClock
 import android.provider.Settings
 import android.text.format.Formatter
 import androidx.activity.compose.BackHandler
@@ -1309,23 +1310,43 @@ private fun NotificationAccessRow(viewModel: LauncherViewModel) {
 @Composable
 private fun HomeKeyRow(viewModel: LauncherViewModel) {
     var enabled by remember { mutableStateOf(viewModel.isHomeKeyServiceEnabled()) }
+    var running by remember { mutableStateOf(viewModel.isHomeKeyServiceRunning()) }
     var showDisclosure by remember { mutableStateOf(false) }
     var showRestricted by remember { mutableStateOf(false) }
+    var showStopped by remember { mutableStateOf(false) }
     LifecycleResumeEffect(Unit) {
         enabled = viewModel.isHomeKeyServiceEnabled()
+        running = viewModel.isHomeKeyServiceRunning()
         onPauseOrDispose { }
     }
+    val stopped = enabled && !running
     ValueRow(
         R.string.setting_home_key,
         R.string.setting_home_key_sub,
-        stringResource(if (enabled) R.string.switch_on else R.string.switch_off),
+        stringResource(
+            when {
+                stopped -> R.string.home_key_stopped
+                enabled -> R.string.switch_on
+                else -> R.string.switch_off
+            },
+        ),
     ) {
         // Turning it on needs explicit consent first (Play's accessibility policy); turning it off doesn't.
         when {
+            stopped -> showStopped = true
             enabled -> viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             viewModel.isAccessibilityRestricted() -> showRestricted = true
             else -> showDisclosure = true
         }
+    }
+    if (showStopped) {
+        HomeKeyStoppedDialog(
+            onOpen = {
+                showStopped = false
+                viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            },
+            onDismiss = { showStopped = false },
+        )
     }
     if (showRestricted) {
         // Shown before the consent so the user knows why the switch may not stay on; they can still try.
@@ -1352,6 +1373,47 @@ private fun HomeKeyRow(viewModel: LauncherViewModel) {
             onDismiss = { showDisclosure = false },
         )
     }
+}
+
+/**
+ * Tells the user, when they come back to Matinee, that the Home button is switched on but Android has stopped it, so
+ * they don't find out only when the remote's Home button opens the stock launcher.
+ */
+@Composable
+internal fun HomeKeyStoppedPrompt(viewModel: LauncherViewModel, resumeTick: Int) {
+    var show by remember { mutableStateOf(false) }
+    LaunchedEffect(resumeTick) {
+        // Android binds accessibility services again at every start, and may still be doing so right after boot.
+        val settled = SystemClock.elapsedRealtime() > BOOT_SETTLE_MS
+        show = settled && !viewModel.homeKeyStoppedPromptDismissed &&
+            viewModel.isHomeKeyServiceEnabled() && !viewModel.isHomeKeyServiceRunning()
+    }
+    if (show) {
+        val close = {
+            show = false
+            viewModel.homeKeyStoppedPromptDismissed = true
+        }
+        HomeKeyStoppedDialog(
+            onOpen = {
+                close()
+                viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            },
+            onDismiss = close,
+        )
+    }
+}
+
+private const val BOOT_SETTLE_MS = 2 * 60_000L
+
+@Composable
+private fun HomeKeyStoppedDialog(onOpen: () -> Unit, onDismiss: () -> Unit) {
+    ConsentDialog(
+        title = R.string.home_key_stopped_title,
+        body = R.string.home_key_stopped_body,
+        accept = R.string.home_key_stopped_open,
+        onAccept = onOpen,
+        onDismiss = onDismiss,
+    )
 }
 
 @Composable

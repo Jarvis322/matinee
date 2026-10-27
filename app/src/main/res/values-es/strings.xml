@@ -401,4 +401,8 @@
     <string name="setting_show_add_tile">Mostrar el botón Añadir app</string>
     <string name="setting_show_add_tile_sub">El botón al final de la cuadrícula; siempre puedes añadir apps aquí</string>
     <string name="menu_reset_name">Usar el nombre de la app</string>
+    <string name="home_key_stopped">Detenido</string>
+    <string name="home_key_stopped_title">El servicio del botón Inicio se ha detenido</string>
+    <string name="home_key_stopped_body">El interruptor sigue activado, pero Android detuvo el servicio y no lo volverá a iniciar por sí solo.\n\nEn la siguiente pantalla, abre “Botón Inicio de Matinee”, desactívalo y vuelve a activarlo.</string>
+    <string name="home_key_stopped_open">Abrir ajustes de accesibilidad</string>
 </resources>

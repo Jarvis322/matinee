@@ -400,4 +400,8 @@
     <string name="setting_show_add_tile">Uygulama ekle kutusunu göster</string>
     <string name="setting_show_add_tile_sub">Uygulama ızgarasının sonundaki kutu; uygulamaları her zaman buradan da ekleyebilirsin</string>
     <string name="menu_reset_name">Uygulamanın kendi adını kullan</string>
+    <string name="home_key_stopped">Durdu</string>
+    <string name="home_key_stopped_title">Home tuşu hizmeti durdu</string>
+    <string name="home_key_stopped_body">Anahtar hâlâ açık, ancak Android hizmeti durdurdu ve kendiliğinden yeniden başlatmıyor.\n\nSonraki ekranda “Matinee Home tuşu”nu açın, kapatın ve yeniden açın.</string>
+    <string name="home_key_stopped_open">Erişilebilirlik ayarlarını aç</string>
 </resources>

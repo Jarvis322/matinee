@@ -400,4 +400,8 @@
     <string name="setting_show_add_tile">「アプリを追加」タイルを表示</string>
     <string name="setting_show_add_tile_sub">アプリ一覧の最後のタイル。ここからいつでもアプリを追加できます</string>
     <string name="menu_reset_name">アプリ本来の名前を使う</string>
+    <string name="home_key_stopped">停止中</string>
+    <string name="home_key_stopped_title">ホームボタンのサービスが停止しました</string>
+    <string name="home_key_stopped_body">スイッチはオンのままですが、Android がサービスを停止し、自動では再開しません。\n\n次の画面で「Matinee ホームボタン」を開き、オフにしてから再びオンにしてください。</string>
+    <string name="home_key_stopped_open">ユーザー補助の設定を開く</string>
 </resources>
