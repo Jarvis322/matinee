@@ -10,7 +10,7 @@ DIRS = {'en': 'values', 'tr': 'values-tr', 'es': 'values-es', 'fr': 'values-fr',
 
 
 def escape(text):
-    text = text.replace('&', '&amp;').replace('<', '&lt;').replace("'", "\\'").replace('"', '\\"')
+    text = text.replace('&', '&amp;').replace('<', '&lt;').replace("'", "\\'").replace('"', '\\"').replace('\n', '\\n')
     return '\\' + text if text[:1] in ('@', '?') else text
 
 
