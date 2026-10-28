@@ -403,4 +403,6 @@
     <string name="home_key_stopped_title">主页按钮服务已停止</string>
     <string name="home_key_stopped_body">开关仍为开启，但 Android 已停止该服务，且不会自行重新启动。\n\n在下一个界面中打开“Matinee 主页键”，先关闭再重新开启。</string>
     <string name="home_key_stopped_open">打开无障碍设置</string>
+    <string name="home_key_off_title">主页键已被关闭</string>
+    <string name="home_key_off_body">电视关闭了“Matinee 主页键”，因此主页按钮又会打开内置主屏幕。部分电视在待机时关闭应用会出现这种情况。\n\n在下一个界面中打开“Matinee 主页键”并重新开启。如果是你自己关闭的，请选择“取消”，Matinee 将不再询问。</string>
 </resources>

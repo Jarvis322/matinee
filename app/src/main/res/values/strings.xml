@@ -414,4 +414,6 @@
     <string name="home_key_stopped_title">The Home button service has stopped</string>
     <string name="home_key_stopped_body">The switch is still on, but Android stopped the service and won\'t start it again by itself.\n\nOn the next screen, open “Matinee Home button”, turn it off, then turn it on again.</string>
     <string name="home_key_stopped_open">Open accessibility settings</string>
+    <string name="home_key_off_title">The Home button was switched off</string>
+    <string name="home_key_off_body">The TV switched off “Matinee Home button”, so the Home button opens the built-in home screen again. Some TVs do this when they close apps in standby.\n\nOn the next screen, open “Matinee Home button” and turn it on again. If you switched it off yourself, choose Cancel and Matinee won\'t ask again.</string>
 </resources>

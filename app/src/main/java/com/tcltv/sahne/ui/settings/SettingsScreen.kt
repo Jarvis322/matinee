@@ -96,6 +96,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tcltv.sahne.CitySearchState
+import com.tcltv.sahne.HomeKeyProblem
 import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.AppLanguage
@@ -1376,30 +1377,47 @@ private fun HomeKeyRow(viewModel: LauncherViewModel) {
 }
 
 /**
- * Tells the user, when they come back to Matinee, that the Home button is switched on but Android has stopped it, so
- * they don't find out only when the remote's Home button opens the stock launcher.
+ * Tells the user, when they come back to Matinee, that the Home button they turned on no longer works, so they don't
+ * find out only when the remote's Home button opens the stock launcher.
  */
 @Composable
 internal fun HomeKeyStoppedPrompt(viewModel: LauncherViewModel, resumeTick: Int) {
-    var show by remember { mutableStateOf(false) }
+    var problem by remember { mutableStateOf<HomeKeyProblem?>(null) }
     LaunchedEffect(resumeTick) {
         // Android binds accessibility services again at every start, and may still be doing so right after boot.
         val settled = SystemClock.elapsedRealtime() > BOOT_SETTLE_MS
-        show = settled && !viewModel.homeKeyStoppedPromptDismissed &&
-            viewModel.isHomeKeyServiceEnabled() && !viewModel.isHomeKeyServiceRunning()
+        problem = viewModel.homeKeyProblem()
+            ?.takeIf { settled }
+            ?.takeUnless { it == HomeKeyProblem.STOPPED && viewModel.homeKeyStoppedPromptDismissed }
     }
-    if (show) {
-        val close = {
-            show = false
-            viewModel.homeKeyStoppedPromptDismissed = true
+    when (problem) {
+        HomeKeyProblem.STOPPED -> {
+            val close = {
+                problem = null
+                viewModel.homeKeyStoppedPromptDismissed = true
+            }
+            HomeKeyStoppedDialog(
+                onOpen = {
+                    close()
+                    viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                },
+                onDismiss = close,
+            )
         }
-        HomeKeyStoppedDialog(
-            onOpen = {
-                close()
+        HomeKeyProblem.SWITCHED_OFF -> ConsentDialog(
+            title = R.string.home_key_off_title,
+            body = R.string.home_key_off_body,
+            accept = R.string.home_key_stopped_open,
+            onAccept = {
+                problem = null
                 viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             },
-            onDismiss = close,
+            onDismiss = {
+                problem = null
+                viewModel.forgetHomeKey()
+            },
         )
+        null -> Unit
     }
 }
 

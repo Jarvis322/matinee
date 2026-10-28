@@ -404,4 +404,6 @@
     <string name="home_key_stopped_title">Der Dienst für die Home-Taste wurde angehalten</string>
     <string name="home_key_stopped_body">Der Schalter ist noch an, aber Android hat den Dienst angehalten und startet ihn nicht selbst neu.\n\nÖffne im nächsten Bildschirm „Matinee Home-Taste“, schalte sie aus und wieder ein.</string>
     <string name="home_key_stopped_open">Bedienungshilfen öffnen</string>
+    <string name="home_key_off_title">Die Home-Taste wurde ausgeschaltet</string>
+    <string name="home_key_off_body">Der Fernseher hat „Matinee Home-Taste“ ausgeschaltet, deshalb öffnet die Home-Taste wieder den eingebauten Startbildschirm. Manche Fernseher tun das, wenn sie im Standby Apps schließen.\n\nÖffne im nächsten Bildschirm „Matinee Home-Taste“ und schalte sie wieder ein. Wenn du sie selbst ausgeschaltet hast, wähle Abbrechen, dann fragt Matinee nicht mehr.</string>
 </resources>

@@ -405,4 +405,6 @@
     <string name="home_key_stopped_title">Le service du bouton Accueil s\'est arrêté</string>
     <string name="home_key_stopped_body">L\'interrupteur est toujours activé, mais Android a arrêté le service et ne le relancera pas de lui-même.\n\nSur l\'écran suivant, ouvrez « Bouton Accueil Matinee », désactivez-le puis réactivez-le.</string>
     <string name="home_key_stopped_open">Ouvrir les réglages d\'accessibilité</string>
+    <string name="home_key_off_title">Le bouton Accueil a été désactivé</string>
+    <string name="home_key_off_body">Le téléviseur a désactivé « Bouton Accueil Matinee » : le bouton Accueil rouvre donc l\'écran d\'accueil intégré. Certains téléviseurs le font en fermant les apps en veille.\n\nSur l\'écran suivant, ouvrez « Bouton Accueil Matinee » et réactivez-le. Si vous l\'avez désactivé vous-même, choisissez Annuler et Matinee ne redemandera pas.</string>
 </resources>

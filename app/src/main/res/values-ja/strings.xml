@@ -404,4 +404,6 @@
     <string name="home_key_stopped_title">ホームボタンのサービスが停止しました</string>
     <string name="home_key_stopped_body">スイッチはオンのままですが、Android がサービスを停止し、自動では再開しません。\n\n次の画面で「Matinee ホームボタン」を開き、オフにしてから再びオンにしてください。</string>
     <string name="home_key_stopped_open">ユーザー補助の設定を開く</string>
+    <string name="home_key_off_title">ホームボタンがオフになりました</string>
+    <string name="home_key_off_body">テレビが「Matinee ホームボタン」をオフにしたため、ホームボタンで内蔵のホーム画面が開くようになっています。スタンバイ中にアプリを終了する際にこうなるテレビがあります。\n\n次の画面で「Matinee ホームボタン」を開き、再びオンにしてください。ご自身でオフにした場合はキャンセルを選ぶと、今後は表示されません。</string>
 </resources>

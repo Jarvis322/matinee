@@ -405,4 +405,6 @@
     <string name="home_key_stopped_title">El servicio del botón Inicio se ha detenido</string>
     <string name="home_key_stopped_body">El interruptor sigue activado, pero Android detuvo el servicio y no lo volverá a iniciar por sí solo.\n\nEn la siguiente pantalla, abre “Botón Inicio de Matinee”, desactívalo y vuelve a activarlo.</string>
     <string name="home_key_stopped_open">Abrir ajustes de accesibilidad</string>
+    <string name="home_key_off_title">El botón Inicio se ha desactivado</string>
+    <string name="home_key_off_body">El televisor desactivó “Botón Inicio de Matinee”, así que el botón Inicio vuelve a abrir la pantalla de inicio integrada. Algunos televisores lo hacen al cerrar apps en modo de espera.\n\nEn la siguiente pantalla, abre “Botón Inicio de Matinee” y vuelve a activarlo. Si lo desactivaste tú, elige Cancelar y Matinee no volverá a preguntar.</string>
 </resources>

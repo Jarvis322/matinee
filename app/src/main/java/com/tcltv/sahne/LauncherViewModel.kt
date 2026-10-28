@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.app.role.RoleManager
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
@@ -117,6 +118,15 @@ sealed interface Notice {
     ) : Notice
 
     data class MemoryHigh(override val id: String, override val time: Long, val percent: Int, val threshold: Int) : Notice
+}
+
+/** Why the Home button no longer opens Matinee although the user turned it on. */
+enum class HomeKeyProblem {
+    /** Still switched on, but Android stopped the service and won't start it again. */
+    STOPPED,
+
+    /** Taken off Android's list of enabled services without the user. */
+    SWITCHED_OFF,
 }
 
 sealed interface SpeedState {
@@ -522,6 +532,29 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     /** The home screen told the user the Home button stopped and they closed it; it isn't repeated this session. */
     var homeKeyStoppedPromptDismissed = false
 
+    private val homeKeyPrefs by lazy { getApplication<Application>().getSharedPreferences("home_key", Context.MODE_PRIVATE) }
+
+    /**
+     * What keeps the Home button from opening Matinee after the user turned it on, or null when nothing does. A TV that
+     * force-stops Matinee (some clean up apps in standby) also takes it off Android's list of enabled services, so
+     * having seen it run once is remembered here.
+     */
+    fun homeKeyProblem(): HomeKeyProblem? {
+        val enabled = isHomeKeyServiceEnabled()
+        if (enabled && isHomeKeyServiceRunning()) {
+            if (!homeKeyPrefs.getBoolean(KEY_HOME_KEY_WANTED, false)) homeKeyPrefs.edit().putBoolean(KEY_HOME_KEY_WANTED, true).apply()
+            return null
+        }
+        return when {
+            enabled -> HomeKeyProblem.STOPPED
+            homeKeyPrefs.getBoolean(KEY_HOME_KEY_WANTED, false) -> HomeKeyProblem.SWITCHED_OFF
+            else -> null
+        }
+    }
+
+    /** The user doesn't want the Home button back; stop asking until it runs again. */
+    fun forgetHomeKey() = homeKeyPrefs.edit().putBoolean(KEY_HOME_KEY_WANTED, false).apply()
+
     fun hasNotificationAccess(): Boolean {
         val app = getApplication<Application>()
         return NotificationManagerCompat.getEnabledListenerPackages(app).contains(app.packageName)
@@ -813,5 +846,6 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         const val WEATHER_RETRY_MILLIS = 60_000L
         const val MEMORY_ALERT_REARM_PERCENT = 5
         const val MAX_LOCAL_NOTICES = 20
+        const val KEY_HOME_KEY_WANTED = "wanted"
     }
 }

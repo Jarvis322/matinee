@@ -404,4 +404,6 @@
     <string name="home_key_stopped_title">Home tuşu hizmeti durdu</string>
     <string name="home_key_stopped_body">Anahtar hâlâ açık, ancak Android hizmeti durdurdu ve kendiliğinden yeniden başlatmıyor.\n\nSonraki ekranda “Matinee Home tuşu”nu açın, kapatın ve yeniden açın.</string>
     <string name="home_key_stopped_open">Erişilebilirlik ayarlarını aç</string>
+    <string name="home_key_off_title">Home tuşu kapatılmış</string>
+    <string name="home_key_off_body">TV “Matinee Home tuşu”nu kapatmış, bu yüzden Home tuşu yine yerleşik ana ekranı açıyor. Bazı TV\'ler bekleme modunda uygulamaları kapatırken bunu yapar.\n\nSonraki ekranda “Matinee Home tuşu”nu açın ve yeniden etkinleştirin. Kendiniz kapattıysanız Vazgeç\'i seçin, Matinee bir daha sormaz.</string>
 </resources>
