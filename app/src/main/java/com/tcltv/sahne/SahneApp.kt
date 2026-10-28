@@ -36,8 +36,9 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
 
     fun openSettings() = viewModel.gate.requireForAdmin(R.string.pin_reason_admin) { showSettings = true }
 
-    // As the Home app, Back has nowhere to go; opened from the app list, Back returns to the TV's own home.
-    val isHome = remember(resumeTick) { viewModel.isHomeKeyTarget() }
+    // As the Home app, Back has nowhere to go; opened from the app list, Back returns to the TV's own home. With the
+    // Home button service on, the TV's own home only sends the user straight back here, so Back stays put as well.
+    val isHome = remember(resumeTick) { viewModel.isHomeKeyTarget() || viewModel.isHomeKeyServiceRunning() }
     BackHandler(enabled = !showSettings && isHome) { }
 
     val wallpaper by viewModel.wallpaper.collectAsStateWithLifecycle()
