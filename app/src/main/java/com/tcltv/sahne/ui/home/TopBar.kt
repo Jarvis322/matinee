@@ -1,5 +1,9 @@
 package com.tcltv.sahne.ui.home
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.text.format.DateFormat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
@@ -25,6 +29,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +44,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -51,6 +57,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.Notice
@@ -184,14 +192,39 @@ private fun ClockWeatherPill(viewModel: LauncherViewModel, onOpenSettings: () ->
     }
 }
 
+/**
+ * The current time, kept fresh by the system's own minute tick and by the screen turning on. A plain delay isn't
+ * enough: its clock stops while the TV sleeps in standby, so after waking the time it showed was the time it slept.
+ */
 @Composable
 private fun rememberNow(withSeconds: Boolean): LocalDateTime {
     var now by remember { mutableStateOf(LocalDateTime.now()) }
-    LaunchedEffect(withSeconds) {
-        while (true) {
-            now = LocalDateTime.now()
-            val millis = System.currentTimeMillis()
-            delay(if (withSeconds) 1_000 - millis % 1_000 else 60_000 - millis % 60_000)
+    val context = LocalContext.current
+    DisposableEffect(context) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                now = LocalDateTime.now()
+            }
+        }
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_TIME_TICK)
+            addAction(Intent.ACTION_TIME_CHANGED)
+            addAction(Intent.ACTION_TIMEZONE_CHANGED)
+            addAction(Intent.ACTION_SCREEN_ON)
+        }
+        ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
+        onDispose { context.unregisterReceiver(receiver) }
+    }
+    LifecycleResumeEffect(Unit) {
+        now = LocalDateTime.now()
+        onPauseOrDispose { }
+    }
+    if (withSeconds) {
+        LaunchedEffect(Unit) {
+            while (true) {
+                now = LocalDateTime.now()
+                delay(1_000 - System.currentTimeMillis() % 1_000)
+            }
         }
     }
     return now
