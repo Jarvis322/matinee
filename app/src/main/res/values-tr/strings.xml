@@ -413,4 +413,6 @@
     <string name="notice_self_update_failed">Güncelleme kurulamadı</string>
     <string name="notice_action_install">Kur</string>
     <string name="notice_action_retry">Tekrar dene</string>
+    <string name="notice_play_updates">Play Store güncellemeleri</string>
+    <string name="notice_play_updates_sub">Bekleyen güncellemeleri Play Store\'da gör</string>
 </resources>

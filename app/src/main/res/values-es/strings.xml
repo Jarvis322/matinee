@@ -414,4 +414,6 @@
     <string name="notice_self_update_failed">No se pudo instalar la actualización</string>
     <string name="notice_action_install">Instalar</string>
     <string name="notice_action_retry">Reintentar</string>
+    <string name="notice_play_updates">Actualizaciones de Play Store</string>
+    <string name="notice_play_updates_sub">Ver las actualizaciones pendientes en Play Store</string>
 </resources>

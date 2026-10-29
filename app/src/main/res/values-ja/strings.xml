@@ -413,4 +413,6 @@
     <string name="notice_self_update_failed">アップデートをインストールできませんでした</string>
     <string name="notice_action_install">インストール</string>
     <string name="notice_action_retry">再試行</string>
+    <string name="notice_play_updates">Play ストアのアップデート</string>
+    <string name="notice_play_updates_sub">保留中のアップデートを Play ストアで確認</string>
 </resources>

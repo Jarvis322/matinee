@@ -490,6 +490,17 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         dismissedNotices.value = dismissedNotices.value + notice.id
     }
 
+    /**
+     * Play's "Manage apps & games" page, where pending updates are listed. Play tells other apps nothing about pending
+     * updates unless it posts a notification, so the panel links here instead of counting them.
+     */
+    fun openPlayUpdates() {
+        val intent = Intent(PLAY_MY_DOWNLOADS)
+            .setPackage(TvNotificationListener.PLAY_STORE)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        if (!startSafely(intent)) openPlayStore()
+    }
+
     private fun openPlayStore(): Boolean {
         val pm = getApplication<Application>().packageManager
         val intent = pm.getLeanbackLaunchIntentForPackage(TvNotificationListener.PLAY_STORE)
@@ -858,6 +869,8 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     }
 
     private companion object {
+        // Play's own action for its "Manage apps & games" page; checked on Play Store for Google TV (Android 14).
+        const val PLAY_MY_DOWNLOADS = "com.google.android.finsky.VIEW_MY_DOWNLOADS"
         const val MEMORY_POLL_MILLIS = 15_000L
         const val SEARCH_DEBOUNCE_MILLIS = 400L
         const val SPEED_CACHE_MILLIS = 5 * 60_000L

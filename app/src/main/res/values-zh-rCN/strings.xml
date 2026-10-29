@@ -412,4 +412,6 @@
     <string name="notice_self_update_failed">无法安装更新</string>
     <string name="notice_action_install">安装</string>
     <string name="notice_action_retry">重试</string>
+    <string name="notice_play_updates">Play 商店更新</string>
+    <string name="notice_play_updates_sub">在 Play 商店查看待安装的更新</string>
 </resources>

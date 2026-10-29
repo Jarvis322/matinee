@@ -536,6 +536,21 @@ private fun NotificationPanel(viewModel: LauncherViewModel, onClose: () -> Unit)
                 onClose()
             }
         }
+        if (settings.showPlayUpdates) {
+            // Play announces pending updates only when it chooses to (rarely with auto-update on), so the way to
+            // them is always here.
+            PanelRow(
+                icon = R.drawable.ic_refresh,
+                tile = PLAY_TILE,
+                title = stringResource(R.string.notice_play_updates),
+                subtitle = stringResource(R.string.notice_play_updates_sub),
+                action = stringResource(R.string.notice_action_play),
+                modifier = Modifier.padding(top = 4.dp),
+            ) {
+                viewModel.openPlayUpdates()
+                onClose()
+            }
+        }
         if (settings.showPlayUpdates && !hasAccess) {
             BasicText(
                 stringResource(R.string.notifications_access_needed),
@@ -547,6 +562,7 @@ private fun NotificationPanel(viewModel: LauncherViewModel, onClose: () -> Unit)
 }
 
 private const val MAX_VISIBLE = 5
+private val PLAY_TILE = Color(0xFF1A73E8)
 
 @Composable
 private fun NoticeEmpty(focus: FocusRequester, onClose: () -> Unit) {
@@ -567,9 +583,8 @@ private fun NoticeEmpty(focus: FocusRequester, onClose: () -> Unit) {
 
 @Composable
 private fun NoticeRow(notice: Notice, modifier: Modifier, onClick: () -> Unit) {
-    var focused by remember { mutableStateOf(false) }
     val (icon, tile) = when (notice) {
-        is Notice.PlayUpdate -> R.drawable.ic_refresh to Color(0xFF1A73E8)
+        is Notice.PlayUpdate -> R.drawable.ic_refresh to PLAY_TILE
         is Notice.NewDevice -> notice.logo.icon to Color(0xFF5B2A8C)
         is Notice.MemoryHigh -> R.drawable.ic_cpu to Color(0xFF8A2A20)
         is Notice.AppUpdate -> R.drawable.ic_brand_github to Color(0xFF24292F)
@@ -595,6 +610,20 @@ private fun NoticeRow(notice: Notice, modifier: Modifier, onClick: () -> Unit) {
             if (notice.update.stage == SelfUpdate.Stage.FAILED) R.string.notice_action_retry else R.string.notice_action_install,
         )
     }
+    PanelRow(icon, tile, title, subtitle, action, modifier, onClick)
+}
+
+@Composable
+private fun PanelRow(
+    icon: Int,
+    tile: Color,
+    title: String,
+    subtitle: String,
+    action: String,
+    modifier: Modifier,
+    onClick: () -> Unit,
+) {
+    var focused by remember { mutableStateOf(false) }
     Row(
         modifier
             .fillMaxWidth()
