@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.os.SystemClock
 import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
@@ -61,12 +62,25 @@ class HomeKeyService : AccessibilityService() {
         )
     }
 
-    private fun stockHomeActivities(): Set<ComponentName> =
-        packageManager.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME), PackageManager.MATCH_ALL)
+    private fun stockHomeActivities(): Set<ComponentName> {
+        // Some apps also tag their app-list entry with HOME (beIN Connect's splash screen); a stock home screen is
+        // never in the app list, so those are apps being opened, not the home screen coming back.
+        val appListEntries = listOf(Intent.CATEGORY_LAUNCHER, Intent.CATEGORY_LEANBACK_LAUNCHER)
+            .flatMap { activities(it) }
+            .map { it.component }
+            .toSet()
+        return activities(Intent.CATEGORY_HOME)
             // Negative priority marks fallbacks (the boot-time FallbackHome, setup recovery), which must stay alone.
             .filter { it.priority >= 0 && it.activityInfo.packageName != packageName }
-            .map { ComponentName(it.activityInfo.packageName, it.activityInfo.name) }
+            .map { it.component }
+            .filterNot { it in appListEntries }
             .toSet()
+    }
+
+    private fun activities(category: String): List<ResolveInfo> =
+        packageManager.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(category), PackageManager.MATCH_ALL)
+
+    private val ResolveInfo.component get() = ComponentName(activityInfo.packageName, activityInfo.name)
 
     private companion object {
         const val REOPEN_GUARD_MS = 1_000L
