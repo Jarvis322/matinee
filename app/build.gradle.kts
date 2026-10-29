@@ -45,6 +45,14 @@ android {
         }
     }
 
+    // The same app built twice. Play updates its build itself and forbids apps to install updates any other way, so
+    // only the build published on GitHub carries its own updater (src/github); src/play has a stand-in that does nothing.
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("play") { dimension = "distribution" }
+        create("github") { dimension = "distribution" }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true

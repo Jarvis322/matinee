@@ -416,4 +416,11 @@
     <string name="home_key_stopped_open">Open accessibility settings</string>
     <string name="home_key_off_title">The Home button was switched off</string>
     <string name="home_key_off_body">The TV switched off “Matinee Home button”, so the Home button opens the built-in home screen again. Some TVs do this when they close apps in standby.\n\nOn the next screen, open “Matinee Home button” and turn it on again. If you switched it off yourself, choose Cancel and Matinee won\'t ask again.</string>
+    <string name="notice_self_update">Matinee %1$s is available</string>
+    <string name="notice_self_update_sub">From GitHub · installs in one step</string>
+    <string name="notice_self_update_downloading">Downloading… %1$d%%</string>
+    <string name="notice_self_update_confirming">Confirm the update on the screen that opened</string>
+    <string name="notice_self_update_failed">The update couldn\'t be installed</string>
+    <string name="notice_action_install">Install</string>
+    <string name="notice_action_retry">Try again</string>
 </resources>

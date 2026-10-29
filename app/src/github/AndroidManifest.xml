@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Installs a newer Matinee from GitHub; Android still asks the user to confirm every install. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application>
+        <receiver
+            android:name=".update.UpdateInstallReceiver"
+            android:exported="false" />
+    </application>
+</manifest>

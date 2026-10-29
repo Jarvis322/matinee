@@ -407,4 +407,11 @@
     <string name="home_key_stopped_open">Abrir ajustes de accesibilidad</string>
     <string name="home_key_off_title">El botón Inicio se ha desactivado</string>
     <string name="home_key_off_body">El televisor desactivó “Botón Inicio de Matinee”, así que el botón Inicio vuelve a abrir la pantalla de inicio integrada. Algunos televisores lo hacen al cerrar apps en modo de espera.\n\nEn la siguiente pantalla, abre “Botón Inicio de Matinee” y vuelve a activarlo. Si lo desactivaste tú, elige Cancelar y Matinee no volverá a preguntar.</string>
+    <string name="notice_self_update">Matinee %1$s está disponible</string>
+    <string name="notice_self_update_sub">Desde GitHub · se instala en un paso</string>
+    <string name="notice_self_update_downloading">Descargando… %1$d %%</string>
+    <string name="notice_self_update_confirming">Confirma la actualización en la pantalla que se abrió</string>
+    <string name="notice_self_update_failed">No se pudo instalar la actualización</string>
+    <string name="notice_action_install">Instalar</string>
+    <string name="notice_action_retry">Reintentar</string>
 </resources>

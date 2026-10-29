@@ -406,4 +406,11 @@
     <string name="home_key_stopped_open">Bedienungshilfen öffnen</string>
     <string name="home_key_off_title">Die Home-Taste wurde ausgeschaltet</string>
     <string name="home_key_off_body">Der Fernseher hat „Matinee Home-Taste“ ausgeschaltet, deshalb öffnet die Home-Taste wieder den eingebauten Startbildschirm. Manche Fernseher tun das, wenn sie im Standby Apps schließen.\n\nÖffne im nächsten Bildschirm „Matinee Home-Taste“ und schalte sie wieder ein. Wenn du sie selbst ausgeschaltet hast, wähle Abbrechen, dann fragt Matinee nicht mehr.</string>
+    <string name="notice_self_update">Matinee %1$s ist verfügbar</string>
+    <string name="notice_self_update_sub">Von GitHub · Installation in einem Schritt</string>
+    <string name="notice_self_update_downloading">Wird geladen … %1$d %%</string>
+    <string name="notice_self_update_confirming">Bestätige das Update im geöffneten Fenster</string>
+    <string name="notice_self_update_failed">Das Update konnte nicht installiert werden</string>
+    <string name="notice_action_install">Installieren</string>
+    <string name="notice_action_retry">Erneut versuchen</string>
 </resources>

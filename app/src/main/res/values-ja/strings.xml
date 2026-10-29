@@ -406,4 +406,11 @@
     <string name="home_key_stopped_open">ユーザー補助の設定を開く</string>
     <string name="home_key_off_title">ホームボタンがオフになりました</string>
     <string name="home_key_off_body">テレビが「Matinee ホームボタン」をオフにしたため、ホームボタンで内蔵のホーム画面が開くようになっています。スタンバイ中にアプリを終了する際にこうなるテレビがあります。\n\n次の画面で「Matinee ホームボタン」を開き、再びオンにしてください。ご自身でオフにした場合はキャンセルを選ぶと、今後は表示されません。</string>
+    <string name="notice_self_update">Matinee %1$s が利用可能です</string>
+    <string name="notice_self_update_sub">GitHub から · ワンステップでインストール</string>
+    <string name="notice_self_update_downloading">ダウンロード中… %1$d%%</string>
+    <string name="notice_self_update_confirming">表示された画面でアップデートを確定してください</string>
+    <string name="notice_self_update_failed">アップデートをインストールできませんでした</string>
+    <string name="notice_action_install">インストール</string>
+    <string name="notice_action_retry">再試行</string>
 </resources>

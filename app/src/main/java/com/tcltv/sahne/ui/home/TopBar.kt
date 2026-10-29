@@ -75,6 +75,7 @@ import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.TintedIcon
 import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.interStyle
+import com.tcltv.sahne.update.SelfUpdate
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -571,6 +572,7 @@ private fun NoticeRow(notice: Notice, modifier: Modifier, onClick: () -> Unit) {
         is Notice.PlayUpdate -> R.drawable.ic_refresh to Color(0xFF1A73E8)
         is Notice.NewDevice -> notice.logo.icon to Color(0xFF5B2A8C)
         is Notice.MemoryHigh -> R.drawable.ic_cpu to Color(0xFF8A2A20)
+        is Notice.AppUpdate -> R.drawable.ic_brand_github to Color(0xFF24292F)
     }
     val (title, subtitle) = when (notice) {
         is Notice.PlayUpdate -> notice.update.title to (notice.update.text ?: stringResource(R.string.notice_play_source))
@@ -578,11 +580,20 @@ private fun NoticeRow(notice: Notice, modifier: Modifier, onClick: () -> Unit) {
             stringResource(R.string.notice_new_device_sub, notice.portLabel)
         is Notice.MemoryHigh -> stringResource(R.string.notice_memory_high, notice.percent) to
             stringResource(R.string.notice_memory_high_sub, notice.threshold)
+        is Notice.AppUpdate -> stringResource(R.string.notice_self_update, notice.update.version) to when (notice.update.stage) {
+            SelfUpdate.Stage.AVAILABLE -> stringResource(R.string.notice_self_update_sub)
+            SelfUpdate.Stage.DOWNLOADING -> stringResource(R.string.notice_self_update_downloading, notice.update.percent)
+            SelfUpdate.Stage.CONFIRMING -> stringResource(R.string.notice_self_update_confirming)
+            SelfUpdate.Stage.FAILED -> stringResource(R.string.notice_self_update_failed)
+        }
     }
     val action = when (notice) {
         is Notice.PlayUpdate -> stringResource(R.string.notice_action_play)
         is Notice.NewDevice -> stringResource(R.string.notice_action_device)
         is Notice.MemoryHigh -> stringResource(R.string.notice_action_memory)
+        is Notice.AppUpdate -> stringResource(
+            if (notice.update.stage == SelfUpdate.Stage.FAILED) R.string.notice_action_retry else R.string.notice_action_install,
+        )
     }
     Row(
         modifier

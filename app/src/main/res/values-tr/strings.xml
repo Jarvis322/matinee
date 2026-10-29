@@ -406,4 +406,11 @@
     <string name="home_key_stopped_open">Erişilebilirlik ayarlarını aç</string>
     <string name="home_key_off_title">Home tuşu kapatılmış</string>
     <string name="home_key_off_body">TV “Matinee Home tuşu”nu kapatmış, bu yüzden Home tuşu yine yerleşik ana ekranı açıyor. Bazı TV\'ler bekleme modunda uygulamaları kapatırken bunu yapar.\n\nSonraki ekranda “Matinee Home tuşu”nu açın ve yeniden etkinleştirin. Kendiniz kapattıysanız Vazgeç\'i seçin, Matinee bir daha sormaz.</string>
+    <string name="notice_self_update">Matinee %1$s hazır</string>
+    <string name="notice_self_update_sub">GitHub\'dan · tek adımda kurulur</string>
+    <string name="notice_self_update_downloading">İndiriliyor… %%%1$d</string>
+    <string name="notice_self_update_confirming">Açılan ekranda güncellemeyi onaylayın</string>
+    <string name="notice_self_update_failed">Güncelleme kurulamadı</string>
+    <string name="notice_action_install">Kur</string>
+    <string name="notice_action_retry">Tekrar dene</string>
 </resources>

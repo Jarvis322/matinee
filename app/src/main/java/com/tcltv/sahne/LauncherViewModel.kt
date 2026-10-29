@@ -16,6 +16,8 @@ import android.os.Build
 import android.graphics.BitmapFactory
 import android.util.LruCache
 import androidx.compose.ui.graphics.asImageBitmap
+import com.tcltv.sahne.update.SelfUpdate
+import com.tcltv.sahne.update.SelfUpdater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import android.provider.Settings
@@ -118,6 +120,12 @@ sealed interface Notice {
     ) : Notice
 
     data class MemoryHigh(override val id: String, override val time: Long, val percent: Int, val threshold: Int) : Notice
+
+    /** A newer Matinee on GitHub; only the GitHub build ever has one. */
+    data class AppUpdate(val update: SelfUpdate) : Notice {
+        override val id: String get() = "self-update:${update.version}"
+        override val time: Long get() = update.publishedAt
+    }
 }
 
 /** Why the Home button no longer opens Matinee although the user turned it on. */
@@ -365,9 +373,16 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private val dismissedNotices = MutableStateFlow<Set<String>>(emptySet())
     private val seenNotices = MutableStateFlow<Set<String>>(emptySet())
 
-    val notices: StateFlow<List<Notice>> = combine(PlayStoreUpdates.updates, localNotices, dismissedNotices, settings) { play, local, dismissed, s ->
+    val notices: StateFlow<List<Notice>> = combine(
+        PlayStoreUpdates.updates,
+        SelfUpdater.update,
+        localNotices,
+        dismissedNotices,
+        settings,
+    ) { play, self, local, dismissed, s ->
         val playNotices = if (s.showPlayUpdates) play.map { Notice.PlayUpdate(it) } else emptyList()
-        (playNotices + local).filter { it.id !in dismissed }.sortedByDescending { it.time }
+        val selfNotice = listOfNotNull(self?.let { Notice.AppUpdate(it) })
+        (selfNotice + playNotices + local).filter { it.id !in dismissed }.sortedByDescending { it.time }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     val unreadNotices: StateFlow<Int> = combine(notices, seenNotices) { list, seen -> list.count { it.id !in seen } }
@@ -466,6 +481,11 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
             }
             is Notice.NewDevice -> inputs.value.firstOrNull { it.id == notice.inputId }?.let(::openInput)
             is Notice.MemoryHigh -> cleanMemory()
+            is Notice.AppUpdate -> {
+                // Kept in the list, so its progress and any failure stay visible.
+                viewModelScope.launch { SelfUpdater.install(getApplication()) }
+                return
+            }
         }
         dismissedNotices.value = dismissedNotices.value + notice.id
     }
@@ -583,6 +603,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     fun onHomeResumed() {
         receiverRefresh.value++
+        viewModelScope.launch { SelfUpdater.checkIfDue(getApplication()) }
         updateMemory(memoryStatus.snapshot())
         memoryPollJob?.cancel()
         memoryPollJob = viewModelScope.launch {

@@ -407,4 +407,11 @@
     <string name="home_key_stopped_open">Ouvrir les réglages d\'accessibilité</string>
     <string name="home_key_off_title">Le bouton Accueil a été désactivé</string>
     <string name="home_key_off_body">Le téléviseur a désactivé « Bouton Accueil Matinee » : le bouton Accueil rouvre donc l\'écran d\'accueil intégré. Certains téléviseurs le font en fermant les apps en veille.\n\nSur l\'écran suivant, ouvrez « Bouton Accueil Matinee » et réactivez-le. Si vous l\'avez désactivé vous-même, choisissez Annuler et Matinee ne redemandera pas.</string>
+    <string name="notice_self_update">Matinee %1$s est disponible</string>
+    <string name="notice_self_update_sub">Depuis GitHub · s\'installe en une étape</string>
+    <string name="notice_self_update_downloading">Téléchargement… %1$d %%</string>
+    <string name="notice_self_update_confirming">Confirmez la mise à jour sur l\'écran qui s\'est ouvert</string>
+    <string name="notice_self_update_failed">La mise à jour n\'a pas pu être installée</string>
+    <string name="notice_action_install">Installer</string>
+    <string name="notice_action_retry">Réessayer</string>
 </resources>
