@@ -466,4 +466,5 @@
     <string name="key_channel_up">Canal +</string>
     <string name="key_channel_down">Canal −</string>
     <string name="action_close_apps">Cerrar apps en segundo plano</string>
+    <string name="logo_av">AV / componentes</string>
 </resources>

@@ -26,6 +26,7 @@ enum class DeviceLogo(@DrawableRes val icon: Int, @StringRes val label: Int, pri
     TV_BOX(R.drawable.ic_box, R.string.logo_tv_box, listOf("tv box", "mi box", "chromecast", "shield", "android tv")),
     SOUNDBAR(R.drawable.ic_device_speaker, R.string.logo_soundbar, listOf("soundbar", "sonos", "bose", "yamaha", "denon", "onkyo", "av receiver")),
     CONSOLE(R.drawable.ic_device_gamepad_2, R.string.logo_console, listOf("console", "konsol")),
+    AV(R.drawable.ic_plug, R.string.logo_av, emptyList()),
     OTHER(R.drawable.ic_hdmi, R.string.logo_other, emptyList());
 
     companion object {
@@ -66,9 +67,14 @@ data class HdmiInput(
     val isOverridden: Boolean,
 )
 
+/**
+ * A physical input of the TV. Named for HDMI, which most are; AV, component and the other analogue ports are listed the
+ * same way, just without a CEC device behind them.
+ */
 data class RawHdmiInput(
     val id: String,
     val portLabel: String,
+    val isHdmi: Boolean,
     val tvCustomLabel: String?,
     val cecDeviceName: String?,
     val connected: Boolean,
@@ -102,6 +108,19 @@ class InputCatalog(context: Context) {
         val all = manager.tvInputList
         val hdmi = all.filter { it.type == TvInputInfo.TYPE_HDMI }
         val ports = hdmi.filter { it.parentId == null }
+        val analogue = all.filter { it.isPassthroughInput && it.parentId == null && isAnalogPortType(it.type) }
+        val analoguePorts = analogue.map { port ->
+            RawHdmiInput(
+                id = port.id,
+                portLabel = port.loadLabel(appContext)?.toString().orEmpty().ifBlank { port.id.substringAfterLast('/') },
+                isHdmi = false,
+                tvCustomLabel = port.loadCustomLabel(appContext)?.toString()?.takeIf { it.isNotBlank() },
+                cecDeviceName = null,
+                connected = runCatching { manager.getInputState(port.id) }.getOrDefault(TvInputManager.INPUT_STATE_CONNECTED) !=
+                    TvInputManager.INPUT_STATE_DISCONNECTED,
+                power = null,
+            )
+        }
         return ports.map { port ->
             val cecChild = hdmi.firstOrNull { it.parentId == port.id }
             val portLabel = port.loadLabel(appContext)?.toString().orEmpty().ifBlank { "HDMI" }
@@ -112,6 +131,7 @@ class InputCatalog(context: Context) {
             RawHdmiInput(
                 id = port.id,
                 portLabel = portLabel,
+                isHdmi = true,
                 tvCustomLabel = custom,
                 cecDeviceName = cecName,
                 connected = state != TvInputManager.INPUT_STATE_DISCONNECTED ||
@@ -123,7 +143,7 @@ class InputCatalog(context: Context) {
                     else -> null
                 },
             )
-        }.sortedBy { it.portLabel }
+        }.sortedBy { it.portLabel } + analoguePorts.sortedBy { it.portLabel }
     }
 
     fun launchIntent(inputId: String): Intent =
@@ -131,6 +151,17 @@ class InputCatalog(context: Context) {
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
     companion object {
+        /** The analogue connectors a TV can have; tuners are the Live TV shortcut, and app inputs aren't ports. */
+        fun isAnalogPortType(type: Int): Boolean = type in listOf(
+            TvInputInfo.TYPE_COMPOSITE,
+            TvInputInfo.TYPE_SVIDEO,
+            TvInputInfo.TYPE_SCART,
+            TvInputInfo.TYPE_COMPONENT,
+            TvInputInfo.TYPE_VGA,
+            TvInputInfo.TYPE_DVI,
+            TvInputInfo.TYPE_DISPLAY_PORT,
+        )
+
         fun resolve(raw: List<RawHdmiInput>, settings: LauncherSettings): List<HdmiInput> = raw.map { input ->
             val detectedName = when {
                 settings.autoDetectInputs && input.cecDeviceName != null -> input.cecDeviceName
@@ -144,7 +175,7 @@ class InputCatalog(context: Context) {
             }
             val detectedLogo = DeviceLogo.detect(detectedName)
             val override = settings.inputOverrides[input.id]
-            val logo = override?.logo ?: detectedLogo ?: DeviceLogo.OTHER
+            val logo = override?.logo ?: detectedLogo ?: if (input.isHdmi) DeviceLogo.OTHER else DeviceLogo.AV
             val chipTitle = override?.name ?: input.tvCustomLabel ?: input.portLabel
             HdmiInput(
                 id = input.id,

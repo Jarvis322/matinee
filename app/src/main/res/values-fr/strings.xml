@@ -466,4 +466,5 @@
     <string name="key_channel_up">Chaîne +</string>
     <string name="key_channel_down">Chaîne −</string>
     <string name="action_close_apps">Fermer les applis en arrière-plan</string>
+    <string name="logo_av">AV / composante</string>
 </resources>

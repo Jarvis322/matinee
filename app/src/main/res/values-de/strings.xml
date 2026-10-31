@@ -465,4 +465,5 @@
     <string name="key_channel_up">Kanal +</string>
     <string name="key_channel_down">Kanal −</string>
     <string name="action_close_apps">Hintergrund-Apps schließen</string>
+    <string name="logo_av">AV / Komponente</string>
 </resources>
