@@ -232,9 +232,9 @@
     <string name="setting_notification_access_sub">Reads only media playback info and Play Store update notifications. Nothing leaves the TV.</string>
 
     <string name="home_key_service_label">Matinee Home button</string>
-    <string name="home_key_service_description">Keeps Matinee as your home screen: the remote\'s Home button opens Matinee, and so does the TV\'s built-in home screen when it appears. Matinee never reads what is on the screen.</string>
+    <string name="home_key_service_description">Keeps Matinee as your home screen: the remote\'s Home button opens Matinee, and so does the TV\'s built-in home screen when it appears. It also runs the actions you give remote keys in Matinee\'s settings. Matinee never reads what is on the screen.</string>
     <string name="setting_home_key">Home button opens Matinee</string>
-    <string name="setting_home_key_sub">Uses an accessibility permission that sees only the Home button and when the built-in home screen opens. Nothing on screen is read.</string>
+    <string name="setting_home_key_sub">Uses an accessibility permission that sees only the Home button, the keys you assign and when the built-in home screen opens. Nothing on screen is read.</string>
 
     <string name="setting_wifi_name">Show Wi‑Fi network name</string>
     <string name="setting_wifi_name_sub">Android shares the network name only with apps that have location permission. Matinee uses it for nothing else.</string>
@@ -285,10 +285,12 @@
     <string name="days_ago">%1$d d ago</string>
     <string name="cancel">Cancel</string>
     <string name="home_key_disclosure_title">Let the Home button open Matinee?</string>
-    <string name="home_key_disclosure_body">Some TVs keep the Home button for their built‑in launcher and bring its home screen back after a restart. To open Matinee instead, Matinee uses an Android accessibility permission.\n\nIt sees only the remote\'s Home button and when the TV\'s built‑in home screen opens. It does not read what is on the screen, what you type, other keys or other apps, and nothing is sent anywhere.\n\nOn the next screen, choose “Matinee Home button” and turn it on. You can turn it off there at any time.</string>
+    <string name="home_key_disclosure_body">Some TVs keep the Home button for their built‑in launcher and bring its home screen back after a restart. To open Matinee instead, and to run the actions you give remote keys, Matinee uses an Android accessibility permission.\n\nIt sees remote key presses only to act on the Home button and the keys you assigned; every other key passes straight through. It also sees when the TV\'s built‑in home screen opens. It does not read what is on the screen, what you type or other apps, and nothing is stored or sent anywhere.</string>
+    <string name="home_key_disclosure_steps">On the next screen, choose “Matinee Home button” and turn it on. You can turn it off there at any time.</string>
+    <string name="home_key_disclosure_direct">Matinee turns it on right away. You can turn it off here at any time.</string>
     <string name="home_key_disclosure_accept">Agree and continue</string>
     <string name="home_key_restricted_title">Install Matinee from Google Play first</string>
-    <string name="home_key_restricted_body">This TV doesn\'t let apps installed from an APK file use accessibility permissions, so the switch turns itself back off.\n\nUninstall Matinee, install it from Google Play, then turn this on again.</string>
+    <string name="home_key_restricted_body">This TV doesn\'t let apps installed from an APK file use accessibility permissions, so the switch turns itself back off.\n\nSet up Automatic ADB in Settings → Bluetooth and remote, or uninstall Matinee and install it from Google Play, then turn this on again.</string>
     <string name="home_key_restricted_try">Try anyway</string>
 
     <!-- Notifications -->
@@ -404,7 +406,7 @@
     </plurals>
     <string name="pin_new_title_directions">Choose 4 arrow steps</string>
     <string name="setting_licenses">Licenses</string>
-    <string name="license_text">Weather data by Open‑Meteo.com, licensed under CC BY 4.0.\nIcons: Tabler Icons, MIT License.\nTypeface: Inter, SIL Open Font License 1.1.\nApp icons and banners belong to their apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="license_text">Weather data by Open‑Meteo.com, licensed under CC BY 4.0.\nIcons: Tabler Icons, MIT License.\nTypeface: Inter, SIL Open Font License 1.1.\nApp icons and banners belong to their apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nADB: dadb, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
     <string name="setting_add_app">Add an app to the home screen</string>
     <string name="setting_add_app_sub">Apps that are hidden or not on the home screen yet</string>
     <string name="setting_show_add_tile">Show the Add app tile</string>
@@ -425,4 +427,51 @@
     <string name="notice_action_retry">Try again</string>
     <string name="notice_play_updates">Play Store updates</string>
     <string name="notice_play_updates_sub">See pending updates in the Play Store</string>
+    <string name="close">Close</string>
+    <string name="setting_auto_adb">Automatic ADB</string>
+    <string name="setting_auto_adb_sub">Matinee grants its own permissions and turns the Home button back on when the TV switches it off</string>
+    <string name="adb_body">Matinee connects once to this TV\'s own debugging port to give itself permissions that Android only grants through it: changing secure settings, so it can turn the Home button back on by itself, and notification access. Everything stays on the TV.\n\n1. In the TV\'s Developer options, turn on USB debugging and network (ADB) debugging.\n2. Select Connect. When the TV asks, tick “Always allow” and choose Allow.</string>
+    <string name="adb_ready_body">Automatic ADB is set up. Matinee turns the Home button back on by itself whenever the TV switches it off.\n\nThe permissions stay if you turn network debugging off again, but a key\'s normal short press and Turn off screen need it left on.</string>
+    <string name="adb_connect">Connect</string>
+    <string name="adb_connecting_short">Waiting…</string>
+    <string name="adb_connecting">Waiting for the TV. Choose Allow on the prompt it shows.</string>
+    <string name="adb_failed_off">Network debugging is off. Turn on ADB debugging in the TV\'s Developer options, then try again.</string>
+    <string name="adb_failed_denied">The TV didn\'t allow the connection. Try again and choose Allow on its prompt.</string>
+    <string name="adb_failed_other">Setup didn\'t finish. Try again.</string>
+    <string name="setting_key_add">Assign a key</string>
+    <string name="setting_key_add_sub">Press a remote key, then choose what its short, long and double presses do</string>
+    <string name="key_learn_title">Press a key</string>
+    <string name="key_learn_body">Press the remote key you want to assign. Back cancels.</string>
+    <string name="key_learn_rejected">Home, Back, the arrows, OK and Power keep their own job. Press another key.</string>
+    <string name="press_short">Short press</string>
+    <string name="press_long">Long press</string>
+    <string name="press_double">Double press</string>
+    <string name="action_normal">Normal</string>
+    <string name="action_nothing">Do nothing</string>
+    <string name="action_matinee_home">Matinee home</string>
+    <string name="action_matinee_settings">Matinee settings</string>
+    <string name="action_screen_off">Turn off screen</string>
+    <string name="action_open_app">Open an app</string>
+    <string name="action_open_input">Switch to an input</string>
+    <string name="key_remove">Remove assignment</string>
+    <string name="note_remote_keys">Assigned keys work while the Matinee Home button is on. Keys without an action keep working as before.</string>
+    <string name="note_key_normal">Normal keeps the key\'s own action for that press. When a long or double press is assigned, the normal short press needs Automatic ADB; without it, the short press does nothing.</string>
+    <string name="home_key_switch_off_title">Turn off the Home button?</string>
+    <string name="home_key_switch_off_body">The remote\'s Home button will open the TV\'s own home screen again, and assigned keys stop working. Matinee won\'t turn it back on until you do.</string>
+    <string name="home_key_switch_off">Turn off</string>
+    <string name="key_menu">Menu</string>
+    <string name="key_settings">Settings</string>
+    <string name="key_input">Input</string>
+    <string name="key_guide">Guide</string>
+    <string name="key_info">Info</string>
+    <string name="key_red">Red</string>
+    <string name="key_green">Green</string>
+    <string name="key_yellow">Yellow</string>
+    <string name="key_blue">Blue</string>
+    <string name="key_play_pause">Play/Pause</string>
+    <string name="key_mute">Mute</string>
+    <string name="key_volume_up">Volume +</string>
+    <string name="key_volume_down">Volume −</string>
+    <string name="key_channel_up">Channel +</string>
+    <string name="key_channel_down">Channel −</string>
 </resources>

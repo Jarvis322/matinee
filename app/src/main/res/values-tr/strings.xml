@@ -230,9 +230,9 @@
     <string name="setting_notification_access_sub">Yalnızca oynatılan medya bilgisi ve Play Store güncelleme bildirimleri okunur. Hiçbiri TV\'den çıkmaz.</string>
 
     <string name="home_key_service_label">Matinee Home tuşu</string>
-    <string name="home_key_service_description">Matinee\'yi ana ekranın olarak tutar: kumandanın Home tuşu ve TV\'nin yerleşik ana ekranı açıldığında Matinee açılır. Matinee ekranda ne olduğunu asla okumaz.</string>
+    <string name="home_key_service_description">Matinee\'yi ana ekranın olarak tutar: kumandanın Home tuşu ve TV\'nin yerleşik ana ekranı açıldığında Matinee açılır. Matinee ayarlarında kumanda tuşlarına atadığın görevleri de çalıştırır. Matinee ekranda ne olduğunu asla okumaz.</string>
     <string name="setting_home_key">Home tuşu Matinee\'yi açsın</string>
-    <string name="setting_home_key_sub">Yalnızca Home tuşunu ve yerleşik ana ekranın açıldığını gören bir erişilebilirlik izni kullanır. Ekrandaki hiçbir şey okunmaz.</string>
+    <string name="setting_home_key_sub">Yalnızca Home tuşunu, görev atadığın tuşları ve yerleşik ana ekranın açıldığını gören bir erişilebilirlik izni kullanır. Ekrandaki hiçbir şey okunmaz.</string>
 
     <string name="setting_wifi_name">Wi‑Fi ağ adını göster</string>
     <string name="setting_wifi_name_sub">Android ağ adını yalnızca konum izni olan uygulamalara verir. Matinee bu izni başka hiçbir şey için kullanmaz.</string>
@@ -275,10 +275,12 @@
     <string name="days_ago">%1$d gün önce</string>
     <string name="cancel">Vazgeç</string>
     <string name="home_key_disclosure_title">Home tuşu Matinee\'yi açsın mı?</string>
-    <string name="home_key_disclosure_body">Bazı TV\'ler Home tuşunu kendi yerleşik ana ekranına ayırır ve yeniden başlatınca o ekranı geri getirir. Bunun yerine Matinee\'nin açılması için Matinee bir Android erişilebilirlik izni kullanır.\n\nYalnızca kumandanın Home tuşunu ve TV\'nin yerleşik ana ekranının açıldığını görür. Ekranda ne olduğunu, ne yazdığını, başka tuşları ya da başka uygulamaları okumaz; hiçbir şey hiçbir yere gönderilmez.\n\nSonraki ekranda “Matinee Home tuşu” seçeneğini seçip aç. İstediğin zaman oradan kapatabilirsin.</string>
+    <string name="home_key_disclosure_body">Bazı TV\'ler Home tuşunu kendi yerleşik ana ekranına ayırır ve yeniden başlatınca o ekranı geri getirir. Bunun yerine Matinee\'nin açılması ve kumanda tuşlarına atadığın görevlerin çalışması için Matinee bir Android erişilebilirlik izni kullanır.\n\nKumanda tuşlarına basıldığını yalnızca Home tuşu ve görev atadığın tuşlar için görür; diğer bütün tuşlar olduğu gibi geçer. TV\'nin yerleşik ana ekranının açıldığını da görür. Ekranda ne olduğunu, ne yazdığını ya da başka uygulamaları okumaz; hiçbir şey kaydedilmez ve hiçbir yere gönderilmez.</string>
+    <string name="home_key_disclosure_steps">Sonraki ekranda “Matinee Home tuşu” seçeneğini seçip aç. İstediğin zaman oradan kapatabilirsin.</string>
+    <string name="home_key_disclosure_direct">Matinee onu hemen açar. İstediğin zaman buradan kapatabilirsin.</string>
     <string name="home_key_disclosure_accept">Kabul et ve devam et</string>
     <string name="home_key_restricted_title">Önce Matinee\'yi Google Play\'den kur</string>
-    <string name="home_key_restricted_body">Bu TV, APK dosyasından kurulan uygulamaların erişilebilirlik izni kullanmasına izin vermiyor; bu yüzden anahtar kendiliğinden kapanıyor.\n\nMatinee\'yi kaldır, Google Play\'den kur, sonra bunu tekrar aç.</string>
+    <string name="home_key_restricted_body">Bu TV, APK dosyasından kurulan uygulamaların erişilebilirlik izni kullanmasına izin vermiyor; bu yüzden anahtar kendiliğinden kapanıyor.\n\nAyarlar → Bluetooth ve Kumanda\'dan Otomatik ADB\'yi kur ya da Matinee\'yi kaldırıp Google Play\'den kur, sonra bunu tekrar aç.</string>
     <string name="home_key_restricted_try">Yine de dene</string>
 
     <!-- Notifications -->
@@ -394,7 +396,7 @@
     </plurals>
     <string name="pin_new_title_directions">4 yön adımı seç</string>
     <string name="setting_licenses">Lisanslar</string>
-    <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="license_text">Hava durumu verisi: Open‑Meteo.com, CC BY 4.0 lisansıyla.\nSimgeler: Tabler Icons, MIT lisansı.\nYazı tipi: Inter, SIL Open Font License 1.1.\nUygulama simgeleri ve afişleri kendi uygulamalarına aittir.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nADB: dadb, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
     <string name="setting_add_app">Ana ekrana uygulama ekle</string>
     <string name="setting_add_app_sub">Gizlenen ya da henüz ana ekranda olmayan uygulamalar</string>
     <string name="setting_show_add_tile">Uygulama ekle kutusunu göster</string>
@@ -415,4 +417,51 @@
     <string name="notice_action_retry">Tekrar dene</string>
     <string name="notice_play_updates">Play Store güncellemeleri</string>
     <string name="notice_play_updates_sub">Bekleyen güncellemeleri Play Store\'da gör</string>
+    <string name="close">Kapat</string>
+    <string name="setting_auto_adb">Otomatik ADB</string>
+    <string name="setting_auto_adb_sub">Matinee izinlerini kendisi verir; TV Home tuşunu kapatırsa geri açar</string>
+    <string name="adb_body">Matinee, Android\'in yalnızca hata ayıklama yoluyla verdiği izinleri kendine vermek için bu TV\'nin kendi hata ayıklama bağlantı noktasına bir kez bağlanır: Home tuşunu kendiliğinden geri açabilmek için güvenli ayarları değiştirme izni ve bildirim erişimi. Her şey TV\'de kalır.\n\n1. TV\'nin Geliştirici seçeneklerinde USB hata ayıklamayı ve ağ (ADB) hata ayıklamayı aç.\n2. Bağlan\'ı seç. TV sorduğunda “Her zaman izin ver”i işaretleyip İzin ver\'i seç.</string>
+    <string name="adb_ready_body">Otomatik ADB kuruldu. TV Home tuşunu ne zaman kapatırsa Matinee onu kendiliğinden geri açar.\n\nAğ hata ayıklamayı yeniden kapatsan da izinler kalır; ama bir tuşun normal kısa basması ve Ekranı kapat için açık kalması gerekir.</string>
+    <string name="adb_connect">Bağlan</string>
+    <string name="adb_connecting_short">Bekleniyor…</string>
+    <string name="adb_connecting">TV bekleniyor. Gösterdiği pencerede İzin ver\'i seç.</string>
+    <string name="adb_failed_off">Ağ hata ayıklama kapalı. TV\'nin Geliştirici seçeneklerinde ADB hata ayıklamayı açıp tekrar dene.</string>
+    <string name="adb_failed_denied">TV bağlantıya izin vermedi. Tekrar dene ve TV\'nin penceresinde İzin ver\'i seç.</string>
+    <string name="adb_failed_other">Kurulum tamamlanmadı. Tekrar dene.</string>
+    <string name="setting_key_add">Tuş ata</string>
+    <string name="setting_key_add_sub">Kumandada bir tuşa bas, sonra kısa, uzun ve çift basmada ne yapacağını seç</string>
+    <string name="key_learn_title">Bir tuşa bas</string>
+    <string name="key_learn_body">Kumandada atamak istediğin tuşa bas. Geri vazgeçer.</string>
+    <string name="key_learn_rejected">Home, Geri, yön tuşları, OK ve Güç kendi görevlerinde kalır. Başka bir tuşa bas.</string>
+    <string name="press_short">Kısa basma</string>
+    <string name="press_long">Uzun basma</string>
+    <string name="press_double">Çift basma</string>
+    <string name="action_normal">Normal</string>
+    <string name="action_nothing">Hiçbir şey yapma</string>
+    <string name="action_matinee_home">Matinee ana ekranı</string>
+    <string name="action_matinee_settings">Matinee ayarları</string>
+    <string name="action_screen_off">Ekranı kapat</string>
+    <string name="action_open_app">Uygulama aç</string>
+    <string name="action_open_input">Girişe geç</string>
+    <string name="key_remove">Atamayı kaldır</string>
+    <string name="note_remote_keys">Atanan tuşlar Matinee Home tuşu açıkken çalışır. Görev atanmamış tuşlar eskisi gibi çalışmaya devam eder.</string>
+    <string name="note_key_normal">Normal, o basma için tuşun kendi görevini korur. Uzun ya da çift basmaya görev atandığında normal kısa basma için Otomatik ADB gerekir; o olmadan kısa basma hiçbir şey yapmaz.</string>
+    <string name="home_key_switch_off_title">Home tuşu kapatılsın mı?</string>
+    <string name="home_key_switch_off_body">Kumandanın Home tuşu yeniden TV\'nin kendi ana ekranını açar ve atanan tuşlar çalışmaz. Sen açana kadar Matinee onu geri açmaz.</string>
+    <string name="home_key_switch_off">Kapat</string>
+    <string name="key_menu">Menü</string>
+    <string name="key_settings">Ayarlar</string>
+    <string name="key_input">Kaynak</string>
+    <string name="key_guide">Rehber</string>
+    <string name="key_info">Bilgi</string>
+    <string name="key_red">Kırmızı</string>
+    <string name="key_green">Yeşil</string>
+    <string name="key_yellow">Sarı</string>
+    <string name="key_blue">Mavi</string>
+    <string name="key_play_pause">Oynat/Duraklat</string>
+    <string name="key_mute">Sessiz</string>
+    <string name="key_volume_up">Ses +</string>
+    <string name="key_volume_down">Ses −</string>
+    <string name="key_channel_up">Kanal +</string>
+    <string name="key_channel_down">Kanal −</string>
 </resources>

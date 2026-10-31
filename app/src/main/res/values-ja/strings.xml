@@ -231,9 +231,9 @@
     <string name="setting_notification_access_sub">メディアの再生情報と Play Store のアップデート通知のみを読み取ります。データがテレビの外に送信されることはありません。</string>
 
     <string name="home_key_service_label">Matinee ホームボタン</string>
-    <string name="home_key_service_description">Matinee をホーム画面として保ちます。リモコンのホームボタンを押したときや、テレビ内蔵のホーム画面が表示されたときに Matinee を開きます。Matinee が画面の内容を読み取ることはありません。</string>
+    <string name="home_key_service_description">Matinee をホーム画面として保ちます。リモコンのホームボタンで Matinee が開き、テレビ内蔵のホーム画面が表示されたときも Matinee が開きます。Matinee の設定でリモコンのキーに割り当てた動作も実行します。Matinee が画面の内容を読み取ることはありません。</string>
     <string name="setting_home_key">ホームボタンで Matinee を開く</string>
-    <string name="setting_home_key_sub">ホームボタンと内蔵ホーム画面が開いたことだけを検知するユーザー補助の権限を使用します。画面の内容は読み取りません。</string>
+    <string name="setting_home_key_sub">ホームボタン、割り当てたキー、内蔵ホーム画面が開いたことだけを検知するユーザー補助の権限を使用します。画面の内容は読み取りません。</string>
 
     <string name="setting_wifi_name">Wi‑Fi ネットワーク名を表示</string>
     <string name="setting_wifi_name_sub">Android は位置情報の権限を持つアプリにのみネットワーク名を共有します。Matinee はそれ以外の目的に使用しません。</string>
@@ -276,10 +276,12 @@
     <string name="days_ago">%1$d 日前</string>
     <string name="cancel">キャンセル</string>
     <string name="home_key_disclosure_title">ホームボタンで Matinee を開きますか？</string>
-    <string name="home_key_disclosure_body">一部のテレビでは、ホームボタンが内蔵のランチャー専用になっていて、再起動後にそのホーム画面に戻ります。代わりに Matinee を開くため、Matinee は Android のユーザー補助の権限を使用します。\n\n検知するのはリモコンのホームボタンと、テレビ内蔵のホーム画面が開いたことだけです。画面の内容、入力した文字、その他のキーやアプリは読み取らず、どこにもデータを送信しません。\n\n次の画面で「Matinee ホームボタン」を選び、オンにしてください。この設定はいつでもそこでオフにできます。</string>
+    <string name="home_key_disclosure_body">一部のテレビはホームボタンを内蔵ランチャー用に確保し、再起動後にそのホーム画面を戻します。代わりに Matinee を開き、リモコンのキーに割り当てた動作を実行するため、Matinee は Android のユーザー補助の権限を使います。\n\nキーの押下を見るのは、ホームボタンとあなたが割り当てたキーに対応するためだけで、その他のキーはそのまま通ります。テレビ内蔵のホーム画面が開いたことも検知します。画面の内容、入力内容、他のアプリは読み取らず、何も保存・送信しません。</string>
+    <string name="home_key_disclosure_steps">次の画面で「Matinee ホームボタン」を選んでオンにしてください。いつでもそこでオフにできます。</string>
+    <string name="home_key_disclosure_direct">Matinee がすぐにオンにします。ここでいつでもオフにできます。</string>
     <string name="home_key_disclosure_accept">同意して続行</string>
     <string name="home_key_restricted_title">まず Google Play から Matinee をインストールしてください</string>
-    <string name="home_key_restricted_body">このテレビでは、APK ファイルからインストールしたアプリはユーザー補助の権限を使用できないため、スイッチが自動的にオフに戻ります。\n\nMatinee をアンインストールし、Google Play からインストールしてから、もう一度オンにしてください。</string>
+    <string name="home_key_restricted_body">このテレビでは APK ファイルからインストールしたアプリはユーザー補助の権限を使えないため、スイッチが自動的にオフに戻ります。\n\n設定 → Bluetooth とリモコンで自動 ADB を設定するか、Matinee をアンインストールして Google Play からインストールしてから、もう一度オンにしてください。</string>
     <string name="home_key_restricted_try">このまま試す</string>
 
     <!-- Notifications -->
@@ -394,7 +396,7 @@
     </plurals>
     <string name="pin_new_title_directions">矢印キーで4ステップを選択</string>
     <string name="setting_licenses">ライセンス</string>
-    <string name="license_text">天気データ: Open‑Meteo.com（CC BY 4.0 ライセンス）。\nアイコン: Tabler Icons（MIT ライセンス）。\n書体: Inter（SIL Open Font License 1.1）。\nアプリのアイコンとバナーは各アプリに帰属します。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="license_text">天気データ: Open‑Meteo.com（CC BY 4.0 ライセンス）。\nアイコン: Tabler Icons（MIT ライセンス）。\n書体: Inter（SIL Open Font License 1.1）。\nアプリのアイコンとバナーは各アプリに帰属します。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nADB: dadb, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
     <string name="setting_add_app">ホーム画面にアプリを追加</string>
     <string name="setting_add_app_sub">非表示のアプリや、まだホーム画面にないアプリ</string>
     <string name="setting_show_add_tile">「アプリを追加」タイルを表示</string>
@@ -415,4 +417,51 @@
     <string name="notice_action_retry">再試行</string>
     <string name="notice_play_updates">Play ストアのアップデート</string>
     <string name="notice_play_updates_sub">保留中のアップデートを Play ストアで確認</string>
+    <string name="close">閉じる</string>
+    <string name="setting_auto_adb">自動 ADB</string>
+    <string name="setting_auto_adb_sub">Matinee が自分で権限を付与し、テレビがホームボタンをオフにすると再びオンにします</string>
+    <string name="adb_body">Matinee はこのテレビ自身のデバッグポートに一度だけ接続し、Android がその方法でしか付与しない権限を自分に付与します。ホームボタンを自動で再びオンにするための安全な設定の変更と、通知へのアクセスです。すべてテレビ内で完結します。\n\n1. テレビの開発者向けオプションで USB デバッグとネットワーク（ADB）デバッグをオンにします。\n2. 「接続」を選びます。テレビに確認が表示されたら「常に許可」にチェックを入れて「許可」を選びます。</string>
+    <string name="adb_ready_body">自動 ADB の設定が完了しました。テレビがホームボタンをオフにするたびに、Matinee が自動で再びオンにします。\n\nネットワークデバッグを再びオフにしても権限は残りますが、キーの通常の短押しと「画面をオフ」にはオンのままにしておく必要があります。</string>
+    <string name="adb_connect">接続</string>
+    <string name="adb_connecting_short">待機中…</string>
+    <string name="adb_connecting">テレビを待っています。表示される確認で「許可」を選んでください。</string>
+    <string name="adb_failed_off">ネットワークデバッグがオフです。テレビの開発者向けオプションで ADB デバッグをオンにしてから、もう一度お試しください。</string>
+    <string name="adb_failed_denied">テレビが接続を許可しませんでした。もう一度試し、確認で「許可」を選んでください。</string>
+    <string name="adb_failed_other">設定が完了しませんでした。もう一度お試しください。</string>
+    <string name="setting_key_add">キーを割り当てる</string>
+    <string name="setting_key_add_sub">リモコンのキーを押して、短押し・長押し・2 回押しの動作を選びます</string>
+    <string name="key_learn_title">キーを押してください</string>
+    <string name="key_learn_body">割り当てたいリモコンのキーを押してください。戻るでキャンセルします。</string>
+    <string name="key_learn_rejected">ホーム・戻る・方向キー・OK・電源は本来の役割のままです。別のキーを押してください。</string>
+    <string name="press_short">短押し</string>
+    <string name="press_long">長押し</string>
+    <string name="press_double">2 回押し</string>
+    <string name="action_normal">通常</string>
+    <string name="action_nothing">何もしない</string>
+    <string name="action_matinee_home">Matinee のホーム</string>
+    <string name="action_matinee_settings">Matinee の設定</string>
+    <string name="action_screen_off">画面をオフ</string>
+    <string name="action_open_app">アプリを開く</string>
+    <string name="action_open_input">入力を切り替える</string>
+    <string name="key_remove">割り当てを削除</string>
+    <string name="note_remote_keys">割り当てたキーは Matinee のホームボタンがオンのときに動作します。動作を割り当てていないキーはこれまでどおり使えます。</string>
+    <string name="note_key_normal">「通常」はその押し方でキー本来の動作を保ちます。長押しや 2 回押しを割り当てた場合、通常の短押しには自動 ADB が必要です。ない場合、短押しでは何も起きません。</string>
+    <string name="home_key_switch_off_title">ホームボタンをオフにしますか？</string>
+    <string name="home_key_switch_off_body">リモコンのホームボタンは再びテレビ本来のホーム画面を開き、割り当てたキーは動作しなくなります。あなたがオンにするまで Matinee は再びオンにしません。</string>
+    <string name="home_key_switch_off">オフにする</string>
+    <string name="key_menu">メニュー</string>
+    <string name="key_settings">設定</string>
+    <string name="key_input">入力切替</string>
+    <string name="key_guide">番組表</string>
+    <string name="key_info">情報</string>
+    <string name="key_red">赤</string>
+    <string name="key_green">緑</string>
+    <string name="key_yellow">黄</string>
+    <string name="key_blue">青</string>
+    <string name="key_play_pause">再生/一時停止</string>
+    <string name="key_mute">消音</string>
+    <string name="key_volume_up">音量 +</string>
+    <string name="key_volume_down">音量 −</string>
+    <string name="key_channel_up">チャンネル +</string>
+    <string name="key_channel_down">チャンネル −</string>
 </resources>

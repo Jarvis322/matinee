@@ -230,9 +230,9 @@
     <string name="setting_notification_access_sub">Lit uniquement les infos de lecture multimédia et les notifications de mise à jour du Play Store. Rien ne quitte le téléviseur.</string>
 
     <string name="home_key_service_label">Bouton Accueil Matinee</string>
-    <string name="home_key_service_description">Garde Matinee comme écran d\'accueil : le bouton Accueil de la télécommande ouvre Matinee, de même que l\'écran d\'accueil intégré du téléviseur quand il apparaît. Matinee ne lit jamais le contenu de l\'écran.</string>
+    <string name="home_key_service_description">Garde Matinee comme écran d\'accueil : le bouton Accueil de la télécommande ouvre Matinee, de même que l\'écran d\'accueil intégré de la TV quand il apparaît. Il exécute aussi les actions que vous attribuez aux touches dans les paramètres de Matinee. Matinee ne lit jamais ce qui est à l\'écran.</string>
     <string name="setting_home_key">Le bouton Accueil ouvre Matinee</string>
-    <string name="setting_home_key_sub">Utilise une autorisation d\'accessibilité qui ne voit que le bouton Accueil et l\'ouverture de l\'écran d\'accueil intégré. Rien n\'est lu à l\'écran.</string>
+    <string name="setting_home_key_sub">Utilise une autorisation d\'accessibilité qui ne voit que le bouton Accueil, les touches que vous attribuez et l\'ouverture de l\'écran d\'accueil intégré. Rien n\'est lu à l\'écran.</string>
 
     <string name="setting_wifi_name">Afficher le nom du réseau Wi‑Fi</string>
     <string name="setting_wifi_name_sub">Android ne communique le nom du réseau qu\'aux applis autorisées à accéder à la localisation. Matinee ne l\'utilise pour rien d\'autre.</string>
@@ -275,10 +275,12 @@
     <string name="days_ago">Il y a %1$d j</string>
     <string name="cancel">Annuler</string>
     <string name="home_key_disclosure_title">Ouvrir Matinee avec le bouton Accueil ?</string>
-    <string name="home_key_disclosure_body">Certains téléviseurs réservent le bouton Accueil à leur lanceur intégré et réaffichent son écran d\'accueil après un redémarrage. Pour ouvrir Matinee à la place, Matinee utilise une autorisation d\'accessibilité Android.\n\nElle ne voit que le bouton Accueil de la télécommande et l\'ouverture de l\'écran d\'accueil intégré du téléviseur. Elle ne lit ni le contenu de l\'écran, ni ce que vous saisissez, ni les autres touches ou applis, et rien n\'est envoyé nulle part.\n\nSur l\'écran suivant, choisissez « Bouton Accueil Matinee » et activez-le. Vous pourrez le désactiver à tout moment au même endroit.</string>
+    <string name="home_key_disclosure_body">Certaines TV réservent le bouton Accueil à leur launcher intégré et rétablissent son écran d\'accueil après un redémarrage. Pour ouvrir Matinee à la place, et pour exécuter les actions que vous attribuez aux touches, Matinee utilise une autorisation d\'accessibilité Android.\n\nIl ne voit les appuis sur la télécommande que pour agir sur le bouton Accueil et les touches que vous avez attribuées ; toutes les autres touches passent telles quelles. Il voit aussi quand l\'écran d\'accueil intégré de la TV s\'ouvre. Il ne lit pas ce qui est à l\'écran, ce que vous tapez ni les autres applis, et rien n\'est enregistré ni envoyé.</string>
+    <string name="home_key_disclosure_steps">Sur l\'écran suivant, choisissez « Bouton Accueil Matinee » et activez-le. Vous pouvez le désactiver là à tout moment.</string>
+    <string name="home_key_disclosure_direct">Matinee l\'active immédiatement. Vous pouvez le désactiver ici à tout moment.</string>
     <string name="home_key_disclosure_accept">Accepter et continuer</string>
     <string name="home_key_restricted_title">Installez d\'abord Matinee depuis Google Play</string>
-    <string name="home_key_restricted_body">Ce téléviseur n\'autorise pas les applis installées depuis un fichier APK à utiliser les autorisations d\'accessibilité ; l\'option se désactive donc d\'elle-même.\n\nDésinstallez Matinee, installez-la depuis Google Play, puis réactivez cette option.</string>
+    <string name="home_key_restricted_body">Cette TV n\'autorise pas les applis installées depuis un fichier APK à utiliser les autorisations d\'accessibilité ; l\'interrupteur se désactive donc tout seul.\n\nConfigurez l\'ADB automatique dans Paramètres → Bluetooth et télécommande, ou désinstallez Matinee et installez-la depuis Google Play, puis réactivez ceci.</string>
     <string name="home_key_restricted_try">Essayer quand même</string>
 
     <!-- Notifications -->
@@ -395,7 +397,7 @@
     </plurals>
     <string name="pin_new_title_directions">Choisissez 4 étapes avec les flèches</string>
     <string name="setting_licenses">Licences</string>
-    <string name="license_text">Données météo fournies par Open‑Meteo.com, sous licence CC BY 4.0.\nIcônes : Tabler Icons, licence MIT.\nPolice : Inter, SIL Open Font License 1.1.\nLes icônes et bannières d\'applis appartiennent à leurs applis respectives.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="license_text">Données météo fournies par Open‑Meteo.com, sous licence CC BY 4.0.\nIcônes : Tabler Icons, licence MIT.\nPolice : Inter, SIL Open Font License 1.1.\nLes icônes et bannières d\'applis appartiennent à leurs applis respectives.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nADB: dadb, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
     <string name="setting_add_app">Ajouter une appli à l\'écran d\'accueil</string>
     <string name="setting_add_app_sub">Applis masquées ou pas encore sur l\'écran d\'accueil</string>
     <string name="setting_show_add_tile">Afficher la tuile Ajouter une appli</string>
@@ -416,4 +418,51 @@
     <string name="notice_action_retry">Réessayer</string>
     <string name="notice_play_updates">Mises à jour du Play Store</string>
     <string name="notice_play_updates_sub">Voir les mises à jour en attente dans le Play Store</string>
+    <string name="close">Fermer</string>
+    <string name="setting_auto_adb">ADB automatique</string>
+    <string name="setting_auto_adb_sub">Matinee s\'accorde ses autorisations et réactive le bouton Accueil quand la TV le désactive</string>
+    <string name="adb_body">Matinee se connecte une fois au port de débogage de cette TV pour s\'accorder des autorisations qu\'Android ne donne que par ce biais : modifier les paramètres sécurisés, afin de réactiver lui-même le bouton Accueil, et l\'accès aux notifications. Tout reste sur la TV.\n\n1. Dans les Options pour les développeurs de la TV, activez le débogage USB et le débogage réseau (ADB).\n2. Choisissez Connecter. Quand la TV le demande, cochez « Toujours autoriser » et choisissez Autoriser.</string>
+    <string name="adb_ready_body">L\'ADB automatique est configuré. Matinee réactive le bouton Accueil chaque fois que la TV le désactive.\n\nLes autorisations restent si vous désactivez à nouveau le débogage réseau, mais l\'appui court normal d\'une touche et Éteindre l\'écran en ont besoin.</string>
+    <string name="adb_connect">Connecter</string>
+    <string name="adb_connecting_short">Attente…</string>
+    <string name="adb_connecting">En attente de la TV. Choisissez Autoriser dans la fenêtre qu\'elle affiche.</string>
+    <string name="adb_failed_off">Le débogage réseau est désactivé. Activez le débogage ADB dans les Options pour les développeurs de la TV, puis réessayez.</string>
+    <string name="adb_failed_denied">La TV n\'a pas autorisé la connexion. Réessayez et choisissez Autoriser dans sa fenêtre.</string>
+    <string name="adb_failed_other">La configuration n\'a pas abouti. Réessayez.</string>
+    <string name="setting_key_add">Attribuer une touche</string>
+    <string name="setting_key_add_sub">Appuyez sur une touche de la télécommande, puis choisissez l\'effet de l\'appui court, long et double</string>
+    <string name="key_learn_title">Appuyez sur une touche</string>
+    <string name="key_learn_body">Appuyez sur la touche de la télécommande à attribuer. Retour annule.</string>
+    <string name="key_learn_rejected">Accueil, Retour, les flèches, OK et Marche gardent leur rôle. Appuyez sur une autre touche.</string>
+    <string name="press_short">Appui court</string>
+    <string name="press_long">Appui long</string>
+    <string name="press_double">Double appui</string>
+    <string name="action_normal">Normal</string>
+    <string name="action_nothing">Ne rien faire</string>
+    <string name="action_matinee_home">Accueil de Matinee</string>
+    <string name="action_matinee_settings">Paramètres de Matinee</string>
+    <string name="action_screen_off">Éteindre l\'écran</string>
+    <string name="action_open_app">Ouvrir une appli</string>
+    <string name="action_open_input">Passer à une entrée</string>
+    <string name="key_remove">Retirer l\'attribution</string>
+    <string name="note_remote_keys">Les touches attribuées fonctionnent tant que le bouton Accueil de Matinee est activé. Les touches sans action fonctionnent comme avant.</string>
+    <string name="note_key_normal">Normal conserve l\'action propre de la touche pour cet appui. Si un appui long ou double est attribué, l\'appui court normal a besoin de l\'ADB automatique ; sans lui, il ne fait rien.</string>
+    <string name="home_key_switch_off_title">Désactiver le bouton Accueil ?</string>
+    <string name="home_key_switch_off_body">Le bouton Accueil de la télécommande ouvrira de nouveau l\'écran d\'accueil de la TV et les touches attribuées cesseront de fonctionner. Matinee ne le réactivera pas tant que vous ne le ferez pas.</string>
+    <string name="home_key_switch_off">Désactiver</string>
+    <string name="key_menu">Menu</string>
+    <string name="key_settings">Paramètres</string>
+    <string name="key_input">Source</string>
+    <string name="key_guide">Guide</string>
+    <string name="key_info">Info</string>
+    <string name="key_red">Rouge</string>
+    <string name="key_green">Vert</string>
+    <string name="key_yellow">Jaune</string>
+    <string name="key_blue">Bleu</string>
+    <string name="key_play_pause">Lecture/Pause</string>
+    <string name="key_mute">Muet</string>
+    <string name="key_volume_up">Volume +</string>
+    <string name="key_volume_down">Volume −</string>
+    <string name="key_channel_up">Chaîne +</string>
+    <string name="key_channel_down">Chaîne −</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.tcltv.sahne
 
-import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.Application
 import android.app.ActivityOptions
 import android.app.PendingIntent
@@ -14,14 +13,21 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.util.LruCache
 import androidx.compose.ui.graphics.asImageBitmap
+import com.tcltv.sahne.data.KeyAction
+import com.tcltv.sahne.data.KeyBinding
+import com.tcltv.sahne.data.KeyBindingStore
+import com.tcltv.sahne.data.PressType
+import com.tcltv.sahne.system.HomeKeyGuard
+import com.tcltv.sahne.system.HomeKeyWatchdog
+import com.tcltv.sahne.system.LocalAdb
 import com.tcltv.sahne.update.SelfUpdate
 import com.tcltv.sahne.update.SelfUpdater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import android.provider.Settings
-import android.view.accessibility.AccessibilityManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.AndroidViewModel
@@ -137,6 +143,13 @@ enum class HomeKeyProblem {
     SWITCHED_OFF,
 }
 
+sealed interface AdbSetupState {
+    data object Idle : AdbSetupState
+    data object Connecting : AdbSetupState
+    data object Ready : AdbSetupState
+    data class Failed(val reason: LocalAdb.SetupResult) : AdbSetupState
+}
+
 sealed interface SpeedState {
     data object Idle : SpeedState
     data object Measuring : SpeedState
@@ -165,6 +178,9 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private val networkStatus = NetworkStatus(application)
     private val speedTest = SpeedTest()
     private val mediaHistory = MediaHistory.get(application)
+    private val homeKeyGuard = HomeKeyGuard(application)
+    private val localAdb = LocalAdb(application)
+    private val keyBindingStore = KeyBindingStore(application)
 
     val settings: StateFlow<LauncherSettings> = settingsStore.settings
         .stateIn(viewModelScope, SharingStarted.Eagerly, LauncherSettings())
@@ -392,6 +408,73 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch { runWeatherLoop() }
         viewModelScope.launch { watchForNewDevices() }
         viewModelScope.launch { runAirPlayReceiver() }
+        if (localAdb.isSetUp()) HomeKeyWatchdog.schedule(application)
+    }
+
+    private val _settingsRequested = MutableStateFlow(false)
+
+    /** Set when a remote key asked for Matinee's settings; the screen opens them (behind the PIN) and clears it. */
+    val settingsRequested: StateFlow<Boolean> = _settingsRequested.asStateFlow()
+
+    fun requestSettings() {
+        _settingsRequested.value = true
+    }
+
+    fun consumeSettingsRequest() {
+        _settingsRequested.value = false
+    }
+
+    private val _keyBindings = MutableStateFlow(keyBindingStore.load())
+    val keyBindings: StateFlow<List<KeyBinding>> = _keyBindings.asStateFlow()
+
+    /** Gives [keyCode] an action for one kind of press, or with null returns that press to the key's own behaviour. */
+    fun setKeyAction(keyCode: Int, press: PressType, action: KeyAction?) {
+        val current = _keyBindings.value.firstOrNull { it.keyCode == keyCode }?.actions.orEmpty()
+        val actions = if (action == null) current - press else current + (press to action)
+        saveKeyBindings(_keyBindings.value.filterNot { it.keyCode == keyCode } + KeyBinding(keyCode, actions))
+    }
+
+    fun removeKeyBinding(keyCode: Int) = saveKeyBindings(_keyBindings.value.filterNot { it.keyCode == keyCode })
+
+    private fun saveKeyBindings(bindings: List<KeyBinding>) {
+        val kept = bindings.filter { it.actions.isNotEmpty() }
+        try {
+            keyBindingStore.save(kept)
+        } catch (e: IOException) {
+            Log.w(TAG, "could not save key bindings: ${e.message}")
+            return
+        }
+        _keyBindings.value = kept
+        // The service caches the file; tell it there is a new one.
+        getApplication<Application>().sendBroadcast(
+            Intent(HomeKeyService.ACTION_BINDINGS_CHANGED).setPackage(getApplication<Application>().packageName),
+        )
+    }
+
+    /** Asks the Home button service to report the next remote key instead of acting on it. */
+    fun startKeyLearning() {
+        getApplication<Application>().sendBroadcast(
+            Intent(HomeKeyService.ACTION_LEARN_KEY).setPackage(getApplication<Application>().packageName),
+        )
+    }
+
+    private val _adbSetup = MutableStateFlow<AdbSetupState>(if (localAdb.isSetUp()) AdbSetupState.Ready else AdbSetupState.Idle)
+    val adbSetup: StateFlow<AdbSetupState> = _adbSetup.asStateFlow()
+
+    fun runAdbSetup() {
+        if (_adbSetup.value == AdbSetupState.Connecting) return
+        _adbSetup.value = AdbSetupState.Connecting
+        viewModelScope.launch {
+            val result = localAdb.setUp()
+            if (result == LocalAdb.SetupResult.DONE) {
+                HomeKeyWatchdog.schedule(getApplication())
+                homeKeyGuard.repairIfNeeded()
+            }
+            _adbSetup.value = when (result) {
+                LocalAdb.SetupResult.DONE -> AdbSetupState.Ready
+                else -> AdbSetupState.Failed(result)
+            }
+        }
     }
 
     // A foreground service, so the receiver outlives this screen: phones can only find the TV while it runs.
@@ -541,50 +624,30 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         return source == PackageInstaller.PACKAGE_SOURCE_LOCAL_FILE || source == PackageInstaller.PACKAGE_SOURCE_DOWNLOADED_FILE
     }
 
-    fun isHomeKeyServiceEnabled(): Boolean {
-        val app = getApplication<Application>()
-        val component = ComponentName(app, HomeKeyService::class.java).flattenToString()
-        val enabled = Settings.Secure.getString(app.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES).orEmpty()
-        return enabled.split(':').any { it.equals(component, ignoreCase = true) }
-    }
+    fun isHomeKeyServiceEnabled(): Boolean = homeKeyGuard.isEnabled()
 
     /**
      * Whether Android has the Home button service running. It can be switched on and still stopped: Android doesn't
      * restart an accessibility service whose process died until it is switched off and on again.
      */
-    fun isHomeKeyServiceRunning(): Boolean {
-        val app = getApplication<Application>()
-        val component = ComponentName(app, HomeKeyService::class.java)
-        return app.getSystemService(AccessibilityManager::class.java)
-            .getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
-            .any { it.resolveInfo?.serviceInfo?.let { info -> ComponentName(info.packageName, info.name) } == component }
-    }
+    fun isHomeKeyServiceRunning(): Boolean = homeKeyGuard.isRunning()
 
     /** The home screen told the user the Home button stopped and they closed it; it isn't repeated this session. */
     var homeKeyStoppedPromptDismissed = false
 
-    private val homeKeyPrefs by lazy { getApplication<Application>().getSharedPreferences("home_key", Context.MODE_PRIVATE) }
-
-    /**
-     * What keeps the Home button from opening Matinee after the user turned it on, or null when nothing does. A TV that
-     * force-stops Matinee (some clean up apps in standby) also takes it off Android's list of enabled services, so
-     * having seen it run once is remembered here.
-     */
-    fun homeKeyProblem(): HomeKeyProblem? {
-        val enabled = isHomeKeyServiceEnabled()
-        if (enabled && isHomeKeyServiceRunning()) {
-            if (!homeKeyPrefs.getBoolean(KEY_HOME_KEY_WANTED, false)) homeKeyPrefs.edit().putBoolean(KEY_HOME_KEY_WANTED, true).apply()
-            return null
-        }
-        return when {
-            enabled -> HomeKeyProblem.STOPPED
-            homeKeyPrefs.getBoolean(KEY_HOME_KEY_WANTED, false) -> HomeKeyProblem.SWITCHED_OFF
-            else -> null
-        }
-    }
+    /** What keeps the Home button from opening Matinee after the user turned it on, or null when nothing does. */
+    fun homeKeyProblem(): HomeKeyProblem? = homeKeyGuard.problem()
 
     /** The user doesn't want the Home button back; stop asking until it runs again. */
-    fun forgetHomeKey() = homeKeyPrefs.edit().putBoolean(KEY_HOME_KEY_WANTED, false).apply()
+    fun forgetHomeKey() = homeKeyGuard.forget()
+
+    /** With Automatic ADB set up, Matinee switches the Home button service itself instead of sending the user away. */
+    fun canSwitchHomeKey(): Boolean = homeKeyGuard.canSwitch()
+
+    /** Turns the Home button service on (or restarts a stopped one); false when only the TV's settings can. */
+    suspend fun switchHomeKeyOn(): Boolean = homeKeyGuard.switchOn()
+
+    fun switchHomeKeyOff(): Boolean = homeKeyGuard.switchOff()
 
     fun hasNotificationAccess(): Boolean {
         val app = getApplication<Application>()
@@ -614,6 +677,8 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     fun onHomeResumed() {
         receiverRefresh.value++
+        // With Automatic ADB set up, a stopped or switched-off Home button is turned back on without asking.
+        viewModelScope.launch { homeKeyGuard.repairIfNeeded() }
         viewModelScope.launch { SelfUpdater.checkIfDue(getApplication()) }
         updateMemory(memoryStatus.snapshot())
         memoryPollJob?.cancel()
@@ -869,6 +934,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     }
 
     private companion object {
+        const val TAG = "LauncherViewModel"
         // Play's own action for its "Manage apps & games" page; checked on Play Store for Google TV (Android 14).
         const val PLAY_MY_DOWNLOADS = "com.google.android.finsky.VIEW_MY_DOWNLOADS"
         const val MEMORY_POLL_MILLIS = 15_000L
@@ -880,6 +946,5 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         const val WEATHER_RETRY_MILLIS = 60_000L
         const val MEMORY_ALERT_REARM_PERCENT = 5
         const val MAX_LOCAL_NOTICES = 20
-        const val KEY_HOME_KEY_WANTED = "wanted"
     }
 }

@@ -16,6 +16,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.focusGroup
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -102,6 +104,7 @@ import com.tcltv.sahne.R
 import com.tcltv.sahne.data.AppLanguage
 import com.tcltv.sahne.data.BuiltinWallpaper
 import com.tcltv.sahne.data.AppCatalog
+import com.tcltv.sahne.system.HomeKeyGuard
 import com.tcltv.sahne.ui.home.AddAppDialog
 import com.tcltv.sahne.data.DeviceProfile
 import com.tcltv.sahne.data.PhotoWallpaper
@@ -126,6 +129,8 @@ import com.tcltv.sahne.ui.home.TopBar
 import com.tcltv.sahne.ui.home.profileColorCount
 import com.tcltv.sahne.ui.interStyle
 import com.tcltv.sahne.ui.longPressClickable
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private enum class Section(@StringRes val title: Int, @StringRes val subtitle: Int, @DrawableRes val icon: Int) {
     NETWORK(R.string.settings_network, R.string.settings_network_sub, R.drawable.ic_wifi),
@@ -144,6 +149,7 @@ private sealed interface SubPage {
     data object CitySearch : SubPage
     data object ProfileName : SubPage
     data class InputEditor(val inputId: String) : SubPage
+    data class KeyEditor(val keyCode: Int) : SubPage
     data object CleanExclusions : SubPage
     data object Language : SubPage
     data object Licenses : SubPage
@@ -243,6 +249,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                     SubPage.LockedApps -> stringResource(R.string.setting_locked_apps)
                     SubPage.Wallpaper -> stringResource(R.string.setting_wallpaper)
                     is SubPage.InputEditor -> stringResource(R.string.edit_input)
+                    is SubPage.KeyEditor -> keyName(page.keyCode)
                 },
                 subtitle = stringResource(section.subtitle),
             )
@@ -251,6 +258,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                 null -> SectionContent(section, viewModel, panelRequester, onEditApps) { subPage = it }
                 SubPage.CitySearch -> CitySearchPage(viewModel, panelRequester) { closePage() }
                 is SubPage.InputEditor -> InputEditorPage(viewModel, page.inputId, panelRequester)
+                is SubPage.KeyEditor -> KeyEditorPage(viewModel, page.keyCode, panelRequester) { closePage() }
                 SubPage.ProfileName -> ProfileNamePage(viewModel, panelRequester)
                 SubPage.CleanExclusions -> CleanExclusionsPage(viewModel, panelRequester)
                 SubPage.Language -> LanguagePage(panelRequester)
@@ -428,6 +436,13 @@ private fun SectionContent(
             viewModel,
             firstRow,
             listOf(SystemLink(R.string.system_bluetooth, R.string.system_bluetooth_sub, Settings.ACTION_BLUETOOTH_SETTINGS)),
+            extra = {
+                RemoteRows(
+                    viewModel,
+                    keyRowModifier = { keyCode -> Modifier.opensPage(SubPage.KeyEditor(keyCode)) },
+                    onEditKey = { keyCode -> open(SubPage.KeyEditor(keyCode)) },
+                )
+            },
         )
         Section.HOME -> HomePanel(viewModel, firstRow, onEditApps, open)
         Section.PARENTAL -> ParentalPanel(viewModel, firstRow, open)
@@ -1099,14 +1114,14 @@ private fun LogoOption(logo: DeviceLogo, selected: Boolean, onClick: () -> Unit)
 }
 
 @Composable
-private fun PanelList(content: @Composable () -> Unit) {
+internal fun PanelList(content: @Composable () -> Unit) {
     LazyColumn(contentPadding = PaddingValues(bottom = 20.dp)) {
         item { Column { content() } }
     }
 }
 
 @Composable
-private fun FocusRow(onClick: () -> Unit, modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) {
+internal fun FocusRow(onClick: () -> Unit, modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) {
     var focused by remember { mutableStateOf(false) }
     Column {
         Row(
@@ -1124,7 +1139,7 @@ private fun FocusRow(onClick: () -> Unit, modifier: Modifier = Modifier, content
 }
 
 @Composable
-private fun RowLabel(label: String, subtitle: String?, modifier: Modifier) {
+internal fun RowLabel(label: String, subtitle: String?, modifier: Modifier) {
     Column(modifier) {
         BasicText(label, maxLines = 1, overflow = TextOverflow.Ellipsis, style = interStyle(14.sp, 600))
         if (subtitle != null) {
@@ -1168,7 +1183,7 @@ private fun ToggleRow(label: String, subtitle: String?, checked: Boolean, modifi
 }
 
 @Composable
-private fun ValueRow(
+internal fun ValueRow(
     @StringRes label: Int,
     @StringRes subtitle: Int?,
     value: String?,
@@ -1177,7 +1192,7 @@ private fun ValueRow(
 ) = ValueRow(stringResource(label), subtitle?.let { stringResource(it) }, value, modifier, onClick)
 
 @Composable
-private fun ValueRow(label: String, subtitle: String?, value: String?, modifier: Modifier = Modifier, onClick: () -> Unit) {
+internal fun ValueRow(label: String, subtitle: String?, value: String?, modifier: Modifier = Modifier, onClick: () -> Unit) {
     FocusRow(onClick = onClick, modifier = modifier) {
         RowLabel(label, subtitle, Modifier.weight(1f))
         if (value != null) {
@@ -1191,7 +1206,7 @@ private fun ValueRow(label: String, subtitle: String?, value: String?, modifier:
 
 /** One option of a single-choice list, marked with a filled ring when selected. */
 @Composable
-private fun ChoiceRow(label: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
+internal fun ChoiceRow(label: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
     FocusRow(
         onClick = onClick,
         modifier = modifier.semantics {
@@ -1246,7 +1261,7 @@ private fun FieldLabel(@StringRes res: Int) {
 }
 
 @Composable
-private fun Note(@StringRes res: Int) {
+internal fun Note(@StringRes res: Int) {
     BasicText(
         stringResource(res),
         style = interStyle(11.sp, 400, Palette.TextMuted).copy(lineHeight = 16.sp),
@@ -1309,16 +1324,33 @@ private fun NotificationAccessRow(viewModel: LauncherViewModel) {
 }
 
 @Composable
-private fun HomeKeyRow(viewModel: LauncherViewModel) {
+internal fun HomeKeyRow(viewModel: LauncherViewModel, modifier: Modifier = Modifier) {
     var enabled by remember { mutableStateOf(viewModel.isHomeKeyServiceEnabled()) }
     var running by remember { mutableStateOf(viewModel.isHomeKeyServiceRunning()) }
     var showDisclosure by remember { mutableStateOf(false) }
     var showRestricted by remember { mutableStateOf(false) }
     var showStopped by remember { mutableStateOf(false) }
-    LifecycleResumeEffect(Unit) {
+    var showSwitchOff by remember { mutableStateOf(false) }
+    var refresh by remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
+    LifecycleResumeEffect(refresh) {
         enabled = viewModel.isHomeKeyServiceEnabled()
         running = viewModel.isHomeKeyServiceRunning()
         onPauseOrDispose { }
+    }
+    // With Automatic ADB set up Matinee switches the service itself; otherwise only the TV's settings can.
+    val selfSwitching = viewModel.canSwitchHomeKey()
+    fun switchOn() {
+        if (selfSwitching) {
+            scope.launch {
+                viewModel.switchHomeKeyOn()
+                // Android binds the service a moment after the setting changes.
+                delay(SERVICE_BIND_MS)
+                refresh++
+            }
+        } else {
+            viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+        }
     }
     val stopped = enabled && !running
     ValueRow(
@@ -1331,12 +1363,15 @@ private fun HomeKeyRow(viewModel: LauncherViewModel) {
                 else -> R.string.switch_off
             },
         ),
+        modifier = modifier,
     ) {
         // Turning it on needs explicit consent first (Play's accessibility policy); turning it off doesn't.
         when {
+            stopped && selfSwitching -> switchOn()
             stopped -> showStopped = true
+            enabled && selfSwitching -> showSwitchOff = true
             enabled -> viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-            viewModel.isAccessibilityRestricted() -> showRestricted = true
+            viewModel.isAccessibilityRestricted() && !selfSwitching -> showRestricted = true
             else -> showDisclosure = true
         }
     }
@@ -1347,6 +1382,19 @@ private fun HomeKeyRow(viewModel: LauncherViewModel) {
                 viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             },
             onDismiss = { showStopped = false },
+        )
+    }
+    if (showSwitchOff) {
+        ConsentDialog(
+            title = R.string.home_key_switch_off_title,
+            body = R.string.home_key_switch_off_body,
+            accept = R.string.home_key_switch_off,
+            onAccept = {
+                showSwitchOff = false
+                viewModel.switchHomeKeyOff()
+                refresh++
+            },
+            onDismiss = { showSwitchOff = false },
         )
     }
     if (showRestricted) {
@@ -1369,9 +1417,11 @@ private fun HomeKeyRow(viewModel: LauncherViewModel) {
             accept = R.string.home_key_disclosure_accept,
             onAccept = {
                 showDisclosure = false
-                viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                switchOn()
             },
             onDismiss = { showDisclosure = false },
+            // What happens after agreeing depends on who switches the service on.
+            closing = if (selfSwitching) R.string.home_key_disclosure_direct else R.string.home_key_disclosure_steps,
         )
     }
 }
@@ -1389,6 +1439,8 @@ internal fun HomeKeyStoppedPrompt(viewModel: LauncherViewModel, resumeTick: Int)
         problem = viewModel.homeKeyProblem()
             ?.takeIf { settled }
             ?.takeUnless { it == HomeKeyProblem.STOPPED && viewModel.homeKeyStoppedPromptDismissed }
+        // With Automatic ADB set up there is nothing to ask: Matinee turns the service back on itself.
+        if (viewModel.canSwitchHomeKey()) problem = null
     }
     when (problem) {
         HomeKeyProblem.STOPPED -> {
@@ -1421,7 +1473,8 @@ internal fun HomeKeyStoppedPrompt(viewModel: LauncherViewModel, resumeTick: Int)
     }
 }
 
-private const val BOOT_SETTLE_MS = 2 * 60_000L
+private const val BOOT_SETTLE_MS = HomeKeyGuard.BOOT_SETTLE_MS
+private const val SERVICE_BIND_MS = 1_500L
 
 @Composable
 private fun HomeKeyStoppedDialog(onOpen: () -> Unit, onDismiss: () -> Unit) {
@@ -1435,7 +1488,14 @@ private fun HomeKeyStoppedDialog(onOpen: () -> Unit, onDismiss: () -> Unit) {
 }
 
 @Composable
-private fun ConsentDialog(@StringRes title: Int, @StringRes body: Int, @StringRes accept: Int, onAccept: () -> Unit, onDismiss: () -> Unit) {
+internal fun ConsentDialog(
+    @StringRes title: Int,
+    @StringRes body: Int,
+    @StringRes accept: Int,
+    onAccept: () -> Unit,
+    onDismiss: () -> Unit,
+    @StringRes closing: Int? = null,
+) {
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         val cancelFocus = remember { FocusRequester() }
         // Focus starts on Cancel so a stray OK press never grants the permission.
@@ -1448,7 +1508,8 @@ private fun ConsentDialog(@StringRes title: Int, @StringRes body: Int, @StringRe
         ) {
             BasicText(stringResource(title), style = interStyle(17.sp, 700))
             Spacer(Modifier.height(10.dp))
-            BasicText(stringResource(body), style = interStyle(12.5.sp, 500, Palette.TextSecondary).copy(lineHeight = 18.sp))
+            val text = stringResource(body) + (closing?.let { "\n\n" + stringResource(it) } ?: "")
+            BasicText(text, style = interStyle(12.5.sp, 500, Palette.TextSecondary).copy(lineHeight = 18.sp))
             Spacer(Modifier.height(18.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 DialogButton(stringResource(R.string.cancel), Modifier.focusRequester(cancelFocus), onDismiss)
@@ -1459,7 +1520,7 @@ private fun ConsentDialog(@StringRes title: Int, @StringRes body: Int, @StringRe
 }
 
 @Composable
-private fun DialogButton(label: String, modifier: Modifier, onClick: () -> Unit) {
+internal fun DialogButton(label: String, modifier: Modifier, onClick: () -> Unit) {
     var focused by remember { mutableStateOf(false) }
     Box(
         modifier

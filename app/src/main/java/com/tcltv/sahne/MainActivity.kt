@@ -1,6 +1,7 @@
 package com.tcltv.sahne
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             SahneApp(viewModel = viewModel, resumeTick = resumeTick.intValue)
         }
+        if (savedInstanceState == null) handleRequest(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleRequest(intent)
+    }
+
+    /** A remote key assigned to "Matinee settings" opens Matinee with this; the settings PIN still applies. */
+    private fun handleRequest(intent: Intent) {
+        if (intent.getBooleanExtra(EXTRA_OPEN_SETTINGS, false)) {
+            intent.removeExtra(EXTRA_OPEN_SETTINGS)
+            viewModel.requestSettings()
+        }
     }
 
     override fun onResume() {
@@ -34,5 +49,9 @@ class MainActivity : ComponentActivity() {
         viewModel.gate.endAdminSession()
         viewModel.onHomePaused()
         super.onPause()
+    }
+
+    companion object {
+        const val EXTRA_OPEN_SETTINGS = "com.tcltv.sahne.extra.OPEN_SETTINGS"
     }
 }

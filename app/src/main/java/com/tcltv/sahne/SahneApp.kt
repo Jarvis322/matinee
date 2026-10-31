@@ -3,6 +3,7 @@ package com.tcltv.sahne
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +36,14 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
     var editRequest by remember { mutableIntStateOf(0) }
 
     fun openSettings() = viewModel.gate.requireForAdmin(R.string.pin_reason_admin) { showSettings = true }
+
+    val settingsRequested by viewModel.settingsRequested.collectAsStateWithLifecycle()
+    LaunchedEffect(settingsRequested) {
+        if (settingsRequested) {
+            viewModel.consumeSettingsRequest()
+            if (!showSettings) openSettings()
+        }
+    }
 
     // As the Home app, Back has nowhere to go; opened from the app list, Back returns to the TV's own home. With the
     // Home button service on, the TV's own home only sends the user straight back here, so Back stays put as well.

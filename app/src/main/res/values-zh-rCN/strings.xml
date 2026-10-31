@@ -230,9 +230,9 @@
     <string name="setting_notification_access_sub">仅读取媒体播放信息和 Play Store 更新通知。所有数据都不会离开电视。</string>
 
     <string name="home_key_service_label">Matinee 主页键</string>
-    <string name="home_key_service_description">让 Matinee 始终作为主屏幕：按遥控器的主页键或电视显示内置主屏幕时，都会打开 Matinee。Matinee 绝不读取屏幕上的内容。</string>
+    <string name="home_key_service_description">让 Matinee 保持为你的主屏幕：按遥控器的主页键会打开 Matinee，电视自带的主屏幕出现时也会打开 Matinee。它还会执行你在 Matinee 设置中为遥控器按键分配的操作。Matinee 从不读取屏幕内容。</string>
     <string name="setting_home_key">主页键打开 Matinee</string>
-    <string name="setting_home_key_sub">使用仅检测主页键和内置主屏幕打开的无障碍权限。不会读取屏幕上的任何内容。</string>
+    <string name="setting_home_key_sub">使用仅检测主页键、你分配的按键和内置主屏幕打开的无障碍权限。不会读取屏幕上的任何内容。</string>
 
     <string name="setting_wifi_name">显示 Wi‑Fi 网络名称</string>
     <string name="setting_wifi_name_sub">Android 只向拥有位置权限的应用提供网络名称。Matinee 不会将其用于其他用途。</string>
@@ -275,10 +275,12 @@
     <string name="days_ago">%1$d 天前</string>
     <string name="cancel">取消</string>
     <string name="home_key_disclosure_title">让主页键打开 Matinee？</string>
-    <string name="home_key_disclosure_body">有些电视会将主页键保留给内置启动器，并在重启后回到其主屏幕。为了改为打开 Matinee，Matinee 会使用一项 Android 无障碍权限。\n\n它只检测遥控器的主页键和电视内置主屏幕的打开，不会读取屏幕上的内容、你输入的内容、其他按键或其他应用，也不会向任何地方发送数据。\n\n在下一个页面中，选择“Matinee 主页键”并将其开启。你可以随时在那里将其关闭。</string>
+    <string name="home_key_disclosure_body">有些电视把主页键留给自带的启动器，重启后会恢复其主屏幕。为了改为打开 Matinee，并执行你为遥控器按键分配的操作，Matinee 使用一项 Android 无障碍权限。\n\n它只为响应主页键和你分配的按键而查看按键操作；其他按键都会原样通过。它也会察觉电视自带的主屏幕何时打开。它不会读取屏幕内容、你输入的内容或其他应用，也不会保存或发送任何数据。</string>
+    <string name="home_key_disclosure_steps">在下一个屏幕中选择“Matinee 主页键”并开启。你可以随时在那里关闭它。</string>
+    <string name="home_key_disclosure_direct">Matinee 会立即开启它。你可以随时在这里关闭。</string>
     <string name="home_key_disclosure_accept">同意并继续</string>
     <string name="home_key_restricted_title">请先从 Google Play 安装 Matinee</string>
-    <string name="home_key_restricted_body">这台电视不允许通过 APK 文件安装的应用使用无障碍权限，因此开关会自动关闭。\n\n请卸载 Matinee，从 Google Play 重新安装，然后再次开启此功能。</string>
+    <string name="home_key_restricted_body">这台电视不允许通过 APK 文件安装的应用使用无障碍权限，因此开关会自动关闭。\n\n请在“设置 → Bluetooth 和遥控器”中设置自动 ADB，或卸载 Matinee 后从 Google Play 安装，然后再开启此项。</string>
     <string name="home_key_restricted_try">仍然尝试</string>
 
     <!-- Notifications -->
@@ -393,7 +395,7 @@
     </plurals>
     <string name="pin_new_title_directions">选择 4 步方向</string>
     <string name="setting_licenses">许可</string>
-    <string name="license_text">天气数据由 Open‑Meteo.com 提供，采用 CC BY 4.0 许可。\n图标：Tabler Icons，MIT 许可证。\n字体：Inter，SIL Open Font License 1.1。\n应用图标和横幅归其各自应用所有。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="license_text">天气数据由 Open‑Meteo.com 提供，采用 CC BY 4.0 许可。\n图标：Tabler Icons，MIT 许可证。\n字体：Inter，SIL Open Font License 1.1。\n应用图标和横幅归其各自应用所有。\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nADB: dadb, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
     <string name="setting_add_app">将应用添加到主屏幕</string>
     <string name="setting_add_app_sub">已隐藏或尚未在主屏幕上的应用</string>
     <string name="setting_show_add_tile">显示“添加应用”磁贴</string>
@@ -414,4 +416,51 @@
     <string name="notice_action_retry">重试</string>
     <string name="notice_play_updates">Play 商店更新</string>
     <string name="notice_play_updates_sub">在 Play 商店查看待安装的更新</string>
+    <string name="close">关闭</string>
+    <string name="setting_auto_adb">自动 ADB</string>
+    <string name="setting_auto_adb_sub">Matinee 自行授予权限，电视关闭主页键时会重新开启</string>
+    <string name="adb_body">Matinee 会连接一次这台电视自身的调试端口，为自己授予 Android 只通过这种方式提供的权限：修改安全设置（以便自动重新开启主页键）和通知使用权。一切都在电视上完成。\n\n1. 在电视的开发者选项中开启 USB 调试和网络（ADB）调试。\n2. 选择“连接”。电视询问时，勾选“始终允许”并选择“允许”。</string>
+    <string name="adb_ready_body">自动 ADB 已设置完成。每当电视关闭主页键，Matinee 都会自动重新开启它。\n\n即使再次关闭网络调试，权限也会保留；但按键的普通短按和“关闭屏幕”需要保持开启。</string>
+    <string name="adb_connect">连接</string>
+    <string name="adb_connecting_short">等待中…</string>
+    <string name="adb_connecting">正在等待电视。请在电视显示的提示中选择“允许”。</string>
+    <string name="adb_failed_off">网络调试已关闭。请在电视的开发者选项中开启 ADB 调试，然后重试。</string>
+    <string name="adb_failed_denied">电视未允许连接。请重试，并在其提示中选择“允许”。</string>
+    <string name="adb_failed_other">设置未完成。请重试。</string>
+    <string name="setting_key_add">分配按键</string>
+    <string name="setting_key_add_sub">按下遥控器上的一个键，然后选择短按、长按和双击的操作</string>
+    <string name="key_learn_title">请按一个键</string>
+    <string name="key_learn_body">请按下要分配的遥控器按键。按返回键取消。</string>
+    <string name="key_learn_rejected">主页、返回、方向键、确认和电源键保留原有功能。请按其他键。</string>
+    <string name="press_short">短按</string>
+    <string name="press_long">长按</string>
+    <string name="press_double">双击</string>
+    <string name="action_normal">默认</string>
+    <string name="action_nothing">不执行任何操作</string>
+    <string name="action_matinee_home">Matinee 主屏幕</string>
+    <string name="action_matinee_settings">Matinee 设置</string>
+    <string name="action_screen_off">关闭屏幕</string>
+    <string name="action_open_app">打开应用</string>
+    <string name="action_open_input">切换到输入源</string>
+    <string name="key_remove">移除分配</string>
+    <string name="note_remote_keys">已分配的按键在 Matinee 主页键开启时生效。未分配操作的按键照常工作。</string>
+    <string name="note_key_normal">“默认”保留该按法下按键原本的功能。若分配了长按或双击，普通短按需要自动 ADB；没有它时，短按不执行任何操作。</string>
+    <string name="home_key_switch_off_title">要关闭主页键吗？</string>
+    <string name="home_key_switch_off_body">遥控器的主页键将重新打开电视自带的主屏幕，已分配的按键也会停止工作。在你重新开启之前，Matinee 不会再开启它。</string>
+    <string name="home_key_switch_off">关闭</string>
+    <string name="key_menu">菜单</string>
+    <string name="key_settings">设置</string>
+    <string name="key_input">信号源</string>
+    <string name="key_guide">节目指南</string>
+    <string name="key_info">信息</string>
+    <string name="key_red">红色键</string>
+    <string name="key_green">绿色键</string>
+    <string name="key_yellow">黄色键</string>
+    <string name="key_blue">蓝色键</string>
+    <string name="key_play_pause">播放/暂停</string>
+    <string name="key_mute">静音</string>
+    <string name="key_volume_up">音量 +</string>
+    <string name="key_volume_down">音量 −</string>
+    <string name="key_channel_up">频道 +</string>
+    <string name="key_channel_down">频道 −</string>
 </resources>

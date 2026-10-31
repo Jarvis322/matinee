@@ -230,9 +230,9 @@
     <string name="setting_notification_access_sub">Liest nur Infos zur Medienwiedergabe und Update-Benachrichtigungen des Play Store. Nichts verlässt den Fernseher.</string>
 
     <string name="home_key_service_label">Matinee Home-Taste</string>
-    <string name="home_key_service_description">Hält Matinee als Startbildschirm: Die Home-Taste der Fernbedienung öffnet Matinee, ebenso wenn der integrierte Startbildschirm des Fernsehers erscheint. Matinee liest nie, was auf dem Bildschirm angezeigt wird.</string>
+    <string name="home_key_service_description">Behält Matinee als Startbildschirm: Die Home-Taste der Fernbedienung öffnet Matinee, ebenso wenn der eingebaute Startbildschirm des Fernsehers erscheint. Außerdem führt es die Aktionen aus, die du in den Matinee-Einstellungen Tasten zuweist. Matinee liest nie, was auf dem Bildschirm ist.</string>
     <string name="setting_home_key">Home-Taste öffnet Matinee</string>
-    <string name="setting_home_key_sub">Verwendet eine Bedienungshilfen-Berechtigung, die nur die Home-Taste und das Öffnen des integrierten Startbildschirms sieht. Bildschirminhalte werden nicht gelesen.</string>
+    <string name="setting_home_key_sub">Verwendet eine Bedienungshilfen-Berechtigung, die nur die Home-Taste, die von dir belegten Tasten und das Öffnen des integrierten Startbildschirms sieht. Bildschirminhalte werden nicht gelesen.</string>
 
     <string name="setting_wifi_name">Wi‑Fi-Netzwerknamen anzeigen</string>
     <string name="setting_wifi_name_sub">Android gibt den Netzwerknamen nur an Apps mit Standortberechtigung weiter. Matinee nutzt sie für nichts anderes.</string>
@@ -275,10 +275,12 @@
     <string name="days_ago">vor %1$d Tagen</string>
     <string name="cancel">Abbrechen</string>
     <string name="home_key_disclosure_title">Soll die Home-Taste Matinee öffnen?</string>
-    <string name="home_key_disclosure_body">Manche Fernseher reservieren die Home-Taste für ihren integrierten Launcher und zeigen dessen Startbildschirm nach einem Neustart wieder an. Damit stattdessen Matinee geöffnet wird, nutzt Matinee eine Android-Bedienungshilfen-Berechtigung.\n\nSie sieht nur die Home-Taste der Fernbedienung und wann der integrierte Startbildschirm des Fernsehers geöffnet wird. Sie liest weder Bildschirminhalte noch deine Eingaben, andere Tasten oder andere Apps, und es wird nichts gesendet.\n\nWähle auf dem nächsten Bildschirm „Matinee Home-Taste“ und aktiviere sie. Du kannst sie dort jederzeit wieder deaktivieren.</string>
+    <string name="home_key_disclosure_body">Manche Fernseher reservieren die Home-Taste für ihren eingebauten Launcher und holen dessen Startbildschirm nach einem Neustart zurück. Damit sich stattdessen Matinee öffnet und die Aktionen laufen, die du Tasten zuweist, nutzt Matinee eine Android-Bedienungshilfen-Berechtigung.\n\nEs sieht Tastendrücke nur, um auf die Home-Taste und die von dir belegten Tasten zu reagieren; alle anderen Tasten gehen unverändert durch. Es sieht auch, wann sich der eingebaute Startbildschirm öffnet. Es liest weder den Bildschirminhalt noch deine Eingaben oder andere Apps, und nichts wird gespeichert oder gesendet.</string>
+    <string name="home_key_disclosure_steps">Wähle auf dem nächsten Bildschirm „Matinee-Home-Taste“ und schalte sie ein. Du kannst sie dort jederzeit ausschalten.</string>
+    <string name="home_key_disclosure_direct">Matinee schaltet sie sofort ein. Du kannst sie hier jederzeit ausschalten.</string>
     <string name="home_key_disclosure_accept">Zustimmen und weiter</string>
     <string name="home_key_restricted_title">Installiere Matinee zuerst über Google Play</string>
-    <string name="home_key_restricted_body">Dieser Fernseher erlaubt Apps, die aus einer APK-Datei installiert wurden, keine Bedienungshilfen-Berechtigungen, deshalb schaltet sich der Schalter wieder aus.\n\nDeinstalliere Matinee, installiere es über Google Play und aktiviere die Option dann erneut.</string>
+    <string name="home_key_restricted_body">Dieser Fernseher erlaubt aus einer APK-Datei installierten Apps keine Bedienungshilfen-Berechtigungen, daher schaltet sich der Schalter wieder aus.\n\nRichte unter Einstellungen → Bluetooth und Fernbedienung automatisches ADB ein oder deinstalliere Matinee und installiere es aus Google Play; schalte dies danach wieder ein.</string>
     <string name="home_key_restricted_try">Trotzdem versuchen</string>
 
     <!-- Notifications -->
@@ -394,7 +396,7 @@
     </plurals>
     <string name="pin_new_title_directions">Wähle 4 Pfeilschritte</string>
     <string name="setting_licenses">Lizenzen</string>
-    <string name="license_text">Wetterdaten von Open‑Meteo.com, lizenziert unter CC BY 4.0.\nSymbole: Tabler Icons, MIT-Lizenz.\nSchrift: Inter, SIL Open Font License 1.1.\nApp-Symbole und -Banner gehören den jeweiligen Apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="license_text">Wetterdaten von Open‑Meteo.com, lizenziert unter CC BY 4.0.\nSymbole: Tabler Icons, MIT-Lizenz.\nSchrift: Inter, SIL Open Font License 1.1.\nApp-Symbole und -Banner gehören den jeweiligen Apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nADB: dadb, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
     <string name="setting_add_app">App zum Startbildschirm hinzufügen</string>
     <string name="setting_add_app_sub">Ausgeblendete oder noch nicht vorhandene Apps</string>
     <string name="setting_show_add_tile">Kachel „App hinzufügen“ zeigen</string>
@@ -415,4 +417,51 @@
     <string name="notice_action_retry">Erneut versuchen</string>
     <string name="notice_play_updates">Play Store-Updates</string>
     <string name="notice_play_updates_sub">Ausstehende Updates im Play Store ansehen</string>
+    <string name="close">Schließen</string>
+    <string name="setting_auto_adb">Automatisches ADB</string>
+    <string name="setting_auto_adb_sub">Matinee erteilt sich seine Berechtigungen und schaltet die Home-Taste wieder ein, wenn der Fernseher sie abschaltet</string>
+    <string name="adb_body">Matinee verbindet sich einmal mit dem Debugging-Port dieses Fernsehers, um sich Berechtigungen zu geben, die Android nur auf diesem Weg erteilt: sichere Einstellungen ändern, damit es die Home-Taste selbst wieder einschalten kann, und Benachrichtigungszugriff. Alles bleibt auf dem Fernseher.\n\n1. Schalte in den Entwickleroptionen des Fernsehers USB-Debugging und Netzwerk-(ADB-)Debugging ein.\n2. Wähle Verbinden. Wenn der Fernseher fragt, setze „Immer zulassen“ und wähle Zulassen.</string>
+    <string name="adb_ready_body">Automatisches ADB ist eingerichtet. Matinee schaltet die Home-Taste von selbst wieder ein, wann immer der Fernseher sie abschaltet.\n\nDie Berechtigungen bleiben, auch wenn du das Netzwerk-Debugging wieder ausschaltest, aber der normale kurze Druck einer Taste und Bildschirm ausschalten brauchen es eingeschaltet.</string>
+    <string name="adb_connect">Verbinden</string>
+    <string name="adb_connecting_short">Warten…</string>
+    <string name="adb_connecting">Warte auf den Fernseher. Wähle in der angezeigten Abfrage Zulassen.</string>
+    <string name="adb_failed_off">Netzwerk-Debugging ist aus. Schalte ADB-Debugging in den Entwickleroptionen des Fernsehers ein und versuche es erneut.</string>
+    <string name="adb_failed_denied">Der Fernseher hat die Verbindung nicht zugelassen. Versuche es erneut und wähle Zulassen in seiner Abfrage.</string>
+    <string name="adb_failed_other">Die Einrichtung wurde nicht abgeschlossen. Versuche es erneut.</string>
+    <string name="setting_key_add">Taste belegen</string>
+    <string name="setting_key_add_sub">Drücke eine Taste der Fernbedienung und wähle, was kurzer, langer und doppelter Druck tun</string>
+    <string name="key_learn_title">Drücke eine Taste</string>
+    <string name="key_learn_body">Drücke die Taste, die du belegen möchtest. Zurück bricht ab.</string>
+    <string name="key_learn_rejected">Home, Zurück, die Pfeile, OK und Ein/Aus behalten ihre Aufgabe. Drücke eine andere Taste.</string>
+    <string name="press_short">Kurz drücken</string>
+    <string name="press_long">Lang drücken</string>
+    <string name="press_double">Doppelt drücken</string>
+    <string name="action_normal">Normal</string>
+    <string name="action_nothing">Nichts tun</string>
+    <string name="action_matinee_home">Matinee-Startseite</string>
+    <string name="action_matinee_settings">Matinee-Einstellungen</string>
+    <string name="action_screen_off">Bildschirm ausschalten</string>
+    <string name="action_open_app">App öffnen</string>
+    <string name="action_open_input">Zu einem Eingang wechseln</string>
+    <string name="key_remove">Belegung entfernen</string>
+    <string name="note_remote_keys">Belegte Tasten funktionieren, solange die Matinee-Home-Taste eingeschaltet ist. Tasten ohne Aktion funktionieren wie bisher.</string>
+    <string name="note_key_normal">Normal behält die eigene Aktion der Taste für diesen Druck. Ist ein langer oder doppelter Druck belegt, braucht der normale kurze Druck automatisches ADB; ohne es bewirkt er nichts.</string>
+    <string name="home_key_switch_off_title">Home-Taste ausschalten?</string>
+    <string name="home_key_switch_off_body">Die Home-Taste öffnet wieder den Startbildschirm des Fernsehers, und belegte Tasten funktionieren nicht mehr. Matinee schaltet sie erst wieder ein, wenn du es tust.</string>
+    <string name="home_key_switch_off">Ausschalten</string>
+    <string name="key_menu">Menü</string>
+    <string name="key_settings">Einstellungen</string>
+    <string name="key_input">Eingang</string>
+    <string name="key_guide">Programmführer</string>
+    <string name="key_info">Info</string>
+    <string name="key_red">Rot</string>
+    <string name="key_green">Grün</string>
+    <string name="key_yellow">Gelb</string>
+    <string name="key_blue">Blau</string>
+    <string name="key_play_pause">Wiedergabe/Pause</string>
+    <string name="key_mute">Stumm</string>
+    <string name="key_volume_up">Lautstärke +</string>
+    <string name="key_volume_down">Lautstärke −</string>
+    <string name="key_channel_up">Kanal +</string>
+    <string name="key_channel_down">Kanal −</string>
 </resources>

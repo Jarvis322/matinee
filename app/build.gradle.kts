@@ -95,4 +95,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    // Talks to the TV's own adb daemon over localhost for the one-time permission setup (Settings → Remote).
+    implementation("dev.mobile:dadb:2.0.0")
+
+    testImplementation("junit:junit:4.13.2")
 }

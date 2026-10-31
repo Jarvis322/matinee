@@ -230,9 +230,9 @@
     <string name="setting_notification_access_sub">Solo lee la información de reproducción y las notificaciones de actualización de Play Store. Nada sale de la TV.</string>
 
     <string name="home_key_service_label">Botón Inicio de Matinee</string>
-    <string name="home_key_service_description">Mantiene Matinee como pantalla de inicio: el botón Inicio del control remoto abre Matinee, y también cuando aparece la pantalla de inicio integrada de la TV. Matinee nunca lee lo que hay en la pantalla.</string>
+    <string name="home_key_service_description">Mantiene Matinee como tu pantalla de inicio: el botón Inicio del mando abre Matinee, y también cuando aparece la pantalla de inicio integrada de la TV. También ejecuta las acciones que asignes a las teclas del mando en los ajustes de Matinee. Matinee nunca lee lo que hay en la pantalla.</string>
     <string name="setting_home_key">Inicio abre Matinee</string>
-    <string name="setting_home_key_sub">Usa un permiso de accesibilidad que solo detecta el botón Inicio y cuándo se abre la pantalla de inicio integrada. No se lee nada de la pantalla.</string>
+    <string name="setting_home_key_sub">Usa un permiso de accesibilidad que solo detecta el botón Inicio, las teclas que asignes y cuándo se abre la pantalla de inicio integrada. No se lee nada de la pantalla.</string>
 
     <string name="setting_wifi_name">Mostrar nombre de la red Wi‑Fi</string>
     <string name="setting_wifi_name_sub">Android solo comparte el nombre de la red con apps que tienen permiso de ubicación. Matinee no lo usa para nada más.</string>
@@ -275,10 +275,12 @@
     <string name="days_ago">Hace %1$d d</string>
     <string name="cancel">Cancelar</string>
     <string name="home_key_disclosure_title">¿Dejar que el botón Inicio abra Matinee?</string>
-    <string name="home_key_disclosure_body">Algunas TV reservan el botón Inicio para su launcher integrado y vuelven a mostrar su pantalla de inicio tras reiniciarse. Para abrir Matinee en su lugar, Matinee usa un permiso de accesibilidad de Android.\n\nSolo detecta el botón Inicio del control remoto y cuándo se abre la pantalla de inicio integrada de la TV. No lee lo que hay en la pantalla, lo que escribes, otras teclas ni otras apps, y no se envía nada a ningún sitio.\n\nEn la siguiente pantalla, elige “Botón Inicio de Matinee” y actívalo. Puedes desactivarlo allí en cualquier momento.</string>
+    <string name="home_key_disclosure_body">Algunas TV reservan el botón Inicio para su launcher integrado y vuelven a mostrar su pantalla de inicio tras reiniciar. Para abrir Matinee en su lugar, y para ejecutar las acciones que asignes a las teclas del mando, Matinee usa un permiso de accesibilidad de Android.\n\nVe las pulsaciones del mando solo para actuar sobre el botón Inicio y las teclas que asignaste; las demás teclas pasan sin cambios. También ve cuándo se abre la pantalla de inicio integrada de la TV. No lee lo que hay en la pantalla, lo que escribes ni otras apps, y no guarda ni envía nada.</string>
+    <string name="home_key_disclosure_steps">En la siguiente pantalla, elige «Botón Inicio de Matinee» y actívalo. Puedes desactivarlo allí cuando quieras.</string>
+    <string name="home_key_disclosure_direct">Matinee lo activa al instante. Puedes desactivarlo aquí cuando quieras.</string>
     <string name="home_key_disclosure_accept">Aceptar y continuar</string>
     <string name="home_key_restricted_title">Primero instala Matinee desde Google Play</string>
-    <string name="home_key_restricted_body">Esta TV no deja que las apps instaladas desde un archivo APK usen permisos de accesibilidad, así que el interruptor se vuelve a desactivar solo.\n\nDesinstala Matinee, instálalo desde Google Play y vuelve a activar esta opción.</string>
+    <string name="home_key_restricted_body">Esta TV no permite que las apps instaladas desde un archivo APK usen permisos de accesibilidad, así que el interruptor se vuelve a desactivar.\n\nConfigura el ADB automático en Ajustes → Bluetooth y control remoto, o desinstala Matinee e instálala desde Google Play; después vuelve a activarlo.</string>
     <string name="home_key_restricted_try">Intentar igualmente</string>
 
     <!-- Notifications -->
@@ -395,7 +397,7 @@
     </plurals>
     <string name="pin_new_title_directions">Elige 4 pasos con las flechas</string>
     <string name="setting_licenses">Licencias</string>
-    <string name="license_text">Datos meteorológicos de Open‑Meteo.com, con licencia CC BY 4.0.\nIconos: Tabler Icons, licencia MIT.\nTipografía: Inter, SIL Open Font License 1.1.\nLos iconos y banners de las apps pertenecen a sus respectivas apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
+    <string name="license_text">Datos meteorológicos de Open‑Meteo.com, con licencia CC BY 4.0.\nIconos: Tabler Icons, licencia MIT.\nTipografía: Inter, SIL Open Font License 1.1.\nLos iconos y banners de las apps pertenecen a sus respectivas apps.\nAirPlay: UxPlay, GPL-3.0; libplist, LGPL-2.1; OpenSSL and Apple ALAC, Apache-2.0.\nADB: dadb, Apache-2.0.\nSource code: github.com/Jarvis322/matinee</string>
     <string name="setting_add_app">Añadir una app a la pantalla de inicio</string>
     <string name="setting_add_app_sub">Apps ocultas o que aún no están en la pantalla de inicio</string>
     <string name="setting_show_add_tile">Mostrar el botón Añadir app</string>
@@ -416,4 +418,51 @@
     <string name="notice_action_retry">Reintentar</string>
     <string name="notice_play_updates">Actualizaciones de Play Store</string>
     <string name="notice_play_updates_sub">Ver las actualizaciones pendientes en Play Store</string>
+    <string name="close">Cerrar</string>
+    <string name="setting_auto_adb">ADB automático</string>
+    <string name="setting_auto_adb_sub">Matinee se concede sus permisos y vuelve a activar el botón Inicio si la TV lo desactiva</string>
+    <string name="adb_body">Matinee se conecta una vez al puerto de depuración de esta TV para concederse permisos que Android solo da por esa vía: cambiar ajustes seguros, para volver a activar el botón Inicio por sí mismo, y el acceso a notificaciones. Todo queda en la TV.\n\n1. En las Opciones de desarrollador de la TV, activa la depuración USB y la depuración por red (ADB).\n2. Elige Conectar. Cuando la TV pregunte, marca «Permitir siempre» y elige Permitir.</string>
+    <string name="adb_ready_body">El ADB automático está configurado. Matinee vuelve a activar el botón Inicio cada vez que la TV lo desactiva.\n\nLos permisos se mantienen aunque vuelvas a desactivar la depuración por red, pero la pulsación corta normal de una tecla y Apagar pantalla la necesitan activada.</string>
+    <string name="adb_connect">Conectar</string>
+    <string name="adb_connecting_short">Esperando…</string>
+    <string name="adb_connecting">Esperando a la TV. Elige Permitir en el aviso que muestra.</string>
+    <string name="adb_failed_off">La depuración por red está desactivada. Activa la depuración ADB en las Opciones de desarrollador de la TV y vuelve a intentarlo.</string>
+    <string name="adb_failed_denied">La TV no permitió la conexión. Vuelve a intentarlo y elige Permitir en su aviso.</string>
+    <string name="adb_failed_other">La configuración no terminó. Vuelve a intentarlo.</string>
+    <string name="setting_key_add">Asignar una tecla</string>
+    <string name="setting_key_add_sub">Pulsa una tecla del mando y elige qué hacen sus pulsaciones corta, larga y doble</string>
+    <string name="key_learn_title">Pulsa una tecla</string>
+    <string name="key_learn_body">Pulsa la tecla del mando que quieres asignar. Atrás cancela.</string>
+    <string name="key_learn_rejected">Inicio, Atrás, las flechas, OK y Encendido mantienen su función. Pulsa otra tecla.</string>
+    <string name="press_short">Pulsación corta</string>
+    <string name="press_long">Pulsación larga</string>
+    <string name="press_double">Doble pulsación</string>
+    <string name="action_normal">Normal</string>
+    <string name="action_nothing">No hacer nada</string>
+    <string name="action_matinee_home">Inicio de Matinee</string>
+    <string name="action_matinee_settings">Ajustes de Matinee</string>
+    <string name="action_screen_off">Apagar pantalla</string>
+    <string name="action_open_app">Abrir una app</string>
+    <string name="action_open_input">Cambiar a una entrada</string>
+    <string name="key_remove">Quitar asignación</string>
+    <string name="note_remote_keys">Las teclas asignadas funcionan mientras el botón Inicio de Matinee está activado. Las teclas sin acción siguen funcionando como antes.</string>
+    <string name="note_key_normal">Normal mantiene la acción propia de la tecla para esa pulsación. Si se asigna una pulsación larga o doble, la pulsación corta normal necesita ADB automático; sin él, no hace nada.</string>
+    <string name="home_key_switch_off_title">¿Desactivar el botón Inicio?</string>
+    <string name="home_key_switch_off_body">El botón Inicio del mando volverá a abrir la pantalla de inicio de la TV y las teclas asignadas dejarán de funcionar. Matinee no lo volverá a activar hasta que tú lo hagas.</string>
+    <string name="home_key_switch_off">Desactivar</string>
+    <string name="key_menu">Menú</string>
+    <string name="key_settings">Ajustes</string>
+    <string name="key_input">Entrada</string>
+    <string name="key_guide">Guía</string>
+    <string name="key_info">Info</string>
+    <string name="key_red">Rojo</string>
+    <string name="key_green">Verde</string>
+    <string name="key_yellow">Amarillo</string>
+    <string name="key_blue">Azul</string>
+    <string name="key_play_pause">Reproducir/Pausa</string>
+    <string name="key_mute">Silencio</string>
+    <string name="key_volume_up">Volumen +</string>
+    <string name="key_volume_down">Volumen −</string>
+    <string name="key_channel_up">Canal +</string>
+    <string name="key_channel_down">Canal −</string>
 </resources>
