@@ -335,7 +335,7 @@ private fun GridTile(
                 .clip(shape)
                 .background(if (cardTheme == CardTheme.LIGHT) CardLight else CardDark)
                 // Scale alone is too subtle from across the room, so focus also lights a bright rim and a sheen.
-                .focusSheen(sheen, shape)
+                .focusSheen(sheen, shape, rim = if (cardTheme == CardTheme.LIGHT) Palette.Amber else Color.White)
                 .then(if (active) Modifier else Modifier.border(1.dp, Color.White.copy(alpha = if (dimmed) 0.05f else 0.14f), shape))
                 .focusRequester(focusRequester)
                 .onFocusChanged {

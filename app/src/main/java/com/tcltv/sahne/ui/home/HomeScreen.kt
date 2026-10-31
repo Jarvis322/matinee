@@ -689,7 +689,8 @@ private fun AppCard(
                         .clip(shape)
                         .background(if (cardTheme == CardTheme.LIGHT) CardLight else CardDark)
                         // Scale alone is too subtle from across the room, so focus also lights a bright rim and a sheen.
-                        .focusSheen(sheen, shape)
+                        // White rims disappear on light cards, so those light up in amber instead.
+                        .focusSheen(sheen, shape, rim = if (cardTheme == CardTheme.LIGHT) Palette.Amber else Color.White)
                         .then(if (focused || lifted) Modifier else Modifier.border(1.dp, Color.White.copy(alpha = if (cardTheme == CardTheme.LIGHT) 0.14f else 0.1f), shape)),
                     contentAlignment = Alignment.Center,
                 ) {

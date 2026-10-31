@@ -375,26 +375,29 @@ fun rememberFocusSheen(focused: Boolean): State<Float> =
         label = "focusSheen",
     )
 
-fun Modifier.focusSheen(alpha: State<Float>, shape: Shape): Modifier = this.then(FocusSheenElement(alpha, shape))
+/** [rim] is the edge colour; white suits dark cards, but vanishes on light ones, which pass a colour that stands out. */
+fun Modifier.focusSheen(alpha: State<Float>, shape: Shape, rim: Color = Color.White): Modifier =
+    this.then(FocusSheenElement(alpha, shape, rim))
 
-private class FocusSheenElement(val alpha: State<Float>, val shape: Shape) : ModifierNodeElement<FocusSheenNode>() {
-    override fun create() = FocusSheenNode(alpha, shape)
+private class FocusSheenElement(val alpha: State<Float>, val shape: Shape, val rim: Color) : ModifierNodeElement<FocusSheenNode>() {
+    override fun create() = FocusSheenNode(alpha, shape, rim)
 
     override fun update(node: FocusSheenNode) {
         node.alpha = alpha
         node.shape = shape
+        node.rim = rim
     }
 
-    override fun equals(other: Any?) = other is FocusSheenElement && other.alpha === alpha && other.shape == shape
+    override fun equals(other: Any?) = other is FocusSheenElement && other.alpha === alpha && other.shape == shape && other.rim == rim
 
-    override fun hashCode() = 31 * System.identityHashCode(alpha) + shape.hashCode()
+    override fun hashCode() = 31 * (31 * System.identityHashCode(alpha) + shape.hashCode()) + rim.hashCode()
 
     override fun InspectorInfo.inspectableProperties() {
         name = "focusSheen"
     }
 }
 
-private class FocusSheenNode(var alpha: State<Float>, var shape: Shape) :
+private class FocusSheenNode(var alpha: State<Float>, var shape: Shape, var rim: Color) :
     Modifier.Node(), DrawModifierNode, CompositionLocalConsumerModifierNode {
 
     override fun ContentDrawScope.draw() {
@@ -418,7 +421,7 @@ private class FocusSheenNode(var alpha: State<Float>, var shape: Shape) :
             }
             drawPath(
                 path,
-                if (full) {
+                if (full && rim == Color.White) {
                     Brush.linearGradient(
                         0f to Color.White.copy(alpha = 0.95f * strength),
                         0.5f to Color.White.copy(alpha = 0.25f * strength),
@@ -427,9 +430,9 @@ private class FocusSheenNode(var alpha: State<Float>, var shape: Shape) :
                         end = Offset(size.width, size.height),
                     )
                 } else {
-                    SolidColor(Color.White.copy(alpha = strength))
+                    SolidColor(rim.copy(alpha = strength))
                 },
-                style = Stroke(width = 3f * density),
+                style = Stroke(width = (if (rim == Color.White) 3f else 4f) * density),
             )
         }
     }
