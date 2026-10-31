@@ -138,6 +138,7 @@ class HomeKeyService : AccessibilityService() {
             KeyAction.MatineeHome -> launch(matineeIntent())
             KeyAction.MatineeSettings -> launch(matineeIntent().putExtra(MainActivity.EXTRA_OPEN_SETTINGS, true))
             KeyAction.ScreenOff -> screenOff()
+            KeyAction.CloseBackgroundApps -> sendBroadcast(Intent(this, CloseAppsReceiver::class.java))
             KeyAction.DoNothing -> Unit
         }
     }

@@ -302,6 +302,7 @@ private val SIMPLE_ACTIONS = listOf(
     R.string.action_matinee_home to KeyAction.MatineeHome,
     R.string.action_matinee_settings to KeyAction.MatineeSettings,
     R.string.action_screen_off to KeyAction.ScreenOff,
+    R.string.action_close_apps to KeyAction.CloseBackgroundApps,
 )
 
 /** Keys Matinee needs for itself or the TV can't do without: Home, Back and navigation, and power. */
@@ -344,6 +345,7 @@ private fun actionLabel(viewModel: LauncherViewModel, action: KeyAction?): Strin
         KeyAction.MatineeHome -> stringResource(R.string.action_matinee_home)
         KeyAction.MatineeSettings -> stringResource(R.string.action_matinee_settings)
         KeyAction.ScreenOff -> stringResource(R.string.action_screen_off)
+        KeyAction.CloseBackgroundApps -> stringResource(R.string.action_close_apps)
         is KeyAction.OpenApp -> apps.firstOrNull { it.packageName == action.packageName }?.label ?: action.packageName
         is KeyAction.OpenInput -> inputs.firstOrNull { it.id == action.inputId }?.name ?: stringResource(R.string.action_open_input)
     }

@@ -130,6 +130,10 @@
                 android:resource="@xml/home_key_service" />
         </service>
 
+        <receiver
+            android:name=".system.CloseAppsReceiver"
+            android:exported="false" />
+
         <service
             android:name=".system.HomeKeyWatchdog"
             android:exported="false"

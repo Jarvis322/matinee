@@ -17,6 +17,7 @@ sealed interface KeyAction {
     data object MatineeHome : KeyAction
     data object MatineeSettings : KeyAction
     data object ScreenOff : KeyAction
+    data object CloseBackgroundApps : KeyAction
     data object DoNothing : KeyAction
 
     fun encode(): String = when (this) {
@@ -25,6 +26,7 @@ sealed interface KeyAction {
         MatineeHome -> "home"
         MatineeSettings -> "settings"
         ScreenOff -> "screen_off"
+        CloseBackgroundApps -> "close_apps"
         DoNothing -> "nothing"
     }
 
@@ -35,6 +37,7 @@ sealed interface KeyAction {
             value == "home" -> MatineeHome
             value == "settings" -> MatineeSettings
             value == "screen_off" -> ScreenOff
+            value == "close_apps" -> CloseBackgroundApps
             value == "nothing" -> DoNothing
             else -> null
         }

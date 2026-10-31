@@ -464,4 +464,5 @@
     <string name="key_volume_down">音量 −</string>
     <string name="key_channel_up">チャンネル +</string>
     <string name="key_channel_down">チャンネル −</string>
+    <string name="action_close_apps">バックグラウンドのアプリを閉じる</string>
 </resources>
