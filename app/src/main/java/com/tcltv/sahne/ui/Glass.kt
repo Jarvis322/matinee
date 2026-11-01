@@ -72,6 +72,9 @@ val LocalWallpaperAnimated = staticCompositionLocalOf { false }
 /** Off draws every glass surface as a flat tint with a thin edge, for TVs whose GPU can't spare the extra passes. */
 val LocalGlassEffects = staticCompositionLocalOf { true }
 
+/** Whether a focused app card gets an outline, which the user can turn off when scale and glow are enough. */
+val LocalFocusOutline = staticCompositionLocalOf { true }
+
 /**
  * How a glass surface is built, as light on top of the backdrop slice: a white veil that is brighter at the top, a
  * diagonal sheen, a thin rim that catches light at the top left, and an optional soft shadow around the outside.
@@ -376,28 +379,36 @@ fun rememberFocusSheen(focused: Boolean): State<Float> =
     )
 
 /** [rim] is the edge colour; white suits dark cards, but vanishes on light ones, which pass a colour that stands out. */
-fun Modifier.focusSheen(alpha: State<Float>, shape: Shape, rim: Color = Color.White): Modifier =
-    this.then(FocusSheenElement(alpha, shape, rim))
+fun Modifier.focusSheen(alpha: State<Float>, shape: Shape, rim: Color = Color.White, outline: Boolean = true): Modifier =
+    this.then(FocusSheenElement(alpha, shape, rim, outline))
 
-private class FocusSheenElement(val alpha: State<Float>, val shape: Shape, val rim: Color) : ModifierNodeElement<FocusSheenNode>() {
-    override fun create() = FocusSheenNode(alpha, shape, rim)
+/** The focus look of an app card: amber rim on light cards, where a white one would vanish, or none if turned off. */
+@Composable
+fun Modifier.appCardFocus(alpha: State<Float>, shape: Shape, lightCard: Boolean): Modifier =
+    focusSheen(alpha, shape, rim = if (lightCard) Palette.Amber else Color.White, outline = LocalFocusOutline.current)
+
+private class FocusSheenElement(val alpha: State<Float>, val shape: Shape, val rim: Color, val outline: Boolean) :
+    ModifierNodeElement<FocusSheenNode>() {
+    override fun create() = FocusSheenNode(alpha, shape, rim, outline)
 
     override fun update(node: FocusSheenNode) {
         node.alpha = alpha
         node.shape = shape
         node.rim = rim
+        node.outline = outline
     }
 
-    override fun equals(other: Any?) = other is FocusSheenElement && other.alpha === alpha && other.shape == shape && other.rim == rim
+    override fun equals(other: Any?) =
+        other is FocusSheenElement && other.alpha === alpha && other.shape == shape && other.rim == rim && other.outline == outline
 
-    override fun hashCode() = 31 * (31 * System.identityHashCode(alpha) + shape.hashCode()) + rim.hashCode()
+    override fun hashCode() = 31 * (31 * (31 * System.identityHashCode(alpha) + shape.hashCode()) + rim.hashCode()) + outline.hashCode()
 
     override fun InspectorInfo.inspectableProperties() {
         name = "focusSheen"
     }
 }
 
-private class FocusSheenNode(var alpha: State<Float>, var shape: Shape, var rim: Color) :
+private class FocusSheenNode(var alpha: State<Float>, var shape: Shape, var rim: Color, var outline: Boolean) :
     Modifier.Node(), DrawModifierNode, CompositionLocalConsumerModifierNode {
 
     override fun ContentDrawScope.draw() {
@@ -419,7 +430,7 @@ private class FocusSheenNode(var alpha: State<Float>, var shape: Shape, var rim:
                     ),
                 )
             }
-            drawPath(
+            if (outline) drawPath(
                 path,
                 if (full && rim == Color.White) {
                     Brush.linearGradient(

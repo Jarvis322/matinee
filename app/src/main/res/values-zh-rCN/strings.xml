@@ -465,4 +465,6 @@
     <string name="key_channel_down">频道 −</string>
     <string name="action_close_apps">关闭后台应用</string>
     <string name="logo_av">AV / 分量</string>
+    <string name="setting_focus_outline">选中应用的边框</string>
+    <string name="setting_focus_outline_sub">关闭后更简洁；选中的应用仍会放大并发光</string>
 </resources>

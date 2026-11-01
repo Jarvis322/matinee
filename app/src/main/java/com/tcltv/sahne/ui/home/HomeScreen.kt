@@ -113,6 +113,7 @@ import com.tcltv.sahne.data.LaunchableApp
 import com.tcltv.sahne.data.TemperatureUnit
 import com.tcltv.sahne.ui.AppGlyph
 import com.tcltv.sahne.ui.Inter
+import com.tcltv.sahne.ui.appCardFocus
 import com.tcltv.sahne.ui.ignoreHeldOk
 import com.tcltv.sahne.ui.KeyCap
 import com.tcltv.sahne.ui.GlassStyle
@@ -689,8 +690,7 @@ private fun AppCard(
                         .clip(shape)
                         .background(if (cardTheme == CardTheme.LIGHT) CardLight else CardDark)
                         // Scale alone is too subtle from across the room, so focus also lights a bright rim and a sheen.
-                        // White rims disappear on light cards, so those light up in amber instead.
-                        .focusSheen(sheen, shape, rim = if (cardTheme == CardTheme.LIGHT) Palette.Amber else Color.White)
+                        .appCardFocus(sheen, shape, lightCard = cardTheme == CardTheme.LIGHT)
                         .then(if (focused || lifted) Modifier else Modifier.border(1.dp, Color.White.copy(alpha = if (cardTheme == CardTheme.LIGHT) 0.14f else 0.1f), shape)),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -717,7 +717,8 @@ private fun AppCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BasicText(app.label, style = interStyle(11.sp, 700, if (editMode) Palette.TextPrimary else lerp(accent, Color.White, 0.45f)))
-            BasicText("  ·  ", style = interStyle(11.sp, 500, Palette.TextMuted))
+            // Plain launching needs no hint now that the focused card stands out; only resuming is worth a word.
+            if (lifted || editMode || resumable) BasicText("  ·  ", style = interStyle(11.sp, 500, Palette.TextMuted))
             when {
                 lifted -> BasicText(stringResource(R.string.edit_drop_at, index + 1), style = interStyle(11.sp, 500, Palette.TextSecondary))
                 editMode -> {
@@ -725,13 +726,10 @@ private fun AppCard(
                     Spacer(Modifier.width(5.dp))
                     BasicText(stringResource(R.string.edit_pick_up), style = interStyle(11.sp, 500, Palette.TextSecondary))
                 }
-                else -> {
+                resumable -> {
                     KeyCap(stringResource(R.string.key_ok))
                     Spacer(Modifier.width(5.dp))
-                    BasicText(
-                        stringResource(if (resumable) R.string.continue_with_ok_suffix else R.string.open_with_ok_suffix),
-                        style = interStyle(11.sp, 500, Palette.TextSecondary),
-                    )
+                    BasicText(stringResource(R.string.continue_with_ok_suffix), style = interStyle(11.sp, 500, Palette.TextSecondary))
                 }
             }
         }

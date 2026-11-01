@@ -49,6 +49,7 @@ data class LauncherSettings(
     val showNotifications: Boolean = true,
     val showChromecast: Boolean = true,
     val showLastPlayed: Boolean = true,
+    val focusOutline: Boolean = true,
     val profileName: String = "",
     val profileColor: Int = 0,
     val showPlayUpdates: Boolean = true,
@@ -107,6 +108,7 @@ class SettingsStore(private val context: Context) {
         val showNotifications = booleanPreferencesKey("show_notifications")
         val showChromecast = booleanPreferencesKey("show_google_home")
         val showLastPlayed = booleanPreferencesKey("show_last_played")
+        val focusOutline = booleanPreferencesKey("focus_outline")
         val profileName = stringPreferencesKey("profile_name")
         val profileColor = intPreferencesKey("profile_color")
         val showPlayUpdates = booleanPreferencesKey("show_play_updates")
@@ -180,6 +182,7 @@ class SettingsStore(private val context: Context) {
             showNotifications = this[Keys.showNotifications] ?: defaults.showNotifications,
             showChromecast = this[Keys.showChromecast] ?: defaults.showChromecast,
             showLastPlayed = this[Keys.showLastPlayed] ?: defaults.showLastPlayed,
+            focusOutline = this[Keys.focusOutline] ?: defaults.focusOutline,
             profileName = this[Keys.profileName] ?: defaults.profileName,
             profileColor = this[Keys.profileColor] ?: defaults.profileColor,
             showPlayUpdates = this[Keys.showPlayUpdates] ?: defaults.showPlayUpdates,
@@ -244,6 +247,7 @@ class SettingsStore(private val context: Context) {
     suspend fun setShowNotifications(value: Boolean) = edit { it[Keys.showNotifications] = value }
     suspend fun setShowChromecast(value: Boolean) = edit { it[Keys.showChromecast] = value }
     suspend fun setShowLastPlayed(value: Boolean) = edit { it[Keys.showLastPlayed] = value }
+    suspend fun setFocusOutline(value: Boolean) = edit { it[Keys.focusOutline] = value }
     suspend fun setProfileName(value: String) = edit { it[Keys.profileName] = value.trim() }
     suspend fun setProfileColor(value: Int) = edit { it[Keys.profileColor] = value }
     suspend fun setShowPlayUpdates(value: Boolean) = edit { it[Keys.showPlayUpdates] = value }

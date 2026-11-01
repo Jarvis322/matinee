@@ -466,4 +466,6 @@
     <string name="key_channel_down">Kanal −</string>
     <string name="action_close_apps">Arka plan uygulamalarını kapat</string>
     <string name="logo_av">AV / komponent</string>
+    <string name="setting_focus_outline">Seçili uygulamada çerçeve</string>
+    <string name="setting_focus_outline_sub">Daha sade görünüm için kapat; seçili uygulama yine büyür ve parlar</string>
 </resources>

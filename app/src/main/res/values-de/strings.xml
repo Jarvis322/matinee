@@ -466,4 +466,6 @@
     <string name="key_channel_down">Kanal −</string>
     <string name="action_close_apps">Hintergrund-Apps schließen</string>
     <string name="logo_av">AV / Komponente</string>
+    <string name="setting_focus_outline">Rahmen um die gewählte App</string>
+    <string name="setting_focus_outline_sub">Für eine schlichtere Optik ausschalten; die gewählte App wird weiterhin größer und leuchtet</string>
 </resources>

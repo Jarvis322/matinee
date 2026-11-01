@@ -467,4 +467,6 @@
     <string name="key_channel_down">Chaîne −</string>
     <string name="action_close_apps">Fermer les applis en arrière-plan</string>
     <string name="logo_av">AV / composante</string>
+    <string name="setting_focus_outline">Contour sur l\'appli sélectionnée</string>
+    <string name="setting_focus_outline_sub">Désactivez pour un rendu plus épuré ; l\'appli sélectionnée grossit et brille toujours</string>
 </resources>

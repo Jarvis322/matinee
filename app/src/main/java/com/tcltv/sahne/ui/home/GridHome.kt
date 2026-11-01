@@ -72,6 +72,7 @@ import com.tcltv.sahne.ui.GlassStyle
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.TintedIcon
+import com.tcltv.sahne.ui.appCardFocus
 import com.tcltv.sahne.ui.focusSheen
 import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.interStyle
@@ -335,7 +336,7 @@ private fun GridTile(
                 .clip(shape)
                 .background(if (cardTheme == CardTheme.LIGHT) CardLight else CardDark)
                 // Scale alone is too subtle from across the room, so focus also lights a bright rim and a sheen.
-                .focusSheen(sheen, shape, rim = if (cardTheme == CardTheme.LIGHT) Palette.Amber else Color.White)
+                .appCardFocus(sheen, shape, lightCard = cardTheme == CardTheme.LIGHT)
                 .then(if (active) Modifier else Modifier.border(1.dp, Color.White.copy(alpha = if (dimmed) 0.05f else 0.14f), shape))
                 .focusRequester(focusRequester)
                 .onFocusChanged {

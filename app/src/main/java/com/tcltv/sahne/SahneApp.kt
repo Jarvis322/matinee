@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tcltv.sahne.ui.DesignCanvas
+import com.tcltv.sahne.ui.LocalFocusOutline
 import com.tcltv.sahne.ui.LocalGlassEffects
 import com.tcltv.sahne.ui.LocalWallpaper
 import com.tcltv.sahne.ui.LocalWallpaperAnimated
@@ -54,6 +55,7 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
     CompositionLocalProvider(
         LocalReduceMotion provides settings.reduceMotion,
         LocalGlassEffects provides settings.glassEffects,
+        LocalFocusOutline provides settings.focusOutline,
         LocalWallpaper provides wallpaper,
         LocalWallpaperAnimated provides settings.wallpaperAnimated,
     ) {

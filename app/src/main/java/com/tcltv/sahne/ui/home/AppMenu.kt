@@ -51,6 +51,7 @@ import com.tcltv.sahne.ui.ImagePicker
 import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.PinSetup
 import com.tcltv.sahne.ui.TextInput
+import com.tcltv.sahne.ui.appCardFocus
 import com.tcltv.sahne.ui.focusSheen
 import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.interStyle
@@ -439,7 +440,7 @@ private fun FolderTile(app: LaunchableApp, cardTheme: com.tcltv.sahne.data.CardT
                 .shadow(if (focused) 14.dp else 0.dp, shape)
                 .clip(shape)
                 .background(if (cardTheme == com.tcltv.sahne.data.CardTheme.LIGHT) CardLight else CardDark)
-                .focusSheen(sheen, shape)
+                .appCardFocus(sheen, shape, lightCard = cardTheme == com.tcltv.sahne.data.CardTheme.LIGHT)
                 .onFocusChanged { focused = it.isFocused }
                 .semantics { contentDescription = app.label }
                 .longPressClickable(onClick = onClick, onLongPress = onLongPress),

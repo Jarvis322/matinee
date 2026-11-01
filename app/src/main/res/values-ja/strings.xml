@@ -466,4 +466,6 @@
     <string name="key_channel_down">チャンネル −</string>
     <string name="action_close_apps">バックグラウンドのアプリを閉じる</string>
     <string name="logo_av">AV / コンポーネント</string>
+    <string name="setting_focus_outline">選択中のアプリの枠</string>
+    <string name="setting_focus_outline_sub">オフにするとすっきり見えます。選択中のアプリは引き続き拡大して光ります</string>
 </resources>
