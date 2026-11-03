@@ -421,7 +421,7 @@
     <string name="notice_self_update">Matinee %1$s is available</string>
     <string name="notice_self_update_sub">From GitHub · installs in one step</string>
     <string name="notice_self_update_downloading">Downloading… %1$d%%</string>
-    <string name="notice_self_update_confirming">Confirm the update on the screen that opened</string>
+    <string name="notice_self_update_confirming">Confirm the update on the screen that opens. Select it again if nothing opened</string>
     <string name="notice_self_update_failed">The update couldn\'t be installed</string>
     <string name="notice_action_install">Install</string>
     <string name="notice_action_retry">Try again</string>
@@ -478,4 +478,7 @@
     <string name="logo_av">AV / component</string>
     <string name="setting_focus_outline">Outline on the selected app</string>
     <string name="setting_focus_outline_sub">Turn off for a cleaner look; the selected app still grows and glows</string>
+    <string name="notice_self_update_permission">Allow Matinee to install apps in the TV\'s settings, or set up Automatic ADB</string>
+    <string name="notice_action_allow">Allow</string>
+    <string name="notice_action_reopen">Open again</string>
 </resources>

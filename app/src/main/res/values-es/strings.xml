@@ -412,7 +412,7 @@
     <string name="notice_self_update">Matinee %1$s está disponible</string>
     <string name="notice_self_update_sub">Desde GitHub · se instala en un paso</string>
     <string name="notice_self_update_downloading">Descargando… %1$d %%</string>
-    <string name="notice_self_update_confirming">Confirma la actualización en la pantalla que se abrió</string>
+    <string name="notice_self_update_confirming">Confirma la actualización en la pantalla que se abre. Vuelve a seleccionarla si no se abrió</string>
     <string name="notice_self_update_failed">No se pudo instalar la actualización</string>
     <string name="notice_action_install">Instalar</string>
     <string name="notice_action_retry">Reintentar</string>
@@ -469,4 +469,7 @@
     <string name="logo_av">AV / componentes</string>
     <string name="setting_focus_outline">Borde en la app seleccionada</string>
     <string name="setting_focus_outline_sub">Desactívalo para un aspecto más limpio; la app seleccionada sigue creciendo y brillando</string>
+    <string name="notice_self_update_permission">Permite a Matinee instalar apps en los ajustes de la TV o configura el ADB automático</string>
+    <string name="notice_action_allow">Permitir</string>
+    <string name="notice_action_reopen">Abrir de nuevo</string>
 </resources>

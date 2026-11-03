@@ -17,7 +17,7 @@ class UpdateInstallReceiver : BroadcastReceiver() {
                     SelfUpdater.installFailed("no confirmation screen")
                     return
                 }
-                context.startActivity(confirm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                SelfUpdater.confirmationReady(context, confirm)
             }
             // The new version replaces this process; nothing is left to do here.
             PackageInstaller.STATUS_SUCCESS -> Unit

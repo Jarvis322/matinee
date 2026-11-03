@@ -410,7 +410,7 @@
     <string name="notice_self_update">Matinee %1$s 已推出</string>
     <string name="notice_self_update_sub">来自 GitHub · 一步安装</string>
     <string name="notice_self_update_downloading">正在下载… %1$d%%</string>
-    <string name="notice_self_update_confirming">请在打开的界面中确认更新</string>
+    <string name="notice_self_update_confirming">请在打开的界面中确认更新。如果没有打开，请再次选择</string>
     <string name="notice_self_update_failed">无法安装更新</string>
     <string name="notice_action_install">安装</string>
     <string name="notice_action_retry">重试</string>
@@ -467,4 +467,7 @@
     <string name="logo_av">AV / 分量</string>
     <string name="setting_focus_outline">选中应用的边框</string>
     <string name="setting_focus_outline_sub">关闭后更简洁；选中的应用仍会放大并发光</string>
+    <string name="notice_self_update_permission">请在电视设置中允许 Matinee 安装应用，或设置自动 ADB</string>
+    <string name="notice_action_allow">允许</string>
+    <string name="notice_action_reopen">重新打开</string>
 </resources>

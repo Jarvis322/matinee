@@ -566,7 +566,11 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
             is Notice.MemoryHigh -> cleanMemory()
             is Notice.AppUpdate -> {
                 // Kept in the list, so its progress and any failure stay visible.
-                viewModelScope.launch { SelfUpdater.install(getApplication()) }
+                viewModelScope.launch {
+                    SelfUpdater.install(getApplication())
+                    // With Automatic ADB the permission is given on the spot; only without it does the user need the page.
+                    if (SelfUpdater.update.value?.stage == SelfUpdate.Stage.NEEDS_PERMISSION) openInstallPermissionSettings()
+                }
                 return
             }
         }
@@ -582,6 +586,13 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
             .setPackage(TvNotificationListener.PLAY_STORE)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         if (!startSafely(intent)) openPlayStore()
+    }
+
+    /** Android's "install unknown apps" page for Matinee; TVs without it fall back to their main settings. */
+    private fun openInstallPermissionSettings() {
+        val app = getApplication<Application>()
+        val page = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.fromParts("package", app.packageName, null))
+        if (!startSafely(page.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))) openSystemSettings(Settings.ACTION_SETTINGS)
     }
 
     private fun openPlayStore(): Boolean {

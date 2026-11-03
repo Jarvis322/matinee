@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.SystemClock
 import android.util.Log
+import com.tcltv.sahne.system.LocalAdb
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,6 +44,10 @@ object SelfUpdater {
     val update: StateFlow<SelfUpdate?> = _update.asStateFlow()
 
     private val lock = Mutex()
+
+    /** Android's confirmation screen for the update in progress, kept so it can be opened again if it didn't show. */
+    @Volatile
+    private var pendingConfirmation: Intent? = null
     private var lastCheckAt = 0L
     private var downloadUrl: String? = null
 
@@ -76,7 +81,16 @@ object SelfUpdater {
     suspend fun install(context: Context) {
         val current = _update.value ?: return
         val url = downloadUrl ?: return
-        if (current.stage == SelfUpdate.Stage.DOWNLOADING || current.stage == SelfUpdate.Stage.CONFIRMING) return
+        if (current.stage == SelfUpdate.Stage.DOWNLOADING) return
+        if (current.stage == SelfUpdate.Stage.CONFIRMING) {
+            // The screen is only started from the foreground; selecting the update again brings it back.
+            pendingConfirmation?.let { runCatching { context.startActivity(Intent(it).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } }
+            return
+        }
+        if (!context.packageManager.canRequestPackageInstalls() && !allowInstalls(context)) {
+            _update.value = current.copy(stage = SelfUpdate.Stage.NEEDS_PERMISSION)
+            return
+        }
         _update.value = current.copy(stage = SelfUpdate.Stage.DOWNLOADING, percent = 0)
         val apk = File(context.cacheDir, APK_NAME)
         try {
@@ -90,6 +104,30 @@ object SelfUpdater {
         } finally {
             apk.delete()
         }
+    }
+
+    /** Called by [UpdateInstallReceiver] with the screen Android wants shown; false if it can't be opened right now. */
+    internal fun confirmationReady(context: Context, confirmation: Intent): Boolean {
+        pendingConfirmation = confirmation
+        return try {
+            context.startActivity(Intent(confirmation).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            true
+        } catch (e: RuntimeException) {
+            // Started from the background Android may refuse; the update stays selectable to open the screen again.
+            Log.w(TAG, "confirmation screen not opened: ${e.message}")
+            false
+        }
+    }
+
+    /**
+     * Many TVs have no settings page for "install unknown apps", so Android's refusal leads nowhere. With Automatic
+     * ADB set up, Matinee allows it itself.
+     */
+    private suspend fun allowInstalls(context: Context): Boolean = withContext(Dispatchers.IO) {
+        val adb = LocalAdb(context)
+        adb.isSetUp() &&
+            adb.runQuietly("appops set ${context.packageName} REQUEST_INSTALL_PACKAGES allow") &&
+            context.packageManager.canRequestPackageInstalls()
     }
 
     /** Called by [UpdateInstallReceiver] when Android's installer gives up or the user cancels. */

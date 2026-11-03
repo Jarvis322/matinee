@@ -13,6 +13,9 @@ data class SelfUpdate(
 
         /** Android's own install screen is up and waits for the user. */
         CONFIRMING,
+
+        /** Android won't let Matinee install until the user allows it, and nothing has been downloaded yet. */
+        NEEDS_PERMISSION,
         FAILED,
     }
 }

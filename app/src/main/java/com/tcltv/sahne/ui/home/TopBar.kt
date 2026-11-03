@@ -533,7 +533,8 @@ private fun NotificationPanel(viewModel: LauncherViewModel, onClose: () -> Unit)
                 modifier = if (index == 0) Modifier.focusRequester(firstFocus) else Modifier,
             ) {
                 viewModel.openNotice(notice)
-                onClose()
+                // The update's row shows its download and any failure, so the panel stays open for it.
+                if (notice !is Notice.AppUpdate) onClose()
             }
         }
         if (settings.showPlayUpdates) {
@@ -599,6 +600,7 @@ private fun NoticeRow(notice: Notice, modifier: Modifier, onClick: () -> Unit) {
             SelfUpdate.Stage.AVAILABLE -> stringResource(R.string.notice_self_update_sub)
             SelfUpdate.Stage.DOWNLOADING -> stringResource(R.string.notice_self_update_downloading, notice.update.percent)
             SelfUpdate.Stage.CONFIRMING -> stringResource(R.string.notice_self_update_confirming)
+            SelfUpdate.Stage.NEEDS_PERMISSION -> stringResource(R.string.notice_self_update_permission)
             SelfUpdate.Stage.FAILED -> stringResource(R.string.notice_self_update_failed)
         }
     }
@@ -607,7 +609,12 @@ private fun NoticeRow(notice: Notice, modifier: Modifier, onClick: () -> Unit) {
         is Notice.NewDevice -> stringResource(R.string.notice_action_device)
         is Notice.MemoryHigh -> stringResource(R.string.notice_action_memory)
         is Notice.AppUpdate -> stringResource(
-            if (notice.update.stage == SelfUpdate.Stage.FAILED) R.string.notice_action_retry else R.string.notice_action_install,
+            when (notice.update.stage) {
+                SelfUpdate.Stage.FAILED -> R.string.notice_action_retry
+                SelfUpdate.Stage.NEEDS_PERMISSION -> R.string.notice_action_allow
+                SelfUpdate.Stage.CONFIRMING -> R.string.notice_action_reopen
+                else -> R.string.notice_action_install
+            },
         )
     }
     PanelRow(icon, tile, title, subtitle, action, modifier, onClick)

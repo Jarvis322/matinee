@@ -411,7 +411,7 @@
     <string name="notice_self_update">Matinee %1$s hazır</string>
     <string name="notice_self_update_sub">GitHub\'dan · tek adımda kurulur</string>
     <string name="notice_self_update_downloading">İndiriliyor… %%%1$d</string>
-    <string name="notice_self_update_confirming">Açılan ekranda güncellemeyi onaylayın</string>
+    <string name="notice_self_update_confirming">Açılan ekranda güncellemeyi onaylayın. Ekran açılmadıysa tekrar seçin</string>
     <string name="notice_self_update_failed">Güncelleme kurulamadı</string>
     <string name="notice_action_install">Kur</string>
     <string name="notice_action_retry">Tekrar dene</string>
@@ -468,4 +468,7 @@
     <string name="logo_av">AV / komponent</string>
     <string name="setting_focus_outline">Seçili uygulamada çerçeve</string>
     <string name="setting_focus_outline_sub">Daha sade görünüm için kapat; seçili uygulama yine büyür ve parlar</string>
+    <string name="notice_self_update_permission">TV ayarlarından Matinee\'ye uygulama kurma izni ver ya da Otomatik ADB\'yi kur</string>
+    <string name="notice_action_allow">İzin ver</string>
+    <string name="notice_action_reopen">Tekrar aç</string>
 </resources>

@@ -411,7 +411,7 @@
     <string name="notice_self_update">Matinee %1$s が利用可能です</string>
     <string name="notice_self_update_sub">GitHub から · ワンステップでインストール</string>
     <string name="notice_self_update_downloading">ダウンロード中… %1$d%%</string>
-    <string name="notice_self_update_confirming">表示された画面でアップデートを確定してください</string>
+    <string name="notice_self_update_confirming">表示された画面でアップデートを承認してください。何も開かない場合はもう一度選んでください</string>
     <string name="notice_self_update_failed">アップデートをインストールできませんでした</string>
     <string name="notice_action_install">インストール</string>
     <string name="notice_action_retry">再試行</string>
@@ -468,4 +468,7 @@
     <string name="logo_av">AV / コンポーネント</string>
     <string name="setting_focus_outline">選択中のアプリの枠</string>
     <string name="setting_focus_outline_sub">オフにするとすっきり見えます。選択中のアプリは引き続き拡大して光ります</string>
+    <string name="notice_self_update_permission">テレビの設定で Matinee にアプリのインストールを許可するか、自動 ADB を設定してください</string>
+    <string name="notice_action_allow">許可</string>
+    <string name="notice_action_reopen">もう一度開く</string>
 </resources>
