@@ -480,4 +480,5 @@
     <string name="background_apps_close_all">Alle schließen</string>
     <string name="background_apps_close">Schließen</string>
     <string name="note_background_apps">Schließen beendet die App vollständig, wie Beenden erzwingen in den TV-Einstellungen. Alle schließen lässt die vom Aufräumen ausgenommenen Apps in Ruhe.</string>
+    <string name="input_switch_failed">Dieser Fernseher kann nicht direkt zu diesem Eingang wechseln. Nutze die Quellentaste des Fernsehers.</string>
 </resources>

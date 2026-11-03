@@ -480,4 +480,5 @@
     <string name="background_apps_close_all">Hepsini kapat</string>
     <string name="background_apps_close">Kapat</string>
     <string name="note_background_apps">Kapatmak uygulamayı TV ayarlarındaki Zorla durdur gibi tamamen durdurur. Hepsini kapat, temizliğin dışında tuttuğun uygulamalara dokunmaz.</string>
+    <string name="input_switch_failed">Bu TV o girişe doğrudan geçemiyor. TV\'nin kendi kaynak tuşunu kullan.</string>
 </resources>

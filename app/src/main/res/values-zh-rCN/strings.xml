@@ -479,4 +479,5 @@
     <string name="background_apps_close_all">全部关闭</string>
     <string name="background_apps_close">关闭</string>
     <string name="note_background_apps">关闭会像电视设置中的“强制停止”一样完全停止应用。“全部关闭”不会影响你从清理中排除的应用。</string>
+    <string name="input_switch_failed">这台电视无法直接切换到该输入源。请使用电视自带的信号源按钮。</string>
 </resources>

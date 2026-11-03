@@ -481,4 +481,5 @@
     <string name="background_apps_close_all">Tout fermer</string>
     <string name="background_apps_close">Fermer</string>
     <string name="note_background_apps">Fermer arrête complètement l\'appli, comme Forcer l\'arrêt dans les réglages de la TV. Tout fermer épargne les applis exclues du nettoyage.</string>
+    <string name="input_switch_failed">Cette TV ne peut pas passer directement à cette entrée. Utilisez le bouton de source de la TV.</string>
 </resources>

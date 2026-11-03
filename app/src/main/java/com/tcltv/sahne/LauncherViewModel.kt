@@ -22,6 +22,7 @@ import com.tcltv.sahne.data.KeyBindingStore
 import com.tcltv.sahne.data.PressType
 import com.tcltv.sahne.system.BackgroundApps
 import com.tcltv.sahne.system.HomeKeyGuard
+import com.tcltv.sahne.system.InputSwitcher
 import com.tcltv.sahne.system.HomeKeyWatchdog
 import com.tcltv.sahne.system.LocalAdb
 import com.tcltv.sahne.update.SelfUpdate
@@ -191,6 +192,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private val localAdb = LocalAdb(application)
     private val keyBindingStore = KeyBindingStore(application)
     private val backgroundApps = BackgroundApps(localAdb, application.packageName)
+    private val inputSwitcher = InputSwitcher(application, localAdb)
 
     val settings: StateFlow<LauncherSettings> = settingsStore.settings
         .stateIn(viewModelScope, SharingStarted.Eagerly, LauncherSettings())
@@ -315,7 +317,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     val liveTvInputs: StateFlow<List<LiveTvInput>> = liveTvCatalog.tuners
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    fun openLiveTv(input: LiveTvInput) = startSafely(liveTvCatalog.tunerIntent(input))
+    fun openLiveTv(input: LiveTvInput) = switchTo(liveTvCatalog.tunerIntent(input))
 
     // The panel, its mini items and the grid hero show the same files, and focus moves ask again each time.
     private val artworkCache = object : LruCache<String, ImageBitmap>(ARTWORK_CACHE_BYTES) {
@@ -807,7 +809,12 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun openInput(input: HdmiInput) = startSafely(inputCatalog.launchIntent(input.id))
+    fun openInput(input: HdmiInput) = switchTo(inputCatalog.launchIntent(input.id))
+
+    /** Switching can wait on adb when the TV can't open the input itself, so it never runs on the main thread. */
+    private fun switchTo(intent: Intent) {
+        viewModelScope.launch(Dispatchers.IO) { inputSwitcher.open(intent) }
+    }
 
     fun openAppInfo(app: LaunchableApp) = startSafely(
         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", app.packageName, null))

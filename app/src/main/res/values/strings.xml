@@ -490,4 +490,5 @@
     <string name="background_apps_close_all">Close all</string>
     <string name="background_apps_close">Close</string>
     <string name="note_background_apps">Closing stops the app completely, like Force stop in the TV\'s settings. Close all skips the apps you keep out of cleanups.</string>
+    <string name="input_switch_failed">This TV can\'t switch to that input directly. Use the TV\'s own source button.</string>
 </resources>

@@ -480,4 +480,5 @@
     <string name="background_apps_close_all">すべて閉じる</string>
     <string name="background_apps_close">閉じる</string>
     <string name="note_background_apps">閉じるとテレビの設定の「強制停止」と同様にアプリが完全に停止します。「すべて閉じる」は、クリーンアップの除外にしたアプリには触れません。</string>
+    <string name="input_switch_failed">このテレビはその入力に直接切り替えられません。テレビの入力切替ボタンを使ってください。</string>
 </resources>

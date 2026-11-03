@@ -481,4 +481,5 @@
     <string name="background_apps_close_all">Cerrar todas</string>
     <string name="background_apps_close">Cerrar</string>
     <string name="note_background_apps">Cerrar detiene la app por completo, como Forzar detención en los ajustes de la TV. Cerrar todas respeta las apps que excluyes de la limpieza.</string>
+    <string name="input_switch_failed">Esta TV no puede cambiar directamente a esa entrada. Usa el botón de fuente de la TV.</string>
 </resources>

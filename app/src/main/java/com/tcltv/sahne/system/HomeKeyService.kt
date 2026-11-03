@@ -40,6 +40,7 @@ class HomeKeyService : AccessibilityService() {
     private val handler = Handler(Looper.getMainLooper())
     private val bindings by lazy { KeyBindingStore(this) }
     private val adb by lazy { LocalAdb(this) }
+    private val inputSwitcher by lazy { InputSwitcher(this, adb) }
     // adb calls block on a socket; they must never hold up the key events behind them.
     private val adbExecutor = Executors.newSingleThreadExecutor()
     private val classifier by lazy {
@@ -131,10 +132,12 @@ class HomeKeyService : AccessibilityService() {
         when (val action = binding.actions[press]) {
             null -> passThrough(keyCode)
             is KeyAction.OpenApp -> launch(appIntent(action.packageName))
-            is KeyAction.OpenInput -> launch(
-                Intent(Intent.ACTION_VIEW, TvContract.buildChannelUriForPassthroughInput(action.inputId))
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-            )
+            is KeyAction.OpenInput -> adbExecutor.execute {
+                inputSwitcher.open(
+                    Intent(Intent.ACTION_VIEW, TvContract.buildChannelUriForPassthroughInput(action.inputId))
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                )
+            }
             KeyAction.MatineeHome -> launch(matineeIntent())
             KeyAction.MatineeSettings -> launch(matineeIntent().putExtra(MainActivity.EXTRA_OPEN_SETTINGS, true))
             KeyAction.ScreenOff -> screenOff()
