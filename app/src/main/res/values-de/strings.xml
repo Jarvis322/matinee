@@ -471,4 +471,13 @@
     <string name="notice_self_update_permission">Erlaube Matinee in den TV-Einstellungen das Installieren von Apps oder richte automatisches ADB ein</string>
     <string name="notice_action_allow">Zulassen</string>
     <string name="notice_action_reopen">Erneut öffnen</string>
+    <string name="setting_background_apps">Hintergrund-Apps</string>
+    <string name="setting_background_apps_sub">Sieh, was noch läuft, und schließe Apps einzeln oder alle auf einmal</string>
+    <string name="background_apps_loading">Suche nach laufenden Apps</string>
+    <string name="background_apps_needs_adb">Benötigt automatisches ADB</string>
+    <string name="background_apps_needs_adb_sub">Android zeigt Prozesse anderer Apps nur über adb. Richte es unter Bluetooth und Fernbedienung ein.</string>
+    <string name="background_apps_none">Keine Apps laufen im Hintergrund</string>
+    <string name="background_apps_close_all">Alle schließen</string>
+    <string name="background_apps_close">Schließen</string>
+    <string name="note_background_apps">Schließen beendet die App vollständig, wie Beenden erzwingen in den TV-Einstellungen. Alle schließen lässt die vom Aufräumen ausgenommenen Apps in Ruhe.</string>
 </resources>

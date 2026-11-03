@@ -481,4 +481,13 @@
     <string name="notice_self_update_permission">Allow Matinee to install apps in the TV\'s settings, or set up Automatic ADB</string>
     <string name="notice_action_allow">Allow</string>
     <string name="notice_action_reopen">Open again</string>
+    <string name="setting_background_apps">Background apps</string>
+    <string name="setting_background_apps_sub">See what still runs and close apps one by one or all at once</string>
+    <string name="background_apps_loading">Looking for running apps</string>
+    <string name="background_apps_needs_adb">Needs Automatic ADB</string>
+    <string name="background_apps_needs_adb_sub">Android shows other apps\' processes only over adb. Set it up under Bluetooth and remote.</string>
+    <string name="background_apps_none">No apps are running in the background</string>
+    <string name="background_apps_close_all">Close all</string>
+    <string name="background_apps_close">Close</string>
+    <string name="note_background_apps">Closing stops the app completely, like Force stop in the TV\'s settings. Close all skips the apps you keep out of cleanups.</string>
 </resources>

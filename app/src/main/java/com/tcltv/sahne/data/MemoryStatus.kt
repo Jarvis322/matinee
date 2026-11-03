@@ -31,16 +31,17 @@ class MemoryStatus(context: Context) {
         CleanResult(freedBytes = (after - before).coerceAtLeast(0), closedApps = targets.size)
     }
 
-    private companion object {
+    companion object {
         // TCL lists system services (input switching, HDMI, quick panel) as launchable apps; never close them.
-        val PROTECTED_PREFIXES = listOf("com.tcl.", "com.realtek.", "com.android.", "com.google.android.gms", "com.google.android.gsf")
-        val PROTECTED_PACKAGES = setOf(
+        private val PROTECTED_PREFIXES = listOf("com.tcl.", "com.realtek.", "com.android.", "com.google.android.gms", "com.google.android.gsf")
+        private val PROTECTED_PACKAGES = setOf(
             "com.google.android.tv.remote.service",
             "com.google.android.apps.tv.launcherx",
             "com.google.android.apps.mediashell",
             "com.android.vending",
         )
 
+        /** Apps that are never closed for the user: system services listed as launchable, and the stock TV shell. */
         fun isProtected(pkg: String): Boolean =
             pkg in PROTECTED_PACKAGES || PROTECTED_PREFIXES.any { pkg.startsWith(it) } || ".inputmethod." in pkg
     }

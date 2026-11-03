@@ -472,4 +472,13 @@
     <string name="notice_self_update_permission">Permite a Matinee instalar apps en los ajustes de la TV o configura el ADB automático</string>
     <string name="notice_action_allow">Permitir</string>
     <string name="notice_action_reopen">Abrir de nuevo</string>
+    <string name="setting_background_apps">Apps en segundo plano</string>
+    <string name="setting_background_apps_sub">Mira qué sigue en ejecución y cierra apps una a una o todas a la vez</string>
+    <string name="background_apps_loading">Buscando apps en ejecución</string>
+    <string name="background_apps_needs_adb">Requiere ADB automático</string>
+    <string name="background_apps_needs_adb_sub">Android muestra los procesos de otras apps solo por adb. Configúralo en Bluetooth y control remoto.</string>
+    <string name="background_apps_none">No hay apps en segundo plano</string>
+    <string name="background_apps_close_all">Cerrar todas</string>
+    <string name="background_apps_close">Cerrar</string>
+    <string name="note_background_apps">Cerrar detiene la app por completo, como Forzar detención en los ajustes de la TV. Cerrar todas respeta las apps que excluyes de la limpieza.</string>
 </resources>

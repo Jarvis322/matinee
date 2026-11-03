@@ -471,4 +471,13 @@
     <string name="notice_self_update_permission">テレビの設定で Matinee にアプリのインストールを許可するか、自動 ADB を設定してください</string>
     <string name="notice_action_allow">許可</string>
     <string name="notice_action_reopen">もう一度開く</string>
+    <string name="setting_background_apps">バックグラウンドのアプリ</string>
+    <string name="setting_background_apps_sub">動作中のアプリを確認し、1 つずつまたはまとめて閉じます</string>
+    <string name="background_apps_loading">動作中のアプリを検索しています</string>
+    <string name="background_apps_needs_adb">自動 ADB が必要です</string>
+    <string name="background_apps_needs_adb_sub">他のアプリのプロセスは adb 経由でのみ表示されます。「Bluetooth とリモコン」で設定してください。</string>
+    <string name="background_apps_none">バックグラウンドで動作中のアプリはありません</string>
+    <string name="background_apps_close_all">すべて閉じる</string>
+    <string name="background_apps_close">閉じる</string>
+    <string name="note_background_apps">閉じるとテレビの設定の「強制停止」と同様にアプリが完全に停止します。「すべて閉じる」は、クリーンアップの除外にしたアプリには触れません。</string>
 </resources>

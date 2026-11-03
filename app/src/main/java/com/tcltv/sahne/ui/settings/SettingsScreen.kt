@@ -97,6 +97,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tcltv.sahne.BackgroundAppsState
 import com.tcltv.sahne.CitySearchState
 import com.tcltv.sahne.HomeKeyProblem
 import com.tcltv.sahne.LauncherViewModel
@@ -151,6 +152,7 @@ private sealed interface SubPage {
     data class InputEditor(val inputId: String) : SubPage
     data class KeyEditor(val keyCode: Int) : SubPage
     data object CleanExclusions : SubPage
+    data object BackgroundApps : SubPage
     data object Language : SubPage
     data object Licenses : SubPage
     data object LockedApps : SubPage
@@ -244,6 +246,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                     SubPage.CitySearch -> stringResource(R.string.setting_city)
                     SubPage.ProfileName -> stringResource(R.string.setting_profile_name)
                     SubPage.CleanExclusions -> stringResource(R.string.setting_exclusions)
+                    SubPage.BackgroundApps -> stringResource(R.string.setting_background_apps)
                     SubPage.Language -> stringResource(R.string.setting_language)
                     SubPage.Licenses -> stringResource(R.string.setting_licenses)
                     SubPage.LockedApps -> stringResource(R.string.setting_locked_apps)
@@ -261,6 +264,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                 is SubPage.KeyEditor -> KeyEditorPage(viewModel, page.keyCode, panelRequester) { closePage() }
                 SubPage.ProfileName -> ProfileNamePage(viewModel, panelRequester)
                 SubPage.CleanExclusions -> CleanExclusionsPage(viewModel, panelRequester)
+                SubPage.BackgroundApps -> BackgroundAppsPage(viewModel, panelRequester)
                 SubPage.Language -> LanguagePage(panelRequester)
                 SubPage.Licenses -> LicensesPage(panelRequester)
                 SubPage.LockedApps -> LockedAppsPage(viewModel, panelRequester)
@@ -646,6 +650,12 @@ private fun DevicePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, 
         ) { viewModel.cleanMemory() }
         ToggleRow(R.string.setting_auto_clean, R.string.setting_auto_clean_sub, s.autoCleanMemory) { viewModel.update { setAutoCleanMemory(it) } }
         ValueRow(
+            R.string.setting_background_apps,
+            R.string.setting_background_apps_sub,
+            null,
+            Modifier.opensPage(SubPage.BackgroundApps),
+        ) { open(SubPage.BackgroundApps) }
+        ValueRow(
             R.string.setting_exclusions,
             null,
             if (s.memoryCleanExclusions.isEmpty()) stringResource(R.string.none) else stringResource(R.string.app_count, s.memoryCleanExclusions.size),
@@ -967,6 +977,45 @@ private fun LockedAppsPage(viewModel: LauncherViewModel, firstRow: FocusRequeste
                 modifier = if (index == 0) Modifier.focusRequester(firstRow) else Modifier,
             ) { viewModel.setAppLocked(app.packageName, !app.isLocked) }
         }
+    }
+}
+
+/** Apps that still run behind Matinee, each closed with one press, or all at once. */
+@Composable
+private fun BackgroundAppsPage(viewModel: LauncherViewModel, firstRow: FocusRequester) {
+    val state by viewModel.backgroundAppsState.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) { viewModel.refreshBackgroundApps() }
+    // The rows come and go as the list loads and apps close; whichever row held focus is gone, so focus starts over.
+    val rows = (state as? BackgroundAppsState.Ready)?.apps?.map { it.packageName } ?: state::class
+    LaunchedEffect(rows) { runCatching { firstRow.requestFocus() } }
+    PanelList {
+        when (val current = state) {
+            BackgroundAppsState.Loading -> InfoRow(R.string.background_apps_loading, null, "…", Modifier.focusRequester(firstRow))
+            BackgroundAppsState.NeedsAdb -> {
+                InfoRow(
+                    R.string.background_apps_needs_adb,
+                    R.string.background_apps_needs_adb_sub,
+                    stringResource(R.string.switch_off),
+                    Modifier.focusRequester(firstRow),
+                )
+            }
+            is BackgroundAppsState.Ready -> {
+                if (current.apps.isEmpty()) {
+                    InfoRow(R.string.background_apps_none, null, "0", Modifier.focusRequester(firstRow))
+                } else {
+                    ValueRow(
+                        R.string.background_apps_close_all,
+                        null,
+                        stringResource(R.string.app_count, current.apps.size),
+                        Modifier.focusRequester(firstRow),
+                    ) { viewModel.closeBackgroundApp(null) }
+                    current.apps.forEach { app ->
+                        ValueRow(app.label, null, stringResource(R.string.background_apps_close)) { viewModel.closeBackgroundApp(app) }
+                    }
+                }
+            }
+        }
+        Note(R.string.note_background_apps)
     }
 }
 

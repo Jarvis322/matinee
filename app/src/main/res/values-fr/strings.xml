@@ -472,4 +472,13 @@
     <string name="notice_self_update_permission">Autorisez Matinee à installer des applis dans les réglages de la TV, ou configurez l\'ADB automatique</string>
     <string name="notice_action_allow">Autoriser</string>
     <string name="notice_action_reopen">Rouvrir</string>
+    <string name="setting_background_apps">Applis en arrière-plan</string>
+    <string name="setting_background_apps_sub">Voyez ce qui tourne encore et fermez les applis une à une ou toutes d\'un coup</string>
+    <string name="background_apps_loading">Recherche des applis en cours</string>
+    <string name="background_apps_needs_adb">ADB automatique requis</string>
+    <string name="background_apps_needs_adb_sub">Android ne montre les processus des autres applis que via adb. Configurez-le sous Bluetooth et télécommande.</string>
+    <string name="background_apps_none">Aucune appli en arrière-plan</string>
+    <string name="background_apps_close_all">Tout fermer</string>
+    <string name="background_apps_close">Fermer</string>
+    <string name="note_background_apps">Fermer arrête complètement l\'appli, comme Forcer l\'arrêt dans les réglages de la TV. Tout fermer épargne les applis exclues du nettoyage.</string>
 </resources>

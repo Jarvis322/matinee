@@ -20,6 +20,7 @@ import com.tcltv.sahne.data.KeyAction
 import com.tcltv.sahne.data.KeyBinding
 import com.tcltv.sahne.data.KeyBindingStore
 import com.tcltv.sahne.data.PressType
+import com.tcltv.sahne.system.BackgroundApps
 import com.tcltv.sahne.system.HomeKeyGuard
 import com.tcltv.sahne.system.HomeKeyWatchdog
 import com.tcltv.sahne.system.LocalAdb
@@ -143,6 +144,14 @@ enum class HomeKeyProblem {
     SWITCHED_OFF,
 }
 
+sealed interface BackgroundAppsState {
+    data object Loading : BackgroundAppsState
+
+    /** The list comes from Automatic ADB, which isn't set up or reachable. */
+    data object NeedsAdb : BackgroundAppsState
+    data class Ready(val apps: List<LaunchableApp>) : BackgroundAppsState
+}
+
 sealed interface AdbSetupState {
     data object Idle : AdbSetupState
     data object Connecting : AdbSetupState
@@ -181,6 +190,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private val homeKeyGuard = HomeKeyGuard(application)
     private val localAdb = LocalAdb(application)
     private val keyBindingStore = KeyBindingStore(application)
+    private val backgroundApps = BackgroundApps(localAdb, application.packageName)
 
     val settings: StateFlow<LauncherSettings> = settingsStore.settings
         .stateIn(viewModelScope, SharingStarted.Eagerly, LauncherSettings())
@@ -456,6 +466,39 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         getApplication<Application>().sendBroadcast(
             Intent(HomeKeyService.ACTION_LEARN_KEY).setPackage(getApplication<Application>().packageName),
         )
+    }
+
+    private val _backgroundApps = MutableStateFlow<BackgroundAppsState>(BackgroundAppsState.Loading)
+    val backgroundAppsState: StateFlow<BackgroundAppsState> = _backgroundApps.asStateFlow()
+
+    /** Looks up which apps are still running; the shell commands block on a socket, so this runs off the main thread. */
+    fun refreshBackgroundApps() {
+        viewModelScope.launch {
+            val candidates = allApps.value.filter { it.folderId == null }.associateBy { it.packageName }
+            val running = withContext(Dispatchers.IO) { backgroundApps.running(candidates.keys) }
+            _backgroundApps.value = if (running == null) {
+                BackgroundAppsState.NeedsAdb
+            } else {
+                BackgroundAppsState.Ready(running.mapNotNull { candidates[it] }.sortedBy { it.label.lowercase() })
+            }
+        }
+    }
+
+    /** Closes one app, or with null all of those listed except the ones the user keeps out of cleanups. */
+    fun closeBackgroundApp(app: LaunchableApp?) {
+        val state = _backgroundApps.value as? BackgroundAppsState.Ready ?: return
+        val targets = if (app != null) {
+            listOf(app)
+        } else {
+            state.apps.filter { it.packageName !in settings.value.memoryCleanExclusions }
+        }
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) { targets.forEach { backgroundApps.close(it.packageName) } }
+            // The system takes a moment to drop a stopped app's processes.
+            delay(CLOSE_SETTLE_MILLIS)
+            refreshBackgroundApps()
+            updateMemory(memoryStatus.snapshot())
+        }
     }
 
     private val _adbSetup = MutableStateFlow<AdbSetupState>(if (localAdb.isSetUp()) AdbSetupState.Ready else AdbSetupState.Idle)
@@ -946,6 +989,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     private companion object {
         const val TAG = "LauncherViewModel"
+        const val CLOSE_SETTLE_MILLIS = 600L
         // Play's own action for its "Manage apps & games" page; checked on Play Store for Google TV (Android 14).
         const val PLAY_MY_DOWNLOADS = "com.google.android.finsky.VIEW_MY_DOWNLOADS"
         const val MEMORY_POLL_MILLIS = 15_000L

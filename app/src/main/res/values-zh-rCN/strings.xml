@@ -470,4 +470,13 @@
     <string name="notice_self_update_permission">请在电视设置中允许 Matinee 安装应用，或设置自动 ADB</string>
     <string name="notice_action_allow">允许</string>
     <string name="notice_action_reopen">重新打开</string>
+    <string name="setting_background_apps">后台应用</string>
+    <string name="setting_background_apps_sub">查看仍在运行的应用，可逐个或一次全部关闭</string>
+    <string name="background_apps_loading">正在查找运行中的应用</string>
+    <string name="background_apps_needs_adb">需要自动 ADB</string>
+    <string name="background_apps_needs_adb_sub">Android 只通过 adb 显示其他应用的进程。请在“蓝牙和遥控器”中设置。</string>
+    <string name="background_apps_none">没有后台运行的应用</string>
+    <string name="background_apps_close_all">全部关闭</string>
+    <string name="background_apps_close">关闭</string>
+    <string name="note_background_apps">关闭会像电视设置中的“强制停止”一样完全停止应用。“全部关闭”不会影响你从清理中排除的应用。</string>
 </resources>

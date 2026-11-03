@@ -78,6 +78,14 @@ class LocalAdb(context: Context) {
         false
     }
 
+    /** What [command] printed on an already allowed connection; null when adb is off or not allowed. */
+    fun output(command: String): String? = try {
+        connect(COMMAND_TIMEOUT_MS).use { it.shell(command).output }
+    } catch (e: IOException) {
+        Log.w(TAG, "adb '$command' failed: ${e.message}")
+        null
+    }
+
     private fun isListening(): Boolean = try {
         Socket().use { it.connect(InetSocketAddress(HOST, PORT), CONNECT_TIMEOUT_MS) }
         true
