@@ -472,7 +472,7 @@
     <string name="notice_action_allow">İzin ver</string>
     <string name="notice_action_reopen">Tekrar aç</string>
     <string name="setting_background_apps">Arka plan uygulamaları</string>
-    <string name="setting_background_apps_sub">Çalışmaya devam edenleri gör, tek tek ya da hepsini kapat</string>
+    <string name="setting_background_apps_sub">Çalışmaya devam edenleri gör; birini ya da hepsini kapat</string>
     <string name="background_apps_loading">Çalışan uygulamalar aranıyor</string>
     <string name="background_apps_needs_adb">Otomatik ADB gerekli</string>
     <string name="background_apps_needs_adb_sub">Android diğer uygulamaların süreçlerini yalnızca adb üzerinden gösterir. Bluetooth ve Kumanda altından kur.</string>
