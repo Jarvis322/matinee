@@ -468,6 +468,8 @@
     <string name="logo_av">AV / Komponente</string>
     <string name="setting_focus_outline">Rahmen um die gewählte App</string>
     <string name="setting_focus_outline_sub">Für eine schlichtere Optik ausschalten; die gewählte App wird weiterhin größer und leuchtet</string>
+    <string name="setting_launch_animation">Apps aus ihrer Karte öffnen</string>
+    <string name="setting_launch_animation_sub">Apps wachsen aus der gewählten Karte heraus, und beim Zurückkehren gleitet der Startbildschirm an seinen Platz</string>
     <string name="notice_self_update_permission">Erlaube Matinee in den TV-Einstellungen das Installieren von Apps oder richte automatisches ADB ein</string>
     <string name="notice_action_allow">Zulassen</string>
     <string name="notice_action_reopen">Erneut öffnen</string>

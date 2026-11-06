@@ -468,6 +468,8 @@
     <string name="logo_av">AV / komponent</string>
     <string name="setting_focus_outline">Seçili uygulamada çerçeve</string>
     <string name="setting_focus_outline_sub">Daha sade görünüm için kapat; seçili uygulama yine büyür ve parlar</string>
+    <string name="setting_launch_animation">Uygulamaları kartından aç</string>
+    <string name="setting_launch_animation_sub">Uygulama seçili karttan büyüyerek açılır, dönüşte ana ekran yerine oturur</string>
     <string name="notice_self_update_permission">TV ayarlarından Matinee\'ye uygulama kurma izni ver ya da Otomatik ADB\'yi kur</string>
     <string name="notice_action_allow">İzin ver</string>
     <string name="notice_action_reopen">Tekrar aç</string>

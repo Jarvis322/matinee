@@ -142,6 +142,7 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
     val settings by viewModel.settings.collectAsStateWithLifecycle()
     val lastPlayed by viewModel.lastPlayed.collectAsStateWithLifecycle()
 
+    val launch = rememberAppLauncher(viewModel)
     val menu = rememberAppMenuState()
     val openMenu = { app: LaunchableApp ->
         viewModel.gate.requireForAdmin(R.string.pin_reason_admin) { menu.target = MenuTarget(app, inFolder = false) }
@@ -215,7 +216,7 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
             Hero(
                 app = current,
                 editMode = editMode,
-                onOpen = { viewModel.launchApp(current) },
+                onOpen = { launch(current) },
                 onInfo = { viewModel.openAppInfo(current) },
                 modifier = Modifier.padding(start = SIDE.dp, top = 129.dp).then(dim),
             )
@@ -256,7 +257,7 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
                 if (editMode) {
                     liftedPackage = if (liftedPackage == app.packageName) null else app.packageName
                 } else {
-                    viewModel.launchApp(app)
+                    launch(app)
                 }
             },
             onLongPress = openMenu,
@@ -528,35 +529,37 @@ private fun AppsRow(
                 AllAppsChip(onShowAll)
             }
         }
-        LazyRow(
-            // Extra top room in edit mode so a lifted, scaled card clears the row label.
-            contentPadding = PaddingValues(start = SIDE.dp, end = SIDE.dp, top = if (editMode) 18.dp else 10.dp, bottom = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(15.dp),
-        ) {
-            itemsIndexed(apps, key = { _, app -> app.packageName }) { index, app ->
-                AppCard(
-                    app = app,
-                    index = index,
-                    cardTheme = cardTheme,
-                    onGlow = onGlow,
-                    isSelected = app.packageName == selected?.packageName,
-                    editMode = editMode,
-                    lifted = app.packageName == liftedPackage,
-                    resumable = app.packageName in resumablePackages,
-                    removable = app.packageName != SYSTEM_SETTINGS_PACKAGE,
-                    // In edit mode the add card comes after the last app and takes Right instead.
-                    isLastInRow = !editMode && index == apps.lastIndex,
-                    focusRequest = focusRequest,
-                    onFocusRequestHandled = onFocusRequestHandled,
-                    onFocused = { onFocused(app) },
-                    onClick = { onClick(app) },
-                    onLongPress = { onLongPress(app) },
-                    onMove = { onMove(app, it) },
-                    onRemove = { onRemove(app) },
-                )
-            }
-            if (editMode) {
-                item(key = "add") { AddCard(onAdd) }
+        SmoothScrolling {
+            LazyRow(
+                // Extra top room in edit mode so a lifted, scaled card clears the row label.
+                contentPadding = PaddingValues(start = SIDE.dp, end = SIDE.dp, top = if (editMode) 18.dp else 10.dp, bottom = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(15.dp),
+            ) {
+                itemsIndexed(apps, key = { _, app -> app.packageName }) { index, app ->
+                    AppCard(
+                        app = app,
+                        index = index,
+                        cardTheme = cardTheme,
+                        onGlow = onGlow,
+                        isSelected = app.packageName == selected?.packageName,
+                        editMode = editMode,
+                        lifted = app.packageName == liftedPackage,
+                        resumable = app.packageName in resumablePackages,
+                        removable = app.packageName != SYSTEM_SETTINGS_PACKAGE,
+                        // In edit mode the add card comes after the last app and takes Right instead.
+                        isLastInRow = !editMode && index == apps.lastIndex,
+                        focusRequest = focusRequest,
+                        onFocusRequestHandled = onFocusRequestHandled,
+                        onFocused = { onFocused(app) },
+                        onClick = { onClick(app) },
+                        onLongPress = { onLongPress(app) },
+                        onMove = { onMove(app, it) },
+                        onRemove = { onRemove(app) },
+                    )
+                }
+                if (editMode) {
+                    item(key = "add") { AddCard(onAdd) }
+                }
             }
         }
     }
@@ -613,6 +616,7 @@ private fun AppCard(
         }
     }
     val reduceMotion = LocalReduceMotion.current
+    val origin = LocalLaunchOrigin.current
     val accent = Color(app.accent)
     val shape = RoundedCornerShape(15.dp)
     val captionAlpha = animateFloatAsState(if (focused) 1f else 0f, tween(if (reduceMotion) 0 else 200), label = "caption")
@@ -638,6 +642,7 @@ private fun AppCard(
                     .onGloballyPositioned {
                         coordinates = it
                         if (focused || lifted) onGlow(app.packageName, FocusGlow(app.packageName, it.boundsInRoot(), accent))
+                        if (focused) origin.bounds = it.boundsInRoot()
                     }
                     .graphicsLayer {
                         rotationZ = tilt.value
@@ -652,7 +657,10 @@ private fun AppCard(
                         focused = it.isFocused
                         if (it.isFocused) {
                             onFocused()
-                            coordinates?.takeIf { c -> c.isAttached }?.let { c -> onGlow(app.packageName, FocusGlow(app.packageName, c.boundsInRoot(), accent)) }
+                            coordinates?.takeIf { c -> c.isAttached }?.let { c ->
+                                onGlow(app.packageName, FocusGlow(app.packageName, c.boundsInRoot(), accent))
+                                origin.bounds = c.boundsInRoot()
+                            }
                         } else if (!lifted) {
                             onGlow(app.packageName, null)
                         }

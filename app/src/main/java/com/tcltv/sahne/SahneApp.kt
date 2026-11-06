@@ -27,6 +27,10 @@ import com.tcltv.sahne.ui.LocalWallpaperAnimated
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.PinGate
 import com.tcltv.sahne.ui.home.HomeScreen
+import com.tcltv.sahne.ui.home.LaunchOrigin
+import com.tcltv.sahne.ui.home.LocalLaunchAnimation
+import com.tcltv.sahne.ui.home.LocalLaunchOrigin
+import com.tcltv.sahne.ui.home.settleOnReturn
 import com.tcltv.sahne.ui.settings.SettingsScreen
 
 @Composable
@@ -52,10 +56,13 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
     BackHandler(enabled = !showSettings && isHome) { }
 
     val wallpaper by viewModel.wallpaper.collectAsStateWithLifecycle()
+    val launchOrigin = remember { LaunchOrigin() }
     CompositionLocalProvider(
         LocalReduceMotion provides settings.reduceMotion,
         LocalGlassEffects provides settings.glassEffects,
         LocalFocusOutline provides settings.focusOutline,
+        LocalLaunchOrigin provides launchOrigin,
+        LocalLaunchAnimation provides (settings.launchAnimation && !settings.reduceMotion),
         LocalWallpaper provides wallpaper,
         LocalWallpaperAnimated provides settings.wallpaperAnimated,
     ) {
@@ -82,12 +89,14 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
                         },
                     )
                 } else {
-                    HomeScreen(
-                        viewModel = viewModel,
-                        resumeTick = resumeTick,
-                        editRequest = editRequest,
-                        onOpenSettings = ::openSettings,
-                    )
+                    Box(Modifier.fillMaxSize().settleOnReturn(resumeTick)) {
+                        HomeScreen(
+                            viewModel = viewModel,
+                            resumeTick = resumeTick,
+                            editRequest = editRequest,
+                            onOpenSettings = ::openSettings,
+                        )
+                    }
                 }
                 PinGate(viewModel.gate, settings.parental)
             }

@@ -467,6 +467,8 @@
     <string name="logo_av">AV / 分量</string>
     <string name="setting_focus_outline">选中应用的边框</string>
     <string name="setting_focus_outline_sub">关闭后更简洁；选中的应用仍会放大并发光</string>
+    <string name="setting_launch_animation">从卡片打开应用</string>
+    <string name="setting_launch_animation_sub">应用从选中的卡片放大打开，返回时主屏幕平滑归位</string>
     <string name="notice_self_update_permission">请在电视设置中允许 Matinee 安装应用，或设置自动 ADB</string>
     <string name="notice_action_allow">允许</string>
     <string name="notice_action_reopen">重新打开</string>

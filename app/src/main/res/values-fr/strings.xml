@@ -469,6 +469,8 @@
     <string name="logo_av">AV / composante</string>
     <string name="setting_focus_outline">Contour sur l\'appli sélectionnée</string>
     <string name="setting_focus_outline_sub">Désactivez pour un rendu plus épuré ; l\'appli sélectionnée grossit et brille toujours</string>
+    <string name="setting_launch_animation">Ouvrir les applis depuis leur carte</string>
+    <string name="setting_launch_animation_sub">Les applis s\'ouvrent en grandissant depuis la carte sélectionnée, et l\'écran d\'accueil se remet en place au retour</string>
     <string name="notice_self_update_permission">Autorisez Matinee à installer des applis dans les réglages de la TV, ou configurez l\'ADB automatique</string>
     <string name="notice_action_allow">Autoriser</string>
     <string name="notice_action_reopen">Rouvrir</string>

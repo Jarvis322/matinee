@@ -478,6 +478,8 @@
     <string name="logo_av">AV / component</string>
     <string name="setting_focus_outline">Outline on the selected app</string>
     <string name="setting_focus_outline_sub">Turn off for a cleaner look; the selected app still grows and glows</string>
+    <string name="setting_launch_animation">Open apps from their card</string>
+    <string name="setting_launch_animation_sub">Apps grow out of the selected card and the home screen settles back when you return</string>
     <string name="notice_self_update_permission">Allow Matinee to install apps in the TV\'s settings, or set up Automatic ADB</string>
     <string name="notice_action_allow">Allow</string>
     <string name="notice_action_reopen">Open again</string>

@@ -53,6 +53,8 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -129,6 +131,7 @@ internal fun GridHome(
     menu: AppMenuState,
     onOpenMenu: (LaunchableApp) -> Unit,
 ) {
+    val launch = rememberAppLauncher(viewModel)
     var selectedPackage by remember { mutableStateOf<String?>(null) }
     var liftedPackage by remember { mutableStateOf<String?>(null) }
     var focusRequest by remember { mutableStateOf(GridFocusRequest(null, 0)) }
@@ -202,7 +205,7 @@ internal fun GridHome(
                     onFocused = { selectedPackage = app.packageName },
                     onClick = {
                         when (liftedPackage) {
-                            null -> viewModel.launchApp(app)
+                            null -> launch(app)
                             app.packageName -> liftedPackage = null
                         }
                     },
@@ -213,61 +216,63 @@ internal fun GridHome(
         }
 
         CompositionLocalProvider(LocalBringIntoViewSpec provides MinimalBringIntoView) {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier.fillMaxSize().padding(top = 80.dp).onFocusChanged { gridFocused = it.hasFocus },
-                contentPadding = PaddingValues(start = GRID_SIDE.dp, end = GRID_SIDE.dp, top = 14.dp, bottom = 40.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                item(key = "heroSpace") { Spacer(Modifier.height(HERO_SPACE.dp)) }
-                item(key = "shelf") {
-                    Column(Modifier.onFocusChanged { shelfFocused = it.hasFocus }) {
-                        Box(
-                            Modifier
-                                .fillMaxWidth()
-                                .glass(RoundedCornerShape(30.dp), GlassStyle.Panel)
-                                .padding(start = ROW_INSET.dp, end = ROW_INSET.dp, top = 16.dp, bottom = 8.dp),
-                        ) {
-                            CellRow(shelf) { app, isRowEnd -> Cell(app, isRowEnd) }
-                        }
-                        // The hint is about the apps below the shelf; with none there it would point at nothing.
-                        if (cells.any { it != null }) {
-                            Spacer(Modifier.height(8.dp))
-                            BasicText(
-                                stringResource(R.string.grid_favorites_hint),
-                                style = interStyle(11.sp, 500, Palette.TextMuted),
-                                modifier = Modifier.padding(start = ROW_INSET.dp),
-                            )
+            SmoothScrolling {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize().padding(top = 80.dp).onFocusChanged { gridFocused = it.hasFocus },
+                    contentPadding = PaddingValues(start = GRID_SIDE.dp, end = GRID_SIDE.dp, top = 14.dp, bottom = 40.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    item(key = "heroSpace") { Spacer(Modifier.height(HERO_SPACE.dp)) }
+                    item(key = "shelf") {
+                        Column(Modifier.onFocusChanged { shelfFocused = it.hasFocus }) {
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .glass(RoundedCornerShape(30.dp), GlassStyle.Panel)
+                                    .padding(start = ROW_INSET.dp, end = ROW_INSET.dp, top = 16.dp, bottom = 8.dp),
+                            ) {
+                                CellRow(shelf) { app, isRowEnd -> Cell(app, isRowEnd) }
+                            }
+                            // The hint is about the apps below the shelf; with none there it would point at nothing.
+                            if (cells.any { it != null }) {
+                                Spacer(Modifier.height(8.dp))
+                                BasicText(
+                                    stringResource(R.string.grid_favorites_hint),
+                                    style = interStyle(11.sp, 500, Palette.TextMuted),
+                                    modifier = Modifier.padding(start = ROW_INSET.dp),
+                                )
+                            }
                         }
                     }
-                }
-                itemsIndexed(cells.chunked(COLUMNS), key = { index, _ -> "row$index" }) { _, row ->
-                    CellRow(row, Modifier.padding(horizontal = ROW_INSET.dp)) { app, isRowEnd -> Cell(app, isRowEnd) }
-                }
-                if (visibleLiveTv.isNotEmpty() || visibleInputs.isNotEmpty()) {
-                    item(key = "inputs") {
-                        Row(Modifier.padding(start = ROW_INSET.dp, top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                            BasicText(stringResource(R.string.section_inputs), style = interStyle(12.sp, 600, Color.White.copy(alpha = 0.55f)))
-                            Spacer(Modifier.width(14.dp))
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                visibleLiveTv.forEachIndexed { index, input ->
-                                    LiveTvChip(
-                                        input,
-                                        showLabel = visibleLiveTv.size > 1,
-                                        enabled = liftedPackage == null,
-                                        isLast = visibleInputs.isEmpty() && index == visibleLiveTv.lastIndex,
-                                    ) { viewModel.openLiveTv(input) }
-                                }
-                                visibleInputs.forEachIndexed { index, input ->
-                                    InputChip(input, enabled = liftedPackage == null, isLast = index == visibleInputs.lastIndex) {
-                                        viewModel.openInput(input)
+                    itemsIndexed(cells.chunked(COLUMNS), key = { index, _ -> "row$index" }) { _, row ->
+                        CellRow(row, Modifier.padding(horizontal = ROW_INSET.dp)) { app, isRowEnd -> Cell(app, isRowEnd) }
+                    }
+                    if (visibleLiveTv.isNotEmpty() || visibleInputs.isNotEmpty()) {
+                        item(key = "inputs") {
+                            Row(Modifier.padding(start = ROW_INSET.dp, top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                                BasicText(stringResource(R.string.section_inputs), style = interStyle(12.sp, 600, Color.White.copy(alpha = 0.55f)))
+                                Spacer(Modifier.width(14.dp))
+                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    visibleLiveTv.forEachIndexed { index, input ->
+                                        LiveTvChip(
+                                            input,
+                                            showLabel = visibleLiveTv.size > 1,
+                                            enabled = liftedPackage == null,
+                                            isLast = visibleInputs.isEmpty() && index == visibleLiveTv.lastIndex,
+                                        ) { viewModel.openLiveTv(input) }
+                                    }
+                                    visibleInputs.forEachIndexed { index, input ->
+                                        InputChip(input, enabled = liftedPackage == null, isLast = index == visibleInputs.lastIndex) {
+                                            viewModel.openInput(input)
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
+        }
         }
 
         if (liftedPackage != null) {
@@ -323,6 +328,7 @@ private fun GridTile(
             onFocusRequestHandled()
         }
     }
+    val origin = LocalLaunchOrigin.current
     val shape = RoundedCornerShape(TILE_RADIUS.dp)
     val active = focused || lifted
     val sheen = rememberFocusSheen(active)
@@ -338,6 +344,7 @@ private fun GridTile(
                 // Scale alone is too subtle from across the room, so focus also lights a bright rim and a sheen.
                 .appCardFocus(sheen, shape, lightCard = cardTheme == CardTheme.LIGHT)
                 .then(if (active) Modifier else Modifier.border(1.dp, Color.White.copy(alpha = if (dimmed) 0.05f else 0.14f), shape))
+                .onGloballyPositioned { if (focused) origin.bounds = it.boundsInRoot() }
                 .focusRequester(focusRequester)
                 .onFocusChanged {
                     focused = it.isFocused

@@ -468,6 +468,8 @@
     <string name="logo_av">AV / コンポーネント</string>
     <string name="setting_focus_outline">選択中のアプリの枠</string>
     <string name="setting_focus_outline_sub">オフにするとすっきり見えます。選択中のアプリは引き続き拡大して光ります</string>
+    <string name="setting_launch_animation">カードからアプリを開く</string>
+    <string name="setting_launch_animation_sub">選択中のカードからアプリが広がって開き、戻るとホーム画面が元の位置に収まります</string>
     <string name="notice_self_update_permission">テレビの設定で Matinee にアプリのインストールを許可するか、自動 ADB を設定してください</string>
     <string name="notice_action_allow">許可</string>
     <string name="notice_action_reopen">もう一度開く</string>

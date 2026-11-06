@@ -13,6 +13,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.util.Log
 import android.util.LruCache
 import androidx.compose.ui.graphics.asImageBitmap
@@ -800,12 +801,12 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         _citySearch.value = CitySearchState.Idle
     }
 
-    /** A folder opens its contents; a locked app asks for the PIN first. */
-    fun launchApp(app: LaunchableApp) {
+    /** A folder opens its contents; a locked app asks for the PIN first. [options] carries the open animation. */
+    fun launchApp(app: LaunchableApp, options: Bundle? = null) {
         if (app.folderId != null) {
             _openFolder.value = app.folderId
         } else {
-            gate.requireForApp(R.string.pin_reason_app, app.isLocked) { startSafely(appCatalog.launchIntent(app)) }
+            gate.requireForApp(R.string.pin_reason_app, app.isLocked) { startSafely(appCatalog.launchIntent(app), options) }
         }
     }
 
@@ -830,8 +831,8 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         application.packageManager.getPackageInfo(application.packageName, 0).versionName
     }.getOrNull().orEmpty()
 
-    private fun startSafely(intent: Intent): Boolean = try {
-        getApplication<Application>().startActivity(intent)
+    private fun startSafely(intent: Intent, options: Bundle? = null): Boolean = try {
+        getApplication<Application>().startActivity(intent, options)
         true
     } catch (e: ActivityNotFoundException) {
         false

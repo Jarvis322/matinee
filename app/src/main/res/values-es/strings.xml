@@ -469,6 +469,8 @@
     <string name="logo_av">AV / componentes</string>
     <string name="setting_focus_outline">Borde en la app seleccionada</string>
     <string name="setting_focus_outline_sub">Desactívalo para un aspecto más limpio; la app seleccionada sigue creciendo y brillando</string>
+    <string name="setting_launch_animation">Abrir apps desde su tarjeta</string>
+    <string name="setting_launch_animation_sub">Las apps se abren creciendo desde la tarjeta seleccionada y la pantalla de inicio vuelve a su sitio al regresar</string>
     <string name="notice_self_update_permission">Permite a Matinee instalar apps en los ajustes de la TV o configura el ADB automático</string>
     <string name="notice_action_allow">Permitir</string>
     <string name="notice_action_reopen">Abrir de nuevo</string>

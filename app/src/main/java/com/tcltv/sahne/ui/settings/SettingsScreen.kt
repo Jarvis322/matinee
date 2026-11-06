@@ -512,6 +512,9 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
         ToggleRow(R.string.setting_focus_outline, R.string.setting_focus_outline_sub, s.focusOutline) {
             viewModel.update { setFocusOutline(it) }
         }
+        ToggleRow(R.string.setting_launch_animation, R.string.setting_launch_animation_sub, s.launchAnimation) {
+            viewModel.update { setLaunchAnimation(it) }
+        }
         ToggleRow(R.string.setting_airplay_receiver, R.string.setting_airplay_receiver_sub, s.airplayReceiver) {
             viewModel.update { setAirplayReceiver(it) }
         }
