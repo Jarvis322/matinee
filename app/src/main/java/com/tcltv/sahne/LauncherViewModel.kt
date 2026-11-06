@@ -30,6 +30,7 @@ import com.tcltv.sahne.update.SelfUpdate
 import com.tcltv.sahne.update.SelfUpdater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.compose.ui.graphics.ImageBitmap
@@ -65,6 +66,8 @@ import com.tcltv.sahne.data.ProfilePhoto
 import com.tcltv.sahne.system.Connection
 import com.tcltv.sahne.system.HomeKeyService
 import com.tcltv.sahne.system.NetworkStatus
+import com.tcltv.sahne.system.RecentApps
+import com.tcltv.sahne.system.RecentTask
 import com.tcltv.sahne.system.SpeedTest
 import com.tcltv.sahne.system.PlayStoreUpdate
 import com.tcltv.sahne.system.ReceiverMonitor
@@ -146,6 +149,15 @@ enum class HomeKeyProblem {
     SWITCHED_OFF,
 }
 
+/** The app switcher's list; null in the view model while the switcher is closed. */
+sealed interface SwitcherState {
+    data object Loading : SwitcherState
+    data object NeedsAdb : SwitcherState
+    data class Ready(val apps: List<RecentApp>) : SwitcherState
+}
+
+data class RecentApp(val app: LaunchableApp, val task: RecentTask)
+
 sealed interface BackgroundAppsState {
     data object Loading : BackgroundAppsState
 
@@ -193,6 +205,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private val localAdb = LocalAdb(application)
     private val keyBindingStore = KeyBindingStore(application)
     private val backgroundApps = BackgroundApps(localAdb, application.packageName)
+    private val recentApps = RecentApps(localAdb, application.packageName)
     private val inputSwitcher = InputSwitcher(application, localAdb)
 
     val settings: StateFlow<LauncherSettings> = settingsStore.settings
@@ -502,6 +515,39 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
             refreshBackgroundApps()
             updateMemory(memoryStatus.snapshot())
         }
+    }
+
+    private val _switcher = MutableStateFlow<SwitcherState?>(null)
+    val switcher: StateFlow<SwitcherState?> = _switcher.asStateFlow()
+
+    /** Opens the app switcher and reads the TV's recent list; the shell call blocks, so it runs off the main thread. */
+    fun openSwitcher() {
+        _switcher.value = SwitcherState.Loading
+        viewModelScope.launch {
+            // Opened by a remote key, Matinee may only just have started and still be reading the app list.
+            // Apps hidden from the home row still count; they were used all the same.
+            val apps = withTimeoutOrNull(CATALOG_WAIT_MILLIS) { appsForSettings.first { it.isNotEmpty() } } ?: appsForSettings.value
+            val candidates = apps.filter { it.folderId == null }.associateBy { it.packageName }
+            val tasks = withContext(Dispatchers.IO) { recentApps.recent() }
+            // Closed again while the list was loading.
+            if (_switcher.value == null) return@launch
+            _switcher.value = if (tasks == null) {
+                SwitcherState.NeedsAdb
+            } else {
+                SwitcherState.Ready(tasks.mapNotNull { task -> candidates[task.packageName]?.let { RecentApp(it, task) } }.take(SWITCHER_LIMIT))
+            }
+        }
+    }
+
+    fun dismissSwitcher() {
+        _switcher.value = null
+    }
+
+    /** Quits an app from the switcher; it leaves the list at once rather than after the shell call. */
+    fun closeRecentApp(item: RecentApp) {
+        val state = _switcher.value as? SwitcherState.Ready ?: return
+        _switcher.value = SwitcherState.Ready(state.apps - item)
+        viewModelScope.launch(Dispatchers.IO) { recentApps.close(item.task) }
     }
 
     private val _adbSetup = MutableStateFlow<AdbSetupState>(if (localAdb.isSetUp()) AdbSetupState.Ready else AdbSetupState.Idle)
@@ -998,6 +1044,8 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private companion object {
         const val TAG = "LauncherViewModel"
         const val CLOSE_SETTLE_MILLIS = 600L
+        const val SWITCHER_LIMIT = 12
+        const val CATALOG_WAIT_MILLIS = 3_000L
         // Play's own action for its "Manage apps & games" page; checked on Play Store for Google TV (Android 14).
         const val PLAY_MY_DOWNLOADS = "com.google.android.finsky.VIEW_MY_DOWNLOADS"
         const val MEMORY_POLL_MILLIS = 15_000L

@@ -466,6 +466,14 @@
     <string name="key_channel_up">Chaîne +</string>
     <string name="key_channel_down">Chaîne −</string>
     <string name="action_close_apps">Fermer les applis en arrière-plan</string>
+    <string name="action_app_switcher">Sélecteur d\'applis</string>
+    <string name="setting_home_double">Appuyer deux fois sur Accueil : sélecteur d\'applis</string>
+    <string name="setting_home_double_sub">Comme sur Apple TV. Un appui simple attend alors un instant pour les distinguer. Nécessite le service du bouton Accueil.</string>
+    <string name="switcher_title">Applis récentes</string>
+    <string name="switcher_loading">Chargement…</string>
+    <string name="switcher_empty">Pas encore d\'applis récentes</string>
+    <string name="switcher_needs_adb_sub">Android ne partage la liste des applis récentes que via adb. Configurez-le dans Bluetooth et télécommande.</string>
+    <string name="switcher_hint">OK ouvre · Haut ferme l\'appli · Retour quitte</string>
     <string name="logo_av">AV / composante</string>
     <string name="setting_focus_outline">Contour sur l\'appli sélectionnée</string>
     <string name="setting_focus_outline_sub">Désactivez pour un rendu plus épuré ; l\'appli sélectionnée grossit et brille toujours</string>

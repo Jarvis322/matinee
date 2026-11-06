@@ -98,13 +98,19 @@ class HomeKeyService : AccessibilityService() {
 
     override fun onKeyEvent(event: KeyEvent): Boolean {
         if (learn(event)) return true
+        val binding = bindings.current()[event.keyCode]
         if (event.keyCode == KeyEvent.KEYCODE_HOME) {
-            if (event.action == KeyEvent.ACTION_UP && !event.isCanceled) openMatinee()
-            return true
+            // Only a double press needs telling apart; without one, Home opens Matinee at once.
+            if (binding?.actions?.get(PressType.DOUBLE) == null) {
+                if (event.action == KeyEvent.ACTION_UP && !event.isCanceled) openMatinee()
+                return true
+            }
+        } else {
+            // Keys typed back in through adb ("normal" short presses) come from the virtual keyboard; let them through.
+            if (event.deviceId == KeyCharacterMap.VIRTUAL_KEYBOARD) return false
+            if (binding == null) return false
         }
-        // Keys typed back in through adb ("normal" short presses) come from the virtual keyboard; let them through.
-        if (event.deviceId == KeyCharacterMap.VIRTUAL_KEYBOARD) return false
-        val binding = bindings.current()[event.keyCode] ?: return false
+        binding ?: return false
         val presses = binding.actions.keys + PressType.SHORT
         when {
             event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0 -> classifier.down(event.keyCode, presses)
@@ -130,7 +136,7 @@ class HomeKeyService : AccessibilityService() {
     private fun onPress(keyCode: Int, press: PressType) {
         val binding: KeyBinding = bindings.current()[keyCode] ?: return
         when (val action = binding.actions[press]) {
-            null -> passThrough(keyCode)
+            null -> if (keyCode == KeyEvent.KEYCODE_HOME) openMatinee() else passThrough(keyCode)
             is KeyAction.OpenApp -> launch(appIntent(action.packageName))
             is KeyAction.OpenInput -> adbExecutor.execute {
                 inputSwitcher.open(
@@ -142,6 +148,7 @@ class HomeKeyService : AccessibilityService() {
             KeyAction.MatineeSettings -> launch(matineeIntent().putExtra(MainActivity.EXTRA_OPEN_SETTINGS, true))
             KeyAction.ScreenOff -> screenOff()
             KeyAction.CloseBackgroundApps -> sendBroadcast(Intent(this, CloseAppsReceiver::class.java))
+            KeyAction.AppSwitcher -> launch(matineeIntent().putExtra(MainActivity.EXTRA_OPEN_SWITCHER, true))
             KeyAction.DoNothing -> Unit
         }
     }

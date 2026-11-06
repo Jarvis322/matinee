@@ -465,6 +465,14 @@
     <string name="key_channel_up">チャンネル +</string>
     <string name="key_channel_down">チャンネル −</string>
     <string name="action_close_apps">バックグラウンドのアプリを閉じる</string>
+    <string name="action_app_switcher">アプリスイッチャー</string>
+    <string name="setting_home_double">ホームを2回押してアプリスイッチャー</string>
+    <string name="setting_home_double_sub">Apple TV と同じ操作です。区別するため、1回押しは少し待ってから反応します。ホームボタンサービスが必要です。</string>
+    <string name="switcher_title">最近使ったアプリ</string>
+    <string name="switcher_loading">読み込み中…</string>
+    <string name="switcher_empty">最近使ったアプリはまだありません</string>
+    <string name="switcher_needs_adb_sub">Android は最近使ったアプリの一覧を adb 経由でのみ提供します。Bluetooth とリモコンで設定してください。</string>
+    <string name="switcher_hint">OK で開く · 上でアプリを終了 · 戻るで閉じる</string>
     <string name="logo_av">AV / コンポーネント</string>
     <string name="setting_focus_outline">選択中のアプリの枠</string>
     <string name="setting_focus_outline_sub">オフにするとすっきり見えます。選択中のアプリは引き続き拡大して光ります</string>

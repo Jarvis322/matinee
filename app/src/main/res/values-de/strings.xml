@@ -465,6 +465,14 @@
     <string name="key_channel_up">Kanal +</string>
     <string name="key_channel_down">Kanal −</string>
     <string name="action_close_apps">Hintergrund-Apps schließen</string>
+    <string name="action_app_switcher">App-Umschalter</string>
+    <string name="setting_home_double">Home zweimal drücken: App-Umschalter</string>
+    <string name="setting_home_double_sub">Wie bei Apple TV. Ein einfacher Druck wartet dann kurz, um beides zu unterscheiden. Braucht den Home-Tasten-Dienst.</string>
+    <string name="switcher_title">Zuletzt verwendete Apps</string>
+    <string name="switcher_loading">Wird geladen…</string>
+    <string name="switcher_empty">Noch keine zuletzt verwendeten Apps</string>
+    <string name="switcher_needs_adb_sub">Android gibt die Liste der zuletzt verwendeten Apps nur über adb heraus. Richte es unter Bluetooth und Fernbedienung ein.</string>
+    <string name="switcher_hint">OK öffnet · Nach oben beendet die App · Zurück schließt</string>
     <string name="logo_av">AV / Komponente</string>
     <string name="setting_focus_outline">Rahmen um die gewählte App</string>
     <string name="setting_focus_outline_sub">Für eine schlichtere Optik ausschalten; die gewählte App wird weiterhin größer und leuchtet</string>

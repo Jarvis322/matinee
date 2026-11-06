@@ -466,6 +466,14 @@
     <string name="key_channel_up">Canal +</string>
     <string name="key_channel_down">Canal −</string>
     <string name="action_close_apps">Cerrar apps en segundo plano</string>
+    <string name="action_app_switcher">Selector de apps</string>
+    <string name="setting_home_double">Pulsar Inicio dos veces: selector de apps</string>
+    <string name="setting_home_double_sub">Como en Apple TV. Una pulsación simple espera un momento para distinguirlas. Necesita el servicio del botón Inicio.</string>
+    <string name="switcher_title">Apps recientes</string>
+    <string name="switcher_loading">Cargando…</string>
+    <string name="switcher_empty">Aún no hay apps recientes</string>
+    <string name="switcher_needs_adb_sub">Android solo comparte la lista de apps recientes por adb. Configúralo en Bluetooth y control remoto.</string>
+    <string name="switcher_hint">OK abre · Arriba cierra la app · Atrás sale</string>
     <string name="logo_av">AV / componentes</string>
     <string name="setting_focus_outline">Borde en la app seleccionada</string>
     <string name="setting_focus_outline_sub">Desactívalo para un aspecto más limpio; la app seleccionada sigue creciendo y brillando</string>

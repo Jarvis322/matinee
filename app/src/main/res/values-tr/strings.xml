@@ -465,6 +465,14 @@
     <string name="key_channel_up">Kanal +</string>
     <string name="key_channel_down">Kanal −</string>
     <string name="action_close_apps">Arka plan uygulamalarını kapat</string>
+    <string name="action_app_switcher">Uygulama değiştirici</string>
+    <string name="setting_home_double">Home\'a iki kez bas: uygulama değiştirici</string>
+    <string name="setting_home_double_sub">Apple TV\'deki gibi. Tek basış, ikisini ayırt etmek için bir an bekler. Home tuşu servisi açık olmalı.</string>
+    <string name="switcher_title">Son uygulamalar</string>
+    <string name="switcher_loading">Yükleniyor…</string>
+    <string name="switcher_empty">Henüz son uygulama yok</string>
+    <string name="switcher_needs_adb_sub">Android son uygulamaların listesini yalnızca adb üzerinden verir. Bluetooth ve Kumanda altından kur.</string>
+    <string name="switcher_hint">OK açar · Yukarı uygulamayı kapatır · Geri çıkar</string>
     <string name="logo_av">AV / komponent</string>
     <string name="setting_focus_outline">Seçili uygulamada çerçeve</string>
     <string name="setting_focus_outline_sub">Daha sade görünüm için kapat; seçili uygulama yine büyür ve parlar</string>

@@ -68,8 +68,13 @@ internal fun RemoteRows(
         R.string.setting_auto_adb_sub,
         stringResource(if (adb == AdbSetupState.Ready) R.string.switch_on else R.string.switch_off),
     ) { settingUpAdb = true }
+    val homeDouble = bindings.firstOrNull { it.keyCode == KeyEvent.KEYCODE_HOME }?.actions?.get(PressType.DOUBLE)
+    ToggleRow(R.string.setting_home_double, R.string.setting_home_double_sub, homeDouble == KeyAction.AppSwitcher) { on ->
+        viewModel.setKeyAction(KeyEvent.KEYCODE_HOME, PressType.DOUBLE, if (on) KeyAction.AppSwitcher else null)
+    }
     ValueRow(R.string.setting_key_add, R.string.setting_key_add_sub, null) { learning = true }
-    bindings.sortedBy { it.keyCode }.forEach { binding ->
+    // Home has its own row above; it can't be given other actions.
+    bindings.filter { it.keyCode != KeyEvent.KEYCODE_HOME }.sortedBy { it.keyCode }.forEach { binding ->
         ValueRow(
             keyName(binding.keyCode),
             bindingSummary(viewModel, binding),
@@ -303,6 +308,7 @@ private val SIMPLE_ACTIONS = listOf(
     R.string.action_matinee_settings to KeyAction.MatineeSettings,
     R.string.action_screen_off to KeyAction.ScreenOff,
     R.string.action_close_apps to KeyAction.CloseBackgroundApps,
+    R.string.action_app_switcher to KeyAction.AppSwitcher,
 )
 
 /** Keys Matinee needs for itself or the TV can't do without: Home, Back and navigation, and power. */
@@ -346,6 +352,7 @@ private fun actionLabel(viewModel: LauncherViewModel, action: KeyAction?): Strin
         KeyAction.MatineeSettings -> stringResource(R.string.action_matinee_settings)
         KeyAction.ScreenOff -> stringResource(R.string.action_screen_off)
         KeyAction.CloseBackgroundApps -> stringResource(R.string.action_close_apps)
+        KeyAction.AppSwitcher -> stringResource(R.string.action_app_switcher)
         is KeyAction.OpenApp -> apps.firstOrNull { it.packageName == action.packageName }?.label ?: action.packageName
         is KeyAction.OpenInput -> inputs.firstOrNull { it.id == action.inputId }?.name ?: stringResource(R.string.action_open_input)
     }

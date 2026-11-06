@@ -31,11 +31,15 @@ class MainActivity : ComponentActivity() {
         handleRequest(intent)
     }
 
-    /** A remote key assigned to "Matinee settings" opens Matinee with this; the settings PIN still applies. */
+    /** Remote keys open Matinee with these: "Matinee settings" (the settings PIN still applies) and the app switcher. */
     private fun handleRequest(intent: Intent) {
         if (intent.getBooleanExtra(EXTRA_OPEN_SETTINGS, false)) {
             intent.removeExtra(EXTRA_OPEN_SETTINGS)
             viewModel.requestSettings()
+        }
+        if (intent.getBooleanExtra(EXTRA_OPEN_SWITCHER, false)) {
+            intent.removeExtra(EXTRA_OPEN_SWITCHER)
+            viewModel.openSwitcher()
         }
     }
 
@@ -53,5 +57,6 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         const val EXTRA_OPEN_SETTINGS = "com.tcltv.sahne.extra.OPEN_SETTINGS"
+        const val EXTRA_OPEN_SWITCHER = "com.tcltv.sahne.extra.OPEN_SWITCHER"
     }
 }

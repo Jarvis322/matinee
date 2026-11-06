@@ -1204,7 +1204,7 @@ internal fun RowLabel(label: String, subtitle: String?, modifier: Modifier) {
 }
 
 @Composable
-private fun ToggleRow(
+internal fun ToggleRow(
     @StringRes label: Int,
     @StringRes subtitle: Int?,
     checked: Boolean,

@@ -27,6 +27,7 @@ import com.tcltv.sahne.ui.LocalWallpaperAnimated
 import com.tcltv.sahne.ui.LocalReduceMotion
 import com.tcltv.sahne.ui.PinGate
 import com.tcltv.sahne.ui.home.HomeScreen
+import com.tcltv.sahne.ui.home.AppSwitcherHost
 import com.tcltv.sahne.ui.home.LaunchOrigin
 import com.tcltv.sahne.ui.home.LocalLaunchAnimation
 import com.tcltv.sahne.ui.home.LocalLaunchOrigin
@@ -99,6 +100,7 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
                     }
                 }
                 PinGate(viewModel.gate, settings.parental)
+                AppSwitcherHost(viewModel)
             }
         }
     }
