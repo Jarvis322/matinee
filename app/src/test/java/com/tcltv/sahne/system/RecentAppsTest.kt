@@ -32,6 +32,25 @@ class RecentAppsTest {
     }
 
     @Test
+    fun tasksRestoredAfterARestartCountAsApps() {
+        val dumpsys = """
+              * Recent #0: Task{c265bab #3195 type=standard A=1000:com.tcl.tv}
+                mActivityComponent=com.tcl.tv/com.tcl.player.TVActivity
+              * Recent #1: Task{c155788 #3193 type=home A=10052:com.google.android.apps.tv.launcherx}
+                mActivityComponent=com.google.android.apps.tv.launcherx/.home.HomeActivity
+              * Recent #2: Task{302a383 #3190 type=undefined A=10077:com.netflix.ninja}
+                intent={act=com.netflix.action.NETFLIX_KEY_START flg=0x10020000 cmp=com.netflix.ninja/.MainActivity}
+                mActivityComponent=com.netflix.ninja/.MainActivity
+                Activities=[]
+        """.trimIndent()
+
+        assertEquals(
+            listOf(RecentTask(3195, "com.tcl.tv"), RecentTask(3190, "com.netflix.ninja")),
+            RecentApps.parse(dumpsys),
+        )
+    }
+
+    @Test
     fun aTaskWithoutAnActivityIsSkipped() {
         val dumpsys = """
               * Recent #0: Task{40a92d2 #71 type=standard I=com.example/.Main U=0 sz=0}

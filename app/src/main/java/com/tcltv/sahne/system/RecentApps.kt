@@ -32,8 +32,13 @@ class RecentApps(private val adb: LocalAdb, private val ownPackage: String) {
     companion object {
         private val HEADER = Regex("""^\* Recent #\d+: Task\{\S+ #(\d+) type=(\w+)""")
         private val COMPONENT_PREFIXES = listOf("mActivityComponent=", "realActivity=")
+        private val APP_TYPES = setOf("standard", "undefined")
 
-        /** Reads `dumpsys activity recents`: ordinary app tasks only, leaving out home screens and other system types. */
+        /**
+         * Reads `dumpsys activity recents`: app tasks only, leaving out home screens and other system types. Tasks
+         * the TV restored from disk after a restart and that haven't been opened since are typed "undefined"; after a
+         * restart that is most of the list, so they count as apps too.
+         */
         fun parse(dumpsys: String): List<RecentTask> {
             val tasks = mutableListOf<RecentTask>()
             var taskId: Int? = null
@@ -43,7 +48,7 @@ class RecentApps(private val adb: LocalAdb, private val ownPackage: String) {
                 val header = HEADER.find(line)
                 if (header != null) {
                     taskId = header.groupValues[1].toInt()
-                    isApp = header.groupValues[2] == "standard"
+                    isApp = header.groupValues[2] in APP_TYPES
                     continue
                 }
                 val id = taskId ?: continue
