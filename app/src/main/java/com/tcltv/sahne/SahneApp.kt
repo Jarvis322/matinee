@@ -43,6 +43,14 @@ fun SahneApp(viewModel: LauncherViewModel, resumeTick: Int) {
 
     fun openSettings() = viewModel.gate.requireForAdmin(R.string.pin_reason_admin) { showSettings = true }
 
+    val homeRequested by viewModel.homeRequested.collectAsStateWithLifecycle()
+    LaunchedEffect(homeRequested) {
+        if (homeRequested) {
+            viewModel.consumeHomeRequest()
+            showSettings = false
+        }
+    }
+
     val settingsRequested by viewModel.settingsRequested.collectAsStateWithLifecycle()
     LaunchedEffect(settingsRequested) {
         if (settingsRequested) {

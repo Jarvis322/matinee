@@ -212,7 +212,6 @@
     <string name="default_home_other">Otro launcher</string>
 
     <!-- Last played -->
-    <string name="continue_with_ok_suffix">para continuar</string>
     <string name="last_played_badge">Lo último · %1$s</string>
     <string name="just_now">Ahora mismo</string>
     <string name="setting_last_played">Mostrar lo último reproducido</string>

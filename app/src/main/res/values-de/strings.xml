@@ -212,7 +212,6 @@
     <string name="default_home_other">Anderer Launcher</string>
 
     <!-- Last played -->
-    <string name="continue_with_ok_suffix">zum Fortsetzen</string>
     <string name="last_played_badge">Zuletzt gespielt · %1$s</string>
     <string name="just_now">Gerade eben</string>
     <string name="setting_last_played">Zuletzt gespielt anzeigen</string>

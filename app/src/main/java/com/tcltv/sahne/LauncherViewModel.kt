@@ -452,6 +452,20 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         _settingsRequested.value = false
     }
 
+    private val _homeRequested = MutableStateFlow(false)
+
+    /** Set when Home is pressed while Matinee is already showing: settings and the app switcher close. */
+    val homeRequested: StateFlow<Boolean> = _homeRequested.asStateFlow()
+
+    fun requestHome() {
+        dismissSwitcher()
+        _homeRequested.value = true
+    }
+
+    fun consumeHomeRequest() {
+        _homeRequested.value = false
+    }
+
     private val _keyBindings = MutableStateFlow(keyBindingStore.load())
     val keyBindings: StateFlow<List<KeyBinding>> = _keyBindings.asStateFlow()
 

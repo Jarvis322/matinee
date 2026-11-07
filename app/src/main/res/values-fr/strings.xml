@@ -212,7 +212,6 @@
     <string name="default_home_other">Un autre lanceur</string>
 
     <!-- Last played -->
-    <string name="continue_with_ok_suffix">pour reprendre</string>
     <string name="last_played_badge">Dernière lecture · %1$s</string>
     <string name="just_now">À l\'instant</string>
     <string name="setting_last_played">Afficher la dernière lecture</string>

@@ -28,19 +28,27 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        handleRequest(intent)
+        // Anything else reaching a running Matinee is Home (the TV's, or the Home button service's): back to the home
+        // screen, out of settings, as Home does everywhere else.
+        if (!handleRequest(intent)) viewModel.requestHome()
     }
 
-    /** Remote keys open Matinee with these: "Matinee settings" (the settings PIN still applies) and the app switcher. */
-    private fun handleRequest(intent: Intent) {
+    /**
+     * Remote keys open Matinee with these: "Matinee settings" (the settings PIN still applies) and the app switcher.
+     * Returns whether the intent asked for one of them.
+     */
+    private fun handleRequest(intent: Intent): Boolean {
         if (intent.getBooleanExtra(EXTRA_OPEN_SETTINGS, false)) {
             intent.removeExtra(EXTRA_OPEN_SETTINGS)
             viewModel.requestSettings()
+            return true
         }
         if (intent.getBooleanExtra(EXTRA_OPEN_SWITCHER, false)) {
             intent.removeExtra(EXTRA_OPEN_SWITCHER)
             viewModel.openSwitcher()
+            return true
         }
+        return false
     }
 
     override fun onResume() {

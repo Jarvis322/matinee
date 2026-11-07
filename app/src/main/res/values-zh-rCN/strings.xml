@@ -212,7 +212,6 @@
     <string name="default_home_other">其他启动器</string>
 
     <!-- Last played -->
-    <string name="continue_with_ok_suffix">继续</string>
     <string name="last_played_badge">上次播放 · %1$s</string>
     <string name="just_now">刚刚</string>
     <string name="setting_last_played">显示上次播放</string>

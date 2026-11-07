@@ -212,7 +212,6 @@
     <string name="default_home_other">Başka launcher</string>
 
     <!-- Last played -->
-    <string name="continue_with_ok_suffix">ile devam et</string>
     <string name="last_played_badge">Son izlenen · %1$s</string>
     <string name="just_now">Az önce</string>
     <string name="setting_last_played">Son izlenenleri göster</string>

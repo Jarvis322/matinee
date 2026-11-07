@@ -249,7 +249,6 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
             selected = current,
             editMode = editMode,
             liftedPackage = liftedPackage,
-            resumablePackages = lastPlayed.keys,
             focusRequest = focusRequest,
             onFocusRequestHandled = { focusRequest = focusRequest.copy(packageName = null) },
             onFocused = { selectedPackage = it.packageName },
@@ -506,7 +505,6 @@ private fun AppsRow(
     selected: LaunchableApp?,
     editMode: Boolean,
     liftedPackage: String?,
-    resumablePackages: Set<String>,
     focusRequest: CardFocusRequest,
     onFocusRequestHandled: () -> Unit,
     onFocused: (LaunchableApp) -> Unit,
@@ -544,7 +542,6 @@ private fun AppsRow(
                         isSelected = app.packageName == selected?.packageName,
                         editMode = editMode,
                         lifted = app.packageName == liftedPackage,
-                        resumable = app.packageName in resumablePackages,
                         removable = app.packageName != SYSTEM_SETTINGS_PACKAGE,
                         // In edit mode the add card comes after the last app and takes Right instead.
                         isLastInRow = !editMode && index == apps.lastIndex,
@@ -581,7 +578,6 @@ private fun AppCard(
     isSelected: Boolean,
     editMode: Boolean,
     lifted: Boolean,
-    resumable: Boolean,
     removable: Boolean,
     isLastInRow: Boolean,
     focusRequest: CardFocusRequest,
@@ -725,19 +721,14 @@ private fun AppCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BasicText(app.label, style = interStyle(11.sp, 700, if (editMode) Palette.TextPrimary else lerp(accent, Color.White, 0.45f)))
-            // Plain launching needs no hint now that the focused card stands out; only resuming is worth a word.
-            if (lifted || editMode || resumable) BasicText("  ·  ", style = interStyle(11.sp, 500, Palette.TextMuted))
+            // Opening needs no hint now that the focused card stands out; only edit mode explains its keys.
+            if (lifted || editMode) BasicText("  ·  ", style = interStyle(11.sp, 500, Palette.TextMuted))
             when {
                 lifted -> BasicText(stringResource(R.string.edit_drop_at, index + 1), style = interStyle(11.sp, 500, Palette.TextSecondary))
                 editMode -> {
                     KeyCap(stringResource(R.string.key_ok))
                     Spacer(Modifier.width(5.dp))
                     BasicText(stringResource(R.string.edit_pick_up), style = interStyle(11.sp, 500, Palette.TextSecondary))
-                }
-                resumable -> {
-                    KeyCap(stringResource(R.string.key_ok))
-                    Spacer(Modifier.width(5.dp))
-                    BasicText(stringResource(R.string.continue_with_ok_suffix), style = interStyle(11.sp, 500, Palette.TextSecondary))
                 }
             }
         }
