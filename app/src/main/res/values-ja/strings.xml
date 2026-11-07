@@ -413,6 +413,13 @@
     <string name="notice_self_update_downloading">ダウンロード中… %1$d%%</string>
     <string name="notice_self_update_confirming">表示された画面でアップデートを承認してください。何も開かない場合はもう一度選んでください</string>
     <string name="notice_self_update_failed">アップデートをインストールできませんでした</string>
+    <string name="setting_updates">アップデート</string>
+    <string name="setting_updates_sub">Matinee は数時間ごとに GitHub で新しいバージョンを確認し、ベルの下に表示します。選択すると今すぐ確認します。</string>
+    <string name="updates_check">今すぐ確認</string>
+    <string name="updates_checking">確認中…</string>
+    <string name="updates_up_to_date">最新です</string>
+    <string name="updates_failed">GitHub に接続できません</string>
+    <string name="updates_available">%1$s · インストール</string>
     <string name="notice_action_install">インストール</string>
     <string name="notice_action_retry">再試行</string>
     <string name="notice_play_updates">Play ストアのアップデート</string>

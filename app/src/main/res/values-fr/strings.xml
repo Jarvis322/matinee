@@ -414,6 +414,13 @@
     <string name="notice_self_update_downloading">Téléchargement… %1$d %%</string>
     <string name="notice_self_update_confirming">Confirmez la mise à jour sur l\'écran qui s\'ouvre. Resélectionnez-la si rien ne s\'est ouvert</string>
     <string name="notice_self_update_failed">La mise à jour n\'a pas pu être installée</string>
+    <string name="setting_updates">Mises à jour</string>
+    <string name="setting_updates_sub">Matinee cherche de nouvelles versions sur GitHub toutes les quelques heures et les affiche sous la cloche. Sélectionnez pour vérifier maintenant.</string>
+    <string name="updates_check">Vérifier maintenant</string>
+    <string name="updates_checking">Vérification…</string>
+    <string name="updates_up_to_date">À jour</string>
+    <string name="updates_failed">GitHub injoignable</string>
+    <string name="updates_available">%1$s · Installer</string>
     <string name="notice_action_install">Installer</string>
     <string name="notice_action_retry">Réessayer</string>
     <string name="notice_play_updates">Mises à jour du Play Store</string>

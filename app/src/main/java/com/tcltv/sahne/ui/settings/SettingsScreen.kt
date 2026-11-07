@@ -102,6 +102,7 @@ import com.tcltv.sahne.CitySearchState
 import com.tcltv.sahne.HomeKeyProblem
 import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
+import com.tcltv.sahne.UpdateCheck
 import com.tcltv.sahne.data.AppLanguage
 import com.tcltv.sahne.data.BuiltinWallpaper
 import com.tcltv.sahne.data.AppCatalog
@@ -130,6 +131,7 @@ import com.tcltv.sahne.ui.home.TopBar
 import com.tcltv.sahne.ui.home.profileColorCount
 import com.tcltv.sahne.ui.interStyle
 import com.tcltv.sahne.ui.longPressClickable
+import com.tcltv.sahne.update.SelfUpdate
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -684,6 +686,7 @@ private fun AboutPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, o
     var confirmReset by remember { mutableStateOf(false) }
     PanelList {
         InfoRow(R.string.setting_version, null, viewModel.versionName, modifier = Modifier.focusRequester(firstRow))
+        if (viewModel.canSelfUpdate) UpdatesRow(viewModel)
         LanguageRow(Modifier.opensPage(SubPage.Language)) { open(SubPage.Language) }
         DefaultHomeRow(viewModel, Modifier)
         ValueRow(R.string.setting_reset, null, stringResource(if (confirmReset) R.string.reset_confirm else R.string.reset_action)) {
@@ -697,6 +700,31 @@ private fun AboutPanel(viewModel: LauncherViewModel, firstRow: FocusRequester, o
         ValueRow(R.string.setting_licenses, null, null, Modifier.opensPage(SubPage.Licenses)) { open(SubPage.Licenses) }
         Credits()
     }
+}
+
+/** The GitHub build's own updates: what the last check found, and checking or installing on select. */
+@Composable
+private fun UpdatesRow(viewModel: LauncherViewModel) {
+    val update by viewModel.selfUpdate.collectAsStateWithLifecycle()
+    val check by viewModel.updateCheck.collectAsStateWithLifecycle()
+    val current = update
+    val value = if (current != null) {
+        when (current.stage) {
+            SelfUpdate.Stage.AVAILABLE -> stringResource(R.string.updates_available, current.version)
+            SelfUpdate.Stage.DOWNLOADING -> stringResource(R.string.notice_self_update_downloading, current.percent)
+            SelfUpdate.Stage.CONFIRMING -> stringResource(R.string.notice_action_reopen)
+            SelfUpdate.Stage.NEEDS_PERMISSION -> stringResource(R.string.notice_action_allow)
+            SelfUpdate.Stage.FAILED -> stringResource(R.string.notice_action_retry)
+        }
+    } else {
+        when (check) {
+            UpdateCheck.IDLE -> stringResource(R.string.updates_check)
+            UpdateCheck.CHECKING -> stringResource(R.string.updates_checking)
+            UpdateCheck.UP_TO_DATE -> stringResource(R.string.updates_up_to_date)
+            UpdateCheck.FAILED -> stringResource(R.string.updates_failed)
+        }
+    }
+    ValueRow(R.string.setting_updates, R.string.setting_updates_sub, value) { viewModel.onUpdatesRow() }
 }
 
 @Composable

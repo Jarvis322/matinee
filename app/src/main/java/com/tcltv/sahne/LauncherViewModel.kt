@@ -149,6 +149,8 @@ enum class HomeKeyProblem {
     SWITCHED_OFF,
 }
 
+enum class UpdateCheck { IDLE, CHECKING, UP_TO_DATE, FAILED }
+
 /** The app switcher's list; null in the view model while the switcher is closed. */
 sealed interface SwitcherState {
     data object Loading : SwitcherState
@@ -632,6 +634,31 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     fun clearNotices() {
         dismissedNotices.value = dismissedNotices.value + notices.value.map { it.id }
         localNotices.value = emptyList()
+    }
+
+    /** Whether this build updates itself; the Play build is updated by Play. */
+    val canSelfUpdate = SelfUpdater.SUPPORTED
+    val selfUpdate: StateFlow<SelfUpdate?> = SelfUpdater.update
+
+    private val _updateCheck = MutableStateFlow(UpdateCheck.IDLE)
+    val updateCheck: StateFlow<UpdateCheck> = _updateCheck.asStateFlow()
+
+    /** The Updates row in Settings: installs an update already found, or asks GitHub right away. */
+    fun onUpdatesRow() {
+        SelfUpdater.update.value?.let {
+            openNotice(Notice.AppUpdate(it))
+            return
+        }
+        if (_updateCheck.value == UpdateCheck.CHECKING) return
+        _updateCheck.value = UpdateCheck.CHECKING
+        viewModelScope.launch {
+            val reached = SelfUpdater.checkNow(getApplication())
+            _updateCheck.value = when {
+                !reached -> UpdateCheck.FAILED
+                SelfUpdater.update.value != null -> UpdateCheck.IDLE
+                else -> UpdateCheck.UP_TO_DATE
+            }
+        }
     }
 
     fun openNotice(notice: Notice) {

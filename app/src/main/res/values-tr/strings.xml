@@ -413,6 +413,13 @@
     <string name="notice_self_update_downloading">İndiriliyor… %%%1$d</string>
     <string name="notice_self_update_confirming">Açılan ekranda güncellemeyi onaylayın. Ekran açılmadıysa tekrar seçin</string>
     <string name="notice_self_update_failed">Güncelleme kurulamadı</string>
+    <string name="setting_updates">Güncellemeler</string>
+    <string name="setting_updates_sub">Matinee birkaç saatte bir GitHub\'da yeni sürüm arar ve zilin altında gösterir. Şimdi bakmak için seç.</string>
+    <string name="updates_check">Şimdi kontrol et</string>
+    <string name="updates_checking">Kontrol ediliyor…</string>
+    <string name="updates_up_to_date">Güncel</string>
+    <string name="updates_failed">GitHub\'a ulaşılamadı</string>
+    <string name="updates_available">%1$s · Kur</string>
     <string name="notice_action_install">Kur</string>
     <string name="notice_action_retry">Tekrar dene</string>
     <string name="notice_play_updates">Play Store güncellemeleri</string>

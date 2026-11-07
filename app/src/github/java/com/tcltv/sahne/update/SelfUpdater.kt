@@ -34,6 +34,9 @@ private const val TAG = "SelfUpdater"
  */
 object SelfUpdater {
 
+    /** This build updates itself from GitHub. */
+    const val SUPPORTED = true
+
     private const val LATEST_RELEASE = "https://api.github.com/repos/Jarvis322/matinee/releases/latest"
     private const val DOWNLOAD_PREFIX = "https://github.com/Jarvis322/matinee/releases/download/"
     private const val CHECK_INTERVAL_MS = 6 * 60 * 60_000L
@@ -53,26 +56,35 @@ object SelfUpdater {
 
     /** Asks GitHub at most every few hours; the home screen calls this each time it comes back. */
     suspend fun checkIfDue(context: Context) {
-        if (lock.isLocked) return
-        lock.withLock {
+        check(context, force = false)
+    }
+
+    /** Asks GitHub right away, for the Updates row in Settings; false when GitHub couldn't be reached. */
+    suspend fun checkNow(context: Context): Boolean = check(context, force = true)
+
+    private suspend fun check(context: Context, force: Boolean): Boolean {
+        if (lock.isLocked) return true
+        return lock.withLock {
             val now = SystemClock.elapsedRealtime()
-            if (lastCheckAt != 0L && now - lastCheckAt < CHECK_INTERVAL_MS) return
+            if (!force && lastCheckAt != 0L && now - lastCheckAt < CHECK_INTERVAL_MS) return@withLock true
             val stage = _update.value?.stage
-            if (stage == SelfUpdate.Stage.DOWNLOADING || stage == SelfUpdate.Stage.CONFIRMING) return
+            if (stage == SelfUpdate.Stage.DOWNLOADING || stage == SelfUpdate.Stage.CONFIRMING) return@withLock true
             try {
                 val release = latestRelease()
                 lastCheckAt = now
                 if (release == null || !isNewer(release.version, installedVersion(context))) {
                     _update.value = null
-                    return
+                    return@withLock true
                 }
                 downloadUrl = release.apkUrl
                 if (_update.value?.version != release.version) {
                     _update.value = SelfUpdate(release.version, release.publishedAt, SelfUpdate.Stage.AVAILABLE)
                 }
+                true
             } catch (e: IOException) {
                 // Offline or GitHub unreachable: the next return to the home screen after the interval tries again.
                 Log.w(TAG, "update check failed: ${e.message}")
+                false
             }
         }
     }

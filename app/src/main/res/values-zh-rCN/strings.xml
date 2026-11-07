@@ -412,6 +412,13 @@
     <string name="notice_self_update_downloading">正在下载… %1$d%%</string>
     <string name="notice_self_update_confirming">请在打开的界面中确认更新。如果没有打开，请再次选择</string>
     <string name="notice_self_update_failed">无法安装更新</string>
+    <string name="setting_updates">更新</string>
+    <string name="setting_updates_sub">Matinee 每隔几小时在 GitHub 上检查新版本，并显示在铃铛下方。选择即可立即检查。</string>
+    <string name="updates_check">立即检查</string>
+    <string name="updates_checking">正在检查…</string>
+    <string name="updates_up_to_date">已是最新</string>
+    <string name="updates_failed">无法连接 GitHub</string>
+    <string name="updates_available">%1$s · 安装</string>
     <string name="notice_action_install">安装</string>
     <string name="notice_action_retry">重试</string>
     <string name="notice_play_updates">Play 商店更新</string>

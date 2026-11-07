@@ -413,6 +413,13 @@
     <string name="notice_self_update_downloading">Wird geladen … %1$d %%</string>
     <string name="notice_self_update_confirming">Bestätige das Update auf dem Bildschirm, der sich öffnet. Wähle es erneut, wenn sich nichts geöffnet hat</string>
     <string name="notice_self_update_failed">Das Update konnte nicht installiert werden</string>
+    <string name="setting_updates">Updates</string>
+    <string name="setting_updates_sub">Matinee sucht alle paar Stunden auf GitHub nach neuen Versionen und zeigt sie unter der Glocke. Auswählen, um jetzt zu prüfen.</string>
+    <string name="updates_check">Jetzt prüfen</string>
+    <string name="updates_checking">Wird geprüft…</string>
+    <string name="updates_up_to_date">Aktuell</string>
+    <string name="updates_failed">GitHub nicht erreichbar</string>
+    <string name="updates_available">%1$s · Installieren</string>
     <string name="notice_action_install">Installieren</string>
     <string name="notice_action_retry">Erneut versuchen</string>
     <string name="notice_play_updates">Play Store-Updates</string>
