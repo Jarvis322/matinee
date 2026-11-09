@@ -287,6 +287,8 @@
     <string name="home_key_disclosure_body">Some TVs keep the Home button for their built‑in launcher and bring its home screen back after a restart. To open Matinee instead, and to run the actions you give remote keys, Matinee uses an Android accessibility permission.\n\nIt sees remote key presses only to act on the Home button and the keys you assigned; every other key passes straight through. It also sees when the TV\'s built‑in home screen opens. It does not read what is on the screen, what you type or other apps, and nothing is stored or sent anywhere.</string>
     <string name="home_key_disclosure_steps">On the next screen, choose “Matinee Home button” and turn it on. You can turn it off there at any time.</string>
     <string name="home_key_disclosure_direct">Matinee turns it on right away. You can turn it off here at any time.</string>
+    <string name="home_key_intro_steps">On the next screen, choose “Matinee Home button” and turn it on. You can turn it off there at any time. Or skip it for now: it’s always under Settings → Bluetooth and remote.</string>
+    <string name="home_key_intro_direct">Matinee turns it on right away, and you can turn it off at any time. Or skip it for now: it’s always under Settings → Bluetooth and remote.</string>
     <string name="home_key_disclosure_accept">Agree and continue</string>
     <string name="home_key_restricted_title">Install Matinee from Google Play first</string>
     <string name="home_key_restricted_body">This TV doesn\'t let apps installed from an APK file use accessibility permissions, so the switch turns itself back off.\n\nSet up Automatic ADB in Settings → Bluetooth and remote, or uninstall Matinee and install it from Google Play, then turn this on again.</string>

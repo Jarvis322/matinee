@@ -124,6 +124,7 @@ import com.tcltv.sahne.ui.focusSheen
 import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.rememberFocusSheen
 import com.tcltv.sahne.ui.interStyle
+import com.tcltv.sahne.ui.settings.HomeKeyIntro
 import com.tcltv.sahne.ui.settings.HomeKeyStoppedPrompt
 import kotlinx.coroutines.delay
 import java.time.format.DateTimeFormatter
@@ -149,6 +150,7 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
     }
     AppMenuHost(viewModel, menu, settings.cardTheme)
     HomeKeyStoppedPrompt(viewModel, resumeTick)
+    HomeKeyIntro(viewModel)
 
     if (settings.homeLayout == HomeLayout.GRID) {
         GridHome(viewModel, apps, allApps, liveTv, inputs, settings, lastPlayed, resumeTick, onOpenSettings, menu, openMenu)

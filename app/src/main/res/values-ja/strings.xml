@@ -278,6 +278,8 @@
     <string name="home_key_disclosure_body">一部のテレビはホームボタンを内蔵ランチャー用に確保し、再起動後にそのホーム画面を戻します。代わりに Matinee を開き、リモコンのキーに割り当てた動作を実行するため、Matinee は Android のユーザー補助の権限を使います。\n\nキーの押下を見るのは、ホームボタンとあなたが割り当てたキーに対応するためだけで、その他のキーはそのまま通ります。テレビ内蔵のホーム画面が開いたことも検知します。画面の内容、入力内容、他のアプリは読み取らず、何も保存・送信しません。</string>
     <string name="home_key_disclosure_steps">次の画面で「Matinee ホームボタン」を選んでオンにしてください。いつでもそこでオフにできます。</string>
     <string name="home_key_disclosure_direct">Matinee がすぐにオンにします。ここでいつでもオフにできます。</string>
+    <string name="home_key_intro_steps">次の画面で「Matinee ホームボタン」を選んでオンにしてください。いつでもそこでオフにできます。今はスキップしても、いつでも 設定 → Bluetooth とリモコン から設定できます。</string>
+    <string name="home_key_intro_direct">Matinee がすぐにオンにします。いつでもオフにできます。今はスキップしても、いつでも 設定 → Bluetooth とリモコン から設定できます。</string>
     <string name="home_key_disclosure_accept">同意して続行</string>
     <string name="home_key_restricted_title">まず Google Play から Matinee をインストールしてください</string>
     <string name="home_key_restricted_body">このテレビでは APK ファイルからインストールしたアプリはユーザー補助の権限を使えないため、スイッチが自動的にオフに戻ります。\n\n設定 → Bluetooth とリモコンで自動 ADB を設定するか、Matinee をアンインストールして Google Play からインストールしてから、もう一度オンにしてください。</string>

@@ -277,6 +277,8 @@
     <string name="home_key_disclosure_body">有些电视把主页键留给自带的启动器，重启后会恢复其主屏幕。为了改为打开 Matinee，并执行你为遥控器按键分配的操作，Matinee 使用一项 Android 无障碍权限。\n\n它只为响应主页键和你分配的按键而查看按键操作；其他按键都会原样通过。它也会察觉电视自带的主屏幕何时打开。它不会读取屏幕内容、你输入的内容或其他应用，也不会保存或发送任何数据。</string>
     <string name="home_key_disclosure_steps">在下一个屏幕中选择“Matinee 主页键”并开启。你可以随时在那里关闭它。</string>
     <string name="home_key_disclosure_direct">Matinee 会立即开启它。你可以随时在这里关闭。</string>
+    <string name="home_key_intro_steps">在下一个屏幕中选择“Matinee 主页键”并开启。你可以随时在那里关闭它。也可以暂时跳过：它始终位于 设置 → Bluetooth 和遥控器。</string>
+    <string name="home_key_intro_direct">Matinee 会立即开启它，你可以随时关闭。也可以暂时跳过：它始终位于 设置 → Bluetooth 和遥控器。</string>
     <string name="home_key_disclosure_accept">同意并继续</string>
     <string name="home_key_restricted_title">请先从 Google Play 安装 Matinee</string>
     <string name="home_key_restricted_body">这台电视不允许通过 APK 文件安装的应用使用无障碍权限，因此开关会自动关闭。\n\n请在“设置 → Bluetooth 和遥控器”中设置自动 ADB，或卸载 Matinee 后从 Google Play 安装，然后再开启此项。</string>

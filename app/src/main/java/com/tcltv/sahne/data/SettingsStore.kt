@@ -50,6 +50,8 @@ data class LauncherSettings(
     val showChromecast: Boolean = true,
     val showLastPlayed: Boolean = true,
     val focusOutline: Boolean = true,
+    /** The Home button disclosure has been shown once on the home screen, whatever the answer. */
+    val homeKeyIntroSeen: Boolean = false,
     val launchAnimation: Boolean = true,
     val profileName: String = "",
     val profileColor: Int = 0,
@@ -110,6 +112,7 @@ class SettingsStore(private val context: Context) {
         val showChromecast = booleanPreferencesKey("show_google_home")
         val showLastPlayed = booleanPreferencesKey("show_last_played")
         val focusOutline = booleanPreferencesKey("focus_outline")
+        val homeKeyIntroSeen = booleanPreferencesKey("home_key_intro_seen")
         val launchAnimation = booleanPreferencesKey("launch_animation")
         val profileName = stringPreferencesKey("profile_name")
         val profileColor = intPreferencesKey("profile_color")
@@ -185,6 +188,7 @@ class SettingsStore(private val context: Context) {
             showChromecast = this[Keys.showChromecast] ?: defaults.showChromecast,
             showLastPlayed = this[Keys.showLastPlayed] ?: defaults.showLastPlayed,
             focusOutline = this[Keys.focusOutline] ?: defaults.focusOutline,
+            homeKeyIntroSeen = this[Keys.homeKeyIntroSeen] ?: defaults.homeKeyIntroSeen,
             launchAnimation = this[Keys.launchAnimation] ?: defaults.launchAnimation,
             profileName = this[Keys.profileName] ?: defaults.profileName,
             profileColor = this[Keys.profileColor] ?: defaults.profileColor,
@@ -251,6 +255,7 @@ class SettingsStore(private val context: Context) {
     suspend fun setShowChromecast(value: Boolean) = edit { it[Keys.showChromecast] = value }
     suspend fun setShowLastPlayed(value: Boolean) = edit { it[Keys.showLastPlayed] = value }
     suspend fun setFocusOutline(value: Boolean) = edit { it[Keys.focusOutline] = value }
+    suspend fun setHomeKeyIntroSeen() = edit { it[Keys.homeKeyIntroSeen] = true }
     suspend fun setLaunchAnimation(value: Boolean) = edit { it[Keys.launchAnimation] = value }
     suspend fun setProfileName(value: String) = edit { it[Keys.profileName] = value.trim() }
     suspend fun setProfileColor(value: Int) = edit { it[Keys.profileColor] = value }

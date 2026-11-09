@@ -1510,6 +1510,38 @@ internal fun HomeKeyRow(viewModel: LauncherViewModel, modifier: Modifier = Modif
 }
 
 /**
+ * Offers the Home button service once, on the home screen the first time Matinee opens, with the same disclosure and
+ * consent as in Settings. Play's accessibility policy wants the disclosure in normal use, not only behind a menu.
+ */
+@Composable
+internal fun HomeKeyIntro(viewModel: LauncherViewModel) {
+    var show by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(Unit) { show = viewModel.shouldOfferHomeKey() }
+    if (!show) return
+    val selfSwitching = viewModel.canSwitchHomeKey()
+    ConsentDialog(
+        title = R.string.home_key_disclosure_title,
+        body = R.string.home_key_disclosure_body,
+        accept = R.string.home_key_disclosure_accept,
+        onAccept = {
+            show = false
+            viewModel.markHomeKeyIntroSeen()
+            if (selfSwitching) {
+                scope.launch { viewModel.switchHomeKeyOn() }
+            } else {
+                viewModel.openSystemSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            }
+        },
+        onDismiss = {
+            show = false
+            viewModel.markHomeKeyIntroSeen()
+        },
+        closing = if (selfSwitching) R.string.home_key_intro_direct else R.string.home_key_intro_steps,
+    )
+}
+
+/**
  * Tells the user, when they come back to Matinee, that the Home button they turned on no longer works, so they don't
  * find out only when the remote's Home button opens the stock launcher.
  */

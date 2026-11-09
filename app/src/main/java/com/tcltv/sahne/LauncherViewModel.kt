@@ -770,6 +770,17 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     fun isHomeKeyServiceEnabled(): Boolean = homeKeyGuard.isEnabled()
 
+    /** Whether the home screen should offer the Home button once: read from storage, not the not-yet-loaded default. */
+    suspend fun shouldOfferHomeKey(): Boolean {
+        if (settingsStore.settings.first().homeKeyIntroSeen) return false
+        if (!homeKeyGuard.isEnabled()) return true
+        // Already on (turned on in the TV's settings): nothing to offer, ever.
+        settingsStore.setHomeKeyIntroSeen()
+        return false
+    }
+
+    fun markHomeKeyIntroSeen() = update { setHomeKeyIntroSeen() }
+
     /**
      * Whether Android has the Home button service running. It can be switched on and still stopped: Android doesn't
      * restart an accessibility service whose process died until it is switched off and on again.

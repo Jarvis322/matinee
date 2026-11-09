@@ -277,6 +277,8 @@
     <string name="home_key_disclosure_body">Bazı TV\'ler Home tuşunu kendi yerleşik ana ekranına ayırır ve yeniden başlatınca o ekranı geri getirir. Bunun yerine Matinee\'nin açılması ve kumanda tuşlarına atadığın görevlerin çalışması için Matinee bir Android erişilebilirlik izni kullanır.\n\nKumanda tuşlarına basıldığını yalnızca Home tuşu ve görev atadığın tuşlar için görür; diğer bütün tuşlar olduğu gibi geçer. TV\'nin yerleşik ana ekranının açıldığını da görür. Ekranda ne olduğunu, ne yazdığını ya da başka uygulamaları okumaz; hiçbir şey kaydedilmez ve hiçbir yere gönderilmez.</string>
     <string name="home_key_disclosure_steps">Sonraki ekranda “Matinee Home tuşu” seçeneğini seçip aç. İstediğin zaman oradan kapatabilirsin.</string>
     <string name="home_key_disclosure_direct">Matinee onu hemen açar. İstediğin zaman buradan kapatabilirsin.</string>
+    <string name="home_key_intro_steps">Sonraki ekranda “Matinee Home tuşu” seçeneğini seçip aç. İstediğin zaman oradan kapatabilirsin. İstersen şimdilik geç: her zaman Ayarlar → Bluetooth ve Kumanda altında.</string>
+    <string name="home_key_intro_direct">Matinee bunu hemen açar, istediğin zaman kapatabilirsin. İstersen şimdilik geç: her zaman Ayarlar → Bluetooth ve Kumanda altında.</string>
     <string name="home_key_disclosure_accept">Kabul et ve devam et</string>
     <string name="home_key_restricted_title">Önce Matinee\'yi Google Play\'den kur</string>
     <string name="home_key_restricted_body">Bu TV, APK dosyasından kurulan uygulamaların erişilebilirlik izni kullanmasına izin vermiyor; bu yüzden anahtar kendiliğinden kapanıyor.\n\nAyarlar → Bluetooth ve Kumanda\'dan Otomatik ADB\'yi kur ya da Matinee\'yi kaldırıp Google Play\'den kur, sonra bunu tekrar aç.</string>
