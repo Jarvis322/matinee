@@ -862,7 +862,8 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             try {
                 val candidates = allApps.value.map { it.packageName }
-                _lastClean.value = memoryStatus.clean(candidates, settings.value.memoryCleanExclusions)
+                val forceStop = if (localAdb.isSetUp()) backgroundApps::stopRunning else null
+                _lastClean.value = memoryStatus.clean(candidates, settings.value.memoryCleanExclusions, forceStop)
                 _memory.value = memoryStatus.snapshot()
             } finally {
                 _cleaning.value = false

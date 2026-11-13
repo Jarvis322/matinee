@@ -26,7 +26,9 @@ class CloseAppsReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.Default).launch {
             try {
                 val excluded = SettingsStore(appContext).settings.first().memoryCleanExclusions
-                val result = MemoryStatus(appContext).clean(launchablePackages(appContext), excluded)
+                val adb = LocalAdb(appContext)
+                val forceStop = if (adb.isSetUp()) BackgroundApps(adb, appContext.packageName)::stopRunning else null
+                val result = MemoryStatus(appContext).clean(launchablePackages(appContext), excluded, forceStop)
                 val freedMb = (result.freedBytes / (1024 * 1024)).toInt()
                 withContext(Dispatchers.Main) {
                     Toast.makeText(appContext, appContext.getString(R.string.memory_freed_mb, freedMb), Toast.LENGTH_SHORT).show()

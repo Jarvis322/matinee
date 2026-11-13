@@ -16,6 +16,13 @@ class BackgroundApps(private val adb: LocalAdb, private val ownPackage: String) 
             .toSet()
     }
 
+    /** Stops those of [candidates] that are running; how many, or null when adb can't be reached. */
+    fun stopRunning(candidates: Set<String>): Int? {
+        val running = running(candidates) ?: return null
+        running.forEach(::close)
+        return running.size
+    }
+
     /** Ends the app's processes for good, the same as "Force stop" in the TV's app settings. */
     fun close(packageName: String): Boolean = adb.runQuietly("am force-stop $packageName")
 
