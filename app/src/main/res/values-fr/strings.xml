@@ -482,6 +482,7 @@
     <string name="switcher_empty">Pas encore d\'applis récentes</string>
     <string name="switcher_needs_adb_sub">Android ne partage la liste des applis récentes que via adb. Configurez-le dans Bluetooth et télécommande.</string>
     <string name="switcher_hint">OK ouvre · Haut ferme l\'appli · Retour quitte</string>
+    <string name="switcher_close_all">Tout fermer</string>
     <string name="logo_av">AV / composante</string>
     <string name="setting_focus_outline">Contour sur l\'appli sélectionnée</string>
     <string name="setting_focus_outline_sub">Désactivez pour un rendu plus épuré ; l\'appli sélectionnée grossit et brille toujours</string>

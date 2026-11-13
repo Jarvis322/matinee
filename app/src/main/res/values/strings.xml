@@ -491,6 +491,7 @@
     <string name="switcher_empty">No recent apps yet</string>
     <string name="switcher_needs_adb_sub">Android shares the list of recent apps only over adb. Set it up under Bluetooth and remote.</string>
     <string name="switcher_hint">OK opens · Up quits the app · Back closes</string>
+    <string name="switcher_close_all">Close all</string>
     <string name="logo_av">AV / component</string>
     <string name="setting_focus_outline">Outline on the selected app</string>
     <string name="setting_focus_outline_sub">Turn off for a cleaner look; the selected app still grows and glows</string>

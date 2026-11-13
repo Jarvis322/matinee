@@ -482,6 +482,7 @@
     <string name="switcher_empty">Aún no hay apps recientes</string>
     <string name="switcher_needs_adb_sub">Android solo comparte la lista de apps recientes por adb. Configúralo en Bluetooth y control remoto.</string>
     <string name="switcher_hint">OK abre · Arriba cierra la app · Atrás sale</string>
+    <string name="switcher_close_all">Cerrar todas</string>
     <string name="logo_av">AV / componentes</string>
     <string name="setting_focus_outline">Borde en la app seleccionada</string>
     <string name="setting_focus_outline_sub">Desactívalo para un aspecto más limpio; la app seleccionada sigue creciendo y brillando</string>

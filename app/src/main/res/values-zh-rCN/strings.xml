@@ -480,6 +480,7 @@
     <string name="switcher_empty">还没有最近使用的应用</string>
     <string name="switcher_needs_adb_sub">Android 仅通过 adb 提供最近使用的应用列表。请在“Bluetooth 和遥控器”中设置。</string>
     <string name="switcher_hint">OK 打开 · 向上退出应用 · 返回关闭</string>
+    <string name="switcher_close_all">全部关闭</string>
     <string name="logo_av">AV / 分量</string>
     <string name="setting_focus_outline">选中应用的边框</string>
     <string name="setting_focus_outline_sub">关闭后更简洁；选中的应用仍会放大并发光</string>

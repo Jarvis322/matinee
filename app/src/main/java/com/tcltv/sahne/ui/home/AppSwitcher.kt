@@ -68,6 +68,7 @@ import com.tcltv.sahne.ui.Palette
 import com.tcltv.sahne.ui.appCardFocus
 import com.tcltv.sahne.ui.interStyle
 import com.tcltv.sahne.ui.rememberFocusSheen
+import com.tcltv.sahne.ui.settings.DialogButton
 import kotlinx.coroutines.launch
 
 /**
@@ -113,12 +114,13 @@ private fun AppSwitcher(viewModel: LauncherViewModel, state: SwitcherState, card
                         },
                         onClose = viewModel::closeRecentApp,
                     )
-                    Spacer(Modifier.height(30.dp))
-                    BasicText(
-                        stringResource(R.string.switcher_hint),
-                        style = interStyle(13.sp, 500, Palette.TextSecondary),
-                        modifier = Modifier.padding(start = SWITCHER_SIDE.dp),
-                    )
+                    Spacer(Modifier.height(26.dp))
+                    // Below the row, so Down reaches it; Up on a card already quits that one app.
+                    Row(Modifier.padding(start = SWITCHER_SIDE.dp), verticalAlignment = Alignment.CenterVertically) {
+                        DialogButton(stringResource(R.string.switcher_close_all), Modifier, viewModel::closeAllRecentApps)
+                        Spacer(Modifier.width(18.dp))
+                        BasicText(stringResource(R.string.switcher_hint), style = interStyle(13.sp, 500, Palette.TextSecondary))
+                    }
                 }
             }
         }

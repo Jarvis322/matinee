@@ -481,6 +481,7 @@
     <string name="switcher_empty">Henüz son uygulama yok</string>
     <string name="switcher_needs_adb_sub">Android son uygulamaların listesini yalnızca adb üzerinden verir. Bluetooth ve Kumanda altından kur.</string>
     <string name="switcher_hint">OK açar · Yukarı uygulamayı kapatır · Geri çıkar</string>
+    <string name="switcher_close_all">Tümünü kapat</string>
     <string name="logo_av">AV / komponent</string>
     <string name="setting_focus_outline">Seçili uygulamada çerçeve</string>
     <string name="setting_focus_outline_sub">Daha sade görünüm için kapat; seçili uygulama yine büyür ve parlar</string>

@@ -481,6 +481,7 @@
     <string name="switcher_empty">Noch keine zuletzt verwendeten Apps</string>
     <string name="switcher_needs_adb_sub">Android gibt die Liste der zuletzt verwendeten Apps nur über adb heraus. Richte es unter Bluetooth und Fernbedienung ein.</string>
     <string name="switcher_hint">OK öffnet · Nach oben beendet die App · Zurück schließt</string>
+    <string name="switcher_close_all">Alle schließen</string>
     <string name="logo_av">AV / Komponente</string>
     <string name="setting_focus_outline">Rahmen um die gewählte App</string>
     <string name="setting_focus_outline_sub">Für eine schlichtere Optik ausschalten; die gewählte App wird weiterhin größer und leuchtet</string>

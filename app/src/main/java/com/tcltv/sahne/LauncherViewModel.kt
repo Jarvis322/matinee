@@ -555,6 +555,15 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    /** Quits every app in the switcher except those the user keeps out of cleanups. */
+    fun closeAllRecentApps() {
+        val state = _switcher.value as? SwitcherState.Ready ?: return
+        val kept = settings.value.memoryCleanExclusions
+        val targets = state.apps.filter { it.app.packageName !in kept }
+        _switcher.value = SwitcherState.Ready(state.apps - targets.toSet())
+        viewModelScope.launch(Dispatchers.IO) { targets.forEach { recentApps.close(it.task) } }
+    }
+
     fun dismissSwitcher() {
         _switcher.value = null
     }
