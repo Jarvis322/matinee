@@ -102,7 +102,7 @@ class HomeKeyService : AccessibilityService() {
         if (event.keyCode == KeyEvent.KEYCODE_HOME) {
             // Only a double press needs telling apart; without one, Home opens Matinee at once.
             if (binding?.actions?.get(PressType.DOUBLE) == null) {
-                if (event.action == KeyEvent.ACTION_UP && !event.isCanceled) openMatinee()
+                if (event.action == KeyEvent.ACTION_UP && !event.isCanceled) openMatinee(homePressed = true)
                 return true
             }
         } else {
@@ -136,7 +136,7 @@ class HomeKeyService : AccessibilityService() {
     private fun onPress(keyCode: Int, press: PressType) {
         val binding: KeyBinding = bindings.current()[keyCode] ?: return
         when (val action = binding.actions[press]) {
-            null -> if (keyCode == KeyEvent.KEYCODE_HOME) openMatinee() else passThrough(keyCode)
+            null -> if (keyCode == KeyEvent.KEYCODE_HOME) openMatinee(homePressed = true) else passThrough(keyCode)
             is KeyAction.OpenApp -> launch(appIntent(action.packageName))
             is KeyAction.OpenInput -> adbExecutor.execute {
                 inputSwitcher.open(
@@ -144,7 +144,7 @@ class HomeKeyService : AccessibilityService() {
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                 )
             }
-            KeyAction.MatineeHome -> launch(matineeIntent())
+            KeyAction.MatineeHome -> launch(matineeIntent().putExtra(MainActivity.EXTRA_HOME_PRESSED, true))
             KeyAction.MatineeSettings -> launch(matineeIntent().putExtra(MainActivity.EXTRA_OPEN_SETTINGS, true))
             KeyAction.ScreenOff -> screenOff()
             KeyAction.CloseBackgroundApps -> sendBroadcast(Intent(this, CloseAppsReceiver::class.java))
@@ -199,12 +199,16 @@ class HomeKeyService : AccessibilityService() {
 
     override fun onInterrupt() = Unit
 
-    private fun openMatinee() {
+    /**
+     * [homePressed] marks a real Home press, which also takes Matinee out of its settings; covering the stock home
+     * screen when it shows up on its own (it can, for a few seconds after an update) must leave Matinee as it is.
+     */
+    private fun openMatinee(homePressed: Boolean = false) {
         val now = SystemClock.elapsedRealtime()
         // The Home key and the home window it brings up arrive together; one launch is enough.
         if (now - lastOpenedAt < REOPEN_GUARD_MS) return
         lastOpenedAt = now
-        startActivity(matineeIntent())
+        startActivity(matineeIntent().putExtra(MainActivity.EXTRA_HOME_PRESSED, homePressed))
     }
 
     private fun stockHomeActivities(): Set<ComponentName> {

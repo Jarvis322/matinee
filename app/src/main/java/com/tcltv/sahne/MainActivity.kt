@@ -28,9 +28,15 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        // Anything else reaching a running Matinee is Home (the TV's, or the Home button service's): back to the home
-        // screen, out of settings, as Home does everywhere else.
-        if (!handleRequest(intent)) viewModel.requestHome()
+        // A Home press (the TV's own, with Matinee as its home app, or the Home button service's) goes back to the home
+        // screen and out of settings, as Home does everywhere else.
+        if (!handleRequest(intent) && isHomePress(intent)) viewModel.requestHome()
+    }
+
+    private fun isHomePress(intent: Intent): Boolean {
+        val pressed = intent.getBooleanExtra(EXTRA_HOME_PRESSED, false)
+        intent.removeExtra(EXTRA_HOME_PRESSED)
+        return pressed || intent.hasCategory(Intent.CATEGORY_HOME)
     }
 
     /**
@@ -66,5 +72,6 @@ class MainActivity : ComponentActivity() {
     companion object {
         const val EXTRA_OPEN_SETTINGS = "com.tcltv.sahne.extra.OPEN_SETTINGS"
         const val EXTRA_OPEN_SWITCHER = "com.tcltv.sahne.extra.OPEN_SWITCHER"
+        const val EXTRA_HOME_PRESSED = "com.tcltv.sahne.extra.HOME_PRESSED"
     }
 }
