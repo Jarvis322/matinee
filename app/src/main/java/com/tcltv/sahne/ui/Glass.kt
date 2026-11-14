@@ -153,6 +153,10 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
     private var fromShaderImage: ImageBitmap? = null
     private var fromShader: android.graphics.BitmapShader? = null
 
+    // One per backdrop image, since a cross-fade draws both in the same frame.
+    private var liquid: LiquidLens? = null
+    private var fromLiquid: LiquidLens? = null
+
     override fun onGloballyPositioned(coordinates: LayoutCoordinates) {
         val position = coordinates.positionInRoot()
         val rootSize = coordinates.findRootCoordinates().size
@@ -224,18 +228,24 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
                 fromShader = from.asAndroidBitmap().let { android.graphics.BitmapShader(it, android.graphics.Shader.TileMode.CLAMP, android.graphics.Shader.TileMode.CLAMP) }
                 fromShaderImage = from
             }
-            fillSlice(glass, fromShader, from, opacity * (1f - progress))
+            fillSlice(glass, fromShader, from, opacity * (1f - progress), fading = true)
         }
         if (to != null) {
             if (shaderImage !== to) {
                 shader = to.asAndroidBitmap().let { android.graphics.BitmapShader(it, android.graphics.Shader.TileMode.CLAMP, android.graphics.Shader.TileMode.CLAMP) }
                 shaderImage = to
             }
-            fillSlice(glass, shader, to, opacity * if (fading) progress else 1f)
+            fillSlice(glass, shader, to, opacity * if (fading) progress else 1f, fading = false)
         }
     }
 
-    private fun DrawScope.fillSlice(glass: BuiltGlass, bitmapShader: android.graphics.BitmapShader?, image: ImageBitmap, alpha: Float) {
+    private fun DrawScope.fillSlice(
+        glass: BuiltGlass,
+        bitmapShader: android.graphics.BitmapShader?,
+        image: ImageBitmap,
+        alpha: Float,
+        fading: Boolean,
+    ) {
         if (bitmapShader == null || root.width == 0 || root.height == 0) return
         // Shader space is the bitmap's pixels; the matrix carries them onto this surface's own coordinates.
         val toBitmapX = image.width.toFloat() / root.width
@@ -243,7 +253,12 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
         sliceMatrix.setScale(1f / toBitmapX, 1f / toBitmapY)
         sliceMatrix.postTranslate(-origin.x, -origin.y)
         bitmapShader.setLocalMatrix(sliceMatrix)
-        slicePaint.shader = bitmapShader
+        slicePaint.shader = if (glass.liquid && android.os.Build.VERSION.SDK_INT >= 33) {
+            val lens = (if (fading) fromLiquid else liquid) ?: LiquidLens().also { if (fading) fromLiquid = it else liquid = it }
+            lens.shaderFor(bitmapShader, glass, density)
+        } else {
+            bitmapShader
+        }
         slicePaint.colorFilter = glass.veilFilter
         slicePaint.alpha = (alpha * 255f).toInt().coerceIn(0, 255)
         drawIntoCanvas { canvas ->
@@ -286,6 +301,8 @@ private class BuiltGlass(
     val sheen: Brush,
     val rim: Brush,
     val ring: RefractionRing?,
+    /** Bent per pixel by [LiquidLens] (Android 13+) instead of by [ring]. */
+    val liquid: Boolean,
 ) {
     fun matches(size: Size, direction: androidx.compose.ui.unit.LayoutDirection, shape: Shape, style: GlassStyle) =
         this.size == size && layoutDirection == direction && this.shape == shape && this.style == style
@@ -294,6 +311,8 @@ private class BuiltGlass(
         fun create(scope: DrawScope, shape: Shape, style: GlassStyle): BuiltGlass {
             val size = scope.size
             val outline = shape.createOutline(size, scope.layoutDirection, scope)
+            val bends = outline is Outline.Rounded && style.refraction > 0f && style.backdrop > 0f
+            val liquid = bends && android.os.Build.VERSION.SDK_INT >= 33
             return BuiltGlass(
                 size = size,
                 layoutDirection = scope.layoutDirection,
@@ -320,8 +339,9 @@ private class BuiltGlass(
                     end = Offset(size.width, size.height),
                 ),
                 ring = (outline as? Outline.Rounded)
-                    ?.takeIf { style.refraction > 0f && style.backdrop > 0f && android.os.Build.VERSION.SDK_INT >= 29 }
+                    ?.takeIf { bends && !liquid && android.os.Build.VERSION.SDK_INT >= 29 }
                     ?.let { RefractionRing.create(size, it.roundRect.topLeftCornerRadius.x, style.refraction, scope.density) },
+                liquid = liquid,
             )
         }
     }
@@ -581,3 +601,69 @@ internal class RefractionRing(val positions: FloatArray, val textures: FloatArra
         }
     }
 }
+
+/**
+ * Liquid Glass bent per pixel on Android 13 and later, after samasante/liquid-glass (MIT): a rounded rectangle's signed
+ * distance field drives the displacement. Near the edge the backdrop is pulled in from outside along the edge normal
+ * with the same circular profile as [RefractionRing]; the middle magnifies slightly, like a dome; and red and blue are
+ * displaced a little more and less than green, which splits colour at the rim where the bend is strongest.
+ */
+@androidx.annotation.RequiresApi(33)
+private class LiquidLens {
+    private val shader = android.graphics.RuntimeShader(LIQUID_GLASS_AGSL)
+
+    fun shaderFor(backdrop: android.graphics.BitmapShader, glass: BuiltGlass, density: Float): android.graphics.Shader {
+        val w = glass.size.width
+        val h = glass.size.height
+        val radius = ((glass.outline as? Outline.Rounded)?.roundRect?.topLeftCornerRadius?.x ?: 0f).coerceIn(0f, minOf(w, h) / 2f)
+        val strength = glass.style.refraction
+        shader.setInputShader("backdrop", backdrop)
+        shader.setFloatUniform("size", w, h)
+        shader.setFloatUniform("radius", radius)
+        // Deeper than the corner radius, the band would fold the corners over themselves.
+        shader.setFloatUniform("band", minOf(BAND_DP * density, minOf(w, h) / 2f, radius).coerceAtLeast(1f))
+        shader.setFloatUniform("amount", AMOUNT_DP * density * strength)
+        shader.setFloatUniform("dome", DOME * strength)
+        shader.setFloatUniform("dispersion", DISPERSION * strength)
+        return shader
+    }
+
+    private companion object {
+        const val BAND_DP = 20f
+        const val AMOUNT_DP = 26f
+        const val DOME = 0.05f
+        const val DISPERSION = 0.18f
+    }
+}
+
+private const val LIQUID_GLASS_AGSL = """
+uniform shader backdrop;
+uniform float2 size;
+uniform float radius;
+uniform float band;
+uniform float amount;
+uniform float dome;
+uniform float dispersion;
+
+float roundRect(float2 p, float2 extent, float r) {
+    float2 q = abs(p) - extent + r;
+    return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
+}
+
+half4 main(float2 coord) {
+    float2 extent = size * 0.5;
+    float2 p = coord - extent;
+    float depth = -roundRect(p, extent, radius);
+    float2 normal = normalize(float2(
+        roundRect(p + float2(1.0, 0.0), extent, radius) - roundRect(p - float2(1.0, 0.0), extent, radius),
+        roundRect(p + float2(0.0, 1.0), extent, radius) - roundRect(p - float2(0.0, 1.0), extent, radius)
+    ) + float2(1e-5, 0.0));
+    float x = clamp(1.0 - depth / band, 0.0, 1.0);
+    float bend = (1.0 - sqrt(max(1.0 - x * x, 0.0))) * amount;
+    float2 shift = normal * bend - p * dome;
+    half4 g = backdrop.eval(coord + shift);
+    half r = backdrop.eval(coord + shift * (1.0 + dispersion)).r;
+    half b = backdrop.eval(coord + shift * (1.0 - dispersion)).b;
+    return half4(r, g.g, b, g.a);
+}
+"""
