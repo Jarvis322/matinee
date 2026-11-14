@@ -61,6 +61,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.AppCatalog
@@ -132,6 +133,7 @@ internal fun GridHome(
     onOpenMenu: (LaunchableApp) -> Unit,
 ) {
     val launch = rememberAppLauncher(viewModel)
+    val continueItems by viewModel.continueWatching.collectAsStateWithLifecycle()
     var selectedPackage by remember { mutableStateOf<String?>(null) }
     var liftedPackage by remember { mutableStateOf<String?>(null) }
     var focusRequest by remember { mutableStateOf(GridFocusRequest(null, 0)) }
@@ -243,6 +245,11 @@ internal fun GridHome(
                                     modifier = Modifier.padding(start = ROW_INSET.dp),
                                 )
                             }
+                        }
+                    }
+                    if (continueItems.isNotEmpty() && liftedPackage == null) {
+                        item(key = "continue") {
+                            ContinueRow(continueItems, viewModel, onOpen = launch, side = ROW_INSET.dp, modifier = Modifier.padding(top = 6.dp))
                         }
                     }
                     itemsIndexed(cells.chunked(COLUMNS), key = { index, _ -> "row$index" }) { _, row ->

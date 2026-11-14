@@ -15,7 +15,13 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.BringIntoViewSpec
+import androidx.compose.foundation.gestures.LocalBringIntoViewSpec
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -129,11 +135,21 @@ import com.tcltv.sahne.ui.settings.HomeKeyStoppedPrompt
 import kotlinx.coroutines.delay
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlinx.coroutines.launch
 
 private const val SIDE = 48
+private const val CONTINUE_GAP = 6
+private const val CONTINUE_EXTRA = 196
+
+/** The page scroll follows focus only through [HomeScreen]'s own moves, never by itself. */
+@OptIn(ExperimentalFoundationApi::class)
+private val PageStaysPut = object : BringIntoViewSpec {
+    override fun calculateScrollDistance(offset: Float, size: Float, containerSize: Float): Float = 0f
+}
 private const val SYSTEM_SETTINGS_PACKAGE = "com.android.tv.settings"
 val NeutralAccent = Color(0xFF34408A)
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, onOpenSettings: () -> Unit) {
     val apps by viewModel.apps.collectAsStateWithLifecycle()
@@ -166,6 +182,10 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
     var glow by remember { mutableStateOf<FocusGlow?>(null) }
 
     val current = apps.firstOrNull { it.packageName == selectedPackage } ?: apps.firstOrNull()
+    val continueItems by viewModel.continueWatching.collectAsStateWithLifecycle()
+    val showContinue = continueItems.isNotEmpty() && !editMode
+    val pageScroll = rememberScrollState()
+    val pageScope = rememberCoroutineScope()
     val accent = when {
         !settings.adaptiveBackground -> NeutralAccent
         current != null -> Color(current.accent)
@@ -197,37 +217,6 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
     // Opening arrangement mode from Settings can leave OK held; its tail must not act on the cards.
     Box(Modifier.fillMaxSize().ignoreHeldOk(editRequest)) {
         CinematicBackground(accent)
-        val dim = Modifier.alpha(if (editMode) 0.18f else 1f)
-        val currentLast = current?.let { lastPlayed[it.packageName] }
-        if (current != null) {
-            if (currentLast != null && !editMode) {
-                val others = lastPlayed.values
-                    .filter { it.packageName != current.packageName }
-                    .sortedByDescending { it.updatedAt }
-                    .mapNotNull { entry -> allApps.firstOrNull { it.packageName == entry.packageName }?.let { entry to it } }
-                    .take(2)
-                LastPlayedPanel(currentLast, current, others, viewModel, Modifier.align(Alignment.TopEnd).padding(end = SIDE.dp, top = 80.dp))
-            } else {
-                Watermark(current, Modifier.align(Alignment.TopEnd).padding(end = SIDE.dp, top = 110.dp).then(dim))
-            }
-        }
-
-        TopBar(viewModel, onOpenSettings, Modifier.padding(start = SIDE.dp, end = SIDE.dp, top = 30.dp))
-
-        if (current != null) {
-            Hero(
-                app = current,
-                editMode = editMode,
-                onOpen = { launch(current) },
-                onInfo = { viewModel.openAppInfo(current) },
-                modifier = Modifier.padding(start = SIDE.dp, top = 129.dp).then(dim),
-            )
-        }
-
-        if (editMode) {
-            EditToolbar(Modifier.align(Alignment.TopCenter).padding(top = 235.dp))
-        }
-
         // Drawn outside the row so the glow isn't clipped by the row's bounds.
         Canvas(Modifier.fillMaxSize()) {
             val g = glow ?: return@Canvas
@@ -242,52 +231,112 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
             )
         }
 
-        AppsRow(
-            apps = apps,
-            cardTheme = settings.cardTheme,
-            // A card clears only its own glow: the newly focused card may report before the old one lets go.
-            onGlow = { owner, g -> if (g != null) glow = g else if (glow?.owner == owner) glow = null },
-            onShowAll = { showAllApps = true },
-            selected = current,
-            editMode = editMode,
-            liftedPackage = liftedPackage,
-            focusRequest = focusRequest,
-            onFocusRequestHandled = { focusRequest = focusRequest.copy(packageName = null) },
-            onFocused = { selectedPackage = it.packageName },
-            onClick = { app ->
-                if (editMode) {
-                    liftedPackage = if (liftedPackage == app.packageName) null else app.packageName
-                } else {
-                    launch(app)
+        // The page scrolls once Continue watching sits below the inputs: focus moving down to it lifts the whole page,
+        // and moving back up brings the top back into view.
+        // Android TV would otherwise pull whatever gains focus to a third of the screen, lifting the page as soon as
+        // the app row is focused; the page moves only as below, and the rows inside keep the TV's own scrolling.
+        val rowScrolling = LocalBringIntoViewSpec.current
+        BoxWithConstraints(Modifier.fillMaxSize()) {
+            val screenHeight = maxHeight
+            CompositionLocalProvider(LocalBringIntoViewSpec provides PageStaysPut) {
+            Box(Modifier.fillMaxSize().verticalScroll(pageScroll)) {
+            CompositionLocalProvider(LocalBringIntoViewSpec provides rowScrolling) {
+                Box(Modifier.fillMaxWidth().height(if (showContinue) screenHeight + CONTINUE_EXTRA.dp else screenHeight)) {
+                val dim = Modifier.alpha(if (editMode) 0.18f else 1f)
+                val currentLast = current?.let { lastPlayed[it.packageName] }
+                if (current != null) {
+                    if (currentLast != null && !editMode) {
+                        val others = lastPlayed.values
+                            .filter { it.packageName != current.packageName }
+                            .sortedByDescending { it.updatedAt }
+                            .mapNotNull { entry -> allApps.firstOrNull { it.packageName == entry.packageName }?.let { entry to it } }
+                            .take(2)
+                        LastPlayedPanel(currentLast, current, others, viewModel, Modifier.align(Alignment.TopEnd).padding(end = SIDE.dp, top = 80.dp))
+                    } else {
+                        Watermark(current, Modifier.align(Alignment.TopEnd).padding(end = SIDE.dp, top = 110.dp).then(dim))
+                    }
                 }
-            },
-            onLongPress = openMenu,
-            onMove = { app, delta ->
-                viewModel.moveApp(app.packageName, delta)
-                requestCardFocus(app.packageName)
-            },
-            onRemove = { app ->
-                val index = apps.indexOfFirst { it.packageName == app.packageName }
-                val neighbor = apps.getOrNull(index + 1) ?: apps.getOrNull(index - 1)
-                if (liftedPackage == app.packageName) liftedPackage = null
-                viewModel.toggleHidden(app.packageName)
-                requestCardFocus(neighbor?.packageName)
-            },
-            onAdd = { showAddDialog = true },
-            modifier = Modifier.padding(top = 338.dp),
-        )
 
-        val visibleInputs = if (settings.hideDisconnectedInputs) inputs.filter { it.connected } else inputs
-        BottomRow(
-            liveTv = if (settings.showInputs) liveTv else emptyList(),
-            inputs = if (settings.showInputs) visibleInputs else emptyList(),
-            enabled = !editMode,
-            onOpenLiveTv = viewModel::openLiveTv,
-            onOpenInput = viewModel::openInput,
-            modifier = Modifier
-                .padding(start = SIDE.dp, end = SIDE.dp, top = if (editMode) 492.dp else 479.dp)
-                .alpha(if (editMode) 0.3f else 1f),
-        )
+                TopBar(viewModel, onOpenSettings, Modifier.padding(start = SIDE.dp, end = SIDE.dp, top = 30.dp))
+
+                if (current != null) {
+                    Hero(
+                        app = current,
+                        editMode = editMode,
+                        onOpen = { launch(current) },
+                        onInfo = { viewModel.openAppInfo(current) },
+                        modifier = Modifier.padding(start = SIDE.dp, top = 129.dp).then(dim),
+                    )
+                }
+
+                if (editMode) {
+                    EditToolbar(Modifier.align(Alignment.TopCenter).padding(top = 235.dp))
+                }
+
+                AppsRow(
+                    apps = apps,
+                    cardTheme = settings.cardTheme,
+                    // A card clears only its own glow: the newly focused card may report before the old one lets go.
+                    onGlow = { owner, g -> if (g != null) glow = g else if (glow?.owner == owner) glow = null },
+                    onShowAll = { showAllApps = true },
+                    selected = current,
+                    editMode = editMode,
+                    liftedPackage = liftedPackage,
+                    focusRequest = focusRequest,
+                    onFocusRequestHandled = { focusRequest = focusRequest.copy(packageName = null) },
+                    onFocused = { selectedPackage = it.packageName },
+                    onClick = { app ->
+                        if (editMode) {
+                            liftedPackage = if (liftedPackage == app.packageName) null else app.packageName
+                        } else {
+                            launch(app)
+                        }
+                    },
+                    onLongPress = openMenu,
+                    onMove = { app, delta ->
+                        viewModel.moveApp(app.packageName, delta)
+                        requestCardFocus(app.packageName)
+                    },
+                    onRemove = { app ->
+                        val index = apps.indexOfFirst { it.packageName == app.packageName }
+                        val neighbor = apps.getOrNull(index + 1) ?: apps.getOrNull(index - 1)
+                        if (liftedPackage == app.packageName) liftedPackage = null
+                        viewModel.toggleHidden(app.packageName)
+                        requestCardFocus(neighbor?.packageName)
+                    },
+                    onAdd = { showAddDialog = true },
+                    modifier = Modifier.padding(top = 338.dp),
+                )
+
+                val visibleInputs = if (settings.hideDisconnectedInputs) inputs.filter { it.connected } else inputs
+                BottomRow(
+                    liveTv = if (settings.showInputs) liveTv else emptyList(),
+                    inputs = if (settings.showInputs) visibleInputs else emptyList(),
+                    enabled = !editMode,
+                    onOpenLiveTv = viewModel::openLiveTv,
+                    onOpenInput = viewModel::openInput,
+                    modifier = Modifier
+                        .padding(start = SIDE.dp, end = SIDE.dp, top = if (editMode) 492.dp else 479.dp)
+                        .alpha(if (editMode) 0.3f else 1f),
+                )
+
+                    if (showContinue) {
+                        ContinueRow(
+                            items = continueItems,
+                            viewModel = viewModel,
+                            onOpen = launch,
+                            modifier = Modifier
+                                .padding(top = screenHeight + CONTINUE_GAP.dp)
+                                .onFocusChanged { state ->
+                                    pageScope.launch { pageScroll.animateScrollTo(if (state.hasFocus) pageScroll.maxValue else 0) }
+                                },
+                        )
+                    }
+                }
+            }
+            }
+            }
+        }
     }
 
     if (showAllApps) {

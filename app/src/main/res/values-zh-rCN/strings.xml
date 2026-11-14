@@ -216,6 +216,9 @@
     <string name="just_now">刚刚</string>
     <string name="setting_last_played">显示上次播放</string>
     <string name="setting_last_played_sub">各应用上次播放的内容；仅保存在这台电视上</string>
+    <string name="section_continue_watching">继续观看</string>
+    <string name="setting_tmdb_artwork">来自 TMDB 的封面</string>
+    <string name="setting_tmdb_artwork_sub">“继续观看”会按标题在 themoviedb.org 查找横版图片，仅发送标题</string>
     <string name="setting_clear_history">清除上次播放</string>
     <string name="history_cleared">已清除</string>
     <string name="a11y_remove_app">从主屏幕移除 %1$s</string>

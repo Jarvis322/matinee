@@ -217,6 +217,9 @@
     <string name="just_now">たった今</string>
     <string name="setting_last_played">最後に再生したものを表示</string>
     <string name="setting_last_played_sub">各アプリで最後に再生したもの。このテレビにのみ保存されます</string>
+    <string name="section_continue_watching">続きを見る</string>
+    <string name="setting_tmdb_artwork">TMDB のカバー</string>
+    <string name="setting_tmdb_artwork_sub">「続きを見る」はタイトルで themoviedb.org の横長画像を探します。送信されるのはタイトルだけです</string>
     <string name="setting_clear_history">再生履歴を消去</string>
     <string name="history_cleared">消去しました</string>
     <string name="a11y_remove_app">%1$s をホーム画面から削除</string>

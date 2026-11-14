@@ -147,7 +147,8 @@ private fun MiniItem(entry: LastPlayed, app: LaunchableApp, viewModel: LauncherV
 @Composable
 private fun Artwork(entry: LastPlayed, viewModel: LauncherViewModel, modifier: Modifier) {
     var artwork by remember(entry.artworkPath, entry.updatedAt) { mutableStateOf<ImageBitmap?>(null) }
-    LaunchedEffect(entry.artworkPath, entry.updatedAt) { artwork = viewModel.loadArtwork(entry) }
+    // The app's own cover first; TMDB's wide picture when the app sent none.
+    LaunchedEffect(entry.artworkPath, entry.updatedAt) { artwork = viewModel.loadArtwork(entry) ?: viewModel.loadBackdrop(entry) }
     val image = artwork ?: return
     // Square covers (music) are shown whole instead of cropped into the 16:9 frame.
     Image(image, contentDescription = null, contentScale = if (entry.artworkIsSquare) ContentScale.Fit else ContentScale.Crop, modifier = modifier)

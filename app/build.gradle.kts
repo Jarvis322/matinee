@@ -23,6 +23,16 @@ android {
         }
     }
 
+    // TMDB's read-only token, for Continue watching artwork. Kept outside the project like the upload key; without it
+    // the build still works and the row shows the apps' own artwork.
+    val apiKeyFile = File(System.getProperty("user.home"), ".matinee-signing/api.properties")
+    val tmdbToken = if (apiKeyFile.isFile) {
+        Properties().apply { apiKeyFile.inputStream().use(::load) }.getProperty("tmdbReadToken").orEmpty()
+    } else {
+        ""
+    }
+    defaultConfig.buildConfigField("String", "TMDB_TOKEN", "\"$tmdbToken\"")
+
     // The AirPlay receiver is UxPlay's protocol library (C); see app/src/main/cpp/uxplay/SOURCE.txt.
     externalNativeBuild {
         cmake {
@@ -74,6 +84,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     // The in-app language switch needs every language on the device, so Play must not split by language.

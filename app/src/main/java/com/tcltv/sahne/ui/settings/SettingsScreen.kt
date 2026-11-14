@@ -556,6 +556,9 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
         ToggleRow(R.string.setting_last_played, R.string.setting_last_played_sub, s.showLastPlayed) {
             viewModel.update { setShowLastPlayed(it) }
         }
+        ToggleRow(R.string.setting_tmdb_artwork, R.string.setting_tmdb_artwork_sub, s.tmdbArtwork) {
+            viewModel.update { setTmdbArtwork(it) }
+        }
         var historyCleared by remember { mutableStateOf(false) }
         ValueRow(R.string.setting_clear_history, null, if (historyCleared) stringResource(R.string.history_cleared) else null) {
             viewModel.clearMediaHistory()

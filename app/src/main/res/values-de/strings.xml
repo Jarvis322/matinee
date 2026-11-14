@@ -216,6 +216,9 @@
     <string name="just_now">Gerade eben</string>
     <string name="setting_last_played">Zuletzt gespielt anzeigen</string>
     <string name="setting_last_played_sub">Was jede App zuletzt abgespielt hat; nur auf diesem Fernseher gespeichert</string>
+    <string name="section_continue_watching">Weiterschauen</string>
+    <string name="setting_tmdb_artwork">Cover von TMDB</string>
+    <string name="setting_tmdb_artwork_sub">Weiterschauen sucht auf themoviedb.org nach einem breiten Bild zum Titel; gesendet wird nur der Titel</string>
     <string name="setting_clear_history">Zuletzt gespielt löschen</string>
     <string name="history_cleared">Gelöscht</string>
     <string name="a11y_remove_app">%1$s vom Startbildschirm entfernen</string>

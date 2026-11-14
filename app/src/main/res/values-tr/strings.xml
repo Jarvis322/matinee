@@ -216,6 +216,9 @@
     <string name="just_now">Az önce</string>
     <string name="setting_last_played">Son izlenenleri göster</string>
     <string name="setting_last_played_sub">Uygulamaların son oynattığı içerik; yalnızca bu TV\'de saklanır</string>
+    <string name="section_continue_watching">İzlemeye devam et</string>
+    <string name="setting_tmdb_artwork">TMDB\'den kapaklar</string>
+    <string name="setting_tmdb_artwork_sub">İzlemeye devam et, başlığa göre themoviedb.org\'dan geniş görsel arar; yalnızca başlık gönderilir</string>
     <string name="setting_clear_history">Son izlenenleri temizle</string>
     <string name="history_cleared">Temizlendi</string>
     <string name="a11y_remove_app">%1$s uygulamasını ana ekrandan kaldır</string>

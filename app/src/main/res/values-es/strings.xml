@@ -216,6 +216,9 @@
     <string name="just_now">Ahora mismo</string>
     <string name="setting_last_played">Mostrar lo último reproducido</string>
     <string name="setting_last_played_sub">Lo último que reprodujo cada app; solo se guarda en esta TV</string>
+    <string name="section_continue_watching">Seguir viendo</string>
+    <string name="setting_tmdb_artwork">Portadas de TMDB</string>
+    <string name="setting_tmdb_artwork_sub">Seguir viendo busca una imagen panorámica por título en themoviedb.org; solo se envía el título</string>
     <string name="setting_clear_history">Borrar lo último reproducido</string>
     <string name="history_cleared">Borrado</string>
     <string name="a11y_remove_app">Quitar %1$s de la pantalla principal</string>

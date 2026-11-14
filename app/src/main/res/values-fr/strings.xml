@@ -216,6 +216,9 @@
     <string name="just_now">À l\'instant</string>
     <string name="setting_last_played">Afficher la dernière lecture</string>
     <string name="setting_last_played_sub">Le dernier contenu lu dans chaque appli ; conservé uniquement sur ce téléviseur</string>
+    <string name="section_continue_watching">Reprendre</string>
+    <string name="setting_tmdb_artwork">Visuels de TMDB</string>
+    <string name="setting_tmdb_artwork_sub">Reprendre cherche une image panoramique par titre sur themoviedb.org ; seul le titre est envoyé</string>
     <string name="setting_clear_history">Effacer les dernières lectures</string>
     <string name="history_cleared">Effacé</string>
     <string name="a11y_remove_app">Retirer %1$s de l\'écran d\'accueil</string>

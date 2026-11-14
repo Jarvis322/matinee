@@ -59,6 +59,7 @@ import com.tcltv.sahne.data.HdmiInput
 import com.tcltv.sahne.data.InputCatalog
 import com.tcltv.sahne.data.RawHdmiInput
 import com.tcltv.sahne.data.LastPlayed
+import com.tcltv.sahne.data.TmdbArtwork
 import com.tcltv.sahne.data.LiveTvCatalog
 import com.tcltv.sahne.data.LiveTvInput
 import com.tcltv.sahne.data.MediaHistory
@@ -150,6 +151,8 @@ enum class HomeKeyProblem {
 }
 
 enum class UpdateCheck { IDLE, CHECKING, UP_TO_DATE, FAILED }
+
+data class ContinueItem(val entry: LastPlayed, val app: LaunchableApp)
 
 /** The app switcher's list; null in the view model while the switcher is closed. */
 sealed interface SwitcherState {
@@ -328,7 +331,10 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         if (s.showLastPlayed) entries else emptyMap()
     }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyMap())
 
-    fun clearMediaHistory() = mediaHistory.clear()
+    fun clearMediaHistory() {
+        mediaHistory.clear()
+        viewModelScope.launch { tmdbArtwork.clear() }
+    }
 
     val liveTvInputs: StateFlow<List<LiveTvInput>> = liveTvCatalog.tuners
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
@@ -338,6 +344,27 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     // The panel, its mini items and the grid hero show the same files, and focus moves ask again each time.
     private val artworkCache = object : LruCache<String, ImageBitmap>(ARTWORK_CACHE_BYTES) {
         override fun sizeOf(key: String, value: ImageBitmap) = value.width * value.height * 4
+    }
+
+    /** Apps' last played items for the Continue watching row, newest first, only for apps still installed. */
+    val continueWatching: StateFlow<List<ContinueItem>> = combine(lastPlayed, appsForSettings) { entries, apps ->
+        val byPackage = apps.associateBy { it.packageName }
+        entries.values
+            .sortedByDescending { it.updatedAt }
+            .mapNotNull { entry -> byPackage[entry.packageName]?.let { ContinueItem(entry, it) } }
+            .take(CONTINUE_LIMIT)
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    private val tmdbArtwork = TmdbArtwork(application)
+
+    /** A wide TMDB backdrop for the item when the setting allows and TMDB knows the title, else null. */
+    suspend fun loadBackdrop(entry: LastPlayed): ImageBitmap? {
+        if (!settings.value.tmdbArtwork) return null
+        val file = tmdbArtwork.backdrop(entry) ?: return null
+        val key = "tmdb:${file.path}"
+        artworkCache.get(key)?.let { return it }
+        return withContext(Dispatchers.IO) { BitmapFactory.decodeFile(file.path)?.asImageBitmap() }
+            ?.also { artworkCache.put(key, it) }
     }
 
     suspend fun loadArtwork(entry: LastPlayed): ImageBitmap? {
@@ -1107,6 +1134,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         const val TAG = "LauncherViewModel"
         const val CLOSE_SETTLE_MILLIS = 600L
         const val SWITCHER_LIMIT = 12
+        const val CONTINUE_LIMIT = 12
         const val CATALOG_WAIT_MILLIS = 3_000L
         // Play's own action for its "Manage apps & games" page; checked on Play Store for Google TV (Android 14).
         const val PLAY_MY_DOWNLOADS = "com.google.android.finsky.VIEW_MY_DOWNLOADS"

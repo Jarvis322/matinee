@@ -126,7 +126,8 @@ private const val TITLE_GAP = 22
 @Composable
 private fun HeroArtwork(entry: LastPlayed, viewModel: LauncherViewModel) {
     var artwork by remember(entry.artworkPath, entry.updatedAt) { mutableStateOf<ImageBitmap?>(null) }
-    LaunchedEffect(entry.artworkPath, entry.updatedAt) { artwork = viewModel.loadArtwork(entry) }
+    // The app's own cover first; TMDB's wide picture when the app sent none.
+    LaunchedEffect(entry.artworkPath, entry.updatedAt) { artwork = viewModel.loadArtwork(entry) ?: viewModel.loadBackdrop(entry) }
     val image = artwork ?: return
     // Square music covers would be cropped to a sliver across the full width, so they sit on the right at their own shape.
     if (entry.artworkIsSquare) {

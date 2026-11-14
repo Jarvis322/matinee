@@ -49,6 +49,8 @@ data class LauncherSettings(
     val showNotifications: Boolean = true,
     val showChromecast: Boolean = true,
     val showLastPlayed: Boolean = true,
+    /** Continue watching looks up wide covers on TMDB by title. */
+    val tmdbArtwork: Boolean = true,
     val focusOutline: Boolean = true,
     /** The Home button disclosure has been shown once on the home screen, whatever the answer. */
     val homeKeyIntroSeen: Boolean = false,
@@ -111,6 +113,7 @@ class SettingsStore(private val context: Context) {
         val showNotifications = booleanPreferencesKey("show_notifications")
         val showChromecast = booleanPreferencesKey("show_google_home")
         val showLastPlayed = booleanPreferencesKey("show_last_played")
+        val tmdbArtwork = booleanPreferencesKey("tmdb_artwork")
         val focusOutline = booleanPreferencesKey("focus_outline")
         val homeKeyIntroSeen = booleanPreferencesKey("home_key_intro_seen")
         val launchAnimation = booleanPreferencesKey("launch_animation")
@@ -187,6 +190,7 @@ class SettingsStore(private val context: Context) {
             showNotifications = this[Keys.showNotifications] ?: defaults.showNotifications,
             showChromecast = this[Keys.showChromecast] ?: defaults.showChromecast,
             showLastPlayed = this[Keys.showLastPlayed] ?: defaults.showLastPlayed,
+            tmdbArtwork = this[Keys.tmdbArtwork] ?: defaults.tmdbArtwork,
             focusOutline = this[Keys.focusOutline] ?: defaults.focusOutline,
             homeKeyIntroSeen = this[Keys.homeKeyIntroSeen] ?: defaults.homeKeyIntroSeen,
             launchAnimation = this[Keys.launchAnimation] ?: defaults.launchAnimation,
@@ -254,6 +258,7 @@ class SettingsStore(private val context: Context) {
     suspend fun setShowNotifications(value: Boolean) = edit { it[Keys.showNotifications] = value }
     suspend fun setShowChromecast(value: Boolean) = edit { it[Keys.showChromecast] = value }
     suspend fun setShowLastPlayed(value: Boolean) = edit { it[Keys.showLastPlayed] = value }
+    suspend fun setTmdbArtwork(value: Boolean) = edit { it[Keys.tmdbArtwork] = value }
     suspend fun setFocusOutline(value: Boolean) = edit { it[Keys.focusOutline] = value }
     suspend fun setHomeKeyIntroSeen() = edit { it[Keys.homeKeyIntroSeen] = true }
     suspend fun setLaunchAnimation(value: Boolean) = edit { it[Keys.launchAnimation] = value }

@@ -218,6 +218,9 @@
     <string name="just_now">Just now</string>
     <string name="setting_last_played">Show last played</string>
     <string name="setting_last_played_sub">What each app last played; kept only on this TV</string>
+    <string name="section_continue_watching">Continue watching</string>
+    <string name="setting_tmdb_artwork">Covers from TMDB</string>
+    <string name="setting_tmdb_artwork_sub">Continue watching looks up a wide picture by title on themoviedb.org; only the title is sent</string>
     <string name="setting_clear_history">Clear last played</string>
     <string name="history_cleared">Cleared</string>
     <string name="a11y_remove_app">Remove %1$s from the home screen</string>
