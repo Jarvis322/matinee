@@ -93,6 +93,8 @@
     <string name="setting_adaptive_background_sub">Use the focused app\'s color</string>
     <string name="setting_glass_effects">Glass effects</string>
     <string name="setting_glass_effects_sub">Frosted glass look. Turn off if the home screen feels slow.</string>
+    <string name="setting_liquid_glass">Liquid glass (for strong GPUs)</string>
+    <string name="setting_liquid_glass_sub">Glass bends what is behind it at the edges, like Apple\'s Liquid Glass. Turn off if the home screen gets slow.</string>
     <string name="setting_clock_format">Clock format</string>
     <string name="clock_24">24‑hour</string>
     <string name="clock_12">12‑hour</string>

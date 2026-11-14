@@ -72,6 +72,9 @@ val LocalWallpaperAnimated = staticCompositionLocalOf { false }
 /** Off draws every glass surface as a flat tint with a thin edge, for TVs whose GPU can't spare the extra passes. */
 val LocalGlassEffects = staticCompositionLocalOf { true }
 
+/** Whether glass bends the backdrop per pixel (Android 13+), which the user turns on for a TV with a strong GPU. */
+val LocalLiquidGlass = staticCompositionLocalOf { false }
+
 /** Whether a focused app card gets an outline, which the user can turn off when scale and glow are enough. */
 val LocalFocusOutline = staticCompositionLocalOf { true }
 
@@ -169,7 +172,9 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
 
     override fun ContentDrawScope.draw() {
         val s = style
-        val glass = built?.takeIf { it.matches(size, layoutDirection, shape, s) } ?: BuiltGlass.create(this, shape, s).also { built = it }
+        val liquid = currentValueOf(LocalLiquidGlass)
+        val glass = built?.takeIf { it.matches(size, layoutDirection, shape, s, liquid) }
+            ?: BuiltGlass.create(this, shape, s, liquid).also { built = it }
         val outline = glass.outline
         if (!currentValueOf(LocalGlassEffects)) {
             // The cheap look: one flat tint and a thin edge, no backdrop slice, gradients or shadow.
@@ -303,16 +308,17 @@ private class BuiltGlass(
     val ring: RefractionRing?,
     /** Bent per pixel by [LiquidLens] (Android 13+) instead of by [ring]. */
     val liquid: Boolean,
+    val liquidWanted: Boolean,
 ) {
-    fun matches(size: Size, direction: androidx.compose.ui.unit.LayoutDirection, shape: Shape, style: GlassStyle) =
-        this.size == size && layoutDirection == direction && this.shape == shape && this.style == style
+    fun matches(size: Size, direction: androidx.compose.ui.unit.LayoutDirection, shape: Shape, style: GlassStyle, liquidWanted: Boolean) =
+        this.size == size && layoutDirection == direction && this.shape == shape && this.style == style && this.liquidWanted == liquidWanted
 
     companion object {
-        fun create(scope: DrawScope, shape: Shape, style: GlassStyle): BuiltGlass {
+        fun create(scope: DrawScope, shape: Shape, style: GlassStyle, liquidWanted: Boolean): BuiltGlass {
             val size = scope.size
             val outline = shape.createOutline(size, scope.layoutDirection, scope)
             val bends = outline is Outline.Rounded && style.refraction > 0f && style.backdrop > 0f
-            val liquid = bends && android.os.Build.VERSION.SDK_INT >= 33
+            val liquid = liquidWanted && bends && android.os.Build.VERSION.SDK_INT >= 33
             return BuiltGlass(
                 size = size,
                 layoutDirection = scope.layoutDirection,
@@ -342,6 +348,7 @@ private class BuiltGlass(
                     ?.takeIf { bends && !liquid && android.os.Build.VERSION.SDK_INT >= 29 }
                     ?.let { RefractionRing.create(size, it.roundRect.topLeftCornerRadius.x, style.refraction, scope.density) },
                 liquid = liquid,
+                liquidWanted = liquidWanted,
             )
         }
     }

@@ -511,6 +511,12 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
         ToggleRow(R.string.setting_glass_effects, R.string.setting_glass_effects_sub, s.glassEffects) {
             viewModel.update { setGlassEffects(it) }
         }
+        // Drawn per pixel by an Android 13 shader; older TVs keep the plain bent edge and have nothing to switch.
+        if (android.os.Build.VERSION.SDK_INT >= 33 && s.glassEffects) {
+            ToggleRow(R.string.setting_liquid_glass, R.string.setting_liquid_glass_sub, s.liquidGlass) {
+                viewModel.update { setLiquidGlass(it) }
+            }
+        }
         ToggleRow(R.string.setting_focus_outline, R.string.setting_focus_outline_sub, s.focusOutline) {
             viewModel.update { setFocusOutline(it) }
         }

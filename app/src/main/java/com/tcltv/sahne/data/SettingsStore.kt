@@ -38,6 +38,8 @@ data class LauncherSettings(
     val reduceMotion: Boolean = false,
     val adaptiveBackground: Boolean = true,
     val glassEffects: Boolean = true,
+    /** Per-pixel liquid glass (Android 13+); off by default, since it nearly doubled frame times on a TCL's PowerVR GPU. */
+    val liquidGlass: Boolean = false,
     val airplayReceiver: Boolean = false,
     val cardTheme: CardTheme = CardTheme.LIGHT,
     val homeLayout: HomeLayout = HomeLayout.GRID,
@@ -102,6 +104,7 @@ class SettingsStore(private val context: Context) {
         val reduceMotion = booleanPreferencesKey("reduce_motion")
         val adaptiveBackground = booleanPreferencesKey("adaptive_background")
         val glassEffects = booleanPreferencesKey("glass_effects")
+        val liquidGlass = booleanPreferencesKey("liquid_glass")
         val airplayReceiver = booleanPreferencesKey("airplay_receiver")
         val cardTheme = stringPreferencesKey("card_theme")
         val homeLayout = stringPreferencesKey("home_layout")
@@ -179,6 +182,7 @@ class SettingsStore(private val context: Context) {
             reduceMotion = this[Keys.reduceMotion] ?: defaults.reduceMotion,
             adaptiveBackground = this[Keys.adaptiveBackground] ?: defaults.adaptiveBackground,
             glassEffects = this[Keys.glassEffects] ?: defaults.glassEffects,
+            liquidGlass = this[Keys.liquidGlass] ?: defaults.liquidGlass,
             airplayReceiver = this[Keys.airplayReceiver] ?: defaults.airplayReceiver,
             cardTheme = CardTheme.entries.firstOrNull { it.name == this[Keys.cardTheme] } ?: defaults.cardTheme,
             homeLayout = HomeLayout.entries.firstOrNull { it.name == this[Keys.homeLayout] } ?: defaults.homeLayout,
@@ -247,6 +251,7 @@ class SettingsStore(private val context: Context) {
     suspend fun setReduceMotion(value: Boolean) = edit { it[Keys.reduceMotion] = value }
     suspend fun setAdaptiveBackground(value: Boolean) = edit { it[Keys.adaptiveBackground] = value }
     suspend fun setGlassEffects(value: Boolean) = edit { it[Keys.glassEffects] = value }
+    suspend fun setLiquidGlass(value: Boolean) = edit { it[Keys.liquidGlass] = value }
     suspend fun setAirplayReceiver(value: Boolean) = edit { it[Keys.airplayReceiver] = value }
     suspend fun setCardTheme(value: CardTheme) = edit { it[Keys.cardTheme] = value.name }
     suspend fun setHomeLayout(value: HomeLayout) = edit { it[Keys.homeLayout] = value.name }

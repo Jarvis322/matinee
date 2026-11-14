@@ -91,6 +91,8 @@
     <string name="setting_adaptive_background_sub">Farbe der ausgewählten App verwenden</string>
     <string name="setting_glass_effects">Glaseffekte</string>
     <string name="setting_glass_effects_sub">Milchglas-Optik. Schalte sie aus, wenn der Startbildschirm ruckelt.</string>
+    <string name="setting_liquid_glass">Flüssiges Glas (für starke GPUs)</string>
+    <string name="setting_liquid_glass_sub">Glas bricht an den Rändern, was dahinter liegt, wie Apples Liquid Glass. Ausschalten, wenn der Startbildschirm langsam wird.</string>
     <string name="setting_clock_format">Uhrzeitformat</string>
     <string name="clock_24">24‑Stunden</string>
     <string name="clock_12">12‑Stunden</string>
