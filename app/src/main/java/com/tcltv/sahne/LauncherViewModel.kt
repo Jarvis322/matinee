@@ -959,8 +959,26 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     /** Opens a specific system settings screen, falling back to the main TV settings when the TV lacks that screen. */
     fun openSystemSettings(action: String): Boolean =
-        startSafely(Intent(action).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) ||
-            startSafely(Intent(Settings.ACTION_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        startSettingsScreen(action) || startSettingsScreen(Settings.ACTION_SETTINGS)
+
+    /**
+     * Starts the screen explicitly. When a TV's settings app lacks a screen, Android TV hands the action to a stub
+     * that only shows "No app can perform this action" (seen on TCL for accessibility), so the fallback would never
+     * run; the stub and screens closed to other apps are skipped. Matches come ordered by priority.
+     */
+    private fun startSettingsScreen(action: String): Boolean {
+        val app = getApplication<Application>()
+        val target = app.packageManager.queryIntentActivities(Intent(action), PackageManager.MATCH_DEFAULT_ONLY)
+            .map { it.activityInfo }
+            .firstOrNull {
+                it.packageName != SETTINGS_STUBS_PACKAGE && it.exported &&
+                    (it.permission == null || app.checkSelfPermission(it.permission) == PackageManager.PERMISSION_GRANTED)
+            }
+            ?: return false
+        return startSafely(
+            Intent(action).setClassName(target.packageName, target.name).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+        )
+    }
 
     val versionName: String = runCatching {
         application.packageManager.getPackageInfo(application.packageName, 0).versionName
@@ -1147,5 +1165,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         const val WEATHER_RETRY_MILLIS = 60_000L
         const val MEMORY_ALERT_REARM_PERCENT = 5
         const val MAX_LOCAL_NOTICES = 20
+        // Android TV's placeholder for settings screens a TV doesn't have.
+        const val SETTINGS_STUBS_PACKAGE = "com.android.tv.frameworkpackagestubs"
     }
 }
