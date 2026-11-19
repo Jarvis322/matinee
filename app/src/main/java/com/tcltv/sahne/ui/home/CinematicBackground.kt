@@ -8,7 +8,6 @@ import android.graphics.RadialGradient
 import android.graphics.Shader
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,12 +18,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import com.tcltv.sahne.ui.LocalBackdrop
@@ -47,6 +46,7 @@ fun CinematicBackground(accent: Color, modifier: Modifier = Modifier) {
     }
     var size by remember { mutableStateOf(IntSize.Zero) }
     val cache = remember { BackdropCache() }
+    val blend = remember { BackdropBlend() }
     // Shared with the glass surfaces, which show their own slice of whatever is drawn here.
     val shared = LocalBackdrop.current
     val reduceMotion = LocalReduceMotion.current
@@ -59,33 +59,59 @@ fun CinematicBackground(accent: Color, modifier: Modifier = Modifier) {
             withContext(Dispatchers.Default) { renderBackdrop(size, accent.toArgb()).asImageBitmap() }
                 .also { cache.put(accent.toArgb(), it) }
         }
-        if (shared.to === image) return@LaunchedEffect
-        shared.from = shared.to
-        shared.to = image
-        if (shared.from == null || reduceMotion) {
-            shared.from = null
-            shared.progress = 1f
+        val shown = shared.image
+        if (shown === image) return@LaunchedEffect
+        if (shown == null || reduceMotion) {
+            shared.image = image
             return@LaunchedEffect
         }
-        shared.progress = 0f
-        animate(0f, 1f, animationSpec = tween(420)) { value, _ -> shared.progress = value }
-        shared.from = null
+        // Starts from exactly what is on screen, so a fade cut short by the next focus move carries on without a jump.
+        val start = blend.freeze(shown)
+        animate(0f, 1f, animationSpec = tween(FADE_MS)) { value, _ -> shared.image = blend.mix(start, image, value) }
+        shared.image = image
     }
     Box(
         modifier
             .fillMaxSize()
             .background(Palette.Background)
-            .onSizeChanged { size = it },
-    ) {
-        shared.from?.let { Image(it, contentDescription = null, contentScale = ContentScale.FillBounds, modifier = Modifier.fillMaxSize()) }
-        shared.to?.let {
-            Image(
-                it,
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.fillMaxSize().graphicsLayer { alpha = if (shared.from != null) shared.progress else 1f },
-            )
-        }
+            .onSizeChanged { size = it }
+            .drawBehind { shared.image?.let { drawImage(it, dstSize = IntSize(this.size.width.toInt(), this.size.height.toInt())) } },
+    )
+}
+
+/**
+ * The cross-fade as one small image per frame, so the backdrop and every glass surface draw a single bitmap instead of
+ * two half-transparent ones, which cost the TV's GPU double and let the glass thin out mid-fade. Two buffers take
+ * turns, so the image on screen is never the one being drawn into.
+ */
+private class BackdropBlend {
+    private val buffers = arrayOfNulls<Bitmap>(2)
+    private val images = arrayOfNulls<ImageBitmap>(2)
+    private var next = 0
+    private val paint = Paint(Paint.FILTER_BITMAP_FLAG)
+    private val target = android.graphics.Rect()
+
+    /** [shown] itself, or a copy when it is one of the buffers that the next frames draw into. */
+    fun freeze(shown: ImageBitmap): ImageBitmap =
+        if (images.any { it === shown }) shown.asAndroidBitmap().copy(Bitmap.Config.ARGB_8888, false).asImageBitmap() else shown
+
+    fun mix(from: ImageBitmap, to: ImageBitmap, progress: Float): ImageBitmap {
+        val width = to.width
+        val height = to.height
+        val index = next
+        next = 1 - next
+        val buffer = buffers[index]?.takeIf { it.width == width && it.height == height }
+            ?: Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also {
+                buffers[index] = it
+                images[index] = it.asImageBitmap()
+            }
+        val canvas = Canvas(buffer)
+        target.set(0, 0, width, height)
+        paint.alpha = 255
+        canvas.drawBitmap(from.asAndroidBitmap(), null, target, paint)
+        paint.alpha = (progress * 255f).toInt().coerceIn(0, 255)
+        canvas.drawBitmap(to.asAndroidBitmap(), null, target, paint)
+        return images[index]!!
     }
 }
 
@@ -109,6 +135,7 @@ private class BackdropCache {
 // The backdrop is only soft gradients, so a small bitmap scaled to full screen looks the same (~230 KB instead of 3.7 MB).
 private const val MAX_RENDER_WIDTH = 320
 private const val RENDER_DEBOUNCE_MS = 90L
+private const val FADE_MS = 420
 
 private fun renderBackdrop(screen: IntSize, accent: Int): Bitmap {
     val scale = minOf(1f, MAX_RENDER_WIDTH.toFloat() / screen.width)

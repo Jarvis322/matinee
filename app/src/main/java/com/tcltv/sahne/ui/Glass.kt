@@ -3,7 +3,6 @@ package com.tcltv.sahne.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -54,11 +53,8 @@ import androidx.compose.animation.core.tween
  * of whatever is behind would cost far more than this TV's GPU can spare.
  */
 class BackdropState {
-    var from by mutableStateOf<ImageBitmap?>(null)
-    var to by mutableStateOf<ImageBitmap?>(null)
-
-    /** 0 shows [from], 1 shows [to]; the glass follows the backdrop's own cross-fade. */
-    var progress by mutableFloatStateOf(1f)
+    /** What the backdrop shows right now; during a cross-fade, a new blended image every frame. */
+    var image by mutableStateOf<ImageBitmap?>(null)
 }
 
 val LocalBackdrop = staticCompositionLocalOf { BackdropState() }
@@ -153,12 +149,7 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
     private var shadowBlur = 0f
     private var shaderImage: ImageBitmap? = null
     private var shader: android.graphics.BitmapShader? = null
-    private var fromShaderImage: ImageBitmap? = null
-    private var fromShader: android.graphics.BitmapShader? = null
-
-    // One per backdrop image, since a cross-fade draws both in the same frame.
     private var liquid: LiquidLens? = null
-    private var fromLiquid: LiquidLens? = null
 
     override fun onGloballyPositioned(coordinates: LayoutCoordinates) {
         val position = coordinates.positionInRoot()
@@ -224,24 +215,12 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
      * takes the surface's own rounded shape without a clip.
      */
     private fun DrawScope.drawBackdropFill(glass: BuiltGlass, state: BackdropState, opacity: Float) {
-        val from = state.from
-        val to = state.to
-        val progress = state.progress
-        val fading = from != null && progress < 1f
-        if (from != null && fading) {
-            if (fromShaderImage !== from) {
-                fromShader = from.asAndroidBitmap().let { android.graphics.BitmapShader(it, android.graphics.Shader.TileMode.CLAMP, android.graphics.Shader.TileMode.CLAMP) }
-                fromShaderImage = from
-            }
-            fillSlice(glass, fromShader, from, opacity * (1f - progress), fading = true)
+        val image = state.image ?: return
+        if (shaderImage !== image) {
+            shader = android.graphics.BitmapShader(image.asAndroidBitmap(), android.graphics.Shader.TileMode.CLAMP, android.graphics.Shader.TileMode.CLAMP)
+            shaderImage = image
         }
-        if (to != null) {
-            if (shaderImage !== to) {
-                shader = to.asAndroidBitmap().let { android.graphics.BitmapShader(it, android.graphics.Shader.TileMode.CLAMP, android.graphics.Shader.TileMode.CLAMP) }
-                shaderImage = to
-            }
-            fillSlice(glass, shader, to, opacity * if (fading) progress else 1f, fading = false)
-        }
+        fillSlice(glass, shader, image, opacity)
     }
 
     private fun DrawScope.fillSlice(
@@ -249,7 +228,6 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
         bitmapShader: android.graphics.BitmapShader?,
         image: ImageBitmap,
         alpha: Float,
-        fading: Boolean,
     ) {
         if (bitmapShader == null || root.width == 0 || root.height == 0) return
         // Shader space is the bitmap's pixels; the matrix carries them onto this surface's own coordinates.
@@ -259,7 +237,7 @@ private class GlassNode(var shape: Shape, var style: GlassStyle) :
         sliceMatrix.postTranslate(-origin.x, -origin.y)
         bitmapShader.setLocalMatrix(sliceMatrix)
         slicePaint.shader = if (glass.liquid && android.os.Build.VERSION.SDK_INT >= 33) {
-            val lens = (if (fading) fromLiquid else liquid) ?: LiquidLens().also { if (fading) fromLiquid = it else liquid = it }
+            val lens = liquid ?: LiquidLens().also { liquid = it }
             lens.shaderFor(bitmapShader, glass, density)
         } else {
             bitmapShader
@@ -359,12 +337,7 @@ private class BuiltGlass(
  * screen and [root] the screen size, both in pixels; the backdrop bitmap is far smaller than the screen.
  */
 internal fun DrawScope.drawBackdrop(state: BackdropState, origin: Offset, root: IntSize, opacity: Float) {
-    val from = state.from
-    val to = state.to
-    val progress = state.progress
-    val fading = from != null && progress < 1f
-    if (from != null && fading) drawBackdropSlice(from, origin, root, opacity * (1f - progress))
-    if (to != null) drawBackdropSlice(to, origin, root, opacity * if (fading) progress else 1f)
+    state.image?.let { drawBackdropSlice(it, origin, root, opacity) }
 }
 
 private fun DrawScope.drawBackdropSlice(image: ImageBitmap, origin: Offset, root: IntSize, alpha: Float) {

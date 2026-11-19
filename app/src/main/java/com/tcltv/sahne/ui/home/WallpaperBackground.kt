@@ -40,13 +40,11 @@ fun WallpaperBackground(wallpaper: ResolvedWallpaper, modifier: Modifier = Modif
     val animated = LocalWallpaperAnimated.current && !LocalReduceMotion.current && wallpaper.builtin != null
     var frame by remember(wallpaper.key) { mutableStateOf<ImageBitmap?>(null) }
     LaunchedEffect(wallpaper.key) {
-        shared.from = null
-        shared.to = wallpaper.soft
-        shared.progress = 1f
+        shared.image = wallpaper.soft
     }
     if (animated) DriftingLight(wallpaper.builtin!!) { image ->
         frame = image
-        shared.to = image
+        shared.image = image
     }
     Box(modifier.fillMaxSize().background(Palette.Background)) {
         Image(
