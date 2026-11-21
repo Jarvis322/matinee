@@ -43,6 +43,8 @@ data class LauncherSettings(
     val airplayReceiver: Boolean = false,
     val cardTheme: CardTheme = CardTheme.LIGHT,
     val homeLayout: HomeLayout = HomeLayout.GRID,
+    /** Grid layout: the favorites shelf and the large title above it; off starts the screen with the app grid. */
+    val favoritesShelf: Boolean = true,
     val showClock: Boolean = true,
     val showWeather: Boolean = true,
     val showAirPlay: Boolean = true,
@@ -108,6 +110,7 @@ class SettingsStore(private val context: Context) {
         val airplayReceiver = booleanPreferencesKey("airplay_receiver")
         val cardTheme = stringPreferencesKey("card_theme")
         val homeLayout = stringPreferencesKey("home_layout")
+        val favoritesShelf = booleanPreferencesKey("favorites_shelf")
         val showClock = booleanPreferencesKey("show_clock")
         val showWeather = booleanPreferencesKey("show_weather")
         val showAirPlay = booleanPreferencesKey("show_airplay")
@@ -186,6 +189,7 @@ class SettingsStore(private val context: Context) {
             airplayReceiver = this[Keys.airplayReceiver] ?: defaults.airplayReceiver,
             cardTheme = CardTheme.entries.firstOrNull { it.name == this[Keys.cardTheme] } ?: defaults.cardTheme,
             homeLayout = HomeLayout.entries.firstOrNull { it.name == this[Keys.homeLayout] } ?: defaults.homeLayout,
+            favoritesShelf = this[Keys.favoritesShelf] ?: defaults.favoritesShelf,
             showClock = this[Keys.showClock] ?: defaults.showClock,
             showWeather = this[Keys.showWeather] ?: defaults.showWeather,
             showAirPlay = this[Keys.showAirPlay] ?: defaults.showAirPlay,
@@ -255,6 +259,7 @@ class SettingsStore(private val context: Context) {
     suspend fun setAirplayReceiver(value: Boolean) = edit { it[Keys.airplayReceiver] = value }
     suspend fun setCardTheme(value: CardTheme) = edit { it[Keys.cardTheme] = value.name }
     suspend fun setHomeLayout(value: HomeLayout) = edit { it[Keys.homeLayout] = value.name }
+    suspend fun setFavoritesShelf(value: Boolean) = edit { it[Keys.favoritesShelf] = value }
     suspend fun setShowClock(value: Boolean) = edit { it[Keys.showClock] = value }
     suspend fun setShowWeather(value: Boolean) = edit { it[Keys.showWeather] = value }
     suspend fun setShowAirPlay(value: Boolean) = edit { it[Keys.showAirPlay] = value }

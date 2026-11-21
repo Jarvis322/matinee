@@ -533,6 +533,11 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
         ) {
             viewModel.update { setHomeLayout(if (s.homeLayout == HomeLayout.GRID) HomeLayout.ROW else HomeLayout.GRID) }
         }
+        if (s.homeLayout == HomeLayout.GRID) {
+            ToggleRow(R.string.setting_favorites_shelf, R.string.setting_favorites_shelf_sub, s.favoritesShelf) {
+                viewModel.update { setFavoritesShelf(it) }
+            }
+        }
         ValueRow(
             R.string.setting_card_theme,
             null,

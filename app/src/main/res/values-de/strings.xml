@@ -256,6 +256,8 @@
     <string name="setting_home_layout_sub">Zeile: eine App-Zeile mit großem Titel. Raster: Favoritenleiste über all deinen Apps.</string>
     <string name="home_layout_row">Zeile</string>
     <string name="home_layout_grid">Raster</string>
+    <string name="setting_favorites_shelf">Favoritenleiste</string>
+    <string name="setting_favorites_shelf_sub">Die Leiste und der große Titel über deinen Apps. Aus: Der Startbildschirm beginnt direkt mit dem App-Raster.</string>
     <string name="grid_favorites_hint">Halte OK auf einer App gedrückt, um sie in die obere Leiste zu verschieben</string>
     <string name="setting_card_theme">Kartenstil</string>
     <string name="card_theme_dark">Dunkel</string>

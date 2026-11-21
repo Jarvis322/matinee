@@ -258,6 +258,8 @@
     <string name="setting_home_layout_sub">Row: one app row with a large title. Grid: favorites shelf above all your apps.</string>
     <string name="home_layout_row">Row</string>
     <string name="home_layout_grid">Grid</string>
+    <string name="setting_favorites_shelf">Favorites shelf</string>
+    <string name="setting_favorites_shelf_sub">The shelf and the large title above your apps. Off starts the home screen with the app grid.</string>
     <string name="grid_favorites_hint">Hold OK on an app to move it into the top shelf</string>
     <string name="setting_card_theme">Card style</string>
     <string name="card_theme_dark">Dark</string>

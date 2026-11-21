@@ -256,6 +256,8 @@
     <string name="setting_home_layout_sub">Sıra: büyük başlıkla tek uygulama sırası. Izgara: üstte favori rafı, altında tüm uygulamaların.</string>
     <string name="home_layout_row">Sıra</string>
     <string name="home_layout_grid">Izgara</string>
+    <string name="setting_favorites_shelf">Favori rafı</string>
+    <string name="setting_favorites_shelf_sub">Uygulamalarının üstündeki raf ve büyük başlık. Kapalıyken ana ekran doğrudan uygulama ızgarasıyla başlar.</string>
     <string name="grid_favorites_hint">Bir uygulamayı üst rafa taşımak için OK\'a basılı tut</string>
     <string name="setting_card_theme">Kart görünümü</string>
     <string name="card_theme_dark">Koyu</string>

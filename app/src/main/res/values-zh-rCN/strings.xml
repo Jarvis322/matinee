@@ -256,6 +256,8 @@
     <string name="setting_home_layout_sub">行：一行应用配大标题。网格：收藏栏位于所有应用上方。</string>
     <string name="home_layout_row">行</string>
     <string name="home_layout_grid">网格</string>
+    <string name="setting_favorites_shelf">收藏栏</string>
+    <string name="setting_favorites_shelf_sub">应用上方的收藏栏和大标题。关闭后，主屏幕直接从应用网格开始。</string>
     <string name="grid_favorites_hint">在应用上长按 OK，可将其移到顶部收藏栏</string>
     <string name="setting_card_theme">卡片样式</string>
     <string name="card_theme_dark">深色</string>

@@ -138,7 +138,8 @@ internal fun GridHome(
     var liftedPackage by remember { mutableStateOf<String?>(null) }
     var focusRequest by remember { mutableStateOf(GridFocusRequest(null, 0)) }
     var showAddDialog by remember { mutableStateOf(false) }
-    var shelfFocused by remember { mutableStateOf(true) }
+    val shelfShown = settings.favoritesShelf
+    var shelfFocused by remember(shelfShown) { mutableStateOf(shelfShown) }
     var gridFocused by remember { mutableStateOf(true) }
     val listState = rememberLazyListState()
     // Read only in graphicsLayer and a derived flag, so the fade redraws the hero instead of recomposing the grid.
@@ -171,6 +172,7 @@ internal fun GridHome(
     // Coming back up to the shelf restores the full hero; going down into the grid lifts the shelf under the top bar
     // so the rows get the room the fading hero leaves. Focus on the top bar moves neither.
     LaunchedEffect(shelfFocused, gridFocused) {
+        if (!shelfShown) return@LaunchedEffect
         when {
             shelfFocused -> listState.animateScrollToItem(0)
             gridFocused && listState.firstVisibleItemIndex == 0 -> listState.animateScrollToItem(1)
@@ -184,9 +186,10 @@ internal fun GridHome(
         }
         TopBar(viewModel, onOpenSettings, Modifier.padding(start = GRID_SIDE.dp, end = GRID_SIDE.dp, top = 30.dp))
 
-        val shelf = apps.take(COLUMNS)
+        // Without the shelf, its apps simply lead the grid.
+        val shelf = if (shelfShown) apps.take(COLUMNS) else emptyList()
         // Null marks the add-app tile, shown only when there are apps left to add and the user hasn't turned it off.
-        val cells: List<LaunchableApp?> = apps.drop(COLUMNS) + if (hiddenApps.isNotEmpty() && settings.showAddTile) listOf(null) else emptyList()
+        val cells: List<LaunchableApp?> = apps.drop(shelf.size) + if (hiddenApps.isNotEmpty() && settings.showAddTile) listOf(null) else emptyList()
         val visibleInputs = (if (settings.hideDisconnectedInputs) inputs.filter { it.connected } else inputs)
             .takeIf { settings.showInputs }.orEmpty()
         val visibleLiveTv = liveTv.takeIf { settings.showInputs }.orEmpty()
@@ -225,8 +228,8 @@ internal fun GridHome(
                     contentPadding = PaddingValues(start = GRID_SIDE.dp, end = GRID_SIDE.dp, top = 14.dp, bottom = 40.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    item(key = "heroSpace") { Spacer(Modifier.height(HERO_SPACE.dp)) }
-                    item(key = "shelf") {
+                    if (shelfShown) item(key = "heroSpace") { Spacer(Modifier.height(HERO_SPACE.dp)) }
+                    if (shelfShown) item(key = "shelf") {
                         Column(Modifier.onFocusChanged { shelfFocused = it.hasFocus }) {
                             Box(
                                 Modifier

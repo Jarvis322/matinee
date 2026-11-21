@@ -256,6 +256,8 @@
     <string name="setting_home_layout_sub">Fila: una fila de apps con un título grande. Cuadrícula: estante de favoritas sobre todas tus apps.</string>
     <string name="home_layout_row">Fila</string>
     <string name="home_layout_grid">Cuadrícula</string>
+    <string name="setting_favorites_shelf">Estante de favoritas</string>
+    <string name="setting_favorites_shelf_sub">El estante y el título grande sobre tus apps. Desactivado, la pantalla de inicio empieza con la cuadrícula de apps.</string>
     <string name="grid_favorites_hint">Mantén OK en una app para moverla al estante superior</string>
     <string name="setting_card_theme">Estilo de tarjetas</string>
     <string name="card_theme_dark">Oscuro</string>

@@ -256,6 +256,8 @@
     <string name="setting_home_layout_sub">Rangée : une rangée d\'applis avec un grand titre. Grille : favoris en haut, au-dessus de toutes vos applis.</string>
     <string name="home_layout_row">Rangée</string>
     <string name="home_layout_grid">Grille</string>
+    <string name="setting_favorites_shelf">Étagère des favoris</string>
+    <string name="setting_favorites_shelf_sub">L\'étagère et le grand titre au-dessus de vos applis. Désactivée, l\'écran d\'accueil commence par la grille d\'applis.</string>
     <string name="grid_favorites_hint">Maintenez OK sur une appli pour la placer dans les favoris en haut</string>
     <string name="setting_card_theme">Style des cartes</string>
     <string name="card_theme_dark">Sombre</string>

@@ -257,6 +257,8 @@
     <string name="setting_home_layout_sub">列: 大きなタイトル付きのアプリ 1 列。グリッド: すべてのアプリの上にお気に入りの棚。</string>
     <string name="home_layout_row">列</string>
     <string name="home_layout_grid">グリッド</string>
+    <string name="setting_favorites_shelf">お気に入りの棚</string>
+    <string name="setting_favorites_shelf_sub">アプリの上にある棚と大きなタイトル。オフにするとホーム画面はアプリのグリッドから始まります。</string>
     <string name="grid_favorites_hint">アプリで OK を長押しすると上の棚に移動できます</string>
     <string name="setting_card_theme">カードのスタイル</string>
     <string name="card_theme_dark">ダーク</string>
