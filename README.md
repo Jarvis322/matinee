@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="https://play.google.com/apps/testing/com.yigitcan.matinee">Google Play (beta)</a> ·
+  <a href="https://play.google.com/store/apps/details?id=com.yigitcan.matinee">Google Play</a> ·
   <a href="https://github.com/Jarvis322/matinee/releases/latest">Download APK</a> ·
   <a href="https://yigitech.dev/apps/matinee">Website</a> ·
   <a href="https://yigitech.dev/apps/matinee/privacy">Privacy</a>
@@ -37,7 +37,8 @@ Switch between them in **Settings → Home screen → Layout**.
 - **Make it yours.** Hold OK on a card for a menu: move, rename, change its picture, put it in a folder, lock it with a parental PIN, or hide it. Pictures are chosen as files, so Matinee needs no storage permission.
 - **Wallpapers.** Eight built-in wallpapers, an optional slowly moving light, or a picture file of your own, with a Liquid Glass look that shows the wallpaper through the shelf and menus.
 - **Parental PIN.** Lock apps, and optionally settings and home screen changes, behind a 4-digit PIN.
-- **Last played.** Title, artwork and progress from apps that share their media session. Stored only on the TV.
+- **Last played.** Title, artwork and progress from apps that share their media session, with a Continue watching row. Stored only on the TV.
+- **Screensaver.** Your wallpaper with a large clock that moves to a new corner every minute.
 - **Live TV and HDMI inputs.** TVs with a built-in antenna, cable or satellite tuner get a Live TV shortcut that opens the TV's own broadcast. Each HDMI input shows the connected device's name and whether it is on or in standby (HDMI-CEC). Rename inputs and pick an icon.
 - **At a glance.** Clock, weather for a city you choose, network name and a quick download speed test.
 - **One bell.** Play Store updates and new-device alerts in one place.
@@ -51,11 +52,7 @@ Switch between them in **Settings → Home screen → Layout**.
 
 ## Install
 
-Matinee is in testing on Google Play:
-
-1. Join the [matinee-testers](https://groups.google.com/g/matinee-testers) group with the Google account you use on your TV.
-2. Open the [test link](https://play.google.com/apps/testing/com.yigitcan.matinee) and choose **Become a tester**.
-3. Install Matinee on your TV from the Play Store.
+Install Matinee from [Google Play](https://play.google.com/store/apps/details?id=com.yigitcan.matinee), or search for Matinee in the Play Store on your TV.
 
 To sideload instead, download the APK from the [latest release](https://github.com/Jarvis322/matinee/releases/latest). Prefer Google Play if you want the Home button option: Android 13 and later block accessibility permissions for apps installed from a file, so it would not stay on.
 
@@ -63,7 +60,7 @@ Requires Google TV or Android TV 8 or later.
 
 ## After installing
 
-Open Matinee once, then go to **Settings** (the profile button at the top right, then **Settings**).
+Open Matinee once, then go to **Settings** (the profile button at the top right, then **Settings**). **Home screen → Setup** shows the steps below in one place, with which of them are still missing.
 
 1. **Make Matinee the home screen.** Go to **Home screen → Default home screen** and choose Matinee in the TV's dialog.
    Google TV and some other TVs don't let you change the default home app, so do step 2 as well.
