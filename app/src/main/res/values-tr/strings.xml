@@ -507,4 +507,20 @@
     <string name="background_apps_close">Kapat</string>
     <string name="note_background_apps">Kapatmak uygulamayı TV ayarlarındaki Zorla durdur gibi tamamen durdurur. Hepsini kapat, temizliğin dışında tuttuğun uygulamalara dokunmaz.</string>
     <string name="input_switch_failed">Bu TV o girişe doğrudan geçemiyor. TV\'nin kendi kaynak tuşunu kullan.</string>
+    <string name="setting_setup">Kurulum</string>
+    <string name="setting_setup_sub">Home tuşu, son izlenenler ve ekran koruyucu: Matinee\'nin TV\'den ihtiyacı olanlar</string>
+    <string name="setup_complete">Tamam</string>
+    <plurals name="setup_missing">
+        <item quantity="one">%d eksik</item>
+        <item quantity="other">%d eksik</item>
+    </plurals>
+    <string name="note_setup">TV doğru ekran yerine ana ayarlarını açıyorsa o ekran TV\'de yok demektir. Otomatik ADB\'yi kurarsan Matinee bunları kendisi açar.</string>
+    <string name="setting_screensaver">Ekran koruyucu</string>
+    <string name="setting_screensaver_sub">TV boştayken duvar kâğıdının üstünde büyük bir saat</string>
+    <string name="screensaver_matinee">Matinee</string>
+    <string name="screensaver_other">Başka</string>
+    <string name="screensaver_choose">Seç</string>
+    <string name="screensaver_label">Matinee saati</string>
+    <string name="continue_hint_title">Son izlediklerin burada görünsün</string>
+    <string name="continue_hint_body">Bu satır için Matinee\'nin bildirim erişimine ihtiyacı var. İzin vermek için OK\'a bas. Gizlemek için Ayarlar → Ana Ekran\'dan Son izlenenleri göster\'i kapat.</string>
 </resources>

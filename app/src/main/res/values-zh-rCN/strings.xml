@@ -506,4 +506,19 @@
     <string name="background_apps_close">关闭</string>
     <string name="note_background_apps">关闭会像电视设置中的“强制停止”一样完全停止应用。“全部关闭”不会影响你从清理中排除的应用。</string>
     <string name="input_switch_failed">这台电视无法直接切换到该输入源。请使用电视自带的信号源按钮。</string>
+    <string name="setting_setup">设置向导</string>
+    <string name="setting_setup_sub">主页键、上次播放和屏幕保护程序：Matinee 需要电视提供的功能</string>
+    <string name="setup_complete">全部就绪</string>
+    <plurals name="setup_missing">
+        <item quantity="other">缺少 %d 项</item>
+    </plurals>
+    <string name="note_setup">如果电视打开的是主设置而不是对应界面，说明电视没有该界面。设置自动 ADB 后，Matinee 会自动开启这些功能。</string>
+    <string name="setting_screensaver">屏幕保护程序</string>
+    <string name="setting_screensaver_sub">电视空闲时，在壁纸上显示大号时钟</string>
+    <string name="screensaver_matinee">Matinee</string>
+    <string name="screensaver_other">其他</string>
+    <string name="screensaver_choose">选择</string>
+    <string name="screensaver_label">Matinee 时钟</string>
+    <string name="continue_hint_title">在这里查看上次观看的内容</string>
+    <string name="continue_hint_body">这一行需要 Matinee 的通知使用权。按 OK 允许。如需隐藏，请在 设置 → 主屏幕 中关闭“显示上次播放”。</string>
 </resources>

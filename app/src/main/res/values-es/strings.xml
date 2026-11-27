@@ -508,4 +508,21 @@
     <string name="background_apps_close">Cerrar</string>
     <string name="note_background_apps">Cerrar detiene la app por completo, como Forzar detención en los ajustes de la TV. Cerrar todas respeta las apps que excluyes de la limpieza.</string>
     <string name="input_switch_failed">Esta TV no puede cambiar directamente a esa entrada. Usa el botón de fuente de la TV.</string>
+    <string name="setting_setup">Configuración inicial</string>
+    <string name="setting_setup_sub">El botón de inicio, lo último reproducido y el salvapantallas: lo que Matinee necesita del televisor</string>
+    <string name="setup_complete">Todo listo</string>
+    <plurals name="setup_missing">
+        <item quantity="one">Falta %d</item>
+        <item quantity="other">Faltan %d</item>
+        <item quantity="many">Faltan %d</item>
+    </plurals>
+    <string name="note_setup">Si el televisor abre su configuración principal en lugar de la pantalla correcta, no tiene esa pantalla. Configura ADB automático y Matinee lo activará por sí mismo.</string>
+    <string name="setting_screensaver">Salvapantallas</string>
+    <string name="setting_screensaver_sub">Un reloj grande sobre tu fondo mientras el televisor no se usa</string>
+    <string name="screensaver_matinee">Matinee</string>
+    <string name="screensaver_other">Otro</string>
+    <string name="screensaver_choose">Elegir</string>
+    <string name="screensaver_label">Reloj de Matinee</string>
+    <string name="continue_hint_title">Mira lo último que viste</string>
+    <string name="continue_hint_body">Matinee necesita acceso a notificaciones para llenar esta fila. Pulsa OK para permitirlo. Para ocultarlo, desactiva Mostrar lo último reproducido en Configuración → Pantalla principal.</string>
 </resources>

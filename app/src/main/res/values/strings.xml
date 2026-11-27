@@ -517,4 +517,20 @@
     <string name="background_apps_close">Close</string>
     <string name="note_background_apps">Closing stops the app completely, like Force stop in the TV\'s settings. Close all skips the apps you keep out of cleanups.</string>
     <string name="input_switch_failed">This TV can\'t switch to that input directly. Use the TV\'s own source button.</string>
+    <string name="setting_setup">Setup</string>
+    <string name="setting_setup_sub">The Home button, last played and the screensaver: what Matinee needs from the TV</string>
+    <string name="setup_complete">All set</string>
+    <plurals name="setup_missing">
+        <item quantity="one">%d missing</item>
+        <item quantity="other">%d missing</item>
+    </plurals>
+    <string name="note_setup">If the TV opens its main settings instead of the right screen, it doesn\'t have that screen. Set up Automatic ADB and Matinee turns these on itself.</string>
+    <string name="setting_screensaver">Screensaver</string>
+    <string name="setting_screensaver_sub">A large clock over your wallpaper while the TV is idle</string>
+    <string name="screensaver_matinee">Matinee</string>
+    <string name="screensaver_other">Another</string>
+    <string name="screensaver_choose">Choose</string>
+    <string name="screensaver_label">Matinee clock</string>
+    <string name="continue_hint_title">See what you watched last</string>
+    <string name="continue_hint_body">Matinee needs notification access to fill this row. Press OK to allow it. To hide this, turn off Show last played under Settings → Home screen.</string>
 </resources>

@@ -26,6 +26,7 @@ import com.tcltv.sahne.system.HomeKeyGuard
 import com.tcltv.sahne.system.InputSwitcher
 import com.tcltv.sahne.system.HomeKeyWatchdog
 import com.tcltv.sahne.system.LocalAdb
+import com.tcltv.sahne.system.Screensaver
 import com.tcltv.sahne.update.SelfUpdate
 import com.tcltv.sahne.update.SelfUpdater
 import kotlinx.coroutines.Dispatchers
@@ -208,6 +209,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private val mediaHistory = MediaHistory.get(application)
     private val homeKeyGuard = HomeKeyGuard(application)
     private val localAdb = LocalAdb(application)
+    private val screensaver = Screensaver(application)
     private val keyBindingStore = KeyBindingStore(application)
     private val backgroundApps = BackgroundApps(localAdb, application.packageName)
     private val recentApps = RecentApps(localAdb, application.packageName)
@@ -845,6 +847,51 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
         return NotificationManagerCompat.getEnabledListenerPackages(app).contains(app.packageName)
     }
 
+    private val _notificationAccess = MutableStateFlow(hasNotificationAccess())
+
+    /** Rechecked each time the home screen comes back, since access is granted in the TV's own settings. */
+    val notificationAccess: StateFlow<Boolean> = _notificationAccess.asStateFlow()
+
+    /**
+     * Turns notification access on directly once Automatic ADB has granted the right to change secure settings, which
+     * also works on TVs without the settings screen for it; otherwise opens that screen.
+     */
+    fun requestNotificationAccess() {
+        if (!grantNotificationAccess()) openSystemSettings(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+        _notificationAccess.value = hasNotificationAccess()
+    }
+
+    private fun grantNotificationAccess(): Boolean {
+        if (!localAdb.isSetUp()) return false
+        val resolver = getApplication<Application>().contentResolver
+        val listener = ComponentName(getApplication(), TvNotificationListener::class.java).flattenToString()
+        return try {
+            val enabled = Settings.Secure.getString(resolver, ENABLED_NOTIFICATION_LISTENERS).orEmpty().split(':').filter { it.isNotBlank() }
+            if (enabled.any { it.equals(listener, ignoreCase = true) }) return true
+            // Android watches this setting and binds the listener as soon as it changes.
+            Settings.Secure.putString(resolver, ENABLED_NOTIFICATION_LISTENERS, (enabled + listener).joinToString(":"))
+        } catch (e: SecurityException) {
+            Log.w(TAG, "cannot grant notification access: ${e.message}")
+            false
+        } catch (e: IllegalArgumentException) {
+            // Some Android versions don't let apps read this setting.
+            Log.w(TAG, "cannot read notification access: ${e.message}")
+            false
+        }
+    }
+
+    /** How many of the things Matinee needs to work fully are missing: the Home button opening it, and notification access. */
+    fun missingSetupCount(): Int {
+        val homeWorks = isHomeKeyTarget() || homeKeyGuard.isRunning()
+        return listOf(homeWorks, hasNotificationAccess()).count { !it }
+    }
+
+    /** Null when the TV doesn't tell apps which screensaver is chosen. */
+    fun isMatineeScreensaver(): Boolean? = screensaver.isMatinee()
+
+    /** Makes Matinee the screensaver directly when Automatic ADB allows it, or opens the TV's screensaver settings. */
+    fun chooseMatineeScreensaver(): Boolean = screensaver.setMatinee() || openSystemSettings(Settings.ACTION_DREAM_SETTINGS)
+
     private suspend fun runWeatherLoop() {
         combine(
             settings.map { Triple(it.weatherLocation, it.temperatureUnit, it.weatherRefreshMinutes) }.distinctUntilChanged(),
@@ -868,6 +915,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     fun onHomeResumed() {
         receiverRefresh.value++
+        _notificationAccess.value = hasNotificationAccess()
         // With Automatic ADB set up, a stopped or switched-off Home button is turned back on without asking.
         viewModelScope.launch { homeKeyGuard.repairIfNeeded() }
         viewModelScope.launch { SelfUpdater.checkIfDue(getApplication()) }
@@ -1150,6 +1198,8 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     private companion object {
         const val TAG = "LauncherViewModel"
+        // Not in the public SDK; the setting Android's notification access screen writes.
+        const val ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners"
         const val CLOSE_SETTLE_MILLIS = 600L
         const val SWITCHER_LIMIT = 12
         const val CONTINUE_LIMIT = 12

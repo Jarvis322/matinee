@@ -508,4 +508,21 @@
     <string name="background_apps_close">Fermer</string>
     <string name="note_background_apps">Fermer arrête complètement l\'appli, comme Forcer l\'arrêt dans les réglages de la TV. Tout fermer épargne les applis exclues du nettoyage.</string>
     <string name="input_switch_failed">Cette TV ne peut pas passer directement à cette entrée. Utilisez le bouton de source de la TV.</string>
+    <string name="setting_setup">Configuration</string>
+    <string name="setting_setup_sub">Le bouton Accueil, la dernière lecture et l\'écran de veille : ce dont Matinee a besoin du téléviseur</string>
+    <string name="setup_complete">Tout est prêt</string>
+    <plurals name="setup_missing">
+        <item quantity="one">%d manquant</item>
+        <item quantity="other">%d manquants</item>
+        <item quantity="many">%d manquants</item>
+    </plurals>
+    <string name="note_setup">Si le téléviseur ouvre ses paramètres principaux au lieu du bon écran, il n\'a pas cet écran. Configurez l\'ADB automatique et Matinee les activera lui-même.</string>
+    <string name="setting_screensaver">Écran de veille</string>
+    <string name="setting_screensaver_sub">Une grande horloge sur votre fond d\'écran quand le téléviseur est inactif</string>
+    <string name="screensaver_matinee">Matinee</string>
+    <string name="screensaver_other">Autre</string>
+    <string name="screensaver_choose">Choisir</string>
+    <string name="screensaver_label">Horloge Matinee</string>
+    <string name="continue_hint_title">Retrouvez ce que vous avez regardé</string>
+    <string name="continue_hint_body">Matinee a besoin de l\'accès aux notifications pour remplir cette rangée. Appuyez sur OK pour l\'autoriser. Pour la masquer, désactivez Afficher la dernière lecture dans Paramètres → Écran d\'accueil.</string>
 </resources>

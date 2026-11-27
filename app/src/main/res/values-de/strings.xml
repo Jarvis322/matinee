@@ -507,4 +507,20 @@
     <string name="background_apps_close">Schließen</string>
     <string name="note_background_apps">Schließen beendet die App vollständig, wie Beenden erzwingen in den TV-Einstellungen. Alle schließen lässt die vom Aufräumen ausgenommenen Apps in Ruhe.</string>
     <string name="input_switch_failed">Dieser Fernseher kann nicht direkt zu diesem Eingang wechseln. Nutze die Quellentaste des Fernsehers.</string>
+    <string name="setting_setup">Einrichtung</string>
+    <string name="setting_setup_sub">Home-Taste, zuletzt gespielt und Bildschirmschoner: was Matinee vom Fernseher braucht</string>
+    <string name="setup_complete">Alles bereit</string>
+    <plurals name="setup_missing">
+        <item quantity="one">%d fehlt</item>
+        <item quantity="other">%d fehlen</item>
+    </plurals>
+    <string name="note_setup">Öffnet der Fernseher statt des richtigen Bildschirms seine Haupteinstellungen, hat er diesen Bildschirm nicht. Richte Automatisches ADB ein, dann schaltet Matinee das selbst ein.</string>
+    <string name="setting_screensaver">Bildschirmschoner</string>
+    <string name="setting_screensaver_sub">Eine große Uhr über deinem Hintergrund, wenn der Fernseher nicht benutzt wird</string>
+    <string name="screensaver_matinee">Matinee</string>
+    <string name="screensaver_other">Andere</string>
+    <string name="screensaver_choose">Wählen</string>
+    <string name="screensaver_label">Matinee-Uhr</string>
+    <string name="continue_hint_title">Sieh, was du zuletzt geschaut hast</string>
+    <string name="continue_hint_body">Für diese Zeile braucht Matinee Benachrichtigungszugriff. Drücke OK, um ihn zu erlauben. Zum Ausblenden unter Einstellungen → Startbildschirm „Zuletzt gespielt anzeigen“ ausschalten.</string>
 </resources>

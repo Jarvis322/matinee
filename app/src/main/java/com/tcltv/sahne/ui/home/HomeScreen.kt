@@ -183,7 +183,9 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
 
     val current = apps.firstOrNull { it.packageName == selectedPackage } ?: apps.firstOrNull()
     val continueItems by viewModel.continueWatching.collectAsStateWithLifecycle()
-    val showContinue = continueItems.isNotEmpty() && !editMode
+    val notificationAccess by viewModel.notificationAccess.collectAsStateWithLifecycle()
+    val needsAccess = settings.showLastPlayed && !notificationAccess
+    val showContinue = (continueItems.isNotEmpty() || needsAccess) && !editMode
     val pageScroll = rememberScrollState()
     val pageScope = rememberCoroutineScope()
     val accent = when {
@@ -321,16 +323,16 @@ fun HomeScreen(viewModel: LauncherViewModel, resumeTick: Int, editRequest: Int, 
                 )
 
                     if (showContinue) {
-                        ContinueRow(
-                            items = continueItems,
-                            viewModel = viewModel,
-                            onOpen = launch,
-                            modifier = Modifier
-                                .padding(top = screenHeight + CONTINUE_GAP.dp)
-                                .onFocusChanged { state ->
-                                    pageScope.launch { pageScroll.animateScrollTo(if (state.hasFocus) pageScroll.maxValue else 0) }
-                                },
-                        )
+                        val continueModifier = Modifier
+                            .padding(top = screenHeight + CONTINUE_GAP.dp)
+                            .onFocusChanged { state ->
+                                pageScope.launch { pageScroll.animateScrollTo(if (state.hasFocus) pageScroll.maxValue else 0) }
+                            }
+                        if (continueItems.isNotEmpty()) {
+                            ContinueRow(items = continueItems, viewModel = viewModel, onOpen = launch, modifier = continueModifier)
+                        } else {
+                            ContinueAccessHint(viewModel, modifier = continueModifier)
+                        }
                     }
                 }
             }

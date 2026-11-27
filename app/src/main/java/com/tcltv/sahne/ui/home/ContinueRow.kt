@@ -50,7 +50,9 @@ import com.tcltv.sahne.LauncherViewModel
 import com.tcltv.sahne.R
 import com.tcltv.sahne.data.LaunchableApp
 import com.tcltv.sahne.data.LastPlayed
+import com.tcltv.sahne.ui.GlassStyle
 import com.tcltv.sahne.ui.Palette
+import com.tcltv.sahne.ui.glass
 import com.tcltv.sahne.ui.appCardFocus
 import com.tcltv.sahne.ui.interStyle
 import com.tcltv.sahne.ui.rememberFocusSheen
@@ -155,6 +157,42 @@ private fun ContinueCard(item: ContinueItem, viewModel: LauncherViewModel, onOpe
     }
 }
 
+/**
+ * Stands in for Continue watching while Matinee has no notification access, which is what fills it; without this the
+ * row simply never appears and nothing says why. Selecting it grants access (over Automatic ADB) or opens the screen.
+ */
+@Composable
+internal fun ContinueAccessHint(viewModel: LauncherViewModel, modifier: Modifier = Modifier, side: Dp = ROW_SIDE.dp) {
+    var focused by remember { mutableStateOf(false) }
+    val shape = RoundedCornerShape(14.dp)
+    val sheen = rememberFocusSheen(focused)
+    val title = stringResource(R.string.continue_hint_title)
+    val body = stringResource(R.string.continue_hint_body)
+    Column(modifier) {
+        BasicText(
+            stringResource(R.string.section_continue_watching),
+            style = interStyle(12.sp, 600, Color.White.copy(alpha = 0.62f)),
+            modifier = Modifier.padding(start = side),
+        )
+        Box(
+            Modifier
+                .padding(start = side, top = 12.dp, bottom = 16.dp)
+                .size(HINT_WIDTH.dp, CARD_HEIGHT.dp)
+                .scaleBy(focusScale(focused, 1.04f))
+                .glass(shape, if (focused) GlassStyle.Lit else GlassStyle.Pill)
+                .appCardFocus(sheen, shape, lightCard = false)
+                .onFocusChanged { focused = it.isFocused }
+                .semantics { contentDescription = "$title. $body" }
+                .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) { viewModel.requestNotificationAccess() },
+        ) {
+            Column(Modifier.align(Alignment.CenterStart).padding(horizontal = 18.dp)) {
+                BasicText(title, style = interStyle(14.sp, 700, Palette.TextPrimary))
+                BasicText(body, style = interStyle(10.5.sp, 500, Palette.TextSecondary).copy(lineHeight = 15.sp), modifier = Modifier.padding(top = 5.dp))
+            }
+        }
+    }
+}
+
 /** TMDB's wide picture first, then the app's own cover, then the app's banner on its accent colour. */
 @Composable
 private fun CardPicture(entry: LastPlayed, app: LaunchableApp, viewModel: LauncherViewModel) {
@@ -187,3 +225,4 @@ private fun remainingMinutes(entry: LastPlayed): Int? {
 private const val ROW_SIDE = 48
 private const val CARD_WIDTH = 214
 private const val CARD_HEIGHT = 120
+private const val HINT_WIDTH = 444

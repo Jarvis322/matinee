@@ -198,7 +198,7 @@ private fun ClockWeatherPill(viewModel: LauncherViewModel, onOpenSettings: () ->
  * enough: its clock stops while the TV sleeps in standby, so after waking the time it showed was the time it slept.
  */
 @Composable
-private fun rememberNow(withSeconds: Boolean): LocalDateTime {
+internal fun rememberNow(withSeconds: Boolean): LocalDateTime {
     var now by remember { mutableStateOf(LocalDateTime.now()) }
     val context = LocalContext.current
     DisposableEffect(context) {

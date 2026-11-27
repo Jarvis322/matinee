@@ -159,6 +159,7 @@ private sealed interface SubPage {
     data object Licenses : SubPage
     data object LockedApps : SubPage
     data object Wallpaper : SubPage
+    data object Setup : SubPage
 }
 
 private val Divider = Color.White.copy(alpha = 0.06f)
@@ -253,6 +254,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                     SubPage.Licenses -> stringResource(R.string.setting_licenses)
                     SubPage.LockedApps -> stringResource(R.string.setting_locked_apps)
                     SubPage.Wallpaper -> stringResource(R.string.setting_wallpaper)
+                    SubPage.Setup -> stringResource(R.string.setting_setup)
                     is SubPage.InputEditor -> stringResource(R.string.edit_input)
                     is SubPage.KeyEditor -> keyName(page.keyCode)
                 },
@@ -271,6 +273,7 @@ fun SettingsScreen(viewModel: LauncherViewModel, onClose: () -> Unit, onEditApps
                 SubPage.Licenses -> LicensesPage(panelRequester)
                 SubPage.LockedApps -> LockedAppsPage(viewModel, panelRequester)
                 SubPage.Wallpaper -> WallpaperPage(viewModel, panelRequester)
+                SubPage.Setup -> SetupPage(viewModel, panelRequester)
             }
         }
 
@@ -496,7 +499,8 @@ private fun HomePanel(viewModel: LauncherViewModel, firstRow: FocusRequester, on
     val airPlay by viewModel.airPlay.collectAsStateWithLifecycle()
     val avatar by viewModel.avatar.collectAsStateWithLifecycle()
     PanelList {
-        DefaultHomeRow(viewModel, Modifier.focusRequester(firstRow))
+        SetupRow(viewModel, Modifier.focusRequester(firstRow).opensPage(SubPage.Setup)) { open(SubPage.Setup) }
+        DefaultHomeRow(viewModel, Modifier)
         HomeKeyRow(viewModel)
         WifiNameRow(viewModel)
         ValueRow(
@@ -1406,17 +1410,71 @@ private fun DefaultHomeRow(viewModel: LauncherViewModel, modifier: Modifier) {
 /** In-app disclosure and entry point for notification access, which Play installs can't get any other way. */
 @Composable
 private fun NotificationAccessRow(viewModel: LauncherViewModel) {
-    var granted by remember { mutableStateOf(viewModel.hasNotificationAccess()) }
-    LifecycleResumeEffect(Unit) {
-        granted = viewModel.hasNotificationAccess()
-        onPauseOrDispose { }
-    }
+    val granted by viewModel.notificationAccess.collectAsStateWithLifecycle()
     ValueRow(
         R.string.setting_notification_access,
         R.string.setting_notification_access_sub,
         stringResource(if (granted) R.string.switch_on else R.string.switch_off),
     ) {
-        viewModel.openSystemSettings(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+        viewModel.requestNotificationAccess()
+    }
+}
+
+/** Leads to the setup page and says how many of the things Matinee needs are still missing. */
+@Composable
+private fun SetupRow(viewModel: LauncherViewModel, modifier: Modifier, onOpen: () -> Unit) {
+    var missing by remember { mutableIntStateOf(viewModel.missingSetupCount()) }
+    val access by viewModel.notificationAccess.collectAsStateWithLifecycle()
+    LifecycleResumeEffect(access) {
+        missing = viewModel.missingSetupCount()
+        onPauseOrDispose { }
+    }
+    ValueRow(
+        stringResource(R.string.setting_setup),
+        stringResource(R.string.setting_setup_sub),
+        if (missing == 0) stringResource(R.string.setup_complete) else pluralStringResource(R.plurals.setup_missing, missing, missing),
+        modifier,
+        onOpen,
+    )
+}
+
+/**
+ * Everything Matinee needs from the TV in one place, each row showing whether it is on. When the TV lacks one of its
+ * settings screens, Automatic ADB lets Matinee turn these on itself.
+ */
+@Composable
+private fun SetupPage(viewModel: LauncherViewModel, firstRow: FocusRequester) {
+    LaunchedEffect(Unit) { runCatching { firstRow.requestFocus() } }
+    PanelList {
+        DefaultHomeRow(viewModel, Modifier.focusRequester(firstRow))
+        HomeKeyRow(viewModel)
+        NotificationAccessRow(viewModel)
+        AutoAdbRow(viewModel)
+        ScreensaverRow(viewModel)
+        Note(R.string.note_setup)
+    }
+}
+
+@Composable
+private fun ScreensaverRow(viewModel: LauncherViewModel) {
+    var isMatinee by remember { mutableStateOf(viewModel.isMatineeScreensaver()) }
+    LifecycleResumeEffect(Unit) {
+        isMatinee = viewModel.isMatineeScreensaver()
+        onPauseOrDispose { }
+    }
+    ValueRow(
+        R.string.setting_screensaver,
+        R.string.setting_screensaver_sub,
+        stringResource(
+            when (isMatinee) {
+                true -> R.string.screensaver_matinee
+                false -> R.string.screensaver_other
+                null -> R.string.screensaver_choose
+            },
+        ),
+    ) {
+        viewModel.chooseMatineeScreensaver()
+        isMatinee = viewModel.isMatineeScreensaver()
     }
 }
 

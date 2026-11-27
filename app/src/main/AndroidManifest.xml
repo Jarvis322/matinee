@@ -89,6 +89,9 @@
         <intent>
             <action android:name="android.settings.WIFI_SETTINGS" />
         </intent>
+        <intent>
+            <action android:name="android.settings.DREAM_SETTINGS" />
+        </intent>
     </queries>
 
     <application
@@ -159,6 +162,18 @@
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/home_key_service" />
+        </service>
+
+        <!-- Matinee's screensaver: the wallpaper and a clock. -->
+        <service
+            android:name=".system.ScreensaverService"
+            android:exported="true"
+            android:label="@string/screensaver_label"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </service>
 
         <receiver

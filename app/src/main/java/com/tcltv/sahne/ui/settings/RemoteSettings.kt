@@ -59,15 +59,9 @@ internal fun RemoteRows(
     onEditKey: (Int) -> Unit,
 ) {
     val bindings by viewModel.keyBindings.collectAsStateWithLifecycle()
-    val adb by viewModel.adbSetup.collectAsStateWithLifecycle()
-    var settingUpAdb by remember { mutableStateOf(false) }
     var learning by remember { mutableStateOf(false) }
     HomeKeyRow(viewModel)
-    ValueRow(
-        R.string.setting_auto_adb,
-        R.string.setting_auto_adb_sub,
-        stringResource(if (adb == AdbSetupState.Ready) R.string.switch_on else R.string.switch_off),
-    ) { settingUpAdb = true }
+    AutoAdbRow(viewModel)
     val homeDouble = bindings.firstOrNull { it.keyCode == KeyEvent.KEYCODE_HOME }?.actions?.get(PressType.DOUBLE)
     ToggleRow(R.string.setting_home_double, R.string.setting_home_double_sub, homeDouble == KeyAction.AppSwitcher) { on ->
         viewModel.setKeyAction(KeyEvent.KEYCODE_HOME, PressType.DOUBLE, if (on) KeyAction.AppSwitcher else null)
@@ -83,7 +77,6 @@ internal fun RemoteRows(
         ) { onEditKey(binding.keyCode) }
     }
     Note(R.string.note_remote_keys)
-    if (settingUpAdb) AdbSetupDialog(viewModel) { settingUpAdb = false }
     if (learning) {
         LearnKeyDialog(
             viewModel = viewModel,
@@ -94,6 +87,19 @@ internal fun RemoteRows(
             onDismiss = { learning = false },
         )
     }
+}
+
+/** Automatic ADB, under Bluetooth and remote and on the setup page; selecting it opens the setup dialog. */
+@Composable
+internal fun AutoAdbRow(viewModel: LauncherViewModel) {
+    val adb by viewModel.adbSetup.collectAsStateWithLifecycle()
+    var settingUp by remember { mutableStateOf(false) }
+    ValueRow(
+        R.string.setting_auto_adb,
+        R.string.setting_auto_adb_sub,
+        stringResource(if (adb == AdbSetupState.Ready) R.string.switch_on else R.string.switch_off),
+    ) { settingUp = true }
+    if (settingUp) AdbSetupDialog(viewModel) { settingUp = false }
 }
 
 /** One assigned key: what each kind of press does, and removing it. */

@@ -507,4 +507,19 @@
     <string name="background_apps_close">閉じる</string>
     <string name="note_background_apps">閉じるとテレビの設定の「強制停止」と同様にアプリが完全に停止します。「すべて閉じる」は、クリーンアップの除外にしたアプリには触れません。</string>
     <string name="input_switch_failed">このテレビはその入力に直接切り替えられません。テレビの入力切替ボタンを使ってください。</string>
+    <string name="setting_setup">セットアップ</string>
+    <string name="setting_setup_sub">ホームボタン、最後に再生したもの、スクリーンセーバー：Matinee がテレビに必要とするもの</string>
+    <string name="setup_complete">すべて完了</string>
+    <plurals name="setup_missing">
+        <item quantity="other">%d 件未設定</item>
+    </plurals>
+    <string name="note_setup">正しい画面ではなくテレビのメイン設定が開く場合、そのテレビにはその画面がありません。自動 ADB を設定すると、Matinee が自動でオンにします。</string>
+    <string name="setting_screensaver">スクリーンセーバー</string>
+    <string name="setting_screensaver_sub">テレビを使っていないとき、壁紙の上に大きな時計を表示</string>
+    <string name="screensaver_matinee">Matinee</string>
+    <string name="screensaver_other">その他</string>
+    <string name="screensaver_choose">選択</string>
+    <string name="screensaver_label">Matinee 時計</string>
+    <string name="continue_hint_title">最後に見たものをここに表示</string>
+    <string name="continue_hint_body">この列には Matinee の通知へのアクセスが必要です。OK を押して許可してください。非表示にするには 設定 → ホーム画面 で「最後に再生したものを表示」をオフにします。</string>
 </resources>
