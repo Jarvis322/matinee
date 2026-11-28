@@ -892,6 +892,9 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     /** Makes Matinee the screensaver directly when Automatic ADB allows it, or opens the TV's screensaver settings. */
     fun chooseMatineeScreensaver(): Boolean = screensaver.setMatinee() || openSystemSettings(Settings.ACTION_DREAM_SETTINGS)
 
+    /** Goes back to the screensaver the TV had before Matinee, directly when Automatic ADB allows it. */
+    fun restoreTvScreensaver(): Boolean = screensaver.restorePrevious() || openSystemSettings(Settings.ACTION_DREAM_SETTINGS)
+
     private suspend fun runWeatherLoop() {
         combine(
             settings.map { Triple(it.weatherLocation, it.temperatureUnit, it.weatherRefreshMinutes) }.distinctUntilChanged(),

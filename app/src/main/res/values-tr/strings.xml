@@ -517,6 +517,7 @@
     <string name="note_setup">TV doğru ekran yerine ana ayarlarını açıyorsa o ekran TV\'de yok demektir. Otomatik ADB\'yi kurarsan Matinee bunları kendisi açar.</string>
     <string name="setting_screensaver">Ekran koruyucu</string>
     <string name="setting_screensaver_sub">TV boştayken duvar kâğıdının üstünde büyük bir saat</string>
+    <string name="setting_screensaver_sub_matinee">TV\'nin kendi ekran koruyucusuna dönmek için seç</string>
     <string name="screensaver_matinee">Matinee</string>
     <string name="screensaver_other">Başka</string>
     <string name="screensaver_choose">Seç</string>

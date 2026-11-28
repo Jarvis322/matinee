@@ -527,6 +527,7 @@
     <string name="note_setup">If the TV opens its main settings instead of the right screen, it doesn\'t have that screen. Set up Automatic ADB and Matinee turns these on itself.</string>
     <string name="setting_screensaver">Screensaver</string>
     <string name="setting_screensaver_sub">A large clock over your wallpaper while the TV is idle</string>
+    <string name="setting_screensaver_sub_matinee">Select to go back to the TV\'s own screensaver</string>
     <string name="screensaver_matinee">Matinee</string>
     <string name="screensaver_other">Another</string>
     <string name="screensaver_choose">Choose</string>

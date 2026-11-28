@@ -517,6 +517,7 @@
     <string name="note_setup">Öffnet der Fernseher statt des richtigen Bildschirms seine Haupteinstellungen, hat er diesen Bildschirm nicht. Richte Automatisches ADB ein, dann schaltet Matinee das selbst ein.</string>
     <string name="setting_screensaver">Bildschirmschoner</string>
     <string name="setting_screensaver_sub">Eine große Uhr über deinem Hintergrund, wenn der Fernseher nicht benutzt wird</string>
+    <string name="setting_screensaver_sub_matinee">Auswählen, um zum Bildschirmschoner des Fernsehers zurückzukehren</string>
     <string name="screensaver_matinee">Matinee</string>
     <string name="screensaver_other">Andere</string>
     <string name="screensaver_choose">Wählen</string>

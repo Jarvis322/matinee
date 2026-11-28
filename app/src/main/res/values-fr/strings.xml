@@ -519,6 +519,7 @@
     <string name="note_setup">Si le téléviseur ouvre ses paramètres principaux au lieu du bon écran, il n\'a pas cet écran. Configurez l\'ADB automatique et Matinee les activera lui-même.</string>
     <string name="setting_screensaver">Écran de veille</string>
     <string name="setting_screensaver_sub">Une grande horloge sur votre fond d\'écran quand le téléviseur est inactif</string>
+    <string name="setting_screensaver_sub_matinee">Sélectionnez pour revenir à l\'écran de veille du téléviseur</string>
     <string name="screensaver_matinee">Matinee</string>
     <string name="screensaver_other">Autre</string>
     <string name="screensaver_choose">Choisir</string>

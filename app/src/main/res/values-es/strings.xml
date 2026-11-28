@@ -519,6 +519,7 @@
     <string name="note_setup">Si el televisor abre su configuración principal en lugar de la pantalla correcta, no tiene esa pantalla. Configura ADB automático y Matinee lo activará por sí mismo.</string>
     <string name="setting_screensaver">Salvapantallas</string>
     <string name="setting_screensaver_sub">Un reloj grande sobre tu fondo mientras el televisor no se usa</string>
+    <string name="setting_screensaver_sub_matinee">Selecciona para volver al salvapantallas del televisor</string>
     <string name="screensaver_matinee">Matinee</string>
     <string name="screensaver_other">Otro</string>
     <string name="screensaver_choose">Elegir</string>

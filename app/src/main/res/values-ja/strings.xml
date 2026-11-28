@@ -516,6 +516,7 @@
     <string name="note_setup">正しい画面ではなくテレビのメイン設定が開く場合、そのテレビにはその画面がありません。自動 ADB を設定すると、Matinee が自動でオンにします。</string>
     <string name="setting_screensaver">スクリーンセーバー</string>
     <string name="setting_screensaver_sub">テレビを使っていないとき、壁紙の上に大きな時計を表示</string>
+    <string name="setting_screensaver_sub_matinee">選択するとテレビのスクリーンセーバーに戻ります</string>
     <string name="screensaver_matinee">Matinee</string>
     <string name="screensaver_other">その他</string>
     <string name="screensaver_choose">選択</string>

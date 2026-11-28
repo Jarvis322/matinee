@@ -1464,7 +1464,7 @@ private fun ScreensaverRow(viewModel: LauncherViewModel) {
     }
     ValueRow(
         R.string.setting_screensaver,
-        R.string.setting_screensaver_sub,
+        if (isMatinee == true) R.string.setting_screensaver_sub_matinee else R.string.setting_screensaver_sub,
         stringResource(
             when (isMatinee) {
                 true -> R.string.screensaver_matinee
@@ -1473,7 +1473,8 @@ private fun ScreensaverRow(viewModel: LauncherViewModel) {
             },
         ),
     ) {
-        viewModel.chooseMatineeScreensaver()
+        // Selecting it again goes back: Google TV's own settings can't, once another screensaver is set.
+        if (isMatinee == true) viewModel.restoreTvScreensaver() else viewModel.chooseMatineeScreensaver()
         isMatinee = viewModel.isMatineeScreensaver()
     }
 }

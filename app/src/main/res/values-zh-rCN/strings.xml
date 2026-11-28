@@ -515,6 +515,7 @@
     <string name="note_setup">如果电视打开的是主设置而不是对应界面，说明电视没有该界面。设置自动 ADB 后，Matinee 会自动开启这些功能。</string>
     <string name="setting_screensaver">屏幕保护程序</string>
     <string name="setting_screensaver_sub">电视空闲时，在壁纸上显示大号时钟</string>
+    <string name="setting_screensaver_sub_matinee">选择即可恢复电视自带的屏幕保护程序</string>
     <string name="screensaver_matinee">Matinee</string>
     <string name="screensaver_other">其他</string>
     <string name="screensaver_choose">选择</string>
